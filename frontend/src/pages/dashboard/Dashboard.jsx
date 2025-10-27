@@ -68,95 +68,9 @@ const Dashboard = () => {
     },
   ];
 
-  // Mock recent projects
-  const recentProjects = [
-    {
-      id: "1",
-      name: "Website Redesign",
-      workspace: "Design Team",
-      progress: 65,
-      status: "active",
-      dueDate: "2024-12-15",
-      members: [
-        { id: "1", name: "John Doe" },
-        { id: "2", name: "Jane Smith" },
-      ],
-    },
-    {
-      id: "2",
-      name: "Mobile App Development",
-      workspace: "Development Team",
-      progress: 40,
-      status: "active",
-      dueDate: "2024-12-30",
-      members: [
-        { id: "3", name: "Bob Johnson" },
-        { id: "4", name: "Alice Williams" },
-      ],
-    },
-    {
-      id: "3",
-      name: "Marketing Campaign",
-      workspace: "Marketing Team",
-      progress: 90,
-      status: "active",
-      dueDate: "2024-11-20",
-      members: [{ id: "5", name: "Charlie Brown" }],
-    },
-  ];
-
-  // Mock recent tasks
-  const recentTasks = [
-    {
-      id: "1",
-      title: "Update documentation",
-      project: "Website Redesign",
-      priority: "high",
-      dueDate: "2024-10-30",
-      completed: false,
-    },
-    {
-      id: "2",
-      title: "Review pull requests",
-      project: "Mobile App Development",
-      priority: "medium",
-      dueDate: "2024-10-28",
-      completed: false,
-    },
-    {
-      id: "3",
-      title: "Design system updates",
-      project: "Website Redesign",
-      priority: "low",
-      dueDate: "2024-11-05",
-      completed: true,
-    },
-  ];
-
-  // Mock upcoming deadlines
-  const upcomingDeadlines = [
-    {
-      id: "1",
-      title: "Q4 Marketing Report",
-      type: "project",
-      dueDate: "2024-10-31",
-      daysLeft: 4,
-    },
-    {
-      id: "2",
-      title: "Client Presentation",
-      type: "task",
-      dueDate: "2024-11-02",
-      daysLeft: 6,
-    },
-    {
-      id: "3",
-      title: "Beta Release",
-      type: "project",
-      dueDate: "2024-11-15",
-      daysLeft: 19,
-    },
-  ];
+  const recentProjects = [];
+  const recentTasks = [];
+  const upcomingDeadlines = [];
 
   const colorClasses = {
     blue: "bg-blue-100 text-blue-600",

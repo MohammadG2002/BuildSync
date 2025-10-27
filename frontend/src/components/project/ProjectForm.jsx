@@ -7,9 +7,9 @@ const ProjectForm = ({ project, onSubmit, onCancel, loading }) => {
   const [formData, setFormData] = useState({
     name: project?.name || "",
     description: project?.description || "",
-    status: project?.status || "active",
+    status: project?.status || "planning",
     startDate: project?.startDate || "",
-    endDate: project?.endDate || "",
+    dueDate: project?.dueDate || "",
   });
   const [errors, setErrors] = useState({});
 
@@ -26,9 +26,9 @@ const ProjectForm = ({ project, onSubmit, onCancel, loading }) => {
     if (!formData.name.trim()) {
       newErrors.name = "Project name is required";
     }
-    if (formData.startDate && formData.endDate) {
-      if (new Date(formData.startDate) > new Date(formData.endDate)) {
-        newErrors.endDate = "End date must be after start date";
+    if (formData.startDate && formData.dueDate) {
+      if (new Date(formData.startDate) > new Date(formData.dueDate)) {
+        newErrors.dueDate = "Due date must be after start date";
       }
     }
     return newErrors;
@@ -100,12 +100,12 @@ const ProjectForm = ({ project, onSubmit, onCancel, loading }) => {
           onChange={handleChange}
         />
         <Input
-          label="End Date"
+          label="Due Date"
           type="date"
-          name="endDate"
-          value={formData.endDate}
+          name="dueDate"
+          value={formData.dueDate}
           onChange={handleChange}
-          error={errors.endDate}
+          error={errors.dueDate}
         />
       </div>
 

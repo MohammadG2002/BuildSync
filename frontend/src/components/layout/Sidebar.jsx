@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
   Briefcase,
@@ -19,6 +19,7 @@ const Sidebar = ({ isOpen, onClose }) => {
   const { logout } = useAuth();
   const { currentWorkspace } = useWorkspace();
   const navigate = useNavigate();
+  const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
 
   const handleLogout = () => {
@@ -127,6 +128,8 @@ const Sidebar = ({ isOpen, onClose }) => {
             {menuItems.map((item) => {
               const Icon = item.icon;
               const isDisabled = item.requiresWorkspace && !currentWorkspace;
+              const isActive =
+                item.path !== "#" && location.pathname === item.path;
 
               return (
                 <NavLink
@@ -137,7 +140,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                       e.preventDefault();
                     }
                   }}
-                  className={({ isActive }) =>
+                  className={() =>
                     `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${
                       isActive
                         ? "bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400"

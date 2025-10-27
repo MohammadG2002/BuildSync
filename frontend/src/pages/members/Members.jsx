@@ -47,8 +47,14 @@ const Members = () => {
     if (ws) {
       setWorkspace(ws);
     }
-    fetchMembers();
   }, [workspaceId, workspaces]);
+
+  useEffect(() => {
+    if (workspaceId) {
+      fetchMembers();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [workspaceId]);
 
   const fetchMembers = async () => {
     setLoading(true);

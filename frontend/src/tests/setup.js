@@ -22,14 +22,40 @@ Object.defineProperty(window, "matchMedia", {
   })),
 });
 
-// Mock localStorage
-const localStorageMock = {
-  getItem: vi.fn(),
-  setItem: vi.fn(),
-  removeItem: vi.fn(),
-  clear: vi.fn(),
-};
-global.localStorage = localStorageMock;
+// Mock localStorage with actual storage behavior
+class LocalStorageMock {
+  constructor() {
+    this.store = {};
+  }
+
+  clear() {
+    this.store = {};
+  }
+
+  getItem(key) {
+    return this.store[key] || null;
+  }
+
+  setItem(key, value) {
+    this.store[key] = String(value);
+  }
+
+  removeItem(key) {
+    delete this.store[key];
+  }
+
+  get length() {
+    return Object.keys(this.store).length;
+  }
+
+  key(index) {
+    const keys = Object.keys(this.store);
+    return keys[index] || null;
+  }
+}
+
+global.localStorage = new LocalStorageMock();
+global.window.localStorage = global.localStorage;
 
 // Mock IntersectionObserver
 global.IntersectionObserver = class IntersectionObserver {

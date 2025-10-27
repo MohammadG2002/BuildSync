@@ -38,9 +38,10 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange, onClick }) => {
 
   const statusColors = {
     todo: "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600",
-    in_progress: "bg-blue-100 text-blue-700 border-blue-300",
-    in_review: "bg-yellow-100 text-yellow-700 border-yellow-300",
-    done: "bg-green-100 text-green-700 border-green-300",
+    "in-progress": "bg-blue-100 text-blue-700 border-blue-300",
+    review: "bg-yellow-100 text-yellow-700 border-yellow-300",
+    completed: "bg-green-100 text-green-700 border-green-300",
+    blocked: "bg-red-100 text-red-700 border-red-300",
   };
 
   const priorityColors = {
@@ -67,10 +68,10 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange, onClick }) => {
         <div className="checkbox-wrapper pt-1">
           <input
             type="checkbox"
-            checked={task.status === "done"}
+            checked={task.status === "completed"}
             onChange={(e) => {
               e.stopPropagation();
-              onStatusChange?.(task, e.target.checked ? "done" : "todo");
+              onStatusChange?.(task, e.target.checked ? "completed" : "todo");
             }}
             className="w-5 h-5 text-primary-600 rounded border-gray-300 dark:border-gray-600 focus:ring-primary-500 cursor-pointer"
           />
@@ -81,7 +82,9 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange, onClick }) => {
           <div className="flex items-start justify-between mb-2">
             <h3
               className={`text-base font-semibold text-gray-900 dark:text-gray-100 ${
-                task.status === "done" ? "line-through text-gray-500 dark:text-gray-400 dark:text-gray-500" : ""
+                task.status === "completed"
+                  ? "line-through text-gray-500 dark:text-gray-400 dark:text-gray-500"
+                  : ""
               }`}
             >
               {task.title}
@@ -144,7 +147,7 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange, onClick }) => {
                 statusColors[task.status]
               }`}
             >
-              {task.status.replace("_", " ")}
+              {task.status.replace(/-/g, " ")}
             </span>
 
             {/* Priority */}

@@ -1,10 +1,11 @@
 import { renderHook, act } from "@testing-library/react";
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 describe("useLocalStorage Hook", () => {
   beforeEach(() => {
     localStorage.clear();
+    vi.clearAllMocks();
   });
 
   it("should initialize with default value", () => {
@@ -16,7 +17,8 @@ describe("useLocalStorage Hook", () => {
   });
 
   it("should initialize with value from localStorage if exists", () => {
-    localStorage.setItem("testKey", JSON.stringify("storedValue"));
+    // Manually set value before hook renders
+    window.localStorage.setItem("testKey", JSON.stringify("storedValue"));
 
     const { result } = renderHook(() =>
       useLocalStorage("testKey", "defaultValue")
@@ -26,17 +28,16 @@ describe("useLocalStorage Hook", () => {
   });
 
   it("should update localStorage when value changes", () => {
-    const { result } = renderHook(() => useLocalStorage("testKey", "initial"));
+    const { result } = renderHook(() =>
+      useLocalStorage("testKey", "defaultValue")
+    );
 
     act(() => {
-      result.current[1]("updated");
+      result.current[1]("newValue");
     });
 
-    expect(result.current[0]).toBe("updated");
-    expect(localStorage.setItem).toHaveBeenCalledWith(
-      "testKey",
-      JSON.stringify("updated")
-    );
+    expect(result.current[0]).toBe("newValue");
+    expect(localStorage.getItem("testKey")).toBe(JSON.stringify("newValue"));
   });
 
   it("should handle function updates", () => {
@@ -50,40 +51,62 @@ describe("useLocalStorage Hook", () => {
   });
 
   it("should handle complex objects", () => {
-    const complexObject = { name: "Test", items: [1, 2, 3] };
-    const { result } = renderHook(() => useLocalStorage("testKey", null));
+    const { result } = renderHook(() =>
+      useLocalStorage("testKey", { count: 0 })
+    );
 
     act(() => {
-      result.current[1](complexObject);
+      result.current[1]({ count: 5 });
     });
 
-    expect(result.current[0]).toEqual(complexObject);
+    expect(result.current[0]).toEqual({ count: 5 });
+    expect(localStorage.getItem("testKey")).toBe(JSON.stringify({ count: 5 }));
   });
 
   it("should remove item when set to null", () => {
-    const { result } = renderHook(() => useLocalStorage("testKey", "value"));
+    const { result } = renderHook(() =>
+      useLocalStorage("testKey", "defaultValue")
+    );
 
+    // Set a value first
+    act(() => {
+      result.current[1]("someValue");
+    });
+
+    expect(localStorage.getItem("testKey")).not.toBeNull();
+
+    // Now set to null
     act(() => {
       result.current[1](null);
     });
 
     expect(result.current[0]).toBeNull();
-    expect(localStorage.removeItem).toHaveBeenCalledWith("testKey");
+    expect(localStorage.getItem("testKey")).toBeNull();
   });
 
   it("should handle localStorage errors gracefully", () => {
-    // Simulate localStorage error
-    localStorage.setItem.mockImplementation(() => {
+    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    // Save original setItem
+    const originalSetItem = window.localStorage.setItem;
+
+    // Mock setItem to throw an error
+    window.localStorage.setItem = vi.fn(() => {
       throw new Error("Storage quota exceeded");
     });
 
-    const { result } = renderHook(() => useLocalStorage("testKey", "value"));
+    const { result } = renderHook(() =>
+      useLocalStorage("testKey", "defaultValue")
+    );
 
-    // Should not crash
     act(() => {
       result.current[1]("newValue");
     });
 
-    expect(result.current[0]).toBe("newValue");
+    expect(consoleSpy).toHaveBeenCalled();
+
+    // Restore
+    window.localStorage.setItem = originalSetItem;
+    consoleSpy.mockRestore();
   });
 });

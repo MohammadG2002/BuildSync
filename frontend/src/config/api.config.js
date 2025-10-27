@@ -27,41 +27,32 @@ export const API_ENDPOINTS = {
     GET: (id) => `/workspaces/${id}`,
     UPDATE: (id) => `/workspaces/${id}`,
     DELETE: (id) => `/workspaces/${id}`,
-    MEMBERS: (id) => `/workspaces/${id}/members`,
+    MEMBERS: (id) => `/members/workspace/${id}`,
     ADD_MEMBER: (id) => `/workspaces/${id}/members`,
     UPDATE_MEMBER: (workspaceId, memberId) =>
-      `/workspaces/${workspaceId}/members/${memberId}`,
+      `/members/workspace/${workspaceId}/${memberId}`,
     REMOVE_MEMBER: (workspaceId, memberId) =>
       `/workspaces/${workspaceId}/members/${memberId}`,
   },
 
   // Projects
   PROJECTS: {
-    LIST: (workspaceId) => `/workspaces/${workspaceId}/projects`,
-    CREATE: (workspaceId) => `/workspaces/${workspaceId}/projects`,
-    GET: (workspaceId, projectId) =>
-      `/workspaces/${workspaceId}/projects/${projectId}`,
-    UPDATE: (workspaceId, projectId) =>
-      `/workspaces/${workspaceId}/projects/${projectId}`,
-    DELETE: (workspaceId, projectId) =>
-      `/workspaces/${workspaceId}/projects/${projectId}`,
+    LIST: (workspaceId) => `/projects?workspace=${workspaceId}`,
+    CREATE: (workspaceId) => `/projects`,
+    GET: (workspaceId, projectId) => `/projects/${projectId}`,
+    UPDATE: (workspaceId, projectId) => `/projects/${projectId}`,
+    DELETE: (workspaceId, projectId) => `/projects/${projectId}`,
   },
 
   // Tasks
   TASKS: {
-    LIST: (workspaceId, projectId) =>
-      `/workspaces/${workspaceId}/projects/${projectId}/tasks`,
-    CREATE: (workspaceId, projectId) =>
-      `/workspaces/${workspaceId}/projects/${projectId}/tasks`,
-    GET: (workspaceId, projectId, taskId) =>
-      `/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}`,
-    UPDATE: (workspaceId, projectId, taskId) =>
-      `/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}`,
-    DELETE: (workspaceId, projectId, taskId) =>
-      `/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}`,
-    ARCHIVE: (workspaceId, projectId, taskId) =>
-      `/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}/archive`,
-    ARCHIVED: (workspaceId) => `/workspaces/${workspaceId}/tasks/archived`,
+    LIST: (workspaceId, projectId) => `/tasks?project=${projectId}`,
+    CREATE: (workspaceId, projectId) => `/tasks`,
+    GET: (workspaceId, projectId, taskId) => `/tasks/${taskId}`,
+    UPDATE: (workspaceId, projectId, taskId) => `/tasks/${taskId}`,
+    DELETE: (workspaceId, projectId, taskId) => `/tasks/${taskId}`,
+    ARCHIVE: (workspaceId, projectId, taskId) => `/tasks/${taskId}/archive`,
+    ARCHIVED: (workspaceId) => `/tasks/archived?workspace=${workspaceId}`,
   },
 
   // Chat
@@ -96,7 +87,9 @@ export const HTTP_STATUS = {
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,
   NOT_FOUND: 404,
+  VALIDATION_ERROR: 400,
   INTERNAL_SERVER_ERROR: 500,
+  SERVER_ERROR: 500,
 };
 
 // Error Messages
@@ -105,6 +98,7 @@ export const ERROR_MESSAGES = {
   UNAUTHORIZED: "Session expired. Please login again.",
   FORBIDDEN: "You do not have permission to perform this action.",
   NOT_FOUND: "Resource not found.",
+  VALIDATION_ERROR: "Please check your input and try again.",
   SERVER_ERROR: "Server error. Please try again later.",
-  UNKNOWN_ERROR: "An unexpected error occurred.",
+  UNKNOWN: "An unexpected error occurred.",
 };

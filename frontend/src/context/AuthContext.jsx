@@ -40,8 +40,9 @@ export const AuthProvider = ({ children }) => {
         // Production mode: call API
         const token = localStorage.getItem("token");
         if (token) {
-          const userData = await authService.getCurrentUser();
-          setUser(userData);
+          const response = await authService.getCurrentUser();
+          // Backend returns: { success: true, data: { user: {...} } }
+          setUser(response.data.user);
         }
       }
     } catch (error) {
@@ -63,8 +64,9 @@ export const AuthProvider = ({ children }) => {
       } else {
         // Production mode: call API
         const response = await authService.login(credentials);
-        localStorage.setItem("token", response.token);
-        setUser(response.user);
+        // Backend returns: { success: true, data: { user: {...}, token: "..." } }
+        localStorage.setItem("token", response.data.token);
+        setUser(response.data.user);
         toast.success("Welcome back!");
         navigate("/app/dashboard");
       }
@@ -93,8 +95,9 @@ export const AuthProvider = ({ children }) => {
       } else {
         // Production mode: call API
         const response = await authService.register(userData);
-        localStorage.setItem("token", response.token);
-        setUser(response.user);
+        // Backend returns: { success: true, data: { user: {...}, token: "..." } }
+        localStorage.setItem("token", response.data.token);
+        setUser(response.data.user);
         toast.success("Account created successfully!");
         navigate("/app/dashboard");
       }

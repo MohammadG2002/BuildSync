@@ -6,9 +6,10 @@ export const USER_ROLES = {
 
 export const TASK_STATUS = {
   TODO: "todo",
-  IN_PROGRESS: "in_progress",
-  IN_REVIEW: "in_review",
-  DONE: "done",
+  IN_PROGRESS: "in-progress",
+  REVIEW: "review",
+  COMPLETED: "completed",
+  BLOCKED: "blocked",
 };
 
 export const TASK_PRIORITY = {
@@ -19,8 +20,9 @@ export const TASK_PRIORITY = {
 };
 
 export const PROJECT_STATUS = {
+  PLANNING: "planning",
   ACTIVE: "active",
-  ON_HOLD: "on_hold",
+  ON_HOLD: "on-hold",
   COMPLETED: "completed",
   ARCHIVED: "archived",
 };

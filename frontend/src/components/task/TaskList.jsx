@@ -49,7 +49,7 @@ const TaskList = ({
           <div className="space-y-3">
             {groupTasks.map((task) => (
               <TaskCard
-                key={task.id}
+                key={task._id}
                 task={task}
                 onEdit={onEditTask}
                 onDelete={onDeleteTask}

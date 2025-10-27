@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "../config/api.config";
+import { API_CONFIG } from "../config/api.config";
 
 class WebSocketService {
   constructor() {
@@ -22,7 +22,8 @@ class WebSocketService {
     }
 
     this.isConnecting = true;
-    const wsUrl = API_BASE_URL.replace(/^http/, "ws") + "/ws";
+    const wsUrl =
+      API_CONFIG.BASE_URL.replace(/^http/, "ws").replace(/\/api$/, "") + "/ws";
 
     try {
       this.ws = new WebSocket(`${wsUrl}?token=${token}`);

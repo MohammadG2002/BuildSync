@@ -18,7 +18,13 @@ export const useLocalStorage = (key, initialValue) => {
       const valueToStore =
         value instanceof Function ? value(storedValue) : value;
       setStoredValue(valueToStore);
-      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+
+      // Handle null to remove item
+      if (valueToStore === null) {
+        window.localStorage.removeItem(key);
+      } else {
+        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      }
     } catch (error) {
       console.error(error);
     }

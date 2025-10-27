@@ -51,36 +51,8 @@ const WorkspaceDetails = () => {
       setProjects(data);
     } catch (error) {
       console.error("Error fetching projects:", error);
-      // Mock data for development
-      setProjects([
-        {
-          id: "1",
-          name: "Website Redesign",
-          description: "Complete overhaul of company website",
-          status: "active",
-          totalTasks: 24,
-          completedTasks: 12,
-          memberCount: 5,
-        },
-        {
-          id: "2",
-          name: "Mobile App Development",
-          description: "Build iOS and Android applications",
-          status: "in_progress",
-          totalTasks: 45,
-          completedTasks: 15,
-          memberCount: 8,
-        },
-        {
-          id: "3",
-          name: "Marketing Campaign",
-          description: "Q4 marketing campaign planning and execution",
-          status: "active",
-          totalTasks: 18,
-          completedTasks: 18,
-          memberCount: 3,
-        },
-      ]);
+      toast.error("Failed to fetch projects");
+      setProjects([]);
     } finally {
       setLoading(false);
     }
@@ -98,17 +70,7 @@ const WorkspaceDetails = () => {
       toast.success("Project created successfully!");
     } catch (error) {
       console.error("Error creating project:", error);
-      // Mock success for development
-      const mockProject = {
-        id: Date.now().toString(),
-        ...formData,
-        totalTasks: 0,
-        completedTasks: 0,
-        memberCount: 1,
-      };
-      setProjects([...projects, mockProject]);
-      setShowCreateModal(false);
-      toast.success("Project created successfully!");
+      toast.error("Failed to create project");
     } finally {
       setSubmitting(false);
     }
@@ -135,15 +97,7 @@ const WorkspaceDetails = () => {
       toast.success("Project updated successfully!");
     } catch (error) {
       console.error("Error updating project:", error);
-      // Mock success for development
-      setProjects(
-        projects.map((p) =>
-          p.id === selectedProject.id ? { ...p, ...formData } : p
-        )
-      );
-      setShowEditModal(false);
-      setSelectedProject(null);
-      toast.success("Project updated successfully!");
+      toast.error("Failed to update project");
     } finally {
       setSubmitting(false);
     }
@@ -164,11 +118,7 @@ const WorkspaceDetails = () => {
       toast.success("Project deleted successfully!");
     } catch (error) {
       console.error("Error deleting project:", error);
-      // Mock success for development
-      setProjects(projects.filter((p) => p.id !== selectedProject.id));
-      setShowDeleteModal(false);
-      setSelectedProject(null);
-      toast.success("Project deleted successfully!");
+      toast.error("Failed to delete project");
     } finally {
       setSubmitting(false);
     }
@@ -240,7 +190,9 @@ const WorkspaceDetails = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">Total Projects</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">
+                Total Projects
+              </p>
               <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">
                 {projects.length}
               </p>
@@ -253,7 +205,9 @@ const WorkspaceDetails = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">Active Projects</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">
+                Active Projects
+              </p>
               <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">
                 {projects.filter((p) => p.status === "active").length}
               </p>
@@ -266,7 +220,9 @@ const WorkspaceDetails = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">Team Members</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">
+                Team Members
+              </p>
               <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">
                 {workspace?.memberCount || 0}
               </p>
@@ -281,7 +237,9 @@ const WorkspaceDetails = () => {
       {/* Projects Section */}
       <div>
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Projects</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+            Projects
+          </h2>
           <Button
             variant="primary"
             onClick={() => setShowCreateModal(true)}

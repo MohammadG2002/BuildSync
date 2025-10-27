@@ -18,6 +18,7 @@ import Modal from "../../components/common/Modal";
 import { SkeletonStats, SkeletonList } from "../../components/common/Loader";
 import TaskList from "../../components/task/TaskList";
 import TaskForm from "../../components/task/TaskForm";
+import TaskDetailsModal from "../../components/task/TaskDetailsModal";
 import toast from "react-hot-toast";
 
 const ProjectDetails = () => {
@@ -34,15 +35,11 @@ const ProjectDetails = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
-  // Mock members for assignee dropdown
-  const mockMembers = [
-    { id: "1", name: "John Doe" },
-    { id: "2", name: "Jane Smith" },
-    { id: "3", name: "Bob Johnson" },
-  ];
+  const [members, setMembers] = useState([]);
 
   useEffect(() => {
     fetchProjectAndTasks();
@@ -51,68 +48,23 @@ const ProjectDetails = () => {
   const fetchProjectAndTasks = async () => {
     setLoading(true);
     try {
-      // Mock data for development
-      setProject({
-        id: projectId,
-        name: "Website Redesign",
-        description: "Complete overhaul of company website",
-        status: "active",
-      });
+      const projectData = await projectService.getProjectById(
+        workspaceId,
+        projectId
+      );
+      setProject(projectData);
 
-      setTasks([
-        {
-          id: "1",
-          title: "Design homepage mockup",
-          description: "Create new homepage design in Figma",
-          status: "done",
-          priority: "high",
-          assignee: { id: "1", name: "John Doe", avatar: null },
-          assigneeId: "1",
-          dueDate: "2024-11-15",
-        },
-        {
-          id: "2",
-          title: "Implement responsive navigation",
-          description: "Build mobile-friendly navigation component",
-          status: "in_progress",
-          priority: "medium",
-          assignee: { id: "2", name: "Jane Smith", avatar: null },
-          assigneeId: "2",
-          dueDate: "2024-11-20",
-        },
-        {
-          id: "3",
-          title: "Set up backend API",
-          description: "Create REST API endpoints for content management",
-          status: "todo",
-          priority: "urgent",
-          assignee: { id: "3", name: "Bob Johnson", avatar: null },
-          assigneeId: "3",
-          dueDate: "2024-11-25",
-        },
-        {
-          id: "4",
-          title: "Write unit tests",
-          description: "Add test coverage for new components",
-          status: "todo",
-          priority: "low",
-          assignee: null,
-          assigneeId: "",
-          dueDate: "2024-11-30",
-        },
-        {
-          id: "5",
-          title: "Code review and refactoring",
-          description: "Review existing code and refactor where needed",
-          status: "in_review",
-          priority: "medium",
-          assignee: { id: "1", name: "John Doe", avatar: null },
-          assigneeId: "1",
-          dueDate: "2024-11-18",
-        },
-      ]);
+      const tasksData = await taskService.getTasks(workspaceId, projectId);
+      setTasks(tasksData);
+
+      // Fetch workspace members for assignee dropdown
+      // TODO: Implement memberService.getWorkspaceMembers(workspaceId)
+      setMembers([]);
     } catch (error) {
       console.error("Error fetching project details:", error);
+      toast.error("Failed to fetch project details");
+      setProject(null);
+      setTasks([]);
     } finally {
       setLoading(false);
     }
@@ -121,13 +73,11 @@ const ProjectDetails = () => {
   const handleCreateTask = async (formData) => {
     setSubmitting(true);
     try {
-      // Mock success
-      const assignee = mockMembers.find((m) => m.id === formData.assigneeId);
-      const newTask = {
-        id: Date.now().toString(),
-        ...formData,
-        assignee: assignee || null,
-      };
+      const newTask = await taskService.createTask(
+        workspaceId,
+        projectId,
+        formData
+      );
       setTasks([...tasks, newTask]);
       setShowCreateModal(false);
       toast.success("Task created successfully!");
@@ -147,13 +97,15 @@ const ProjectDetails = () => {
   const handleUpdateTask = async (formData) => {
     setSubmitting(true);
     try {
-      const assignee = mockMembers.find((m) => m.id === formData.assigneeId);
-      const updatedTask = {
-        ...selectedTask,
-        ...formData,
-        assignee: assignee || null,
-      };
-      setTasks(tasks.map((t) => (t.id === selectedTask.id ? updatedTask : t)));
+      const updatedTask = await taskService.updateTask(
+        workspaceId,
+        projectId,
+        selectedTask._id,
+        formData
+      );
+      setTasks(
+        tasks.map((t) => (t._id === selectedTask._id ? updatedTask : t))
+      );
       setShowEditModal(false);
       setSelectedTask(null);
       toast.success("Task updated successfully!");
@@ -173,7 +125,8 @@ const ProjectDetails = () => {
   const handleDeleteTask = async () => {
     setSubmitting(true);
     try {
-      setTasks(tasks.filter((t) => t.id !== selectedTask.id));
+      await taskService.deleteTask(workspaceId, projectId, selectedTask._id);
+      setTasks(tasks.filter((t) => t._id !== selectedTask._id));
       setShowDeleteModal(false);
       setSelectedTask(null);
       toast.success("Task deleted successfully!");
@@ -187,18 +140,90 @@ const ProjectDetails = () => {
 
   const handleStatusChange = async (task, newStatus) => {
     try {
-      const updatedTask = { ...task, status: newStatus };
-      setTasks(tasks.map((t) => (t.id === task.id ? updatedTask : t)));
-      toast.success(`Task marked as ${newStatus.replace("_", " ")}`);
+      const updatedTask = await taskService.updateTask(
+        workspaceId,
+        projectId,
+        task._id,
+        { status: newStatus }
+      );
+      setTasks(tasks.map((t) => (t._id === task._id ? updatedTask : t)));
+      toast.success(`Task marked as ${newStatus.replace(/-/g, " ")}`);
     } catch (error) {
       console.error("Error updating task status:", error);
       toast.error("Failed to update task status");
     }
   };
 
-  const handleTaskClick = (task) => {
-    // Could navigate to task details or open a modal
-    console.log("Task clicked:", task);
+  const handleTaskClick = async (task) => {
+    try {
+      // Fetch full task details with populated fields
+      const fullTask = await taskService.getTaskById(
+        workspaceId,
+        projectId,
+        task._id
+      );
+      setSelectedTask(fullTask);
+      setShowDetailsModal(true);
+    } catch (error) {
+      console.error("Error fetching task details:", error);
+      // Fall back to showing the task we have
+      setSelectedTask(task);
+      setShowDetailsModal(true);
+    }
+  };
+
+  const handleTaskDetailsUpdate = async (updatedTaskData) => {
+    try {
+      const updatedTask = await taskService.updateTask(
+        workspaceId,
+        projectId,
+        updatedTaskData._id,
+        updatedTaskData
+      );
+      setTasks(
+        tasks.map((t) => (t._id === updatedTaskData._id ? updatedTask : t))
+      );
+      setSelectedTask(updatedTask);
+      toast.success("Task updated successfully!");
+    } catch (error) {
+      console.error("Error updating task:", error);
+      toast.error("Failed to update task");
+    }
+  };
+
+  const handleAddComment = async (taskId, commentContent) => {
+    try {
+      const updatedTask = await taskService.addComment(
+        workspaceId,
+        projectId,
+        taskId,
+        commentContent
+      );
+      setTasks(tasks.map((t) => (t._id === taskId ? updatedTask : t)));
+      setSelectedTask(updatedTask);
+      toast.success("Comment added successfully!");
+    } catch (error) {
+      console.error("Error adding comment:", error);
+      toast.error("Failed to add comment");
+      throw error;
+    }
+  };
+
+  const handleDeleteAttachment = async (taskId, attachmentId) => {
+    try {
+      const updatedTask = await taskService.deleteAttachment(
+        workspaceId,
+        projectId,
+        taskId,
+        attachmentId
+      );
+      setTasks(tasks.map((t) => (t._id === taskId ? updatedTask : t)));
+      setSelectedTask(updatedTask);
+      toast.success("Attachment deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting attachment:", error);
+      toast.error("Failed to delete attachment");
+    }
   };
 
   const filteredTasks =
@@ -209,9 +234,9 @@ const ProjectDetails = () => {
   const taskStats = {
     total: tasks.length,
     todo: tasks.filter((t) => t.status === "todo").length,
-    inProgress: tasks.filter((t) => t.status === "in_progress").length,
-    inReview: tasks.filter((t) => t.status === "in_review").length,
-    done: tasks.filter((t) => t.status === "done").length,
+    inProgress: tasks.filter((t) => t.status === "in-progress").length,
+    inReview: tasks.filter((t) => t.status === "review").length,
+    done: tasks.filter((t) => t.status === "completed").length,
   };
 
   return (
@@ -404,7 +429,7 @@ const ProjectDetails = () => {
           onSubmit={handleCreateTask}
           onCancel={() => setShowCreateModal(false)}
           loading={submitting}
-          members={mockMembers}
+          members={members}
         />
       </Modal>
 
@@ -425,7 +450,7 @@ const ProjectDetails = () => {
             setSelectedTask(null);
           }}
           loading={submitting}
-          members={mockMembers}
+          members={members}
         />
       </Modal>
 
@@ -465,6 +490,20 @@ const ProjectDetails = () => {
           </div>
         </div>
       </Modal>
+
+      {/* Task Details Modal */}
+      {showDetailsModal && selectedTask && (
+        <TaskDetailsModal
+          task={selectedTask}
+          onClose={() => {
+            setShowDetailsModal(false);
+            setSelectedTask(null);
+          }}
+          onUpdate={handleTaskDetailsUpdate}
+          onAddComment={handleAddComment}
+          onDeleteAttachment={handleDeleteAttachment}
+        />
+      )}
     </div>
   );
 };

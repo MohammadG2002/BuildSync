@@ -47,6 +47,15 @@ class APIClient {
       throw new Error(ERROR_MESSAGES.NETWORK_ERROR);
     }
 
+    // Log error for debugging
+    console.error("API Error:", {
+      status: response.status,
+      error: error,
+      message: error.message,
+      errors: error.errors,
+      fullError: JSON.stringify(error, null, 2),
+    });
+
     // Handle specific HTTP status codes
     switch (response.status) {
       case HTTP_STATUS.UNAUTHORIZED:
@@ -57,16 +66,24 @@ class APIClient {
         throw new Error(ERROR_MESSAGES.UNAUTHORIZED);
 
       case HTTP_STATUS.FORBIDDEN:
-        throw new Error(ERROR_MESSAGES.FORBIDDEN);
+        throw new Error(error.message || ERROR_MESSAGES.FORBIDDEN);
 
       case HTTP_STATUS.NOT_FOUND:
-        throw new Error(ERROR_MESSAGES.NOT_FOUND);
+        throw new Error(error.message || ERROR_MESSAGES.NOT_FOUND);
 
+      case HTTP_STATUS.BAD_REQUEST:
       case HTTP_STATUS.VALIDATION_ERROR:
+        // Show validation errors if available
+        if (error.errors && Array.isArray(error.errors)) {
+          const errorMsg = error.errors.map((e) => e.message).join(", ");
+          throw new Error(
+            errorMsg || error.message || ERROR_MESSAGES.VALIDATION_ERROR
+          );
+        }
         throw new Error(error.message || ERROR_MESSAGES.VALIDATION_ERROR);
 
       case HTTP_STATUS.SERVER_ERROR:
-        throw new Error(ERROR_MESSAGES.SERVER_ERROR);
+        throw new Error(error.message || ERROR_MESSAGES.SERVER_ERROR);
 
       default:
         throw new Error(error.message || ERROR_MESSAGES.UNKNOWN);
