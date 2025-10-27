@@ -45,9 +45,9 @@ const LandingPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-gray-800">
       {/* Navigation */}
-      <nav className="border-b border-gray-200">
+      <nav className="border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
@@ -70,11 +70,11 @@ const LandingPage = () => {
       {/* Hero Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary-50 to-blue-100">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-gray-100 mb-6">
             Manage Projects with
             <span className="text-primary-600"> Ease</span>
           </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-8 max-w-3xl mx-auto">
             The all-in-one project management platform that helps teams
             collaborate, organize, and deliver projects faster than ever before.
           </p>
@@ -96,10 +96,10 @@ const LandingPage = () => {
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
               Everything you need to succeed
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-xl text-gray-600 dark:text-gray-400 dark:text-gray-500">
               Powerful features to help your team work better together
             </p>
           </div>
@@ -110,15 +110,15 @@ const LandingPage = () => {
               return (
                 <div
                   key={index}
-                  className="bg-white p-6 rounded-lg border border-gray-200 hover:shadow-lg transition-shadow"
+                  className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow"
                 >
                   <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4">
                     <Icon className="w-6 h-6 text-primary-600" />
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
                     {feature.title}
                   </h3>
-                  <p className="text-gray-600">{feature.description}</p>
+                  <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">{feature.description}</p>
                 </div>
               );
             })}
@@ -127,14 +127,14 @@ const LandingPage = () => {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">
+              <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-6">
                 Why teams choose {import.meta.env.VITE_APP_NAME || "ProjectHub"}
               </h2>
-              <p className="text-lg text-gray-600 mb-8">
+              <p className="text-lg text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-8">
                 Join thousands of teams who have transformed their project
                 management workflow with our intuitive platform.
               </p>
@@ -142,24 +142,24 @@ const LandingPage = () => {
                 {benefits.map((benefit, index) => (
                   <div key={index} className="flex items-start gap-3">
                     <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">{benefit}</span>
+                    <span className="text-gray-700 dark:text-gray-300">{benefit}</span>
                   </div>
                 ))}
               </div>
             </div>
             <div className="bg-gradient-to-br from-primary-100 to-blue-100 rounded-2xl p-8 lg:p-12">
-              <div className="bg-white rounded-lg shadow-xl p-6">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 bg-primary-600 rounded-full"></div>
                   <div>
-                    <div className="h-4 bg-gray-200 rounded w-32 mb-2"></div>
-                    <div className="h-3 bg-gray-100 rounded w-24"></div>
+                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-32 mb-2"></div>
+                    <div className="h-3 bg-gray-100 dark:bg-gray-800 rounded w-24"></div>
                   </div>
                 </div>
                 <div className="space-y-3">
-                  <div className="h-3 bg-gray-100 rounded"></div>
-                  <div className="h-3 bg-gray-100 rounded w-5/6"></div>
-                  <div className="h-3 bg-gray-100 rounded w-4/6"></div>
+                  <div className="h-3 bg-gray-100 dark:bg-gray-800 rounded"></div>
+                  <div className="h-3 bg-gray-100 dark:bg-gray-800 rounded w-5/6"></div>
+                  <div className="h-3 bg-gray-100 dark:bg-gray-800 rounded w-4/6"></div>
                 </div>
               </div>
             </div>
@@ -188,7 +188,7 @@ const LandingPage = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-gray-400 py-12 px-4 sm:px-6 lg:px-8">
+      <footer className="bg-gray-900 text-gray-400 dark:text-gray-500 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
           <p className="text-sm">
             © 2024 {import.meta.env.VITE_APP_NAME || "ProjectHub"}. All rights

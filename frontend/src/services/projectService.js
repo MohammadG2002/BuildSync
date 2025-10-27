@@ -1,56 +1,31 @@
-import api from "./api";
+import apiClient, { API_ENDPOINTS } from "./apiClient";
 
 export const getProjects = async (workspaceId) => {
-  try {
-    const response = await api.get(`/workspaces/${workspaceId}/projects`);
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.get(API_ENDPOINTS.PROJECT.LIST(workspaceId));
 };
 
 export const getProjectById = async (workspaceId, projectId) => {
-  try {
-    const response = await api.get(
-      `/workspaces/${workspaceId}/projects/${projectId}`
-    );
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.get(
+    API_ENDPOINTS.PROJECT.DETAIL(workspaceId, projectId)
+  );
 };
 
 export const createProject = async (workspaceId, projectData) => {
-  try {
-    const response = await api.post(
-      `/workspaces/${workspaceId}/projects`,
-      projectData
-    );
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.post(
+    API_ENDPOINTS.PROJECT.CREATE(workspaceId),
+    projectData
+  );
 };
 
 export const updateProject = async (workspaceId, projectId, projectData) => {
-  try {
-    const response = await api.put(
-      `/workspaces/${workspaceId}/projects/${projectId}`,
-      projectData
-    );
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.put(
+    API_ENDPOINTS.PROJECT.UPDATE(workspaceId, projectId),
+    projectData
+  );
 };
 
 export const deleteProject = async (workspaceId, projectId) => {
-  try {
-    const response = await api.delete(
-      `/workspaces/${workspaceId}/projects/${projectId}`
-    );
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.delete(
+    API_ENDPOINTS.PROJECT.DELETE(workspaceId, projectId)
+  );
 };

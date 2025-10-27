@@ -183,7 +183,7 @@ const WorkspaceDetails = () => {
     return (
       <div className="space-y-6">
         <Card className="text-center py-12">
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
             Workspace not found
           </h3>
           <Button variant="primary" onClick={() => navigate("/app/workspaces")}>
@@ -207,10 +207,10 @@ const WorkspaceDetails = () => {
             <ArrowLeft className="w-5 h-5" />
           </Button>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
               {workspace?.name || "Loading..."}
             </h1>
-            <p className="text-gray-600 mt-1">
+            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-1">
               {workspace?.description || "Manage projects and team"}
             </p>
           </div>
@@ -240,8 +240,8 @@ const WorkspaceDetails = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 mb-1">Total Projects</p>
-              <p className="text-3xl font-bold text-gray-900">
+              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">Total Projects</p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">
                 {projects.length}
               </p>
             </div>
@@ -253,8 +253,8 @@ const WorkspaceDetails = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 mb-1">Active Projects</p>
-              <p className="text-3xl font-bold text-gray-900">
+              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">Active Projects</p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">
                 {projects.filter((p) => p.status === "active").length}
               </p>
             </div>
@@ -266,8 +266,8 @@ const WorkspaceDetails = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 mb-1">Team Members</p>
-              <p className="text-3xl font-bold text-gray-900">
+              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">Team Members</p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">
                 {workspace?.memberCount || 0}
               </p>
             </div>
@@ -281,7 +281,7 @@ const WorkspaceDetails = () => {
       {/* Projects Section */}
       <div>
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">Projects</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Projects</h2>
           <Button
             variant="primary"
             onClick={() => setShowCreateModal(true)}
@@ -296,7 +296,7 @@ const WorkspaceDetails = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map((i) => (
               <Card key={i} className="animate-pulse">
-                <div className="h-48 bg-gray-200 rounded"></div>
+                <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded"></div>
               </Card>
             ))}
           </div>
@@ -314,13 +314,13 @@ const WorkspaceDetails = () => {
           </div>
         ) : (
           <Card className="text-center py-12">
-            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <FolderKanban className="w-8 h-8 text-gray-400" />
+            <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+              <FolderKanban className="w-8 h-8 text-gray-400 dark:text-gray-500" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
               No projects yet
             </h3>
-            <p className="text-gray-600 mb-4">
+            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-4">
               Create your first project to start managing tasks
             </p>
             <Button
@@ -379,7 +379,7 @@ const WorkspaceDetails = () => {
         size="sm"
       >
         <div className="space-y-4">
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">
             Are you sure you want to delete{" "}
             <strong>{selectedProject?.name}</strong>? This action cannot be
             undone and will delete all tasks within this project.

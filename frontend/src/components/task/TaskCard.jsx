@@ -37,14 +37,14 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange, onClick }) => {
   };
 
   const statusColors = {
-    todo: "bg-gray-100 text-gray-700 border-gray-300",
+    todo: "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600",
     in_progress: "bg-blue-100 text-blue-700 border-blue-300",
     in_review: "bg-yellow-100 text-yellow-700 border-yellow-300",
     done: "bg-green-100 text-green-700 border-green-300",
   };
 
   const priorityColors = {
-    low: "text-gray-600",
+    low: "text-gray-600 dark:text-gray-400 dark:text-gray-500",
     medium: "text-blue-600",
     high: "text-orange-600",
     urgent: "text-red-600",
@@ -59,7 +59,7 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange, onClick }) => {
 
   return (
     <div
-      className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow cursor-pointer"
+      className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md transition-shadow cursor-pointer"
       onClick={handleClick}
     >
       <div className="flex items-start gap-3">
@@ -72,7 +72,7 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange, onClick }) => {
               e.stopPropagation();
               onStatusChange?.(task, e.target.checked ? "done" : "todo");
             }}
-            className="w-5 h-5 text-primary-600 rounded border-gray-300 focus:ring-primary-500 cursor-pointer"
+            className="w-5 h-5 text-primary-600 rounded border-gray-300 dark:border-gray-600 focus:ring-primary-500 cursor-pointer"
           />
         </div>
 
@@ -80,8 +80,8 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange, onClick }) => {
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between mb-2">
             <h3
-              className={`text-base font-semibold text-gray-900 ${
-                task.status === "done" ? "line-through text-gray-500" : ""
+              className={`text-base font-semibold text-gray-900 dark:text-gray-100 ${
+                task.status === "done" ? "line-through text-gray-500 dark:text-gray-400 dark:text-gray-500" : ""
               }`}
             >
               {task.title}
@@ -90,25 +90,25 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange, onClick }) => {
             {/* Menu Button */}
             <div className="relative" ref={menuRef}>
               <button
-                className="menu-button p-1 rounded hover:bg-gray-100 transition-colors"
+                className="menu-button p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 dark:bg-gray-800 transition-colors"
                 onClick={(e) => {
                   e.stopPropagation();
                   setShowMenu(!showMenu);
                 }}
               >
-                <MoreVertical className="w-4 h-4 text-gray-600" />
+                <MoreVertical className="w-4 h-4 text-gray-600 dark:text-gray-400 dark:text-gray-500" />
               </button>
 
               {/* Dropdown Menu */}
               {showMenu && (
-                <div className="menu-dropdown absolute top-full right-0 mt-1 w-40 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-10">
+                <div className="menu-dropdown absolute top-full right-0 mt-1 w-40 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-10">
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       onEdit(task);
                       setShowMenu(false);
                     }}
-                    className="w-full text-left px-3 py-2 hover:bg-gray-50 transition-colors flex items-center gap-2 text-sm"
+                    className="w-full text-left px-3 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-900 transition-colors flex items-center gap-2 text-sm"
                   >
                     <Edit className="w-4 h-4" />
                     <span>Edit</span>
@@ -131,7 +131,7 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange, onClick }) => {
 
           {/* Description */}
           {task.description && (
-            <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+            <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-3 line-clamp-2">
               {task.description}
             </p>
           )}
@@ -172,7 +172,7 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange, onClick }) => {
                 >
                   {getInitials(task.assignee.name)}
                 </div>
-                <span className="text-xs text-gray-600">
+                <span className="text-xs text-gray-600 dark:text-gray-400 dark:text-gray-500">
                   {task.assignee.name}
                 </span>
               </div>
@@ -180,7 +180,7 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange, onClick }) => {
 
             {/* Due Date */}
             {task.dueDate && (
-              <div className="flex items-center gap-1 text-xs text-gray-600">
+              <div className="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400 dark:text-gray-500">
                 <Calendar className="w-3 h-3" />
                 <span>{formatDate(task.dueDate)}</span>
               </div>

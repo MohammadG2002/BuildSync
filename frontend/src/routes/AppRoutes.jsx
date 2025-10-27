@@ -1,25 +1,30 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import { lazy, Suspense } from "react";
 
-// Layout
+// Layout (not lazy-loaded as it's needed immediately)
 import DashboardLayout from "../components/layout/DashboardLayout";
+import Loader from "../components/common/Loader";
 
-// Public Pages
-import LandingPage from "../pages/landing/LandingPage";
-import Login from "../pages/auth/Login";
-import Register from "../pages/auth/Register";
-import ForgotPassword from "../pages/auth/ForgotPassword";
-
-// Protected Pages
-import Dashboard from "../pages/dashboard/Dashboard";
-import Workspaces from "../pages/workspaces/Workspaces";
-import WorkspaceDetails from "../pages/workspaces/WorkspaceDetails";
-import ProjectDetails from "../pages/projects/ProjectDetails";
-import Members from "../pages/members/Members";
-import Settings from "../pages/settings/Settings";
-import Chat from "../pages/chat/Chat";
-import Archived from "../pages/archived/Archived";
-import Profile from "../pages/profile/Profile";
-import NotFound from "../pages/NotFound";
+// Lazy load all page components for code splitting
+const LandingPage = lazy(() => import("../pages/landing/LandingPage"));
+const Login = lazy(() => import("../pages/auth/Login"));
+const Register = lazy(() => import("../pages/auth/Register"));
+const ForgotPassword = lazy(() => import("../pages/auth/ForgotPassword"));
+const Dashboard = lazy(() => import("../pages/dashboard/Dashboard"));
+const Workspaces = lazy(() => import("../pages/workspaces/Workspaces"));
+const WorkspaceDetails = lazy(() =>
+  import("../pages/workspaces/WorkspaceDetails")
+);
+const ProjectDetails = lazy(() => import("../pages/projects/ProjectDetails"));
+const Members = lazy(() => import("../pages/members/Members"));
+const Settings = lazy(() => import("../pages/settings/Settings"));
+const Chat = lazy(() => import("../pages/chat/Chat"));
+const Archived = lazy(() => import("../pages/archived/Archived"));
+const Profile = lazy(() => import("../pages/profile/Profile"));
+const Notifications = lazy(() =>
+  import("../pages/notifications/Notifications")
+);
+const NotFound = lazy(() => import("../pages/NotFound"));
 
 // Route Guards
 import PrivateRoute from "./PrivateRoute";
@@ -27,68 +32,77 @@ import PublicRoute from "./PublicRoute";
 
 const AppRoutes = () => {
   return (
-    <Routes>
-      {/* Public Routes */}
-      <Route
-        path="/"
-        element={
-          <PublicRoute>
-            <LandingPage />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/login"
-        element={
-          <PublicRoute>
-            <Login />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/register"
-        element={
-          <PublicRoute>
-            <Register />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/forgot-password"
-        element={
-          <PublicRoute>
-            <ForgotPassword />
-          </PublicRoute>
-        }
-      />
-
-      {/* Protected Routes with Layout */}
-      <Route
-        path="/app"
-        element={
-          <PrivateRoute>
-            <DashboardLayout />
-          </PrivateRoute>
-        }
-      >
-        <Route index element={<Navigate to="/app/dashboard" replace />} />
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="workspaces" element={<Workspaces />} />
-        <Route path="workspaces/:workspaceId" element={<WorkspaceDetails />} />
+    <Suspense fallback={<Loader />}>
+      <Routes>
+        {/* Public Routes */}
         <Route
-          path="workspaces/:workspaceId/projects/:projectId"
-          element={<ProjectDetails />}
+          path="/"
+          element={
+            <PublicRoute>
+              <LandingPage />
+            </PublicRoute>
+          }
         />
-        <Route path="workspaces/:workspaceId/members" element={<Members />} />
-        <Route path="workspaces/:workspaceId/settings" element={<Settings />} />
-        <Route path="chat" element={<Chat />} />
-        <Route path="archived" element={<Archived />} />
-        <Route path="profile" element={<Profile />} />
-      </Route>
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <PublicRoute>
+              <Register />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/forgot-password"
+          element={
+            <PublicRoute>
+              <ForgotPassword />
+            </PublicRoute>
+          }
+        />
 
-      {/* 404 */}
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+        {/* Protected Routes with Layout */}
+        <Route
+          path="/app"
+          element={
+            <PrivateRoute>
+              <DashboardLayout />
+            </PrivateRoute>
+          }
+        >
+          <Route index element={<Navigate to="/app/dashboard" replace />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="workspaces" element={<Workspaces />} />
+          <Route
+            path="workspaces/:workspaceId"
+            element={<WorkspaceDetails />}
+          />
+          <Route
+            path="workspaces/:workspaceId/projects/:projectId"
+            element={<ProjectDetails />}
+          />
+          <Route path="workspaces/:workspaceId/members" element={<Members />} />
+          <Route
+            path="workspaces/:workspaceId/settings"
+            element={<Settings />}
+          />
+          <Route path="chat" element={<Chat />} />
+          <Route path="archived" element={<Archived />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="notifications" element={<Notifications />} />
+        </Route>
+
+        {/* 404 */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
   );
 };
 

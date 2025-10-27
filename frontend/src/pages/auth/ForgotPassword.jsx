@@ -44,17 +44,17 @@ const ForgotPassword = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-blue-100 px-4">
         <div className="w-full max-w-md">
-          <div className="bg-white rounded-lg shadow-xl p-8 text-center">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8 text-center">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Mail className="w-8 h-8 text-green-600" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">
               Check your email
             </h2>
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-6">
               We've sent a password reset link to <strong>{email}</strong>
             </p>
-            <p className="text-sm text-gray-500 mb-6">
+            <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500 mb-6">
               Didn't receive the email? Check your spam folder or try again.
             </p>
             <div className="space-y-3">
@@ -85,16 +85,16 @@ const ForgotPassword = () => {
           <h1 className="text-4xl font-bold text-primary-600 mb-2">
             {import.meta.env.VITE_APP_NAME || "ProjectHub"}
           </h1>
-          <p className="text-gray-600">Reset your password</p>
+          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">Reset your password</p>
         </div>
 
         {/* Forgot Password Form */}
-        <div className="bg-white rounded-lg shadow-xl p-8">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8">
           <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">
               Forgot your password?
             </h2>
-            <p className="text-gray-600 text-sm">
+            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 text-sm">
               Enter your email address and we'll send you a link to reset your
               password.
             </p>
@@ -130,7 +130,7 @@ const ForgotPassword = () => {
           <div className="mt-6">
             <Link
               to="/login"
-              className="flex items-center justify-center gap-2 text-gray-600 hover:text-gray-800 text-sm"
+              className="flex items-center justify-center gap-2 text-gray-600 dark:text-gray-400 dark:text-gray-500 hover:text-gray-800 dark:text-gray-100 text-sm"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to login

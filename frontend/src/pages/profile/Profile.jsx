@@ -169,8 +169,8 @@ const Profile = () => {
           <ArrowLeft className="w-5 h-5" />
         </Button>
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Profile Settings</h1>
-          <p className="text-gray-600 mt-1">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Profile Settings</h1>
+          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-1">
             Manage your account settings and preferences
           </p>
         </div>
@@ -194,10 +194,10 @@ const Profile = () => {
             </button>
           </div>
           <div>
-            <h3 className="text-xl font-semibold text-gray-900">
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
               {user?.name}
             </h3>
-            <p className="text-gray-600">{user?.email}</p>
+            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">{user?.email}</p>
             <Button
               variant="outline"
               size="sm"
@@ -212,14 +212,14 @@ const Profile = () => {
       </Card>
 
       {/* Tabs */}
-      <div className="border-b border-gray-200">
+      <div className="border-b border-gray-200 dark:border-gray-700">
         <div className="flex gap-8">
           <button
             onClick={() => setActiveTab("profile")}
             className={`pb-3 px-1 border-b-2 font-medium transition-colors ${
               activeTab === "profile"
                 ? "border-primary-600 text-primary-600"
-                : "border-transparent text-gray-600 hover:text-gray-900"
+                : "border-transparent text-gray-600 dark:text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:text-gray-100"
             }`}
           >
             Profile Information
@@ -229,7 +229,7 @@ const Profile = () => {
             className={`pb-3 px-1 border-b-2 font-medium transition-colors ${
               activeTab === "security"
                 ? "border-primary-600 text-primary-600"
-                : "border-transparent text-gray-600 hover:text-gray-900"
+                : "border-transparent text-gray-600 dark:text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:text-gray-100"
             }`}
           >
             Security
@@ -273,7 +273,7 @@ const Profile = () => {
             />
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Bio (Optional)
               </label>
               <textarea
@@ -282,7 +282,7 @@ const Profile = () => {
                 placeholder="Tell us about yourself..."
                 value={profileData.bio}
                 onChange={handleProfileChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all resize-none"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all resize-none"
               />
             </div>
 
@@ -324,7 +324,7 @@ const Profile = () => {
                     current: !prev.current,
                   }))
                 }
-                className="absolute right-3 top-9 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-9 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:text-gray-500"
               >
                 {showPasswords.current ? (
                   <EyeOff className="w-5 h-5" />
@@ -350,7 +350,7 @@ const Profile = () => {
                 onClick={() =>
                   setShowPasswords((prev) => ({ ...prev, new: !prev.new }))
                 }
-                className="absolute right-3 top-9 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-9 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:text-gray-500"
               >
                 {showPasswords.new ? (
                   <EyeOff className="w-5 h-5" />
@@ -378,14 +378,14 @@ const Profile = () => {
                           ? "bg-yellow-500"
                           : passwordStrength.level === "strong"
                           ? "bg-green-500"
-                          : "bg-gray-200"
+                          : "bg-gray-200 dark:bg-gray-700"
                       }`}
                     ></div>
                     <div
                       className={`h-1 flex-1 rounded ${
                         passwordStrength.level === "strong"
                           ? "bg-green-500"
-                          : "bg-gray-200"
+                          : "bg-gray-200 dark:bg-gray-700"
                       }`}
                     ></div>
                   </div>
@@ -423,7 +423,7 @@ const Profile = () => {
                     confirm: !prev.confirm,
                   }))
                 }
-                className="absolute right-3 top-9 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-9 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:text-gray-500"
               >
                 {showPasswords.confirm ? (
                   <EyeOff className="w-5 h-5" />
@@ -464,10 +464,10 @@ const Profile = () => {
         <div className="space-y-4">
           <div className="flex justify-between items-center py-3 border-b border-gray-100">
             <div>
-              <p className="text-sm font-medium text-gray-700">
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Account Status
               </p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
                 Your account is active and in good standing
               </p>
             </div>
@@ -478,12 +478,12 @@ const Profile = () => {
 
           <div className="flex justify-between items-center py-3 border-b border-gray-100">
             <div>
-              <p className="text-sm font-medium text-gray-700">Member Since</p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Member Since</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
                 When you joined the platform
               </p>
             </div>
-            <p className="text-sm text-gray-900">
+            <p className="text-sm text-gray-900 dark:text-gray-100">
               {user?.createdDate
                 ? new Date(user.createdDate).toLocaleDateString("en-US", {
                     year: "numeric",
@@ -496,10 +496,10 @@ const Profile = () => {
 
           <div className="flex justify-between items-center py-3">
             <div>
-              <p className="text-sm font-medium text-gray-700">
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Email Verified
               </p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
                 Your email address has been verified
               </p>
             </div>
@@ -517,13 +517,13 @@ const Profile = () => {
             <input
               type="checkbox"
               defaultChecked
-              className="w-5 h-5 mt-0.5 text-primary-600 rounded border-gray-300 focus:ring-primary-500"
+              className="w-5 h-5 mt-0.5 text-primary-600 rounded border-gray-300 dark:border-gray-600 focus:ring-primary-500"
             />
             <div>
-              <p className="text-sm font-medium text-gray-700">
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Email Notifications
               </p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
                 Receive email notifications about your activity
               </p>
             </div>
@@ -533,13 +533,13 @@ const Profile = () => {
             <input
               type="checkbox"
               defaultChecked
-              className="w-5 h-5 mt-0.5 text-primary-600 rounded border-gray-300 focus:ring-primary-500"
+              className="w-5 h-5 mt-0.5 text-primary-600 rounded border-gray-300 dark:border-gray-600 focus:ring-primary-500"
             />
             <div>
-              <p className="text-sm font-medium text-gray-700">
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Weekly Summary
               </p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
                 Get a weekly summary of your projects and tasks
               </p>
             </div>
@@ -548,13 +548,13 @@ const Profile = () => {
           <label className="flex items-start gap-3 cursor-pointer">
             <input
               type="checkbox"
-              className="w-5 h-5 mt-0.5 text-primary-600 rounded border-gray-300 focus:ring-primary-500"
+              className="w-5 h-5 mt-0.5 text-primary-600 rounded border-gray-300 dark:border-gray-600 focus:ring-primary-500"
             />
             <div>
-              <p className="text-sm font-medium text-gray-700">
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Marketing Emails
               </p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
                 Receive updates about new features and tips
               </p>
             </div>

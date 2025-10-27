@@ -67,11 +67,11 @@ const Login = () => {
           <h1 className="text-4xl font-bold text-primary-600 mb-2">
             {import.meta.env.VITE_APP_NAME || "ProjectHub"}
           </h1>
-          <p className="text-gray-600">Sign in to your account</p>
+          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">Sign in to your account</p>
         </div>
 
         {/* Login Form */}
-        <div className="bg-white rounded-lg shadow-xl p-8">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8">
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Email */}
             <Input
@@ -102,7 +102,7 @@ const Login = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-9 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-9 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:text-gray-500"
               >
                 {showPassword ? (
                   <EyeOff className="w-5 h-5" />
@@ -117,9 +117,9 @@ const Login = () => {
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  className="w-4 h-4 text-primary-600 rounded border-gray-300 focus:ring-primary-500"
+                  className="w-4 h-4 text-primary-600 rounded border-gray-300 dark:border-gray-600 focus:ring-primary-500"
                 />
-                <span className="text-gray-700">Remember me</span>
+                <span className="text-gray-700 dark:text-gray-300">Remember me</span>
               </label>
               <Link
                 to="/forgot-password"
@@ -144,15 +144,15 @@ const Login = () => {
           {/* Divider */}
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
+              <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">Or</span>
+              <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 dark:text-gray-500">Or</span>
             </div>
           </div>
 
           {/* Sign Up Link */}
-          <p className="text-center text-gray-600">
+          <p className="text-center text-gray-600 dark:text-gray-400 dark:text-gray-500">
             Don't have an account?{" "}
             <Link
               to="/register"
@@ -165,7 +165,7 @@ const Login = () => {
 
         {/* Back to Landing */}
         <div className="text-center mt-6">
-          <Link to="/" className="text-gray-600 hover:text-gray-800 text-sm">
+          <Link to="/" className="text-gray-600 dark:text-gray-400 dark:text-gray-500 hover:text-gray-800 dark:text-gray-100 text-sm">
             ← Back to home
           </Link>
         </div>

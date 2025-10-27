@@ -5,6 +5,7 @@ import { useWorkspace } from "../../hooks/useWorkspace";
 import Button from "../../components/common/Button";
 import Card from "../../components/common/Card";
 import Modal from "../../components/common/Modal";
+import { SkeletonList } from "../../components/common/Loader";
 import WorkspaceCard from "../../components/workspace/WorkspaceCard";
 import WorkspaceForm from "../../components/workspace/WorkspaceForm";
 
@@ -77,8 +78,10 @@ const Workspaces = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Workspaces</h1>
-          <p className="text-gray-600 mt-1">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+            Workspaces
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-1">
             Manage your workspaces and collaborate with your team
           </p>
         </div>
@@ -94,13 +97,7 @@ const Workspaces = () => {
 
       {/* Workspaces Grid */}
       {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3].map((i) => (
-            <Card key={i} className="animate-pulse">
-              <div className="h-32 bg-gray-200 rounded"></div>
-            </Card>
-          ))}
-        </div>
+        <SkeletonList count={6} />
       ) : workspaces.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {workspaces.map((workspace) => (
@@ -114,13 +111,13 @@ const Workspaces = () => {
         </div>
       ) : (
         <Card className="text-center py-12">
-          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Briefcase className="w-8 h-8 text-gray-400" />
+          <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Briefcase className="w-8 h-8 text-gray-400 dark:text-gray-500" />
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
             No workspaces yet
           </h3>
-          <p className="text-gray-600 mb-4">
+          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-4">
             Create your first workspace to get started with your projects
           </p>
           <Button
@@ -178,7 +175,7 @@ const Workspaces = () => {
         size="sm"
       >
         <div className="space-y-4">
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">
             Are you sure you want to delete{" "}
             <strong>{selectedWorkspace?.name}</strong>? This action cannot be
             undone and will delete all projects and tasks within this workspace.

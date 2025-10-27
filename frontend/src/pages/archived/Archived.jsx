@@ -147,14 +147,14 @@ const Archived = () => {
   }, {});
 
   const priorityColors = {
-    low: "text-gray-600",
+    low: "text-gray-600 dark:text-gray-400 dark:text-gray-500",
     medium: "text-blue-600",
     high: "text-orange-600",
     urgent: "text-red-600",
   };
 
   const statusColors = {
-    todo: "bg-gray-100 text-gray-700",
+    todo: "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300",
     in_progress: "bg-blue-100 text-blue-700",
     in_review: "bg-yellow-100 text-yellow-700",
     done: "bg-green-100 text-green-700",
@@ -164,8 +164,8 @@ const Archived = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Archived Tasks</h1>
-        <p className="text-gray-600 mt-1">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Archived Tasks</h1>
+        <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-1">
           View and restore archived tasks from all projects
         </p>
       </div>
@@ -175,18 +175,18 @@ const Archived = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 mb-1">Total Archived</p>
-              <p className="text-3xl font-bold text-gray-900">
+              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">Total Archived</p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">
                 {archivedTasks.length}
               </p>
             </div>
-            <Archive className="w-8 h-8 text-gray-400" />
+            <Archive className="w-8 h-8 text-gray-400 dark:text-gray-500" />
           </div>
         </Card>
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 mb-1">Completed</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">Completed</p>
               <p className="text-3xl font-bold text-green-600">
                 {archivedTasks.filter((t) => t.status === "done").length}
               </p>
@@ -199,13 +199,13 @@ const Archived = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 mb-1">Canceled</p>
-              <p className="text-3xl font-bold text-gray-600">
+              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">Canceled</p>
+              <p className="text-3xl font-bold text-gray-600 dark:text-gray-400 dark:text-gray-500">
                 {archivedTasks.filter((t) => t.status !== "done").length}
               </p>
             </div>
-            <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-              <Archive className="w-5 h-5 text-gray-600" />
+            <div className="w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
+              <Archive className="w-5 h-5 text-gray-600 dark:text-gray-400 dark:text-gray-500" />
             </div>
           </div>
         </Card>
@@ -223,11 +223,11 @@ const Archived = () => {
           />
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-gray-700">Project:</span>
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Project:</span>
           <select
             value={filterProject}
             onChange={(e) => setFilterProject(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
           >
             <option value="all">All Projects</option>
             {mockProjects.map((project) => (
@@ -242,15 +242,15 @@ const Archived = () => {
       {/* Archived Tasks */}
       {loading ? (
         <Card className="animate-pulse">
-          <div className="h-64 bg-gray-200 rounded"></div>
+          <div className="h-64 bg-gray-200 dark:bg-gray-700 rounded"></div>
         </Card>
       ) : filteredTasks.length > 0 ? (
         <div className="space-y-6">
           {Object.entries(groupedTasks).map(([projectName, tasks]) => (
             <div key={projectName}>
               <div className="flex items-center gap-2 mb-4">
-                <FolderKanban className="w-5 h-5 text-gray-600" />
-                <h2 className="text-lg font-semibold text-gray-900">
+                <FolderKanban className="w-5 h-5 text-gray-600 dark:text-gray-400 dark:text-gray-500" />
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                   {projectName} ({tasks.length})
                 </h2>
               </div>
@@ -263,7 +263,7 @@ const Archived = () => {
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
-                          <h3 className="text-lg font-semibold text-gray-900">
+                          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                             {task.title}
                           </h3>
                           <span
@@ -283,12 +283,12 @@ const Archived = () => {
                         </div>
 
                         {task.description && (
-                          <p className="text-gray-600 mb-3">
+                          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-3">
                             {task.description}
                           </p>
                         )}
 
-                        <div className="flex items-center gap-6 text-sm text-gray-500">
+                        <div className="flex items-center gap-6 text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
                           {task.assignee && (
                             <div className="flex items-center gap-2">
                               <div
@@ -341,13 +341,13 @@ const Archived = () => {
         </div>
       ) : (
         <Card className="text-center py-12">
-          <Archive className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <Archive className="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
             {searchQuery || filterProject !== "all"
               ? "No archived tasks found"
               : "No archived tasks yet"}
           </h3>
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">
             {searchQuery || filterProject !== "all"
               ? "Try adjusting your filters"
               : "Archived tasks will appear here"}
@@ -366,7 +366,7 @@ const Archived = () => {
         size="sm"
       >
         <div className="space-y-4">
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">
             Are you sure you want to restore{" "}
             <strong>{selectedTask?.title}</strong>? This will move the task back
             to its original project.

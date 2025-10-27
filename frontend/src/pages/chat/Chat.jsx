@@ -121,9 +121,9 @@ const Chat = () => {
       <Card className="h-full p-0 overflow-hidden">
         <div className="flex h-full">
           {/* Contacts Sidebar */}
-          <div className="w-80 border-r border-gray-200 flex flex-col bg-gray-50">
+          <div className="w-80 border-r border-gray-200 dark:border-gray-700 flex flex-col bg-gray-50 dark:bg-gray-900">
             {/* Search */}
-            <div className="p-4 border-b border-gray-200 bg-white">
+            <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
               <Input
                 type="text"
                 placeholder="Search contacts..."
@@ -140,8 +140,8 @@ const Chat = () => {
                   <button
                     key={contact.id}
                     onClick={() => setSelectedContact(contact)}
-                    className={`w-full p-4 flex items-center gap-3 hover:bg-white transition-colors border-b border-gray-200 ${
-                      selectedContact?.id === contact.id ? "bg-white" : ""
+                    className={`w-full p-4 flex items-center gap-3 hover:bg-white dark:bg-gray-800 transition-colors border-b border-gray-200 dark:border-gray-700 ${
+                      selectedContact?.id === contact.id ? "bg-white dark:bg-gray-800" : ""
                     }`}
                   >
                     {/* Avatar */}
@@ -160,15 +160,15 @@ const Chat = () => {
                     {/* Info */}
                     <div className="flex-1 min-w-0 text-left">
                       <div className="flex items-center justify-between mb-1">
-                        <h4 className="font-semibold text-gray-900 truncate">
+                        <h4 className="font-semibold text-gray-900 dark:text-gray-100 truncate">
                           {contact.name}
                         </h4>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">
                           {getRelativeTime(contact.lastMessageTime)}
                         </span>
                       </div>
                       <div className="flex items-center justify-between">
-                        <p className="text-sm text-gray-600 truncate">
+                        <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 truncate">
                           {contact.lastMessage}
                         </p>
                         {contact.unreadCount > 0 && (
@@ -181,7 +181,7 @@ const Chat = () => {
                   </button>
                 ))
               ) : (
-                <div className="flex items-center justify-center h-full text-gray-500">
+                <div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400 dark:text-gray-500">
                   <p>No contacts found</p>
                 </div>
               )}
@@ -190,9 +190,9 @@ const Chat = () => {
 
           {/* Chat Area */}
           {selectedContact ? (
-            <div className="flex-1 flex flex-col bg-white">
+            <div className="flex-1 flex flex-col bg-white dark:bg-gray-800">
               {/* Chat Header */}
-              <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+              <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="relative">
                     <div
@@ -208,23 +208,23 @@ const Chat = () => {
                     )}
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900">
+                    <h3 className="font-semibold text-gray-900 dark:text-gray-100">
                       {selectedContact.name}
                     </h3>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
                       {selectedContact.online ? "Online" : "Offline"}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <button className="p-2 rounded-lg hover:bg-gray-100 transition-colors">
-                    <Phone className="w-5 h-5 text-gray-600" />
+                  <button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 dark:bg-gray-800 transition-colors">
+                    <Phone className="w-5 h-5 text-gray-600 dark:text-gray-400 dark:text-gray-500" />
                   </button>
-                  <button className="p-2 rounded-lg hover:bg-gray-100 transition-colors">
-                    <Video className="w-5 h-5 text-gray-600" />
+                  <button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 dark:bg-gray-800 transition-colors">
+                    <Video className="w-5 h-5 text-gray-600 dark:text-gray-400 dark:text-gray-500" />
                   </button>
-                  <button className="p-2 rounded-lg hover:bg-gray-100 transition-colors">
-                    <MoreVertical className="w-5 h-5 text-gray-600" />
+                  <button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 dark:bg-gray-800 transition-colors">
+                    <MoreVertical className="w-5 h-5 text-gray-600 dark:text-gray-400 dark:text-gray-500" />
                   </button>
                 </div>
               </div>
@@ -260,13 +260,13 @@ const Chat = () => {
                             className={`px-4 py-2 rounded-lg ${
                               isOwn
                                 ? "bg-primary-600 text-white"
-                                : "bg-gray-100 text-gray-900"
+                                : "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                             }`}
                           >
                             <p className="text-sm">{msg.content}</p>
                           </div>
                           <p
-                            className={`text-xs text-gray-500 mt-1 ${
+                            className={`text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500 mt-1 ${
                               isOwn ? "text-right" : ""
                             }`}
                           >
@@ -281,22 +281,22 @@ const Chat = () => {
               </div>
 
               {/* Message Input */}
-              <div className="p-4 border-t border-gray-200">
+              <div className="p-4 border-t border-gray-200 dark:border-gray-700">
                 <form
                   onSubmit={handleSendMessage}
                   className="flex items-end gap-2"
                 >
                   <button
                     type="button"
-                    className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                    className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 dark:bg-gray-800 transition-colors"
                   >
-                    <Paperclip className="w-5 h-5 text-gray-600" />
+                    <Paperclip className="w-5 h-5 text-gray-600 dark:text-gray-400 dark:text-gray-500" />
                   </button>
                   <button
                     type="button"
-                    className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                    className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 dark:bg-gray-800 transition-colors"
                   >
-                    <Smile className="w-5 h-5 text-gray-600" />
+                    <Smile className="w-5 h-5 text-gray-600 dark:text-gray-400 dark:text-gray-500" />
                   </button>
                   <div className="flex-1">
                     <textarea
@@ -310,7 +310,7 @@ const Chat = () => {
                       }}
                       placeholder="Type a message..."
                       rows="1"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all resize-none"
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all resize-none"
                     />
                   </div>
                   <Button
@@ -325,15 +325,15 @@ const Chat = () => {
               </div>
             </div>
           ) : (
-            <div className="flex-1 flex items-center justify-center bg-gray-50">
+            <div className="flex-1 flex items-center justify-center bg-gray-50 dark:bg-gray-900">
               <div className="text-center">
-                <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Send className="w-10 h-10 text-gray-400" />
+                <div className="w-20 h-20 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Send className="w-10 h-10 text-gray-400 dark:text-gray-500" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
                   Select a conversation
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">
                   Choose a contact from the list to start chatting
                 </p>
               </div>

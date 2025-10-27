@@ -1,76 +1,36 @@
-import api from "./api";
+import apiClient, { API_ENDPOINTS } from "./apiClient";
 
 export const register = async (userData) => {
-  try {
-    const response = await api.post("/auth/register", userData);
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.post(API_ENDPOINTS.AUTH.REGISTER, userData);
 };
 
 export const login = async (credentials) => {
-  try {
-    const response = await api.post("/auth/login", credentials);
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.post(API_ENDPOINTS.AUTH.LOGIN, credentials);
 };
 
 export const logout = async () => {
-  try {
-    const response = await api.post("/auth/logout");
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.post(API_ENDPOINTS.AUTH.LOGOUT);
 };
 
 export const getCurrentUser = async () => {
-  try {
-    const response = await api.get("/auth/me");
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.get(API_ENDPOINTS.AUTH.ME);
 };
 
 export const updateProfile = async (userData) => {
-  try {
-    const response = await api.put("/auth/profile", userData);
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.put(API_ENDPOINTS.AUTH.PROFILE, userData);
 };
 
 export const changePassword = async (passwordData) => {
-  try {
-    const response = await api.put("/auth/change-password", passwordData);
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.put(API_ENDPOINTS.AUTH.CHANGE_PASSWORD, passwordData);
 };
 
 export const forgotPassword = async (email) => {
-  try {
-    const response = await api.post("/auth/forgot-password", { email });
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.post(API_ENDPOINTS.AUTH.FORGOT_PASSWORD, { email });
 };
 
 export const resetPassword = async (token, password) => {
-  try {
-    const response = await api.post("/auth/reset-password", {
-      token,
-      password,
-    });
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.post(API_ENDPOINTS.AUTH.RESET_PASSWORD, {
+    token,
+    password,
+  });
 };

@@ -1,91 +1,49 @@
-import api from "./api";
+import apiClient, { API_ENDPOINTS } from "./apiClient";
 
 export const getWorkspaces = async () => {
-  try {
-    const response = await api.get("/workspaces");
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.get(API_ENDPOINTS.WORKSPACE.LIST);
 };
 
 export const getWorkspaceById = async (workspaceId) => {
-  try {
-    const response = await api.get(`/workspaces/${workspaceId}`);
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.get(API_ENDPOINTS.WORKSPACE.DETAIL(workspaceId));
 };
 
 export const createWorkspace = async (workspaceData) => {
-  try {
-    const response = await api.post("/workspaces", workspaceData);
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.post(API_ENDPOINTS.WORKSPACE.CREATE, workspaceData);
 };
 
 export const updateWorkspace = async (workspaceId, workspaceData) => {
-  try {
-    const response = await api.put(`/workspaces/${workspaceId}`, workspaceData);
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.put(
+    API_ENDPOINTS.WORKSPACE.UPDATE(workspaceId),
+    workspaceData
+  );
 };
 
 export const deleteWorkspace = async (workspaceId) => {
-  try {
-    const response = await api.delete(`/workspaces/${workspaceId}`);
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.delete(API_ENDPOINTS.WORKSPACE.DELETE(workspaceId));
 };
 
 // Members
 export const getWorkspaceMembers = async (workspaceId) => {
-  try {
-    const response = await api.get(`/workspaces/${workspaceId}/members`);
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.get(API_ENDPOINTS.MEMBER.LIST(workspaceId));
 };
 
 export const addWorkspaceMember = async (workspaceId, memberData) => {
-  try {
-    const response = await api.post(
-      `/workspaces/${workspaceId}/members`,
-      memberData
-    );
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.post(
+    API_ENDPOINTS.MEMBER.ADD(workspaceId),
+    memberData
+  );
 };
 
 export const updateMemberRole = async (workspaceId, memberId, role) => {
-  try {
-    const response = await api.put(
-      `/workspaces/${workspaceId}/members/${memberId}`,
-      { role }
-    );
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.put(
+    API_ENDPOINTS.MEMBER.UPDATE_ROLE(workspaceId, memberId),
+    { role }
+  );
 };
 
 export const removeMember = async (workspaceId, memberId) => {
-  try {
-    const response = await api.delete(
-      `/workspaces/${workspaceId}/members/${memberId}`
-    );
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.delete(
+    API_ENDPOINTS.MEMBER.REMOVE(workspaceId, memberId)
+  );
 };

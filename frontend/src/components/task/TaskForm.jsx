@@ -1,7 +1,9 @@
 import { useState } from "react";
 import Input from "../common/Input";
 import Button from "../common/Button";
+import FileUpload from "../common/FileUpload";
 import { TASK_STATUS, TASK_PRIORITY } from "../../utils/constants";
+import { Paperclip } from "lucide-react";
 
 const TaskForm = ({ task, onSubmit, onCancel, loading, members = [] }) => {
   const [formData, setFormData] = useState({
@@ -13,6 +15,8 @@ const TaskForm = ({ task, onSubmit, onCancel, loading, members = [] }) => {
     dueDate: task?.dueDate || "",
   });
   const [errors, setErrors] = useState({});
+  const [files, setFiles] = useState([]);
+  const [showFileUpload, setShowFileUpload] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,7 +43,7 @@ const TaskForm = ({ task, onSubmit, onCancel, loading, members = [] }) => {
       return;
     }
 
-    onSubmit(formData);
+    onSubmit({ ...formData, files });
   };
 
   return (
@@ -56,7 +60,7 @@ const TaskForm = ({ task, onSubmit, onCancel, loading, members = [] }) => {
       />
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
           Description (Optional)
         </label>
         <textarea
@@ -65,20 +69,20 @@ const TaskForm = ({ task, onSubmit, onCancel, loading, members = [] }) => {
           placeholder="Add more details about this task..."
           value={formData.description}
           onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all resize-none"
+          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all resize-none"
         />
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Status
           </label>
           <select
             name="status"
             value={formData.status}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
           >
             {Object.entries(TASK_STATUS).map(([key, value]) => (
               <option key={value} value={value}>
@@ -89,14 +93,14 @@ const TaskForm = ({ task, onSubmit, onCancel, loading, members = [] }) => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Priority
           </label>
           <select
             name="priority"
             value={formData.priority}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
           >
             {Object.entries(TASK_PRIORITY).map(([key, value]) => (
               <option key={value} value={value}>
@@ -109,14 +113,14 @@ const TaskForm = ({ task, onSubmit, onCancel, loading, members = [] }) => {
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Assign To
           </label>
           <select
             name="assigneeId"
             value={formData.assigneeId}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
           >
             <option value="">Unassigned</option>
             {members.map((member) => (
@@ -134,6 +138,27 @@ const TaskForm = ({ task, onSubmit, onCancel, loading, members = [] }) => {
           value={formData.dueDate}
           onChange={handleChange}
         />
+      </div>
+
+      {/* File Attachments */}
+      <div>
+        <div className="flex items-center justify-between mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            Attachments (Optional)
+          </label>
+          <button
+            type="button"
+            onClick={() => setShowFileUpload(!showFileUpload)}
+            className="text-sm text-primary-600 hover:text-primary-700 flex items-center gap-1"
+          >
+            <Paperclip className="w-4 h-4" />
+            {showFileUpload ? "Hide" : "Add Attachments"}
+          </button>
+        </div>
+
+        {showFileUpload && (
+          <FileUpload onFilesSelected={setFiles} maxFiles={5} maxSize={10} />
+        )}
       </div>
 
       <div className="flex gap-3 justify-end pt-4">

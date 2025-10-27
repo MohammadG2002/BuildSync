@@ -96,7 +96,7 @@ const Settings = () => {
     return (
       <div className="space-y-6">
         <Card className="text-center py-12">
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
             Workspace not found
           </h3>
           <Button variant="primary" onClick={() => navigate("/app/workspaces")}>
@@ -119,10 +119,10 @@ const Settings = () => {
           <ArrowLeft className="w-5 h-5" />
         </Button>
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
             Workspace Settings
           </h1>
-          <p className="text-gray-600 mt-1">
+          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-1">
             Manage {workspace.name} settings and preferences
           </p>
         </div>
@@ -142,7 +142,7 @@ const Settings = () => {
           />
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Description
             </label>
             <textarea
@@ -151,7 +151,7 @@ const Settings = () => {
               placeholder="What is this workspace for?"
               value={formData.description}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all resize-none"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all resize-none"
             />
           </div>
 
@@ -174,24 +174,24 @@ const Settings = () => {
         <div className="space-y-4">
           <div className="flex justify-between items-center py-3 border-b border-gray-100">
             <div>
-              <p className="text-sm font-medium text-gray-700">Workspace ID</p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Workspace ID</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
                 Unique identifier for this workspace
               </p>
             </div>
-            <code className="px-3 py-1 bg-gray-100 rounded text-sm font-mono">
+            <code className="px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded text-sm font-mono">
               {workspaceId}
             </code>
           </div>
 
           <div className="flex justify-between items-center py-3 border-b border-gray-100">
             <div>
-              <p className="text-sm font-medium text-gray-700">Created Date</p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Created Date</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
                 When this workspace was created
               </p>
             </div>
-            <p className="text-sm text-gray-900">
+            <p className="text-sm text-gray-900 dark:text-gray-100">
               {workspace.createdDate
                 ? new Date(workspace.createdDate).toLocaleDateString("en-US", {
                     year: "numeric",
@@ -204,12 +204,12 @@ const Settings = () => {
 
           <div className="flex justify-between items-center py-3">
             <div>
-              <p className="text-sm font-medium text-gray-700">Total Members</p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Total Members</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
                 Number of members in this workspace
               </p>
             </div>
-            <p className="text-sm text-gray-900">
+            <p className="text-sm text-gray-900 dark:text-gray-100">
               {workspace.memberCount || 0}
             </p>
           </div>
@@ -223,13 +223,13 @@ const Settings = () => {
             <input
               type="checkbox"
               defaultChecked
-              className="w-5 h-5 mt-0.5 text-primary-600 rounded border-gray-300 focus:ring-primary-500"
+              className="w-5 h-5 mt-0.5 text-primary-600 rounded border-gray-300 dark:border-gray-600 focus:ring-primary-500"
             />
             <div>
-              <p className="text-sm font-medium text-gray-700">
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Task Assignments
               </p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
                 Get notified when you're assigned to a task
               </p>
             </div>
@@ -239,13 +239,13 @@ const Settings = () => {
             <input
               type="checkbox"
               defaultChecked
-              className="w-5 h-5 mt-0.5 text-primary-600 rounded border-gray-300 focus:ring-primary-500"
+              className="w-5 h-5 mt-0.5 text-primary-600 rounded border-gray-300 dark:border-gray-600 focus:ring-primary-500"
             />
             <div>
-              <p className="text-sm font-medium text-gray-700">
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Project Updates
               </p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
                 Get notified about project changes and updates
               </p>
             </div>
@@ -255,11 +255,11 @@ const Settings = () => {
             <input
               type="checkbox"
               defaultChecked
-              className="w-5 h-5 mt-0.5 text-primary-600 rounded border-gray-300 focus:ring-primary-500"
+              className="w-5 h-5 mt-0.5 text-primary-600 rounded border-gray-300 dark:border-gray-600 focus:ring-primary-500"
             />
             <div>
-              <p className="text-sm font-medium text-gray-700">New Members</p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">New Members</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
                 Get notified when new members join the workspace
               </p>
             </div>
@@ -268,11 +268,11 @@ const Settings = () => {
           <label className="flex items-start gap-3 cursor-pointer">
             <input
               type="checkbox"
-              className="w-5 h-5 mt-0.5 text-primary-600 rounded border-gray-300 focus:ring-primary-500"
+              className="w-5 h-5 mt-0.5 text-primary-600 rounded border-gray-300 dark:border-gray-600 focus:ring-primary-500"
             />
             <div>
-              <p className="text-sm font-medium text-gray-700">Daily Digest</p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Daily Digest</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
                 Receive a daily summary of workspace activity
               </p>
             </div>
@@ -287,13 +287,13 @@ const Settings = () => {
             <label className="flex items-start gap-3 cursor-pointer mb-4">
               <input
                 type="checkbox"
-                className="w-5 h-5 mt-0.5 text-primary-600 rounded border-gray-300 focus:ring-primary-500"
+                className="w-5 h-5 mt-0.5 text-primary-600 rounded border-gray-300 dark:border-gray-600 focus:ring-primary-500"
               />
               <div>
-                <p className="text-sm font-medium text-gray-700">
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Private Workspace
                 </p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
                   Only invited members can access this workspace
                 </p>
               </div>
@@ -303,13 +303,13 @@ const Settings = () => {
               <input
                 type="checkbox"
                 defaultChecked
-                className="w-5 h-5 mt-0.5 text-primary-600 rounded border-gray-300 focus:ring-primary-500"
+                className="w-5 h-5 mt-0.5 text-primary-600 rounded border-gray-300 dark:border-gray-600 focus:ring-primary-500"
               />
               <div>
-                <p className="text-sm font-medium text-gray-700">
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Allow Member Invites
                 </p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
                   Let members invite other people to this workspace
                 </p>
               </div>
@@ -374,7 +374,7 @@ const Settings = () => {
           </div>
 
           <div>
-            <p className="text-sm text-gray-700 mb-2">
+            <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
               Please type <strong>{workspace.name}</strong> to confirm deletion:
             </p>
             <Input

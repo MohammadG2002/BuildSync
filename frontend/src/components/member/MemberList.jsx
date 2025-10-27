@@ -37,7 +37,7 @@ const MemberList = ({
 
         return (
           <div key={role}>
-            <h3 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 uppercase tracking-wide">
               {role}s ({roleMembers.length})
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

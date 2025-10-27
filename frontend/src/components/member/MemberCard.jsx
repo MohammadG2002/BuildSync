@@ -37,13 +37,13 @@ const MemberCard = ({ member, currentUserId, onChangeRole, onRemove }) => {
   const roleColors = {
     admin: "bg-purple-100 text-purple-700",
     member: "bg-blue-100 text-blue-700",
-    viewer: "bg-gray-100 text-gray-700",
+    viewer: "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300",
   };
 
   const RoleIcon = roleIcons[member.role] || User;
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md transition-shadow">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4 flex-1">
           {/* Avatar */}
@@ -57,7 +57,7 @@ const MemberCard = ({ member, currentUserId, onChangeRole, onRemove }) => {
           {/* Info */}
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <h3 className="text-base font-semibold text-gray-900 truncate">
+              <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100 truncate">
                 {member.name}
               </h3>
               {isCurrentUser && (
@@ -66,7 +66,7 @@ const MemberCard = ({ member, currentUserId, onChangeRole, onRemove }) => {
                 </span>
               )}
             </div>
-            <div className="flex items-center gap-2 text-sm text-gray-600">
+            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
               <Mail className="w-4 h-4" />
               <span className="truncate">{member.email}</span>
             </div>
@@ -88,15 +88,15 @@ const MemberCard = ({ member, currentUserId, onChangeRole, onRemove }) => {
             <div className="relative" ref={menuRef}>
               <button
                 onClick={() => setShowMenu(!showMenu)}
-                className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 dark:bg-gray-800 transition-colors"
               >
-                <MoreVertical className="w-4 h-4 text-gray-600" />
+                <MoreVertical className="w-4 h-4 text-gray-600 dark:text-gray-400 dark:text-gray-500" />
               </button>
 
               {/* Dropdown Menu */}
               {showMenu && (
-                <div className="absolute top-full right-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-10">
-                  <div className="px-3 py-1 text-xs font-semibold text-gray-500 uppercase">
+                <div className="absolute top-full right-0 mt-1 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-10">
+                  <div className="px-3 py-1 text-xs font-semibold text-gray-500 dark:text-gray-400 dark:text-gray-500 uppercase">
                     Change Role
                   </div>
                   {Object.entries(USER_ROLES).map(([key, value]) => (
@@ -109,8 +109,8 @@ const MemberCard = ({ member, currentUserId, onChangeRole, onRemove }) => {
                       disabled={member.role === value}
                       className={`w-full text-left px-3 py-2 text-sm transition-colors flex items-center gap-2 ${
                         member.role === value
-                          ? "bg-gray-50 text-gray-400 cursor-not-allowed"
-                          : "hover:bg-gray-50 text-gray-700"
+                          ? "bg-gray-50 dark:bg-gray-900 text-gray-400 dark:text-gray-500 cursor-not-allowed"
+                          : "hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-900 text-gray-700 dark:text-gray-300"
                       }`}
                     >
                       {React.createElement(roleIcons[value], {
@@ -119,7 +119,7 @@ const MemberCard = ({ member, currentUserId, onChangeRole, onRemove }) => {
                       <span>{key}</span>
                     </button>
                   ))}
-                  <div className="border-t border-gray-200 my-2"></div>
+                  <div className="border-t border-gray-200 dark:border-gray-700 my-2"></div>
                   <button
                     onClick={() => {
                       onRemove(member);
@@ -139,7 +139,7 @@ const MemberCard = ({ member, currentUserId, onChangeRole, onRemove }) => {
 
       {/* Additional Info */}
       {member.joinedDate && (
-        <div className="mt-3 pt-3 border-t border-gray-100 text-xs text-gray-500">
+        <div className="mt-3 pt-3 border-t border-gray-100 text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">
           Joined{" "}
           {new Date(member.joinedDate).toLocaleDateString("en-US", {
             year: "numeric",

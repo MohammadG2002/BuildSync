@@ -1,37 +1,17 @@
-import api from "./api";
+import apiClient, { API_ENDPOINTS } from "./apiClient";
 
 export const getContacts = async () => {
-  try {
-    const response = await api.get("/chat/contacts");
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.get(API_ENDPOINTS.CHAT.CONTACTS);
 };
 
 export const getMessages = async (contactId) => {
-  try {
-    const response = await api.get(`/chat/messages/${contactId}`);
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.get(API_ENDPOINTS.CHAT.MESSAGES(contactId));
 };
 
 export const sendMessage = async (messageData) => {
-  try {
-    const response = await api.post("/chat/messages", messageData);
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.post(API_ENDPOINTS.CHAT.SEND, messageData);
 };
 
 export const markAsRead = async (messageId) => {
-  try {
-    const response = await api.put(`/chat/messages/${messageId}/read`);
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.put(`/chat/messages/${messageId}/read`);
 };

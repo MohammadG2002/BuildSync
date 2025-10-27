@@ -1,78 +1,41 @@
-import api from "./api";
+import apiClient, { API_ENDPOINTS } from "./apiClient";
 
 export const getTasks = async (workspaceId, projectId) => {
-  try {
-    const response = await api.get(
-      `/workspaces/${workspaceId}/projects/${projectId}/tasks`
-    );
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.get(API_ENDPOINTS.TASK.LIST(workspaceId, projectId));
 };
 
 export const getTaskById = async (workspaceId, projectId, taskId) => {
-  try {
-    const response = await api.get(
-      `/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}`
-    );
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.get(
+    API_ENDPOINTS.TASK.DETAIL(workspaceId, projectId, taskId)
+  );
 };
 
 export const createTask = async (workspaceId, projectId, taskData) => {
-  try {
-    const response = await api.post(
-      `/workspaces/${workspaceId}/projects/${projectId}/tasks`,
-      taskData
-    );
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.post(
+    API_ENDPOINTS.TASK.CREATE(workspaceId, projectId),
+    taskData
+  );
 };
 
 export const updateTask = async (workspaceId, projectId, taskId, taskData) => {
-  try {
-    const response = await api.put(
-      `/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}`,
-      taskData
-    );
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.put(
+    API_ENDPOINTS.TASK.UPDATE(workspaceId, projectId, taskId),
+    taskData
+  );
 };
 
 export const deleteTask = async (workspaceId, projectId, taskId) => {
-  try {
-    const response = await api.delete(
-      `/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}`
-    );
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.delete(
+    API_ENDPOINTS.TASK.DELETE(workspaceId, projectId, taskId)
+  );
 };
 
 export const archiveTask = async (workspaceId, projectId, taskId) => {
-  try {
-    const response = await api.put(
-      `/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}/archive`
-    );
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.put(
+    API_ENDPOINTS.TASK.ARCHIVE(workspaceId, projectId, taskId)
+  );
 };
 
 export const getArchivedTasks = async (workspaceId) => {
-  try {
-    const response = await api.get(`/workspaces/${workspaceId}/tasks/archived`);
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
+  return await apiClient.get(`/workspaces/${workspaceId}/tasks/archived`);
 };

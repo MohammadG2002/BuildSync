@@ -38,31 +38,31 @@ const WorkspaceCard = ({ workspace, onEdit, onDelete }) => {
 
   return (
     <div
-      className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-lg transition-shadow cursor-pointer relative"
+      className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition-shadow cursor-pointer relative"
       onClick={handleClick}
     >
       {/* Menu Button */}
       <div className="absolute top-4 right-4" ref={menuRef}>
         <button
-          className="menu-button p-2 rounded-lg hover:bg-gray-100 transition-colors"
+          className="menu-button p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 dark:bg-gray-800 transition-colors"
           onClick={(e) => {
             e.stopPropagation();
             setShowMenu(!showMenu);
           }}
         >
-          <MoreVertical className="w-5 h-5 text-gray-600" />
+          <MoreVertical className="w-5 h-5 text-gray-600 dark:text-gray-400 dark:text-gray-500" />
         </button>
 
         {/* Dropdown Menu */}
         {showMenu && (
-          <div className="menu-dropdown absolute top-full right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-10">
+          <div className="menu-dropdown absolute top-full right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-10">
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 onEdit(workspace);
                 setShowMenu(false);
               }}
-              className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center gap-2"
+              className="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-900 transition-colors flex items-center gap-2"
             >
               <Edit className="w-4 h-4" />
               <span>Edit</span>
@@ -88,13 +88,13 @@ const WorkspaceCard = ({ workspace, onEdit, onDelete }) => {
           <Briefcase className="w-6 h-6 text-primary-600" />
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="text-lg font-semibold text-gray-900 mb-1 truncate">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1 truncate">
             {workspace.name}
           </h3>
-          <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+          <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-3 line-clamp-2">
             {workspace.description || "No description"}
           </p>
-          <div className="flex items-center gap-4 text-sm text-gray-500">
+          <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
             <div className="flex items-center gap-1">
               <Users className="w-4 h-4" />
               <span>{workspace.memberCount || 0} members</span>

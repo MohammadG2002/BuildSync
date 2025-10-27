@@ -42,7 +42,7 @@ const TaskList = ({
       {Object.entries(groupedTasks).map(([group, groupTasks]) => (
         <div key={group}>
           {groupBy !== "none" && (
-            <h3 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 uppercase tracking-wide">
               {getGroupTitle(group)} ({groupTasks.length})
             </h3>
           )}

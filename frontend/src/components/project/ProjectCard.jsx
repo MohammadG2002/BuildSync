@@ -38,7 +38,7 @@ const ProjectCard = ({ project, onEdit, onDelete, onClick }) => {
     active: "bg-green-100 text-green-700",
     on_hold: "bg-yellow-100 text-yellow-700",
     completed: "bg-blue-100 text-blue-700",
-    archived: "bg-gray-100 text-gray-700",
+    archived: "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300",
   };
 
   const progress =
@@ -48,31 +48,31 @@ const ProjectCard = ({ project, onEdit, onDelete, onClick }) => {
 
   return (
     <div
-      className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-lg transition-shadow cursor-pointer relative"
+      className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition-shadow cursor-pointer relative"
       onClick={handleClick}
     >
       {/* Menu Button */}
       <div className="absolute top-4 right-4" ref={menuRef}>
         <button
-          className="menu-button p-2 rounded-lg hover:bg-gray-100 transition-colors"
+          className="menu-button p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 dark:bg-gray-800 transition-colors"
           onClick={(e) => {
             e.stopPropagation();
             setShowMenu(!showMenu);
           }}
         >
-          <MoreVertical className="w-5 h-5 text-gray-600" />
+          <MoreVertical className="w-5 h-5 text-gray-600 dark:text-gray-400 dark:text-gray-500" />
         </button>
 
         {/* Dropdown Menu */}
         {showMenu && (
-          <div className="menu-dropdown absolute top-full right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-10">
+          <div className="menu-dropdown absolute top-full right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-10">
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 onEdit(project);
                 setShowMenu(false);
               }}
-              className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors flex items-center gap-2"
+              className="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-900 transition-colors flex items-center gap-2"
             >
               <Edit className="w-4 h-4" />
               <span>Edit</span>
@@ -99,11 +99,11 @@ const ProjectCard = ({ project, onEdit, onDelete, onClick }) => {
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between mb-2">
-            <h3 className="text-lg font-semibold text-gray-900 truncate pr-8">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 truncate pr-8">
               {project.name}
             </h3>
           </div>
-          <p className="text-sm text-gray-600 line-clamp-2 mb-3">
+          <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 line-clamp-2 mb-3">
             {project.description || "No description"}
           </p>
           <span
@@ -119,10 +119,10 @@ const ProjectCard = ({ project, onEdit, onDelete, onClick }) => {
       {/* Progress Bar */}
       <div className="mb-4">
         <div className="flex items-center justify-between text-sm mb-2">
-          <span className="text-gray-600">Progress</span>
-          <span className="font-medium text-gray-900">{progress}%</span>
+          <span className="text-gray-600 dark:text-gray-400 dark:text-gray-500">Progress</span>
+          <span className="font-medium text-gray-900 dark:text-gray-100">{progress}%</span>
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-2">
+        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
           <div
             className="bg-primary-600 h-2 rounded-full transition-all"
             style={{ width: `${progress}%` }}
@@ -131,7 +131,7 @@ const ProjectCard = ({ project, onEdit, onDelete, onClick }) => {
       </div>
 
       {/* Stats */}
-      <div className="flex items-center gap-4 text-sm text-gray-500">
+      <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
         <div className="flex items-center gap-1">
           <CheckCircle className="w-4 h-4" />
           <span>

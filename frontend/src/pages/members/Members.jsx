@@ -14,6 +14,7 @@ import Button from "../../components/common/Button";
 import Card from "../../components/common/Card";
 import Modal from "../../components/common/Modal";
 import Input from "../../components/common/Input";
+import { SkeletonList } from "../../components/common/Loader";
 import MemberList from "../../components/member/MemberList";
 import toast from "react-hot-toast";
 import { USER_ROLES } from "../../utils/constants";
@@ -214,8 +215,10 @@ const Members = () => {
             <ArrowLeft className="w-5 h-5" />
           </Button>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Members</h1>
-            <p className="text-gray-600 mt-1">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+              Members
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-1">
               Manage {workspace?.name || "workspace"} members and permissions
             </p>
           </div>
@@ -235,18 +238,22 @@ const Members = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 mb-1">Total Members</p>
-              <p className="text-3xl font-bold text-gray-900">
+              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">
+                Total Members
+              </p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">
                 {members.length}
               </p>
             </div>
-            <UsersIcon className="w-8 h-8 text-gray-400" />
+            <UsersIcon className="w-8 h-8 text-gray-400 dark:text-gray-500" />
           </div>
         </Card>
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 mb-1">Admins</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">
+                Admins
+              </p>
               <p className="text-3xl font-bold text-purple-600">
                 {roleStats.admin}
               </p>
@@ -259,7 +266,9 @@ const Members = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 mb-1">Members</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">
+                Members
+              </p>
               <p className="text-3xl font-bold text-blue-600">
                 {roleStats.member}
               </p>
@@ -272,13 +281,15 @@ const Members = () => {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 mb-1">Viewers</p>
-              <p className="text-3xl font-bold text-gray-600">
+              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">
+                Viewers
+              </p>
+              <p className="text-3xl font-bold text-gray-600 dark:text-gray-400 dark:text-gray-500">
                 {roleStats.viewer}
               </p>
             </div>
-            <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-              <UsersIcon className="w-5 h-5 text-gray-600" />
+            <div className="w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
+              <UsersIcon className="w-5 h-5 text-gray-600 dark:text-gray-400 dark:text-gray-500" />
             </div>
           </div>
         </Card>
@@ -296,7 +307,7 @@ const Members = () => {
           />
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-gray-700">
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
             Group by role:
           </span>
           <button
@@ -304,7 +315,7 @@ const Members = () => {
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               groupByRole
                 ? "bg-primary-600 text-white"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 dark:bg-gray-700"
             }`}
           >
             {groupByRole ? "Grouped" : "All"}
@@ -317,7 +328,7 @@ const Members = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[1, 2, 3, 4].map((i) => (
             <Card key={i} className="animate-pulse">
-              <div className="h-20 bg-gray-200 rounded"></div>
+              <div className="h-20 bg-gray-200 dark:bg-gray-700 rounded"></div>
             </Card>
           ))}
         </div>
@@ -331,11 +342,11 @@ const Members = () => {
         />
       ) : (
         <Card className="text-center py-12">
-          <UsersIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <UsersIcon className="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
             {searchQuery ? "No members found" : "No members yet"}
           </h3>
-          <p className="text-gray-600 mb-4">
+          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-4">
             {searchQuery
               ? "Try adjusting your search query"
               : "Invite members to collaborate on this workspace"}
@@ -377,14 +388,14 @@ const Members = () => {
           />
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Role
             </label>
             <select
               name="role"
               value={inviteData.role}
               onChange={handleInviteChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
             >
               {Object.entries(USER_ROLES).map(([key, value]) => (
                 <option key={value} value={value}>
@@ -392,7 +403,7 @@ const Members = () => {
                 </option>
               ))}
             </select>
-            <p className="mt-2 text-sm text-gray-500">
+            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
               {inviteData.role === "admin" &&
                 "Can manage workspace settings and members"}
               {inviteData.role === "member" &&
@@ -432,7 +443,7 @@ const Members = () => {
         size="sm"
       >
         <div className="space-y-4">
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">
             Are you sure you want to remove{" "}
             <strong>{selectedMember?.name}</strong> from this workspace? They
             will lose access to all projects and tasks.

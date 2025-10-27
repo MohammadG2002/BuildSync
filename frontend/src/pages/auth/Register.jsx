@@ -92,11 +92,11 @@ const Register = () => {
           <h1 className="text-4xl font-bold text-primary-600 mb-2">
             {import.meta.env.VITE_APP_NAME || "ProjectHub"}
           </h1>
-          <p className="text-gray-600">Create your account</p>
+          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">Create your account</p>
         </div>
 
         {/* Register Form */}
-        <div className="bg-white rounded-lg shadow-xl p-8">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8">
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Name */}
             <Input
@@ -140,7 +140,7 @@ const Register = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-9 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-9 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:text-gray-500"
               >
                 {showPassword ? (
                   <EyeOff className="w-5 h-5" />
@@ -168,14 +168,14 @@ const Register = () => {
                           ? "bg-yellow-500"
                           : passwordStrength.level === "strong"
                           ? "bg-green-500"
-                          : "bg-gray-200"
+                          : "bg-gray-200 dark:bg-gray-700"
                       }`}
                     ></div>
                     <div
                       className={`h-1 flex-1 rounded ${
                         passwordStrength.level === "strong"
                           ? "bg-green-500"
-                          : "bg-gray-200"
+                          : "bg-gray-200 dark:bg-gray-700"
                       }`}
                     ></div>
                   </div>
@@ -210,7 +210,7 @@ const Register = () => {
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-9 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-9 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:text-gray-500"
               >
                 {showConfirmPassword ? (
                   <EyeOff className="w-5 h-5" />
@@ -225,9 +225,9 @@ const Register = () => {
               <input
                 type="checkbox"
                 required
-                className="w-4 h-4 mt-1 text-primary-600 rounded border-gray-300 focus:ring-primary-500"
+                className="w-4 h-4 mt-1 text-primary-600 rounded border-gray-300 dark:border-gray-600 focus:ring-primary-500"
               />
-              <label className="text-sm text-gray-600">
+              <label className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
                 I agree to the{" "}
                 <a href="#" className="text-primary-600 hover:text-primary-700">
                   Terms of Service
@@ -254,15 +254,15 @@ const Register = () => {
           {/* Divider */}
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
+              <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">Or</span>
+              <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 dark:text-gray-500">Or</span>
             </div>
           </div>
 
           {/* Sign In Link */}
-          <p className="text-center text-gray-600">
+          <p className="text-center text-gray-600 dark:text-gray-400 dark:text-gray-500">
             Already have an account?{" "}
             <Link
               to="/login"
@@ -275,7 +275,7 @@ const Register = () => {
 
         {/* Back to Landing */}
         <div className="text-center mt-6">
-          <Link to="/" className="text-gray-600 hover:text-gray-800 text-sm">
+          <Link to="/" className="text-gray-600 dark:text-gray-400 dark:text-gray-500 hover:text-gray-800 dark:text-gray-100 text-sm">
             ← Back to home
           </Link>
         </div>
