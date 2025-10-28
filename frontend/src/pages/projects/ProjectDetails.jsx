@@ -1,25 +1,23 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import {
-  Plus,
-  ArrowLeft,
-  CheckCircle,
-  Clock,
-  AlertCircle,
-  Filter,
-  LayoutGrid,
-  List,
-} from "lucide-react";
+import { Plus, ArrowLeft, CheckCircle, Clock, AlertCircle } from "lucide-react";
 import * as taskService from "../../services/taskService";
 import * as projectService from "../../services/projectService";
 import Button from "../../components/common/Button";
 import Card from "../../components/common/Card";
 import Modal from "../../components/common/Modal";
-import { SkeletonStats, SkeletonList } from "../../components/common/Loader";
 import TaskList from "../../components/task/TaskList";
 import TaskForm from "../../components/task/TaskForm";
 import TaskDetailsModal from "../../components/task/TaskDetailsModal";
 import toast from "react-hot-toast";
+import {
+  TaskStatCard,
+  FilterButtons,
+  GroupBySelector,
+  EmptyTasksState,
+  DeleteTaskModalContent,
+  calculateTaskStats,
+} from "./projectDetailsModule";
 
 const ProjectDetails = () => {
   const { workspaceId, projectId } = useParams();
@@ -231,13 +229,7 @@ const ProjectDetails = () => {
       ? tasks
       : tasks.filter((task) => task.status === filterStatus);
 
-  const taskStats = {
-    total: tasks.length,
-    todo: tasks.filter((t) => t.status === "todo").length,
-    inProgress: tasks.filter((t) => t.status === "in-progress").length,
-    inReview: tasks.filter((t) => t.status === "review").length,
-    done: tasks.filter((t) => t.status === "completed").length,
-  };
+  const taskStats = calculateTaskStats(tasks);
 
   return (
     <div className="space-y-6">
@@ -272,115 +264,45 @@ const ProjectDetails = () => {
 
       {/* Task Stats */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">
-                Total
-              </p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                {taskStats.total}
-              </p>
-            </div>
-            <CheckCircle className="w-8 h-8 text-gray-400 dark:text-gray-500" />
-          </div>
-        </Card>
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">
-                To Do
-              </p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                {taskStats.todo}
-              </p>
-            </div>
-            <Clock className="w-8 h-8 text-gray-400 dark:text-gray-500" />
-          </div>
-        </Card>
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">
-                In Progress
-              </p>
-              <p className="text-2xl font-bold text-blue-600">
-                {taskStats.inProgress}
-              </p>
-            </div>
-            <AlertCircle className="w-8 h-8 text-blue-400" />
-          </div>
-        </Card>
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">
-                In Review
-              </p>
-              <p className="text-2xl font-bold text-yellow-600">
-                {taskStats.inReview}
-              </p>
-            </div>
-            <AlertCircle className="w-8 h-8 text-yellow-400" />
-          </div>
-        </Card>
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">
-                Done
-              </p>
-              <p className="text-2xl font-bold text-green-600">
-                {taskStats.done}
-              </p>
-            </div>
-            <CheckCircle className="w-8 h-8 text-green-400" />
-          </div>
-        </Card>
+        <TaskStatCard
+          label="Total"
+          value={taskStats.total}
+          icon={CheckCircle}
+          color="gray"
+        />
+        <TaskStatCard
+          label="To Do"
+          value={taskStats.todo}
+          icon={Clock}
+          color="gray"
+        />
+        <TaskStatCard
+          label="In Progress"
+          value={taskStats.inProgress}
+          icon={AlertCircle}
+          color="blue"
+        />
+        <TaskStatCard
+          label="In Review"
+          value={taskStats.inReview}
+          icon={AlertCircle}
+          color="yellow"
+        />
+        <TaskStatCard
+          label="Done"
+          value={taskStats.done}
+          icon={CheckCircle}
+          color="green"
+        />
       </div>
 
       {/* Filters and View Controls */}
       <div className="flex items-center justify-between gap-4 flex-wrap">
-        <div className="flex items-center gap-4 flex-wrap">
-          <div className="flex items-center gap-2">
-            <Filter className="w-5 h-5 text-gray-600 dark:text-gray-400 dark:text-gray-500" />
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Status:
-            </span>
-          </div>
-          <div className="flex gap-2">
-            {["all", "todo", "in_progress", "in_review", "done"].map(
-              (status) => (
-                <button
-                  key={status}
-                  onClick={() => setFilterStatus(status)}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                    filterStatus === status
-                      ? "bg-primary-600 text-white"
-                      : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 dark:bg-gray-700"
-                  }`}
-                >
-                  {status === "all" ? "All" : status.replace("_", " ")}
-                </button>
-              )
-            )}
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-            Group by:
-          </span>
-          <select
-            value={groupBy}
-            onChange={(e) => setGroupBy(e.target.value)}
-            className="px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
-          >
-            <option value="none">None</option>
-            <option value="status">Status</option>
-            <option value="priority">Priority</option>
-          </select>
-        </div>
+        <FilterButtons
+          filterStatus={filterStatus}
+          onFilterChange={setFilterStatus}
+        />
+        <GroupBySelector value={groupBy} onChange={setGroupBy} />
       </div>
 
       {/* Tasks List */}
@@ -398,25 +320,10 @@ const ProjectDetails = () => {
           groupBy={groupBy}
         />
       ) : (
-        <Card className="text-center py-12">
-          <CheckCircle className="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
-            No tasks found
-          </h3>
-          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-4">
-            {filterStatus === "all"
-              ? "Create your first task to get started"
-              : `No tasks with status: ${filterStatus.replace("_", " ")}`}
-          </p>
-          <Button
-            variant="primary"
-            onClick={() => setShowCreateModal(true)}
-            className="gap-2"
-          >
-            <Plus className="w-5 h-5" />
-            Create Task
-          </Button>
-        </Card>
+        <EmptyTasksState
+          filterStatus={filterStatus}
+          onCreateTask={() => setShowCreateModal(true)}
+        />
       )}
 
       {/* Create Task Modal */}
@@ -464,31 +371,15 @@ const ProjectDetails = () => {
         title="Delete Task"
         size="sm"
       >
-        <div className="space-y-4">
-          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">
-            Are you sure you want to delete{" "}
-            <strong>{selectedTask?.title}</strong>? This action cannot be
-            undone.
-          </p>
-          <div className="flex gap-3 justify-end pt-4">
-            <Button
-              variant="secondary"
-              onClick={() => {
-                setShowDeleteModal(false);
-                setSelectedTask(null);
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="danger"
-              onClick={handleDeleteTask}
-              loading={submitting}
-            >
-              Delete Task
-            </Button>
-          </div>
-        </div>
+        <DeleteTaskModalContent
+          taskTitle={selectedTask?.title}
+          onCancel={() => {
+            setShowDeleteModal(false);
+            setSelectedTask(null);
+          }}
+          onConfirm={handleDeleteTask}
+          loading={submitting}
+        />
       </Modal>
 
       {/* Task Details Modal */}

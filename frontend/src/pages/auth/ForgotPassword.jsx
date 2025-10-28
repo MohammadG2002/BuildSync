@@ -5,6 +5,7 @@ import Button from "../../components/common/Button";
 import Input from "../../components/common/Input";
 import * as authService from "../../services/authService";
 import toast from "react-hot-toast";
+import { validateEmail } from "./authModule";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -15,13 +16,9 @@ const ForgotPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!email) {
-      setError("Email is required");
-      return;
-    }
-
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      setError("Email is invalid");
+    const validationError = validateEmail(email);
+    if (validationError) {
+      setError(validationError);
       return;
     }
 
@@ -80,15 +77,15 @@ const ForgotPassword = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-blue-100 px-4">
       <div className="w-full max-w-md">
-        {/* Logo/Brand */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-primary-600 mb-2">
             {import.meta.env.VITE_APP_NAME || "ProjectHub"}
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">Reset your password</p>
+          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">
+            Reset your password
+          </p>
         </div>
 
-        {/* Forgot Password Form */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8">
           <div className="text-center mb-6">
             <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">
@@ -136,6 +133,15 @@ const ForgotPassword = () => {
               Back to login
             </Link>
           </div>
+        </div>
+
+        <div className="text-center mt-6">
+          <Link
+            to="/"
+            className="text-gray-600 dark:text-gray-400 dark:text-gray-500 hover:text-gray-800 dark:text-gray-100 text-sm"
+          >
+            ← Back to home
+          </Link>
         </div>
       </div>
     </div>

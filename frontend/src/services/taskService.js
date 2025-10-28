@@ -1,18 +1,19 @@
 import apiClient, { API_ENDPOINTS } from "./apiClient";
+import { ResponseNormalizer } from "./shared";
 
 // Backend returns: { success: true, data: { tasks: [...] } } or { data: { task: {...} } }
 export const getTasks = async (workspaceId, projectId) => {
   const response = await apiClient.get(
     API_ENDPOINTS.TASKS.LIST(workspaceId, projectId)
   );
-  return response.data?.tasks || response.data || response;
+  return ResponseNormalizer.normalizeList(response, "tasks");
 };
 
 export const getTaskById = async (workspaceId, projectId, taskId) => {
   const response = await apiClient.get(
     API_ENDPOINTS.TASKS.GET(workspaceId, projectId, taskId)
   );
-  return response.data?.task || response.data || response;
+  return ResponseNormalizer.normalizeItem(response, "task");
 };
 
 export const createTask = async (workspaceId, projectId, taskData) => {
@@ -27,7 +28,7 @@ export const createTask = async (workspaceId, projectId, taskData) => {
       assignedTo: assigneeId || undefined,
     }
   );
-  return response.data?.task || response.data || response;
+  return ResponseNormalizer.normalizeItem(response, "task");
 };
 
 export const updateTask = async (workspaceId, projectId, taskId, taskData) => {
@@ -51,28 +52,28 @@ export const updateTask = async (workspaceId, projectId, taskId, taskData) => {
     API_ENDPOINTS.TASKS.UPDATE(workspaceId, projectId, taskId),
     payload
   );
-  return response.data?.task || response.data || response;
+  return ResponseNormalizer.normalizeItem(response, "task");
 };
 
 export const deleteTask = async (workspaceId, projectId, taskId) => {
   const response = await apiClient.delete(
     API_ENDPOINTS.TASKS.DELETE(workspaceId, projectId, taskId)
   );
-  return response.data || response;
+  return ResponseNormalizer.normalizeAction(response);
 };
 
 export const archiveTask = async (workspaceId, projectId, taskId) => {
   const response = await apiClient.put(
     API_ENDPOINTS.TASKS.ARCHIVE(workspaceId, projectId, taskId)
   );
-  return response.data?.task || response.data || response;
+  return ResponseNormalizer.normalizeItem(response, "task");
 };
 
 export const getArchivedTasks = async (workspaceId) => {
   const response = await apiClient.get(
     API_ENDPOINTS.TASKS.ARCHIVED(workspaceId)
   );
-  return response.data?.tasks || response.data || response;
+  return ResponseNormalizer.normalizeList(response, "tasks");
 };
 
 export const addComment = async (workspaceId, projectId, taskId, content) => {
@@ -80,7 +81,7 @@ export const addComment = async (workspaceId, projectId, taskId, content) => {
     `${API_ENDPOINTS.TASKS.GET(workspaceId, projectId, taskId)}/comments`,
     { content }
   );
-  return response.data?.task || response.data || response;
+  return ResponseNormalizer.normalizeItem(response, "task");
 };
 
 export const addAttachment = async (workspaceId, projectId, taskId, file) => {
@@ -96,7 +97,7 @@ export const addAttachment = async (workspaceId, projectId, taskId, file) => {
       },
     }
   );
-  return response.data?.task || response.data || response;
+  return ResponseNormalizer.normalizeItem(response, "task");
 };
 
 export const deleteAttachment = async (
@@ -112,5 +113,5 @@ export const deleteAttachment = async (
       taskId
     )}/attachments/${attachmentId}`
   );
-  return response.data?.task || response.data || response;
+  return ResponseNormalizer.normalizeItem(response, "task");
 };

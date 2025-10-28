@@ -1,6 +1,10 @@
 import { useState } from "react";
 import Input from "../common/Input";
-import Button from "../common/Button";
+import {
+  validateWorkspaceForm,
+  WorkspaceDescriptionField,
+  WorkspaceFormActions,
+} from "./workspaceFormModule";
 
 const WorkspaceForm = ({ workspace, onSubmit, onCancel, loading }) => {
   const [formData, setFormData] = useState({
@@ -17,18 +21,10 @@ const WorkspaceForm = ({ workspace, onSubmit, onCancel, loading }) => {
     }
   };
 
-  const validate = () => {
-    const newErrors = {};
-    if (!formData.name.trim()) {
-      newErrors.name = "Workspace name is required";
-    }
-    return newErrors;
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const newErrors = validate();
+    const newErrors = validateWorkspaceForm(formData);
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -50,28 +46,16 @@ const WorkspaceForm = ({ workspace, onSubmit, onCancel, loading }) => {
         autoFocus
       />
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          Description (Optional)
-        </label>
-        <textarea
-          name="description"
-          rows="3"
-          placeholder="What is this workspace for?"
-          value={formData.description}
-          onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
-        />
-      </div>
+      <WorkspaceDescriptionField
+        value={formData.description}
+        onChange={handleChange}
+      />
 
-      <div className="flex gap-3 justify-end pt-4">
-        <Button type="button" variant="secondary" onClick={onCancel}>
-          Cancel
-        </Button>
-        <Button type="submit" variant="primary" loading={loading}>
-          {workspace ? "Update" : "Create"} Workspace
-        </Button>
-      </div>
+      <WorkspaceFormActions
+        onCancel={onCancel}
+        loading={loading}
+        isEdit={!!workspace}
+      />
     </form>
   );
 };

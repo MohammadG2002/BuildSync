@@ -7,13 +7,14 @@ import {
   deleteWorkspace,
   addMember,
   removeMember,
-} from "../controllers/workspace.controller.js";
-import { authenticate, checkWorkspaceMembership } from "../middleware/auth.js";
+} from "../controllers/workspaceController/index.js";
 import {
+  authenticate,
+  checkWorkspaceMembership,
   workspaceValidation,
   validate,
   mongoIdValidation,
-} from "../middleware/validation.js";
+} from "../middleware/index.js";
 
 const router = express.Router();
 

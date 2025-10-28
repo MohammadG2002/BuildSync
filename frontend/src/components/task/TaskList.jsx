@@ -1,4 +1,4 @@
-import TaskCard from "./TaskCard";
+import { groupTasks, getGroupTitle, TaskGroup } from "./taskListModule";
 
 const TaskList = ({
   tasks,
@@ -8,34 +8,7 @@ const TaskList = ({
   onTaskClick,
   groupBy = "none", // 'none', 'status', 'priority'
 }) => {
-  const groupTasks = () => {
-    if (groupBy === "none") {
-      return { "All Tasks": tasks };
-    }
-
-    const grouped = {};
-    tasks.forEach((task) => {
-      const key = task[groupBy];
-      if (!grouped[key]) {
-        grouped[key] = [];
-      }
-      grouped[key].push(task);
-    });
-
-    return grouped;
-  };
-
-  const groupedTasks = groupTasks();
-
-  const getGroupTitle = (key) => {
-    if (groupBy === "status") {
-      return key.replace("_", " ").toUpperCase();
-    }
-    if (groupBy === "priority") {
-      return `${key.toUpperCase()} PRIORITY`;
-    }
-    return key;
-  };
+  const groupedTasks = groupTasks(tasks, groupBy);
 
   return (
     <div className="space-y-6">
@@ -43,21 +16,16 @@ const TaskList = ({
         <div key={group}>
           {groupBy !== "none" && (
             <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 uppercase tracking-wide">
-              {getGroupTitle(group)} ({groupTasks.length})
+              {getGroupTitle(group, groupBy)} ({groupTasks.length})
             </h3>
           )}
-          <div className="space-y-3">
-            {groupTasks.map((task) => (
-              <TaskCard
-                key={task._id}
-                task={task}
-                onEdit={onEditTask}
-                onDelete={onDeleteTask}
-                onStatusChange={onStatusChange}
-                onClick={onTaskClick}
-              />
-            ))}
-          </div>
+          <TaskGroup
+            tasks={groupTasks}
+            onEditTask={onEditTask}
+            onDeleteTask={onDeleteTask}
+            onStatusChange={onStatusChange}
+            onTaskClick={onTaskClick}
+          />
         </div>
       ))}
     </div>

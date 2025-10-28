@@ -1,7 +1,12 @@
 import { createContext, useState, useEffect, useRef } from "react";
 import { useAuth } from "../hooks/useAuth";
 import toast from "react-hot-toast";
-import websocketService from "../services/websocketService";
+import {
+  mockNotifications,
+  WebSocketManager,
+  NotificationTransformer,
+  NotificationOperations,
+} from "./notificationContextModule";
 
 export const NotificationContext = createContext();
 
@@ -16,81 +21,24 @@ export const NotificationProvider = ({ children }) => {
   useEffect(() => {
     if (user) {
       // Request notification permission
-      if (Notification.permission === "default") {
-        Notification.requestPermission();
-      }
+      WebSocketManager.requestPermission();
 
       // Connect to WebSocket
       const token = localStorage.getItem("token");
       if (token) {
-        websocketService.connect(token);
-
-        // Subscribe to WebSocket events
-        const unsubscribeConnected = websocketService.on("connected", () => {
-          console.log("WebSocket connected - real-time notifications active");
-          setIsConnected(true);
+        const unsubscribers = WebSocketManager.connect(token, {
+          onConnected: () => setIsConnected(true),
+          onDisconnected: () => setIsConnected(false),
+          onNotification: (notification) => addNotification(notification),
+          onTaskUpdate: (task) =>
+            addNotification(NotificationTransformer.fromTaskUpdate(task)),
+          onProjectUpdate: (project) =>
+            addNotification(NotificationTransformer.fromProjectUpdate(project)),
+          onMemberJoined: (member) =>
+            addNotification(NotificationTransformer.fromMemberJoined(member)),
         });
 
-        const unsubscribeDisconnected = websocketService.on(
-          "disconnected",
-          () => {
-            console.log("WebSocket disconnected");
-            setIsConnected(false);
-          }
-        );
-
-        const unsubscribeNotification = websocketService.on(
-          "notification",
-          (notification) => {
-            addNotification(notification);
-          }
-        );
-
-        const unsubscribeTaskUpdate = websocketService.on(
-          "task_update",
-          (task) => {
-            addNotification({
-              type: "task_update",
-              title: "Task Updated",
-              message: `Task "${task.title}" has been updated`,
-              actionUrl: `/app/workspaces/${task.workspaceId}/projects/${task.projectId}`,
-            });
-          }
-        );
-
-        const unsubscribeProjectUpdate = websocketService.on(
-          "project_update",
-          (project) => {
-            addNotification({
-              type: "project_update",
-              title: "Project Updated",
-              message: `Project "${project.name}" has been updated`,
-              actionUrl: `/app/workspaces/${project.workspaceId}`,
-            });
-          }
-        );
-
-        const unsubscribeMemberJoined = websocketService.on(
-          "member_joined",
-          (member) => {
-            addNotification({
-              type: "member_joined",
-              title: "New Member",
-              message: `${member.name} joined the workspace`,
-              actionUrl: `/app/workspaces/${member.workspaceId}/members`,
-            });
-          }
-        );
-
-        // Store unsubscribe functions
-        unsubscribeRef.current = [
-          unsubscribeConnected,
-          unsubscribeDisconnected,
-          unsubscribeNotification,
-          unsubscribeTaskUpdate,
-          unsubscribeProjectUpdate,
-          unsubscribeMemberJoined,
-        ];
+        unsubscribeRef.current = unsubscribers;
       }
 
       // Fetch initial notifications
@@ -101,10 +49,8 @@ export const NotificationProvider = ({ children }) => {
 
       return () => {
         clearInterval(interval);
-        // Unsubscribe from all events
-        unsubscribeRef.current.forEach((unsubscribe) => unsubscribe());
-        // Disconnect WebSocket
-        websocketService.disconnect();
+        // Unsubscribe from all events and disconnect
+        WebSocketManager.disconnect(unsubscribeRef.current);
       };
     }
   }, [user]);
@@ -112,38 +58,10 @@ export const NotificationProvider = ({ children }) => {
   const fetchNotifications = async () => {
     try {
       // Mock data - replace with actual API call
-      const mockNotifications = [
-        {
-          id: "1",
-          type: "task_assigned",
-          title: "New task assigned",
-          message: 'You have been assigned to "Update Documentation"',
-          timestamp: new Date(Date.now() - 5 * 60000).toISOString(),
-          read: false,
-          actionUrl: "/app/workspaces/1/projects/1",
-        },
-        {
-          id: "2",
-          type: "project_updated",
-          title: "Project updated",
-          message: "Website Redesign project has been updated",
-          timestamp: new Date(Date.now() - 60 * 60000).toISOString(),
-          read: false,
-          actionUrl: "/app/workspaces/1",
-        },
-        {
-          id: "3",
-          type: "member_added",
-          title: "New member joined",
-          message: "John Doe joined Marketing Team workspace",
-          timestamp: new Date(Date.now() - 180 * 60000).toISOString(),
-          read: true,
-          actionUrl: "/app/workspaces/1/members",
-        },
-      ];
-
       setNotifications(mockNotifications);
-      setUnreadCount(mockNotifications.filter((n) => !n.read).length);
+      setUnreadCount(
+        NotificationOperations.calculateUnreadCount(mockNotifications)
+      );
     } catch (error) {
       console.error("Error fetching notifications:", error);
     }
@@ -152,12 +70,12 @@ export const NotificationProvider = ({ children }) => {
   const markAsRead = async (notificationId) => {
     try {
       // API call to mark as read
-      setNotifications(
-        notifications.map((n) =>
-          n.id === notificationId ? { ...n, read: true } : n
-        )
+      const result = NotificationOperations.markAsRead(
+        notifications,
+        notificationId
       );
-      setUnreadCount((prev) => Math.max(0, prev - 1));
+      setNotifications(result.notifications);
+      setUnreadCount(result.unreadCount);
     } catch (error) {
       console.error("Error marking notification as read:", error);
     }
@@ -166,8 +84,9 @@ export const NotificationProvider = ({ children }) => {
   const markAllAsRead = async () => {
     try {
       // API call to mark all as read
-      setNotifications(notifications.map((n) => ({ ...n, read: true })));
-      setUnreadCount(0);
+      const result = NotificationOperations.markAllAsRead(notifications);
+      setNotifications(result.notifications);
+      setUnreadCount(result.unreadCount);
     } catch (error) {
       console.error("Error marking all notifications as read:", error);
     }
@@ -176,25 +95,25 @@ export const NotificationProvider = ({ children }) => {
   const deleteNotification = async (notificationId) => {
     try {
       // API call to delete notification
-      const notification = notifications.find((n) => n.id === notificationId);
-      if (notification && !notification.read) {
-        setUnreadCount((prev) => Math.max(0, prev - 1));
-      }
-      setNotifications(notifications.filter((n) => n.id !== notificationId));
+      const result = NotificationOperations.deleteNotification(
+        notifications,
+        notificationId
+      );
+      setNotifications(result.notifications);
+      setUnreadCount(result.unreadCount);
     } catch (error) {
       console.error("Error deleting notification:", error);
     }
   };
 
   const addNotification = (notification) => {
-    const newNotification = {
-      id: Date.now().toString(),
-      timestamp: new Date().toISOString(),
-      read: false,
-      ...notification,
-    };
-    setNotifications([newNotification, ...notifications]);
-    setUnreadCount((prev) => prev + 1);
+    const enriched = NotificationTransformer.enrichNotification(notification);
+    const result = NotificationOperations.addNotification(
+      notifications,
+      enriched
+    );
+    setNotifications(result.notifications);
+    setUnreadCount(result.unreadCount);
 
     // Show toast
     toast(notification.message, {

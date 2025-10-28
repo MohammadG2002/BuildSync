@@ -6,9 +6,12 @@ import {
   markAllAsRead,
   deleteNotification,
   deleteAllRead,
-} from "../controllers/notification.controller.js";
-import { authenticate } from "../middleware/auth.js";
-import { mongoIdValidation, validate } from "../middleware/validation.js";
+} from "../controllers/notificationController/index.js";
+import {
+  authenticate,
+  mongoIdValidation,
+  validate,
+} from "../middleware/index.js";
 
 const router = express.Router();
 

@@ -1,9 +1,10 @@
 import apiClient, { API_ENDPOINTS } from "./apiClient";
+import { ResponseNormalizer } from "./shared";
 
 export const getWorkspaces = async () => {
   const response = await apiClient.get(API_ENDPOINTS.WORKSPACES.LIST);
   // Backend returns: { success: true, data: { workspaces: [...] } }
-  return response.data?.workspaces || response.data || response;
+  return ResponseNormalizer.normalizeList(response, "workspaces");
 };
 
 export const getWorkspaceById = async (workspaceId) => {
@@ -11,7 +12,7 @@ export const getWorkspaceById = async (workspaceId) => {
     API_ENDPOINTS.WORKSPACES.GET(workspaceId)
   );
   // Backend returns: { success: true, data: { workspace: {...} } }
-  return response.data?.workspace || response.data || response;
+  return ResponseNormalizer.normalizeItem(response, "workspace");
 };
 
 export const createWorkspace = async (workspaceData) => {
@@ -20,7 +21,7 @@ export const createWorkspace = async (workspaceData) => {
     workspaceData
   );
   // Backend returns: { success: true, data: { workspace: {...} } }
-  return response.data?.workspace || response.data || response;
+  return ResponseNormalizer.normalizeItem(response, "workspace");
 };
 
 export const updateWorkspace = async (workspaceId, workspaceData) => {
@@ -29,14 +30,14 @@ export const updateWorkspace = async (workspaceId, workspaceData) => {
     workspaceData
   );
   // Backend returns: { success: true, data: { workspace: {...} } }
-  return response.data?.workspace || response.data || response;
+  return ResponseNormalizer.normalizeItem(response, "workspace");
 };
 
 export const deleteWorkspace = async (workspaceId) => {
   const response = await apiClient.delete(
     API_ENDPOINTS.WORKSPACES.DELETE(workspaceId)
   );
-  return response.data || response;
+  return ResponseNormalizer.normalizeAction(response);
 };
 
 // Members
@@ -44,7 +45,7 @@ export const getWorkspaceMembers = async (workspaceId) => {
   const response = await apiClient.get(
     API_ENDPOINTS.WORKSPACES.MEMBERS(workspaceId)
   );
-  return response.data?.members || response.data || response;
+  return ResponseNormalizer.normalizeList(response, "members");
 };
 
 export const addWorkspaceMember = async (workspaceId, memberData) => {
@@ -52,7 +53,7 @@ export const addWorkspaceMember = async (workspaceId, memberData) => {
     API_ENDPOINTS.WORKSPACES.ADD_MEMBER(workspaceId),
     memberData
   );
-  return response.data?.member || response.data || response;
+  return ResponseNormalizer.normalizeItem(response, "member");
 };
 
 export const updateMemberRole = async (workspaceId, memberId, role) => {
@@ -60,12 +61,12 @@ export const updateMemberRole = async (workspaceId, memberId, role) => {
     API_ENDPOINTS.WORKSPACES.UPDATE_MEMBER(workspaceId, memberId),
     { role }
   );
-  return response.data?.member || response.data || response;
+  return ResponseNormalizer.normalizeItem(response, "member");
 };
 
 export const removeMember = async (workspaceId, memberId) => {
   const response = await apiClient.delete(
     API_ENDPOINTS.WORKSPACES.REMOVE_MEMBER(workspaceId, memberId)
   );
-  return response.data || response;
+  return ResponseNormalizer.normalizeAction(response);
 };

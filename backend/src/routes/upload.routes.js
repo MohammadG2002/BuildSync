@@ -4,8 +4,8 @@ import {
   uploadAttachment,
   uploadMultipleAttachments,
   deleteFile,
-} from "../controllers/upload.controller.js";
-import { authenticate } from "../middleware/auth.js";
+} from "../controllers/uploadController/index.js";
+import { authenticate } from "../middleware/index.js";
 
 const router = express.Router();
 

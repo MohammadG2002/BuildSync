@@ -1,8 +1,8 @@
-import { connectDB, disconnectDB } from "../config/database.js";
-import User from "../models/User.js";
-import Workspace from "../models/Workspace.js";
-import Project from "../models/Project.js";
-import Task from "../models/Task.js";
+import { connectDB, disconnectDB } from "../config/database/index.js";
+import User from "../models/User/index.js";
+import Workspace from "../models/Workspace/index.js";
+import Project from "../models/Project/index.js";
+import Task from "../models/Task/index.js";
 
 const seedData = async () => {
   try {

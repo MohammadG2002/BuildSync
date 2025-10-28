@@ -16,6 +16,11 @@ import Modal from "../../components/common/Modal";
 import ProjectCard from "../../components/project/ProjectCard";
 import ProjectForm from "../../components/project/ProjectForm";
 import toast from "react-hot-toast";
+import {
+  WorkspaceStatCard,
+  EmptyProjectsState,
+  DeleteProjectModalContent,
+} from "./workspaceDetailsModule";
 
 const WorkspaceDetails = () => {
   const { workspaceId } = useParams();
@@ -187,51 +192,24 @@ const WorkspaceDetails = () => {
 
       {/* Workspace Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">
-                Total Projects
-              </p>
-              <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                {projects.length}
-              </p>
-            </div>
-            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-              <FolderKanban className="w-6 h-6 text-blue-600" />
-            </div>
-          </div>
-        </Card>
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">
-                Active Projects
-              </p>
-              <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                {projects.filter((p) => p.status === "active").length}
-              </p>
-            </div>
-            <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-              <Briefcase className="w-6 h-6 text-green-600" />
-            </div>
-          </div>
-        </Card>
-        <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">
-                Team Members
-              </p>
-              <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                {workspace?.memberCount || 0}
-              </p>
-            </div>
-            <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-              <Users className="w-6 h-6 text-purple-600" />
-            </div>
-          </div>
-        </Card>
+        <WorkspaceStatCard
+          label="Total Projects"
+          value={projects.length}
+          icon={FolderKanban}
+          color="blue"
+        />
+        <WorkspaceStatCard
+          label="Active Projects"
+          value={projects.filter((p) => p.status === "active").length}
+          icon={Briefcase}
+          color="green"
+        />
+        <WorkspaceStatCard
+          label="Team Members"
+          value={workspace?.memberCount || 0}
+          icon={Users}
+          color="purple"
+        />
       </div>
 
       {/* Projects Section */}
@@ -271,25 +249,9 @@ const WorkspaceDetails = () => {
             ))}
           </div>
         ) : (
-          <Card className="text-center py-12">
-            <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
-              <FolderKanban className="w-8 h-8 text-gray-400 dark:text-gray-500" />
-            </div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
-              No projects yet
-            </h3>
-            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-4">
-              Create your first project to start managing tasks
-            </p>
-            <Button
-              variant="primary"
-              onClick={() => setShowCreateModal(true)}
-              className="gap-2"
-            >
-              <Plus className="w-5 h-5" />
-              Create Project
-            </Button>
-          </Card>
+          <EmptyProjectsState
+            onCreateProject={() => setShowCreateModal(true)}
+          />
         )}
       </div>
 
@@ -336,31 +298,15 @@ const WorkspaceDetails = () => {
         title="Delete Project"
         size="sm"
       >
-        <div className="space-y-4">
-          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">
-            Are you sure you want to delete{" "}
-            <strong>{selectedProject?.name}</strong>? This action cannot be
-            undone and will delete all tasks within this project.
-          </p>
-          <div className="flex gap-3 justify-end pt-4">
-            <Button
-              variant="secondary"
-              onClick={() => {
-                setShowDeleteModal(false);
-                setSelectedProject(null);
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="danger"
-              onClick={handleDeleteProject}
-              loading={submitting}
-            >
-              Delete Project
-            </Button>
-          </div>
-        </div>
+        <DeleteProjectModalContent
+          projectName={selectedProject?.name}
+          onCancel={() => {
+            setShowDeleteModal(false);
+            setSelectedProject(null);
+          }}
+          onConfirm={handleDeleteProject}
+          loading={submitting}
+        />
       </Modal>
     </div>
   );

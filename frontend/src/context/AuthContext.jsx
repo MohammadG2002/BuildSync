@@ -1,22 +1,9 @@
 import { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import * as authService from "../services/authService";
 import toast from "react-hot-toast";
+import { AuthHandlers } from "./authContextModule";
 
 export const AuthContext = createContext();
-
-// Demo mode flag - set to false to connect to real backend
-const DEMO_MODE = false;
-
-// Mock user data for demo
-const DEMO_USER = {
-  id: "demo-user-1",
-  name: "Demo User",
-  email: "demo@buildsync.com",
-  avatar: null,
-  role: "owner",
-  createdAt: new Date().toISOString(),
-};
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -30,21 +17,8 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuth = async () => {
     try {
-      if (DEMO_MODE) {
-        // Demo mode: check for demo token
-        const token = localStorage.getItem("token");
-        if (token === "demo-token") {
-          setUser(DEMO_USER);
-        }
-      } else {
-        // Production mode: call API
-        const token = localStorage.getItem("token");
-        if (token) {
-          const response = await authService.getCurrentUser();
-          // Backend returns: { success: true, data: { user: {...} } }
-          setUser(response.data.user);
-        }
-      }
+      const user = await AuthHandlers.checkAuth();
+      setUser(user);
     } catch (error) {
       localStorage.removeItem("token");
       setUser(null);
@@ -55,21 +29,11 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
-      if (DEMO_MODE) {
-        // Demo mode: accept any credentials
-        localStorage.setItem("token", "demo-token");
-        setUser(DEMO_USER);
-        toast.success("Welcome to BuildSync Demo!");
-        navigate("/app/dashboard");
-      } else {
-        // Production mode: call API
-        const response = await authService.login(credentials);
-        // Backend returns: { success: true, data: { user: {...}, token: "..." } }
-        localStorage.setItem("token", response.data.token);
-        setUser(response.data.user);
-        toast.success("Welcome back!");
-        navigate("/app/dashboard");
-      }
+      const result = await AuthHandlers.login(credentials);
+      localStorage.setItem("token", result.token);
+      setUser(result.user);
+      toast.success(result.message);
+      navigate("/app/dashboard");
     } catch (error) {
       toast.error(error.message || "Login failed");
       throw error;
@@ -78,29 +42,11 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      if (DEMO_MODE) {
-        // Demo mode: create mock user with provided data
-        const demoUser = {
-          id: "demo-user-" + Date.now(),
-          name: userData.name,
-          email: userData.email,
-          avatar: null,
-          role: "owner",
-          createdAt: new Date().toISOString(),
-        };
-        localStorage.setItem("token", "demo-token");
-        setUser(demoUser);
-        toast.success("Welcome to BuildSync Demo!");
-        navigate("/app/dashboard");
-      } else {
-        // Production mode: call API
-        const response = await authService.register(userData);
-        // Backend returns: { success: true, data: { user: {...}, token: "..." } }
-        localStorage.setItem("token", response.data.token);
-        setUser(response.data.user);
-        toast.success("Account created successfully!");
-        navigate("/app/dashboard");
-      }
+      const result = await AuthHandlers.register(userData);
+      localStorage.setItem("token", result.token);
+      setUser(result.user);
+      toast.success(result.message);
+      navigate("/app/dashboard");
     } catch (error) {
       toast.error(error.message || "Registration failed");
       throw error;

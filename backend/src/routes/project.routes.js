@@ -7,13 +7,13 @@ import {
   deleteProject,
   addProjectMember,
   removeProjectMember,
-} from "../controllers/project.controller.js";
-import { authenticate } from "../middleware/auth.js";
+} from "../controllers/projectController/index.js";
 import {
+  authenticate,
   projectValidation,
   validate,
   mongoIdValidation,
-} from "../middleware/validation.js";
+} from "../middleware/index.js";
 
 const router = express.Router();
 

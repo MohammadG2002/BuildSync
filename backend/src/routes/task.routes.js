@@ -7,14 +7,14 @@ import {
   deleteTask,
   addComment,
   addAttachment,
-} from "../controllers/task.controller.js";
-import { authenticate } from "../middleware/auth.js";
+} from "../controllers/taskController/index.js";
 import {
+  authenticate,
   taskValidation,
   taskCreateValidation,
   validate,
   mongoIdValidation,
-} from "../middleware/validation.js";
+} from "../middleware/index.js";
 
 const router = express.Router();
 

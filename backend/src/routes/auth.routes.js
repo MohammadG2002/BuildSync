@@ -6,14 +6,14 @@ import {
   updateProfile,
   changePassword,
   logout,
-} from "../controllers/auth.controller.js";
-import { authenticate } from "../middleware/auth.js";
+} from "../controllers/authController/index.js";
 import {
+  authenticate,
   registerValidation,
   loginValidation,
   validate,
-} from "../middleware/validation.js";
-import { authRateLimiter } from "../middleware/rateLimiter.js";
+  authRateLimiter,
+} from "../middleware/index.js";
 
 const router = express.Router();
 

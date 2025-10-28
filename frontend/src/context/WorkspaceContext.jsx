@@ -1,6 +1,10 @@
 import { createContext, useState, useEffect } from "react";
 import * as workspaceService from "../services/workspaceService";
 import toast from "react-hot-toast";
+import {
+  WorkspaceStorage,
+  WorkspaceOperations,
+} from "./workspaceContextModule";
 
 export const WorkspaceContext = createContext();
 
@@ -18,8 +22,9 @@ export const WorkspaceProvider = ({ children }) => {
 
       // Set first workspace as current if none selected
       if (!currentWorkspace && data.length > 0) {
-        setCurrentWorkspace(data[0]);
-        localStorage.setItem("currentWorkspaceId", data[0].id);
+        const firstWorkspace = WorkspaceOperations.getFirstWorkspace(data);
+        setCurrentWorkspace(firstWorkspace);
+        WorkspaceStorage.saveWorkspaceId(firstWorkspace.id);
       }
     } catch (error) {
       toast.error("Failed to fetch workspaces");
@@ -34,7 +39,7 @@ export const WorkspaceProvider = ({ children }) => {
       const newWorkspace = await workspaceService.createWorkspace(
         workspaceData
       );
-      setWorkspaces([...workspaces, newWorkspace]);
+      setWorkspaces(WorkspaceOperations.addWorkspace(workspaces, newWorkspace));
       toast.success("Workspace created successfully!");
       return newWorkspace;
     } catch (error) {
@@ -51,9 +56,11 @@ export const WorkspaceProvider = ({ children }) => {
         workspaceData
       );
       setWorkspaces(
-        workspaces.map((w) => (w.id === workspaceId ? updated : w))
+        WorkspaceOperations.updateWorkspace(workspaces, workspaceId, updated)
       );
-      if (currentWorkspace?.id === workspaceId) {
+      if (
+        WorkspaceOperations.shouldUpdateCurrent(currentWorkspace, workspaceId)
+      ) {
         setCurrentWorkspace(updated);
       }
       toast.success("Workspace updated successfully!");
@@ -68,9 +75,17 @@ export const WorkspaceProvider = ({ children }) => {
   const deleteWorkspace = async (workspaceId) => {
     try {
       await workspaceService.deleteWorkspace(workspaceId);
-      setWorkspaces(workspaces.filter((w) => w.id !== workspaceId));
-      if (currentWorkspace?.id === workspaceId) {
-        setCurrentWorkspace(workspaces[0] || null);
+      const updatedWorkspaces = WorkspaceOperations.deleteWorkspace(
+        workspaces,
+        workspaceId
+      );
+      setWorkspaces(updatedWorkspaces);
+      if (
+        WorkspaceOperations.shouldUpdateCurrent(currentWorkspace, workspaceId)
+      ) {
+        setCurrentWorkspace(
+          WorkspaceOperations.getFirstWorkspace(updatedWorkspaces)
+        );
       }
       toast.success("Workspace deleted successfully!");
     } catch (error) {
@@ -82,15 +97,18 @@ export const WorkspaceProvider = ({ children }) => {
   // Switch workspace
   const switchWorkspace = (workspace) => {
     setCurrentWorkspace(workspace);
-    localStorage.setItem("currentWorkspaceId", workspace.id);
+    WorkspaceStorage.saveWorkspaceId(workspace.id);
     toast.success(`Switched to ${workspace.name}`);
   };
 
   // Load current workspace from localStorage on mount
   useEffect(() => {
-    const savedWorkspaceId = localStorage.getItem("currentWorkspaceId");
+    const savedWorkspaceId = WorkspaceStorage.getSavedWorkspaceId();
     if (savedWorkspaceId && workspaces.length > 0) {
-      const workspace = workspaces.find((w) => w.id === savedWorkspaceId);
+      const workspace = WorkspaceStorage.findWorkspace(
+        workspaces,
+        savedWorkspaceId
+      );
       if (workspace) {
         setCurrentWorkspace(workspace);
       }

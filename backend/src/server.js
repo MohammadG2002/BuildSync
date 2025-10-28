@@ -8,8 +8,8 @@ import { createServer } from "http";
 import { WebSocketServer } from "ws";
 
 // Import configurations
-import { connectDB } from "./config/database.js";
-import { setupWebSocket } from "./websocket/websocket.js";
+import { connectDB } from "./config/database/index.js";
+import { setupWebSocket } from "./websocket/index.js";
 
 // Import routes
 import authRoutes from "./routes/auth.routes.js";
@@ -22,9 +22,7 @@ import chatRoutes from "./routes/chat.routes.js";
 import uploadRoutes from "./routes/upload.routes.js";
 
 // Import middleware
-import { errorHandler } from "./middleware/errorHandler.js";
-import { notFound } from "./middleware/notFound.js";
-import { rateLimiter } from "./middleware/rateLimiter.js";
+import { errorHandler, notFound, rateLimiter } from "./middleware/index.js";
 
 // Load environment variables
 dotenv.config();
@@ -137,4 +135,3 @@ process.on("SIGTERM", () => {
 startServer();
 
 export default app;
-
