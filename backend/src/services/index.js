@@ -3,7 +3,7 @@
  * Centralized export for all service modules
  */
 
-export * from "./authService.js";
-export * from "./workspaceService.js";
-export * from "./projectService.js";
-export * from "./notificationService.js";
+export * from "./authService/index.js";
+export * from "./workspaceService/index.js";
+export * from "./projectService/index.js";
+export * from "./notificationService/index.js";

@@ -1,7 +1,7 @@
 import request from "supertest";
 import express from "express";
 import authRoutes from "../../routes/auth.routes.js";
-import User from "../../models/User.js";
+import User from "../../models/User/index.js";
 import { setupTestDB, teardownTestDB, clearTestDB } from "../setup.js";
 
 const app = express();

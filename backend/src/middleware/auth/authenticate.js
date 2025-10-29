@@ -3,12 +3,12 @@
  * Verifies JWT token and attaches user to request
  */
 
-import User from "../../models/User.js";
-import { verifyToken, extractToken } from "../../utils/tokenManager.js";
+import User from "../../models/User/index.js";
+import { verifyToken, extractToken } from "../../utils/tokenManager/index.js";
 import {
   sendUnauthorized,
   sendServerError,
-} from "../../utils/responseHandler.js";
+} from "../../utils/responseHandler/index.js";
 
 export const authenticate = async (req, res, next) => {
   try {

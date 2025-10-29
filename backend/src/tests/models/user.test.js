@@ -1,4 +1,4 @@
-import User from "../../models/User.js";
+import User from "../../models/User/index.js";
 import { setupTestDB, teardownTestDB, clearTestDB } from "../setup.js";
 
 describe("User Model", () => {

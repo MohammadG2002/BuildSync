@@ -4,7 +4,7 @@
  */
 
 import jwt from "jsonwebtoken";
-import User from "../models/User/index.js";
+import User from "../../models/User/index.js";
 
 /**
  * Authenticate WebSocket connection

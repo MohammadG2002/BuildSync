@@ -8,7 +8,7 @@ import {
   sendNotFound,
   sendForbidden,
   sendServerError,
-} from "../../utils/responseHandler.js";
+} from "../../utils/responseHandler/index.js";
 
 export const checkWorkspaceMembership = async (req, res, next) => {
   try {
@@ -18,7 +18,7 @@ export const checkWorkspaceMembership = async (req, res, next) => {
       return sendBadRequest(res, "Workspace ID required");
     }
 
-    const Workspace = (await import("../../models/Workspace.js")).default;
+    const Workspace = (await import("../../models/Workspace/index.js")).default;
     const workspace = await Workspace.findById(workspaceId);
 
     if (!workspace) {
