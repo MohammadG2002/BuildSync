@@ -1,48 +1,41 @@
+import styles from "./Profile.module.css";
+
 const PreferencesSection = () => {
   return (
-    <div className="space-y-4">
-      <label className="flex items-start gap-3 cursor-pointer">
+    <div className={styles.preferences}>
+      <label className={styles.preferenceItem}>
         <input
           type="checkbox"
           defaultChecked
-          className="w-5 h-5 mt-0.5 text-primary-600 rounded border-gray-300 dark:border-gray-600 focus:ring-primary-500"
+          className={styles.preferenceCheckbox}
         />
-        <div>
-          <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-            Email Notifications
-          </p>
-          <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
+        <div className={styles.preferenceLabel}>
+          <p className={styles.preferenceLabelTitle}>Email Notifications</p>
+          <p className={styles.preferenceLabelDesc}>
             Receive email notifications about your activity
           </p>
         </div>
       </label>
 
-      <label className="flex items-start gap-3 cursor-pointer">
+      <label className={styles.preferenceItem}>
         <input
           type="checkbox"
           defaultChecked
-          className="w-5 h-5 mt-0.5 text-primary-600 rounded border-gray-300 dark:border-gray-600 focus:ring-primary-500"
+          className={styles.preferenceCheckbox}
         />
-        <div>
-          <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-            Weekly Summary
-          </p>
-          <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
+        <div className={styles.preferenceLabel}>
+          <p className={styles.preferenceLabelTitle}>Weekly Summary</p>
+          <p className={styles.preferenceLabelDesc}>
             Get a weekly summary of your projects and tasks
           </p>
         </div>
       </label>
 
-      <label className="flex items-start gap-3 cursor-pointer">
-        <input
-          type="checkbox"
-          className="w-5 h-5 mt-0.5 text-primary-600 rounded border-gray-300 dark:border-gray-600 focus:ring-primary-500"
-        />
-        <div>
-          <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-            Marketing Emails
-          </p>
-          <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
+      <label className={styles.preferenceItem}>
+        <input type="checkbox" className={styles.preferenceCheckbox} />
+        <div className={styles.preferenceLabel}>
+          <p className={styles.preferenceLabelTitle}>Marketing Emails</p>
+          <p className={styles.preferenceLabelDesc}>
             Receive updates about new features and tips
           </p>
         </div>

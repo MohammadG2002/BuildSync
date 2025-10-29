@@ -1,4 +1,5 @@
 import { groupTasks, getGroupTitle, TaskGroup } from "./taskListModule";
+import styles from "./taskListModule/TaskList.module.css";
 
 const TaskList = ({
   tasks,
@@ -11,11 +12,11 @@ const TaskList = ({
   const groupedTasks = groupTasks(tasks, groupBy);
 
   return (
-    <div className="space-y-6">
+    <div className={styles.container}>
       {Object.entries(groupedTasks).map(([group, groupTasks]) => (
         <div key={group}>
           {groupBy !== "none" && (
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 uppercase tracking-wide">
+            <h3 className={styles.groupHeader}>
               {getGroupTitle(group, groupBy)} ({groupTasks.length})
             </h3>
           )}

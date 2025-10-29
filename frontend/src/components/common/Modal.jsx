@@ -1,11 +1,8 @@
 import { useEffect } from "react";
-import {
-  modalSizes,
-  getModalClassName,
-  ModalBackdrop,
-  ModalHeader,
-  ModalContent,
-} from "./modal/index";
+import ModalBackdrop from "./modal/ModalBackdrop";
+import ModalHeader from "./modal/ModalHeader";
+import ModalContent from "./modal/ModalContent";
+import styles from "./modal/Modal.module.css";
 
 const Modal = ({
   isOpen,
@@ -28,11 +25,13 @@ const Modal = ({
 
   if (!isOpen) return null;
 
+  const modalClasses = [styles.modal, styles[size]].filter(Boolean).join(" ");
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 animate-fade-in">
+    <div className={styles.modalContainer}>
       <ModalBackdrop onClick={onClose} />
 
-      <div className={getModalClassName(size, modalSizes)}>
+      <div className={modalClasses}>
         <ModalHeader
           title={title}
           showCloseButton={showCloseButton}

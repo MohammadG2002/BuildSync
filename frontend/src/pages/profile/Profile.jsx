@@ -17,6 +17,7 @@ import {
   validateProfile,
   validatePassword,
 } from "./profileModule";
+import styles from "./profileModule/Profile.module.css";
 
 const Profile = () => {
   const { user, updateUser } = useAuth();
@@ -130,9 +131,9 @@ const Profile = () => {
     : null;
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
+    <div className={styles.container}>
       {/* Header */}
-      <div className="flex items-center gap-4">
+      <div className={styles.header}>
         <Button
           variant="ghost"
           onClick={() => navigate("/app/dashboard")}
@@ -140,11 +141,9 @@ const Profile = () => {
         >
           <ArrowLeft className="w-5 h-5" />
         </Button>
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-            Profile Settings
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-1">
+        <div className={styles.headerContent}>
+          <h1 className={styles.title}>Profile Settings</h1>
+          <p className={styles.subtitle}>
             Manage your account settings and preferences
           </p>
         </div>

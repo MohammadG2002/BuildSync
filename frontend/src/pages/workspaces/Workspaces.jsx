@@ -11,6 +11,7 @@ import {
   EmptyWorkspacesState,
   DeleteWorkspaceModalContent,
 } from "./workspacesModule";
+import styles from "./Workspaces.module.css";
 
 const Workspaces = () => {
   const {
@@ -77,14 +78,12 @@ const Workspaces = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className={styles.container}>
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-            Workspaces
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-1">
+      <div className={styles.header}>
+        <div className={styles.headerContent}>
+          <h1 className={styles.title}>Workspaces</h1>
+          <p className={styles.subtitle}>
             Manage your workspaces and collaborate with your team
           </p>
         </div>
@@ -102,7 +101,7 @@ const Workspaces = () => {
       {loading ? (
         <SkeletonList count={6} />
       ) : workspaces.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className={styles.grid}>
           {workspaces.map((workspace) => (
             <WorkspaceCard
               key={workspace.id}

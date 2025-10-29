@@ -8,6 +8,7 @@ import {
   NavbarActions,
   ProfileMenu,
 } from "./navbarModule";
+import styles from "./navbarModule/Navbar.module.css";
 
 const Navbar = ({ onMenuClick }) => {
   const { user, logout } = useAuth();
@@ -51,9 +52,9 @@ const Navbar = ({ onMenuClick }) => {
   };
 
   return (
-    <header className="h-16 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-4 sm:px-6 transition-colors">
+    <header className={styles.navbar}>
       {/* Left Side - Mobile Menu + Workspace */}
-      <div className="flex items-center gap-2 sm:gap-4">
+      <div className={styles.leftSection}>
         <MobileMenuButton onClick={onMenuClick} />
 
         <WorkspaceSelector
@@ -71,7 +72,7 @@ const Navbar = ({ onMenuClick }) => {
       </div>
 
       {/* Right Side Actions */}
-      <div className="flex items-center gap-2 sm:gap-4">
+      <div className={styles.rightSection}>
         <NavbarActions
           onChatClick={() => navigate("/app/chat")}
           onSettingsClick={() =>

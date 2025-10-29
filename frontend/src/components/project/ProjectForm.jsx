@@ -7,14 +7,18 @@ import {
   DateFields,
   FormActions,
 } from "./projectFormModule";
+import styles from "./projectFormModule/ProjectForm.module.css";
 
 const ProjectForm = ({ project, onSubmit, onCancel, loading }) => {
+  const today = new Date();
+  const nextMonth = new Date();
+  nextMonth.setDate(today.getDate() + 30);
   const [formData, setFormData] = useState({
     name: project?.name || "",
     description: project?.description || "",
     status: project?.status || "planning",
-    startDate: project?.startDate || "",
-    dueDate: project?.dueDate || "",
+    startDate: project?.startDate || today.toISOString().split("T")[0],
+    dueDate: project?.dueDate || nextMonth.toISOString().split("T")[0],
   });
   const [errors, setErrors] = useState({});
 
@@ -39,7 +43,7 @@ const ProjectForm = ({ project, onSubmit, onCancel, loading }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
+    <form onSubmit={handleSubmit} className={styles.form}>
       <Input
         label="Project Name"
         type="text"

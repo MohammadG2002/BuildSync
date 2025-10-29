@@ -1,0 +1,110 @@
+/* AuthLayout CSS Module */
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f0f9ff 0%, #dbeafe 100%);
+  padding: 3rem 1rem;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 28rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #2563eb;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-right: 1rem;
+}
+
+.logo {
+  width: 4rem;
+  height: 4rem;
+}
+
+.subtitle {
+  color: #4b5563;
+}
+
+/* Dark mode styles */
+.container.dark .subtitle {
+  color: #9ca3af;
+}
+
+.formContainer {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  padding: 2rem;
+}
+
+.container.dark .formContainer {
+  background-color: #1f2937;
+}
+
+.formTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.container.dark .formTitle {
+  color: #f9fafb;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.backLink {
+  color: #4b5563;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.backLink:hover {
+  color: #1f2937;
+}
+
+.container.dark .backLink {
+  color: #9ca3af;
+}
+
+.container.dark .backLink:hover {
+  color: #f9fafb;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .formContainer {
+    padding: 1.5rem;
+  }
+}

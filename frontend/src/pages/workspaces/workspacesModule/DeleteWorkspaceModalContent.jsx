@@ -1,4 +1,5 @@
 import Button from "../../../components/common/Button";
+import styles from "../Workspaces.module.css";
 
 const DeleteWorkspaceModalContent = ({
   workspaceName,
@@ -7,13 +8,13 @@ const DeleteWorkspaceModalContent = ({
   loading,
 }) => {
   return (
-    <div className="space-y-4">
-      <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">
+    <div className={styles.deleteContent}>
+      <p className={styles.deleteText}>
         Are you sure you want to delete <strong>{workspaceName}</strong>? This
         action cannot be undone and will delete all projects and tasks within
         this workspace.
       </p>
-      <div className="flex gap-3 justify-end pt-4">
+      <div className={styles.deleteActions}>
         <Button variant="secondary" onClick={onCancel}>
           Cancel
         </Button>

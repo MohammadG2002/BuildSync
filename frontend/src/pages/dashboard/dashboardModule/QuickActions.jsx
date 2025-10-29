@@ -1,9 +1,10 @@
 import Button from "../../../components/common/Button";
 import { Plus, Briefcase, Users } from "lucide-react";
+import styles from "./Dashboard.module.css";
 
 const QuickActions = ({ onNavigate }) => {
   return (
-    <div className="space-y-2">
+    <div className={styles.quickActions}>
       <Button
         variant="outline"
         className="w-full justify-start gap-2"

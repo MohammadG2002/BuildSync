@@ -1,18 +1,20 @@
+import styles from "./ErrorBoundary.module.css";
+
 const ErrorDetails = ({ error, errorInfo }) => {
   if (process.env.NODE_ENV !== "development" || !error) {
     return null;
   }
 
   return (
-    <div className="w-full mb-6">
-      <details className="text-left bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
-        <summary className="cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+    <div className={styles.details}>
+      <details className={styles.detailsToggle}>
+        <summary className={styles.detailsSummary}>
           Error Details (Development Only)
         </summary>
-        <div className="text-xs text-red-600 dark:text-red-400 font-mono whitespace-pre-wrap break-words">
+        <div className={styles.detailsError}>
           {error.toString()}
           {errorInfo && (
-            <div className="mt-2 text-gray-600 dark:text-gray-400">
+            <div className={styles.detailsStack}>
               {errorInfo.componentStack}
             </div>
           )}

@@ -21,6 +21,7 @@ import {
   EmptyProjectsState,
   DeleteProjectModalContent,
 } from "./workspaceDetailsModule";
+import styles from "./WorkspaceDetails.module.css";
 
 const WorkspaceDetails = () => {
   const { workspaceId } = useParams();
@@ -136,11 +137,9 @@ const WorkspaceDetails = () => {
 
   if (!workspace && !loading) {
     return (
-      <div className="space-y-6">
-        <Card className="text-center py-12">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
-            Workspace not found
-          </h3>
+      <div className={styles.container}>
+        <Card className={styles.notFoundCard}>
+          <h3 className={styles.notFoundTitle}>Workspace not found</h3>
           <Button variant="primary" onClick={() => navigate("/app/workspaces")}>
             Back to Workspaces
           </Button>
@@ -150,10 +149,10 @@ const WorkspaceDetails = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className={styles.container}>
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <div className={styles.header}>
+        <div className={styles.headerLeft}>
           <Button
             variant="ghost"
             onClick={() => navigate("/app/workspaces")}
@@ -161,16 +160,14 @@ const WorkspaceDetails = () => {
           >
             <ArrowLeft className="w-5 h-5" />
           </Button>
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-              {workspace?.name || "Loading..."}
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-1">
+          <div className={styles.headerContent}>
+            <h1 className={styles.title}>{workspace?.name || "Loading..."}</h1>
+            <p className={styles.subtitle}>
               {workspace?.description || "Manage projects and team"}
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-3">
+        <div className={styles.headerActions}>
           <Button
             variant="outline"
             onClick={() => navigate(`/app/workspaces/${workspaceId}/members`)}
@@ -191,7 +188,7 @@ const WorkspaceDetails = () => {
       </div>
 
       {/* Workspace Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className={styles.statsGrid}>
         <WorkspaceStatCard
           label="Total Projects"
           value={projects.length}
@@ -213,11 +210,9 @@ const WorkspaceDetails = () => {
       </div>
 
       {/* Projects Section */}
-      <div>
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-            Projects
-          </h2>
+      <div className={styles.projectsSection}>
+        <div className={styles.projectsHeader}>
+          <h2 className={styles.projectsTitle}>Projects</h2>
           <Button
             variant="primary"
             onClick={() => setShowCreateModal(true)}
@@ -229,15 +224,15 @@ const WorkspaceDetails = () => {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className={styles.projectsGrid}>
             {[1, 2, 3].map((i) => (
-              <Card key={i} className="animate-pulse">
-                <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              <Card key={i} className={styles.loadingCard}>
+                <div className={styles.loadingCardInner}></div>
               </Card>
             ))}
           </div>
         ) : projects.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className={styles.projectsGrid}>
             {projects.map((project) => (
               <ProjectCard
                 key={project.id}

@@ -5,6 +5,7 @@ import {
   WorkspaceDescriptionField,
   WorkspaceFormActions,
 } from "./workspaceFormModule";
+import styles from "./workspaceFormModule/WorkspaceForm.module.css";
 
 const WorkspaceForm = ({ workspace, onSubmit, onCancel, loading }) => {
   const [formData, setFormData] = useState({
@@ -34,7 +35,7 @@ const WorkspaceForm = ({ workspace, onSubmit, onCancel, loading }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
+    <form onSubmit={handleSubmit} className={styles.form}>
       <Input
         label="Workspace Name"
         type="text"

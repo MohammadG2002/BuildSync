@@ -2,6 +2,7 @@ import { AlertTriangle } from "lucide-react";
 import Button from "../../../components/common/Button";
 import Modal from "../../../components/common/Modal";
 import Input from "../../../components/common/Input";
+import styles from "./Settings.module.css";
 
 const DeleteWorkspaceModal = ({
   isOpen,
@@ -14,15 +15,17 @@ const DeleteWorkspaceModal = ({
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Delete Workspace" size="md">
-      <div className="space-y-4">
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-          <div className="flex gap-3">
-            <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+      <div className={styles.container}>
+        <div className={styles.deleteWarning}>
+          <div className={styles.deleteWarningContent}>
+            <AlertTriangle
+              className={`${styles.deleteWarningIcon} w-5 h-5 text-red-600`}
+            />
             <div>
-              <h4 className="text-sm font-semibold text-red-900 mb-1">
+              <h4 className={styles.deleteWarningTitle}>
                 This action cannot be undone
               </h4>
-              <p className="text-sm text-red-700">
+              <p className={styles.deleteWarningText}>
                 This will permanently delete the{" "}
                 <strong>{workspaceName}</strong> workspace, including all
                 projects, tasks, and member access.
@@ -31,8 +34,8 @@ const DeleteWorkspaceModal = ({
           </div>
         </div>
 
-        <div>
-          <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+        <div className={styles.deleteConfirmSection}>
+          <p className={styles.deleteConfirmLabel}>
             Please type <strong>{workspaceName}</strong> to confirm deletion:
           </p>
           <Input
@@ -43,7 +46,7 @@ const DeleteWorkspaceModal = ({
           />
         </div>
 
-        <div className="flex gap-3 justify-end pt-4">
+        <div className={styles.deleteModalActions}>
           <Button variant="secondary" onClick={onClose}>
             Cancel
           </Button>

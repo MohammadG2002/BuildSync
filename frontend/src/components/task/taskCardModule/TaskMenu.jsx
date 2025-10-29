@@ -1,28 +1,29 @@
 import { MoreVertical, Edit, Trash2 } from "lucide-react";
+import styles from "./TaskCard.module.css";
 
 const TaskMenu = ({ showMenu, onToggle, onEdit, onDelete, task }) => {
   return (
-    <div className="relative">
+    <div className={styles.menuContainer}>
       <button
-        className="menu-button p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 dark:bg-gray-800 transition-colors"
+        className={`menu-button ${styles.menuButton}`}
         onClick={(e) => {
           e.stopPropagation();
           onToggle();
         }}
       >
-        <MoreVertical className="w-4 h-4 text-gray-600 dark:text-gray-400 dark:text-gray-500" />
+        <MoreVertical className={styles.menuIcon} />
       </button>
 
       {showMenu && (
-        <div className="menu-dropdown absolute top-full right-0 mt-1 w-40 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-10">
+        <div className={`menu-dropdown ${styles.menuDropdown}`}>
           <button
             onClick={(e) => {
               e.stopPropagation();
               onEdit(task);
             }}
-            className="w-full text-left px-3 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-900 transition-colors flex items-center gap-2 text-sm"
+            className={styles.menuItem}
           >
-            <Edit className="w-4 h-4" />
+            <Edit className={styles.menuItemIcon} />
             <span>Edit</span>
           </button>
           <button
@@ -30,9 +31,9 @@ const TaskMenu = ({ showMenu, onToggle, onEdit, onDelete, task }) => {
               e.stopPropagation();
               onDelete(task);
             }}
-            className="w-full text-left px-3 py-2 text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2 text-sm"
+            className={`${styles.menuItem} ${styles.menuItemDelete}`}
           >
-            <Trash2 className="w-4 h-4" />
+            <Trash2 className={styles.menuItemIcon} />
             <span>Delete</span>
           </button>
         </div>

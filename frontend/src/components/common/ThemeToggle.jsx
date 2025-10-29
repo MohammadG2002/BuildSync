@@ -1,5 +1,6 @@
 import { useTheme } from "../../hooks/useTheme";
 import { MoonIcon, SunIcon } from "./themeToggle/index";
+import styles from "./themeToggle/ThemeToggle.module.css";
 
 const ThemeToggle = () => {
   const { theme, toggleTheme } = useTheme();
@@ -8,7 +9,7 @@ const ThemeToggle = () => {
     <button
       data-onboarding="theme-toggle"
       onClick={toggleTheme}
-      className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+      className={styles.button}
       aria-label="Toggle theme"
       title={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
     >

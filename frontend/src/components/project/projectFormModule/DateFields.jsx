@@ -1,8 +1,9 @@
 import Input from "../../common/Input";
+import styles from "./ProjectForm.module.css";
 
 const DateFields = ({ startDate, dueDate, onChange, dueDateError }) => {
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className={styles.dateGrid}>
       <Input
         label="Start Date"
         type="date"

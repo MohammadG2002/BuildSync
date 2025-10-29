@@ -1,30 +1,24 @@
+import styles from "./Profile.module.css";
+
 const AccountInfo = ({ user }) => {
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center py-3 border-b border-gray-100">
-        <div>
-          <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-            Account Status
-          </p>
-          <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
+    <div className={styles.accountInfo}>
+      <div className={styles.infoItem}>
+        <div className={styles.infoLabel}>
+          <p className={styles.infoLabelTitle}>Account Status</p>
+          <p className={styles.infoLabelDesc}>
             Your account is active and in good standing
           </p>
         </div>
-        <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">
-          Active
-        </span>
+        <span className={styles.infoBadge}>Active</span>
       </div>
 
-      <div className="flex justify-between items-center py-3 border-b border-gray-100">
-        <div>
-          <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-            Member Since
-          </p>
-          <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
-            When you joined the platform
-          </p>
+      <div className={styles.infoItem}>
+        <div className={styles.infoLabel}>
+          <p className={styles.infoLabelTitle}>Member Since</p>
+          <p className={styles.infoLabelDesc}>When you joined the platform</p>
         </div>
-        <p className="text-sm text-gray-900 dark:text-gray-100">
+        <p className={styles.infoValue}>
           {user?.createdDate
             ? new Date(user.createdDate).toLocaleDateString("en-US", {
                 year: "numeric",
@@ -35,18 +29,14 @@ const AccountInfo = ({ user }) => {
         </p>
       </div>
 
-      <div className="flex justify-between items-center py-3">
-        <div>
-          <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-            Email Verified
-          </p>
-          <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
+      <div className={`${styles.infoItem} ${styles.infoItemLast}`}>
+        <div className={styles.infoLabel}>
+          <p className={styles.infoLabelTitle}>Email Verified</p>
+          <p className={styles.infoLabelDesc}>
             Your email address has been verified
           </p>
         </div>
-        <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">
-          Verified
-        </span>
+        <span className={styles.infoBadge}>Verified</span>
       </div>
     </div>
   );

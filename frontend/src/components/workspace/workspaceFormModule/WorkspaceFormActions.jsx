@@ -1,8 +1,9 @@
 import Button from "../../common/Button";
+import styles from "./WorkspaceForm.module.css";
 
 const WorkspaceFormActions = ({ onCancel, loading, isEdit }) => {
   return (
-    <div className="flex gap-3 justify-end pt-4">
+    <div className={styles.actions}>
       <Button type="button" variant="secondary" onClick={onCancel}>
         Cancel
       </Button>

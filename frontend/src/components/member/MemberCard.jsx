@@ -7,6 +7,7 @@ import {
   MemberDropdownMenu,
   MemberJoinDate,
 } from "./memberCardModule";
+import styles from "./memberCardModule/MemberCard.module.css";
 
 const MemberCard = ({ member, currentUserId, onChangeRole, onRemove }) => {
   const [showMenu, setShowMenu] = useState(false);
@@ -26,19 +27,19 @@ const MemberCard = ({ member, currentUserId, onChangeRole, onRemove }) => {
   const isCurrentUser = member.id === currentUserId;
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md transition-shadow">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4 flex-1">
+    <div className={styles.card}>
+      <div className={styles.cardTop}>
+        <div className={styles.cardLeft}>
           <MemberAvatar name={member.name} />
           <MemberInfo member={member} isCurrentUser={isCurrentUser} />
         </div>
 
         {/* Role Badge and Menu */}
-        <div className="flex items-center gap-2">
+        <div className={styles.cardRight}>
           <MemberRoleBadge role={member.role} />
 
           {!isCurrentUser && (
-            <div className="relative" ref={menuRef}>
+            <div className={styles.menuContainer} ref={menuRef}>
               <MemberMenuButton onClick={() => setShowMenu(!showMenu)} />
 
               {showMenu && (

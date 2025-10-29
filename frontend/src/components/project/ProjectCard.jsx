@@ -6,6 +6,7 @@ import {
   ProjectProgress,
   ProjectStats,
 } from "./projectCardModule";
+import styles from "./projectCardModule/ProjectCard.module.css";
 
 const ProjectCard = ({ project, onEdit, onDelete, onClick }) => {
   const [showMenu, setShowMenu] = useState(false);
@@ -35,10 +36,7 @@ const ProjectCard = ({ project, onEdit, onDelete, onClick }) => {
   const progress = calculateProgress(project);
 
   return (
-    <div
-      className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition-shadow cursor-pointer relative"
-      onClick={handleClick}
-    >
+    <div className={styles.card} onClick={handleClick}>
       <div ref={menuRef}>
         <ProjectMenu
           showMenu={showMenu}

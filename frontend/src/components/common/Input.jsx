@@ -1,23 +1,26 @@
 import { forwardRef } from "react";
-import {
-  getInputClassName,
-  InputLabel,
-  InputIcon,
-  InputError,
-} from "./input/index";
+import InputLabel from "./input/InputLabel";
+import InputIcon from "./input/InputIcon";
+import InputError from "./input/InputError";
+import styles from "./input/Input.module.css";
 
 const Input = forwardRef(
   ({ label, error, icon: Icon, className = "", ...props }, ref) => {
+    const inputClasses = [
+      styles.input,
+      Icon ? styles.inputWithIcon : "",
+      error ? styles.inputError : "",
+      className,
+    ]
+      .filter(Boolean)
+      .join(" ");
+
     return (
-      <div className="w-full">
+      <div className={styles.inputContainer}>
         <InputLabel label={label} />
-        <div className="relative">
+        <div className={styles.inputWrapper}>
           <InputIcon Icon={Icon} />
-          <input
-            ref={ref}
-            className={getInputClassName(Icon, error, className)}
-            {...props}
-          />
+          <input ref={ref} className={inputClasses} {...props} />
         </div>
         <InputError error={error} />
       </div>

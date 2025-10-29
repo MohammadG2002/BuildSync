@@ -5,6 +5,7 @@ import {
   WorkspaceIcon,
   WorkspaceStats,
 } from "./workspaceCardModule";
+import styles from "./workspaceCardModule/WorkspaceCard.module.css";
 
 const WorkspaceCard = ({ workspace, onEdit, onDelete }) => {
   const navigate = useNavigate();
@@ -33,10 +34,7 @@ const WorkspaceCard = ({ workspace, onEdit, onDelete }) => {
   };
 
   return (
-    <div
-      className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition-shadow cursor-pointer relative"
-      onClick={handleClick}
-    >
+    <div className={styles.card} onClick={handleClick}>
       <div ref={menuRef}>
         <WorkspaceMenu
           showMenu={showMenu}
@@ -53,13 +51,11 @@ const WorkspaceCard = ({ workspace, onEdit, onDelete }) => {
         />
       </div>
 
-      <div className="flex items-start gap-4">
+      <div className={styles.content}>
         <WorkspaceIcon />
-        <div className="flex-1 min-w-0">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1 truncate">
-            {workspace.name}
-          </h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-3 line-clamp-2">
+        <div className={styles.contentArea}>
+          <h3 className={styles.title}>{workspace.name}</h3>
+          <p className={styles.description}>
             {workspace.description || "No description"}
           </p>
           <WorkspaceStats workspace={workspace} />

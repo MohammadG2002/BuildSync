@@ -1,35 +1,36 @@
 import { Link } from "react-router-dom";
+import { useTheme } from "../../../hooks/useTheme";
+import assets from "../../../assets/assets";
+import styles from "./AuthLayout.module.css";
 
 const AuthLayout = ({ children, title, subtitle }) => {
+  const { isDark } = useTheme();
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-blue-100 px-4 py-12">
-      <div className="w-full max-w-md">
+    <div className={`${styles.container} ${isDark ? styles.dark : ""}`}>
+      <div className={styles.wrapper}>
         {/* Logo/Brand */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-primary-600 mb-2">
-            {import.meta.env.VITE_APP_NAME || "ProjectHub"}
+        <div className={styles.header}>
+          <h1 className={styles.title}>
+            <img
+              src={assets.Logo}
+              alt="BuildSync Logo"
+              className={styles.logo}
+            />
+            {import.meta.env.VITE_APP_NAME || "BuildSync"}
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">
-            {subtitle}
-          </p>
+          <p className={styles.subtitle}>{subtitle}</p>
         </div>
 
         {/* Form Container */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8">
-          {title && (
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6 text-center">
-              {title}
-            </h2>
-          )}
+        <div className={styles.formContainer}>
+          {title && <h2 className={styles.formTitle}>{title}</h2>}
           {children}
         </div>
 
         {/* Back to Landing */}
-        <div className="text-center mt-6">
-          <Link
-            to="/"
-            className="text-gray-600 dark:text-gray-400 dark:text-gray-500 hover:text-gray-800 dark:text-gray-100 text-sm"
-          >
+        <div className={styles.footer}>
+          <Link to="/" className={styles.backLink}>
             ← Back to home
           </Link>
         </div>

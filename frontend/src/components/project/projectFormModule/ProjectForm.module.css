@@ -1,0 +1,96 @@
+/* ProjectForm */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* DescriptionField */
+.label {
+  display: block;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.25rem;
+}
+
+:global(.dark) .label {
+  color: #d1d5db;
+}
+
+.textarea {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  outline: none;
+  transition: all 0.2s;
+  background-color: white;
+  color: #1f2937;
+}
+
+.textarea:focus {
+  box-shadow: 0 0 0 2px #3b82f6;
+  border-color: #3b82f6;
+}
+
+.textarea::placeholder {
+  color: #9ca3af;
+}
+
+:global(.dark) .textarea {
+  background-color: #1f2937;
+  border-color: #4b5563;
+  color: #f3f4f6;
+}
+
+:global(.dark) .textarea:focus {
+  border-color: #3b82f6;
+}
+
+:global(.dark) .textarea::placeholder {
+  color: #6b7280;
+}
+
+/* StatusField */
+.select {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  outline: none;
+  transition: all 0.2s;
+  background-color: white;
+  color: #1f2937;
+}
+
+.select:focus {
+  box-shadow: 0 0 0 2px #3b82f6;
+  border-color: #3b82f6;
+}
+
+:global(.dark) .select {
+  background-color: #1f2937;
+  border-color: #4b5563;
+  color: #f3f4f6;
+}
+
+:global(.dark) .select:focus {
+  border-color: #3b82f6;
+}
+
+/* DateFields */
+.dateGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+/* FormActions */
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  padding-top: 1rem;
+}

@@ -1,8 +1,9 @@
 import Button from "../Button";
+import styles from "./ErrorBoundary.module.css";
 
 const ErrorActions = ({ onReset, onGoHome }) => {
   return (
-    <div className="flex gap-3">
+    <div className={styles.actions}>
       <Button variant="primary" onClick={onReset}>
         Try Again
       </Button>

@@ -1,6 +1,7 @@
 import SearchResultItem from "./SearchResultItem";
 import SearchEmptyState from "./SearchEmptyState";
 import SearchNoResults from "./SearchNoResults";
+import styles from "./GlobalSearch.module.css";
 
 const SearchResults = ({ searchQuery, results, onResultClick }) => {
   if (!searchQuery) {
@@ -12,7 +13,7 @@ const SearchResults = ({ searchQuery, results, onResultClick }) => {
   }
 
   return (
-    <div className="py-2">
+    <div className={styles.results}>
       {results.map((result, index) => (
         <SearchResultItem
           key={`${result.type}-${result.id || index}`}

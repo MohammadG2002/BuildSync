@@ -1,0 +1,285 @@
+/* ActivityFeed Container */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ActivityFilters */
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.filterButton {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background-color 0.2s, color 0.2s;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.filterButtonActive {
+  background-color: #2563eb;
+  color: white;
+}
+
+.filterButtonInactive {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.filterButtonInactive:hover {
+  background-color: #e5e7eb;
+}
+
+:global(.dark) .filterButtonInactive {
+  background-color: #1f2937;
+  color: #d1d5db;
+}
+
+:global(.dark) .filterButtonInactive:hover {
+  background-color: #374151;
+}
+
+/* ActivityList */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ActivityItem */
+.item {
+  display: flex;
+  gap: 1rem;
+  padding: 0.75rem;
+  margin: -0.75rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.item:hover {
+  background-color: #f9fafb;
+}
+
+:global(.dark) .item:hover {
+  background-color: rgba(31, 41, 55, 0.5);
+}
+
+.itemContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.itemTop {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.itemTopLeft {
+  flex: 1;
+}
+
+.itemText {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #111827;
+}
+
+:global(.dark) .itemText {
+  color: #f3f4f6;
+}
+
+.itemUserName {
+  font-weight: 500;
+}
+
+.itemDescription {
+  color: #4b5563;
+}
+
+:global(.dark) .itemDescription {
+  color: #9ca3af;
+}
+
+.itemMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.itemTime {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: #6b7280;
+}
+
+:global(.dark) .itemTime {
+  color: #6b7280;
+}
+
+.itemSeparator {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: #9ca3af;
+}
+
+:global(.dark) .itemSeparator {
+  color: #4b5563;
+}
+
+.itemLabel {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: #6b7280;
+}
+
+:global(.dark) .itemLabel {
+  color: #6b7280;
+}
+
+.itemAvatar {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 9999px;
+}
+
+/* ActivityIcon */
+.iconContainer {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* ActivityEmptyState */
+.emptyState {
+  text-align: center;
+  padding: 3rem 0;
+}
+
+.emptyIcon {
+  width: 3rem;
+  height: 3rem;
+  color: #9ca3af;
+  margin: 0 auto 0.75rem;
+}
+
+:global(.dark) .emptyIcon {
+  color: #4b5563;
+}
+
+.emptyText {
+  color: #4b5563;
+}
+
+:global(.dark) .emptyText {
+  color: #9ca3af;
+}
+
+/* ActivitySkeleton */
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.skeletonItem {
+  display: flex;
+  gap: 1rem;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.skeletonIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: #e5e7eb;
+  border-radius: 9999px;
+  flex-shrink: 0;
+}
+
+:global(.dark) .skeletonIcon {
+  background-color: #374151;
+}
+
+.skeletonContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.skeletonLine {
+  height: 1rem;
+  background-color: #e5e7eb;
+  border-radius: 0.25rem;
+}
+
+:global(.dark) .skeletonLine {
+  background-color: #374151;
+}
+
+.skeletonLineWide {
+  width: 75%;
+}
+
+.skeletonLineNarrow {
+  width: 25%;
+  height: 0.75rem;
+}
+
+/* Load More Button */
+.loadMore {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #2563eb;
+  font-weight: 500;
+  transition: color 0.2s;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.loadMore:hover {
+  color: #1d4ed8;
+}
+
+:global(.dark) .loadMore {
+  color: #60a5fa;
+}
+
+:global(.dark) .loadMore:hover {
+  color: #93c5fd;
+}

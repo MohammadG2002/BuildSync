@@ -1,5 +1,6 @@
 import { ChevronLeft, ChevronRight, Check } from "lucide-react";
 import Button from "../Button";
+import styles from "./Onboarding.module.css";
 
 const StepNavigation = ({
   currentStep,
@@ -8,17 +9,14 @@ const StepNavigation = ({
   onPrevious,
   onNext,
 }) => (
-  <div className="flex items-center justify-between gap-3">
-    <button
-      onClick={onSkip}
-      className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
-    >
+  <div className={styles.navigation}>
+    <button onClick={onSkip} className={styles.skipButton}>
       Skip Tour
     </button>
-    <div className="flex gap-2">
+    <div className={styles.navButtons}>
       {currentStep > 0 && (
         <Button variant="outline" size="sm" onClick={onPrevious}>
-          <ChevronLeft className="w-4 h-4" />
+          <ChevronLeft className={styles.navIcon} />
           Previous
         </Button>
       )}
@@ -26,12 +24,12 @@ const StepNavigation = ({
         {currentStep === totalSteps - 1 ? (
           <>
             Finish
-            <Check className="w-4 h-4" />
+            <Check className={styles.navIcon} />
           </>
         ) : (
           <>
             Next
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className={styles.navIcon} />
           </>
         )}
       </Button>

@@ -1,5 +1,6 @@
 import ProfileButton from "./ProfileButton";
 import ProfileDropdown from "./ProfileDropdown";
+import styles from "./Navbar.module.css";
 
 const ProfileMenu = ({
   user,
@@ -11,7 +12,7 @@ const ProfileMenu = ({
   menuRef,
 }) => {
   return (
-    <div className="relative" ref={menuRef}>
+    <div className={styles.profileContainer} ref={menuRef}>
       <ProfileButton user={user} onClick={onToggleMenu} />
 
       {showMenu && (

@@ -1,9 +1,10 @@
 import { formatDate } from "../../../utils/helpers";
+import styles from "./TaskDetailsModal.module.css";
 
 const ModalFooter = ({ createdAt, updatedAt }) => {
   return (
-    <div className="border-t border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-900">
-      <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+    <div className={styles.footer}>
+      <div className={styles.footerContent}>
         <span>Created {formatDate(createdAt)}</span>
         <span>Updated {formatDate(updatedAt)}</span>
       </div>

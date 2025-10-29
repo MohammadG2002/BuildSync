@@ -1,20 +1,19 @@
 import { AlertTriangle, Trash2 } from "lucide-react";
 import Button from "../../../components/common/Button";
 import Card from "../../../components/common/Card";
+import styles from "./Settings.module.css";
 
 const DangerZone = ({ onDeleteClick }) => {
   return (
     <Card>
-      <div className="border-2 border-red-200 rounded-lg p-6 bg-red-50">
-        <div className="flex items-start gap-4">
-          <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
-            <AlertTriangle className="w-6 h-6 text-red-600" />
+      <div className={styles.dangerZone}>
+        <div className={styles.dangerContent}>
+          <div className={styles.dangerIcon}>
+            <AlertTriangle className="w-6 h-6" />
           </div>
-          <div className="flex-1">
-            <h3 className="text-lg font-semibold text-red-900 mb-2">
-              Danger Zone
-            </h3>
-            <p className="text-sm text-red-700 mb-4">
+          <div className={styles.dangerDetails}>
+            <h3 className={styles.dangerTitle}>Danger Zone</h3>
+            <p className={styles.dangerDescription}>
               Deleting this workspace is permanent and cannot be undone. All
               projects, tasks, and data will be permanently deleted.
             </p>

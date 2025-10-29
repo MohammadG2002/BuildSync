@@ -1,29 +1,32 @@
-import { Bell, Wifi, WifiOff } from "lucide-react";
+import { Bell } from "lucide-react";
+import styles from "./NotificationBell.module.css";
 
 const NotificationButton = ({ unreadCount, isConnected, onClick }) => {
+  const connectionClass = isConnected
+    ? styles.connectionIndicatorConnected
+    : styles.connectionIndicatorDisconnected;
+
   return (
     <button
       onClick={onClick}
-      className="relative p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group"
+      className={styles.button}
       title={
         isConnected
           ? "Real-time notifications active"
           : "Notifications (offline)"
       }
     >
-      <Bell className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+      <Bell className={styles.bellIcon} />
 
       {/* Connection indicator */}
       <span
-        className={`absolute bottom-1 right-1 w-2 h-2 rounded-full ${
-          isConnected ? "bg-green-500" : "bg-gray-400"
-        }`}
+        className={`${styles.connectionIndicator} ${connectionClass}`}
         title={isConnected ? "Connected" : "Disconnected"}
       />
 
       {/* Unread count */}
       {unreadCount > 0 && (
-        <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-medium">
+        <span className={styles.unreadBadge}>
           {unreadCount > 9 ? "9+" : unreadCount}
         </span>
       )}

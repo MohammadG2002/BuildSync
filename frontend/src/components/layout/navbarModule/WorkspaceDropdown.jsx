@@ -1,4 +1,5 @@
 import WorkspaceDropdownItem from "./WorkspaceDropdownItem";
+import styles from "./Navbar.module.css";
 
 const WorkspaceDropdown = ({
   workspaces,
@@ -7,11 +8,9 @@ const WorkspaceDropdown = ({
   onCreateNew,
 }) => {
   return (
-    <div className="absolute top-full left-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
-      <div className="px-3 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">
-        Your Workspaces
-      </div>
-      <div className="max-h-64 overflow-y-auto">
+    <div className={styles.workspaceDropdown}>
+      <div className={styles.workspaceDropdownHeader}>Your Workspaces</div>
+      <div className={styles.workspaceList}>
         {workspaces.length > 0 ? (
           workspaces.map((workspace) => (
             <WorkspaceDropdownItem
@@ -22,16 +21,13 @@ const WorkspaceDropdown = ({
             />
           ))
         ) : (
-          <div className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400">
+          <div className={styles.workspaceEmptyState}>
             No workspaces available
           </div>
         )}
       </div>
-      <div className="border-t border-gray-200 dark:border-gray-700 mt-2 pt-2">
-        <button
-          onClick={onCreateNew}
-          className="w-full text-left px-3 py-2 text-sm text-primary-600 dark:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-        >
+      <div className={styles.workspaceDropdownDivider}>
+        <button onClick={onCreateNew} className={styles.workspaceCreateButton}>
           + Create New Workspace
         </button>
       </div>

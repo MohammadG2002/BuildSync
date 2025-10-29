@@ -1,0 +1,139 @@
+/* ErrorFallback Container */
+.container {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+:global(.dark) .container {
+  background-color: #111827;
+}
+
+.card {
+  max-width: 28rem;
+  width: 100%;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  padding: 2rem;
+}
+
+:global(.dark) .card {
+  background-color: #1f2937;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.title {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+:global(.dark) .title {
+  color: #f3f4f6;
+}
+
+.description {
+  color: #4b5563;
+  margin-bottom: 1.5rem;
+}
+
+:global(.dark) .description {
+  color: #9ca3af;
+}
+
+/* ErrorIcon */
+.iconContainer {
+  width: 4rem;
+  height: 4rem;
+  background-color: #fee2e2;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+:global(.dark) .iconContainer {
+  background-color: rgba(220, 38, 38, 0.3);
+}
+
+.icon {
+  width: 2rem;
+  height: 2rem;
+  color: #dc2626;
+}
+
+:global(.dark) .icon {
+  color: #f87171;
+}
+
+/* ErrorDetails */
+.details {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.detailsToggle {
+  text-align: left;
+  background-color: #f9fafb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+:global(.dark) .detailsToggle {
+  background-color: #111827;
+}
+
+.detailsSummary {
+  cursor: pointer;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+:global(.dark) .detailsSummary {
+  color: #d1d5db;
+}
+
+.detailsError {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: #dc2626;
+  font-family: monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+:global(.dark) .detailsError {
+  color: #f87171;
+}
+
+.detailsStack {
+  margin-top: 0.5rem;
+  color: #4b5563;
+}
+
+:global(.dark) .detailsStack {
+  color: #9ca3af;
+}
+
+/* ErrorActions */
+.actions {
+  display: flex;
+  gap: 0.75rem;
+}

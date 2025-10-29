@@ -1,7 +1,6 @@
 import { Upload } from "lucide-react";
 import Button from "../Button";
-import getDropZoneClassName from "./getDropZoneClassName";
-import getUploadIconClassName from "./getUploadIconClassName";
+import styles from "./FileUpload.module.css";
 
 const DropZone = ({
   fileInputRef,
@@ -16,13 +15,20 @@ const DropZone = ({
   maxFiles,
   maxSize,
 }) => {
+  const dropZoneClass = dragActive
+    ? `${styles.dropZone} ${styles.dropZoneActive}`
+    : styles.dropZone;
+  const iconClass = dragActive
+    ? `${styles.uploadIcon} ${styles.uploadIconActive}`
+    : styles.uploadIcon;
+
   return (
     <div
       onDragEnter={onDragEnter}
       onDragLeave={onDragLeave}
       onDragOver={onDragOver}
       onDrop={onDrop}
-      className={getDropZoneClassName(dragActive)}
+      className={dropZoneClass}
     >
       <input
         ref={fileInputRef}
@@ -30,15 +36,13 @@ const DropZone = ({
         multiple={multiple}
         accept={acceptedTypes.join(",")}
         onChange={onChange}
-        className="hidden"
+        className={styles.dropZoneInput}
       />
 
-      <Upload className={getUploadIconClassName(dragActive)} />
+      <Upload className={iconClass} />
 
-      <p className="text-gray-700 dark:text-gray-300 font-medium mb-1">
-        Drop files here or click to upload
-      </p>
-      <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+      <p className={styles.dropZoneTitle}>Drop files here or click to upload</p>
+      <p className={styles.dropZoneSubtitle}>
         Maximum {maxFiles} files, up to {maxSize}MB each
       </p>
 

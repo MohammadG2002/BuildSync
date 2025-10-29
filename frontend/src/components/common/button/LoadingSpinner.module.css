@@ -1,0 +1,39 @@
+/* LoadingSpinner CSS Module */
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+.xs {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.sm {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.md {
+  width: 1rem;
+  height: 1rem;
+}
+
+.lg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.xl {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

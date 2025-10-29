@@ -1,4 +1,5 @@
 import MemberGrid from "./MemberGrid";
+import styles from "../memberCardModule/MemberCard.module.css";
 
 const MemberRoleGroup = ({
   role,
@@ -10,8 +11,8 @@ const MemberRoleGroup = ({
   if (members.length === 0) return null;
 
   return (
-    <div>
-      <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 uppercase tracking-wide">
+    <div className={styles.roleGroup}>
+      <h3 className={styles.roleGroupHeader}>
         {role}s ({members.length})
       </h3>
       <MemberGrid

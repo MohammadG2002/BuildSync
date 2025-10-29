@@ -7,6 +7,7 @@ import ActivityFilters from "./activity/ActivityFilters";
 import ActivityItem from "./activity/ActivityItem";
 import ActivitySkeleton from "./activity/ActivitySkeleton";
 import ActivityEmptyState from "./activity/ActivityEmptyState";
+import styles from "./activity/ActivityFeed.module.css";
 
 const ActivityFeed = ({
   workspaceId = null,
@@ -50,14 +51,14 @@ const ActivityFeed = ({
   }
 
   return (
-    <div className="space-y-4">
+    <div className={styles.container}>
       {/* Filters */}
       {showFilters && (
         <ActivityFilters filter={filter} onFilterChange={setFilter} />
       )}
 
       {/* Activity List */}
-      <div className="space-y-4">
+      <div className={styles.list}>
         {filteredActivities.length === 0 ? (
           <ActivityEmptyState />
         ) : (
@@ -82,7 +83,7 @@ const ActivityFeed = ({
           onClick={() => {
             /* TODO: Load more activities */
           }}
-          className="w-full py-2 text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium transition-colors"
+          className={styles.loadMore}
         >
           Load More Activities
         </button>

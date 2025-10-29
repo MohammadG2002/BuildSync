@@ -8,6 +8,7 @@ import {
   SidebarNav,
   SidebarLogout,
 } from "./sidebarModule";
+import styles from "./sidebarModule/Sidebar.module.css";
 
 const Sidebar = ({ isOpen, onClose }) => {
   const { logout } = useAuth();
@@ -27,17 +28,20 @@ const Sidebar = ({ isOpen, onClose }) => {
     }
   }, [currentWorkspace]);
 
+  const sidebarClasses = [
+    styles.sidebar,
+    collapsed ? styles.sidebarCollapsed : styles.sidebarExpanded,
+    isOpen ? styles.sidebarOpen : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <>
       <SidebarBackdrop isOpen={isOpen} onClose={onClose} />
 
       {/* Sidebar */}
-      <aside
-        data-onboarding="sidebar"
-        className={`fixed lg:static inset-y-0 left-0 z-50 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 flex flex-col transition-all duration-300 ${
-          collapsed ? "w-20" : "w-64"
-        } ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
-      >
+      <aside data-onboarding="sidebar" className={sidebarClasses}>
         <SidebarHeader
           collapsed={collapsed}
           onCollapse={() => setCollapsed(!collapsed)}

@@ -8,6 +8,7 @@ import {
   AttachmentsField,
   TaskFormActions,
 } from "./taskFormModule";
+import styles from "./taskFormModule/TaskForm.module.css";
 
 const TaskForm = ({ task, onSubmit, onCancel, loading, members = [] }) => {
   const [formData, setFormData] = useState({
@@ -43,7 +44,7 @@ const TaskForm = ({ task, onSubmit, onCancel, loading, members = [] }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
+    <form onSubmit={handleSubmit} className={styles.form}>
       <Input
         label="Task Title"
         type="text"

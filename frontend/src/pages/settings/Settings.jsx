@@ -14,6 +14,7 @@ import {
   DeleteWorkspaceModal,
   validateWorkspaceSettings,
 } from "./settingsModule";
+import styles from "./settingsModule/Settings.module.css";
 
 const Settings = () => {
   const { workspaceId } = useParams();
@@ -102,9 +103,9 @@ const Settings = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className={styles.container}>
       {/* Header */}
-      <div className="flex items-center gap-4">
+      <div className={styles.header}>
         <Button
           variant="ghost"
           onClick={() => navigate(`/app/workspaces/${workspaceId}`)}
@@ -112,11 +113,9 @@ const Settings = () => {
         >
           <ArrowLeft className="w-5 h-5" />
         </Button>
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-            Workspace Settings
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-1">
+        <div className={styles.headerContent}>
+          <h1 className={styles.title}>Workspace Settings</h1>
+          <p className={styles.subtitle}>
             Manage {workspace.name} settings and preferences
           </p>
         </div>

@@ -1,8 +1,9 @@
 import MemberCard from "../MemberCard";
+import styles from "../memberCardModule/MemberCard.module.css";
 
 const MemberGrid = ({ members, currentUserId, onChangeRole, onRemove }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className={styles.memberGrid}>
       {members.map((member) => (
         <MemberCard
           key={member.id}

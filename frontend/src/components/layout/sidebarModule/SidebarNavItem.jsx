@@ -1,10 +1,19 @@
 import { NavLink, useLocation } from "react-router-dom";
+import styles from "./Sidebar.module.css";
 
 const SidebarNavItem = ({ item, currentWorkspace, collapsed }) => {
   const location = useLocation();
   const Icon = item.icon;
   const isDisabled = item.requiresWorkspace && !currentWorkspace;
   const isActive = item.path !== "#" && location.pathname === item.path;
+
+  const navItemClasses = [
+    styles.navItem,
+    isActive ? styles.navItemActive : "",
+    isDisabled ? styles.navItemDisabled : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <NavLink
@@ -14,18 +23,10 @@ const SidebarNavItem = ({ item, currentWorkspace, collapsed }) => {
           e.preventDefault();
         }
       }}
-      className={() =>
-        `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${
-          isActive
-            ? "bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400"
-            : isDisabled
-            ? "text-gray-400 dark:text-gray-600 cursor-not-allowed"
-            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
-        }`
-      }
+      className={navItemClasses}
     >
-      <Icon className="w-5 h-5 flex-shrink-0" />
-      {!collapsed && <span className="font-medium">{item.name}</span>}
+      <Icon className={styles.navItemIcon} />
+      {!collapsed && <span className={styles.navItemText}>{item.name}</span>}
     </NavLink>
   );
 };

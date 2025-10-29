@@ -1,12 +1,13 @@
 import { getInitials, generateColor } from "../../../utils/helpers";
+import styles from "./MemberCard.module.css";
 
-const MemberAvatar = ({ name }) => {
+const MemberAvatar = ({ member }) => {
   return (
     <div
-      className="w-12 h-12 rounded-full flex items-center justify-center text-white text-lg font-semibold flex-shrink-0"
-      style={{ backgroundColor: generateColor(name) }}
+      className={styles.avatar}
+      style={{ backgroundColor: generateColor(member.userId) }}
     >
-      {getInitials(name)}
+      {getInitials(member.name)}
     </div>
   );
 };

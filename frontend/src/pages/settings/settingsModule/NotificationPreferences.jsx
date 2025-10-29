@@ -1,67 +1,57 @@
 import Card from "../../../components/common/Card";
+import styles from "./Settings.module.css";
 
 const NotificationPreferences = () => {
   return (
     <Card title="Notification Preferences">
-      <div className="space-y-4">
-        <label className="flex items-start gap-3 cursor-pointer">
+      <div className={styles.preferencesList}>
+        <label className={styles.preferenceItem}>
           <input
             type="checkbox"
             defaultChecked
-            className="w-5 h-5 mt-0.5 text-primary-600 rounded border-gray-300 dark:border-gray-600 focus:ring-primary-500"
+            className={styles.preferenceCheckbox}
           />
-          <div>
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Task Assignments
-            </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+          <div className={styles.preferenceLabel}>
+            <p className={styles.preferenceLabelTitle}>Task Assignments</p>
+            <p className={styles.preferenceLabelDesc}>
               Get notified when you're assigned to a task
             </p>
           </div>
         </label>
 
-        <label className="flex items-start gap-3 cursor-pointer">
+        <label className={styles.preferenceItem}>
           <input
             type="checkbox"
             defaultChecked
-            className="w-5 h-5 mt-0.5 text-primary-600 rounded border-gray-300 dark:border-gray-600 focus:ring-primary-500"
+            className={styles.preferenceCheckbox}
           />
-          <div>
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Project Updates
-            </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+          <div className={styles.preferenceLabel}>
+            <p className={styles.preferenceLabelTitle}>Project Updates</p>
+            <p className={styles.preferenceLabelDesc}>
               Get notified about project changes and updates
             </p>
           </div>
         </label>
 
-        <label className="flex items-start gap-3 cursor-pointer">
+        <label className={styles.preferenceItem}>
           <input
             type="checkbox"
             defaultChecked
-            className="w-5 h-5 mt-0.5 text-primary-600 rounded border-gray-300 dark:border-gray-600 focus:ring-primary-500"
+            className={styles.preferenceCheckbox}
           />
-          <div>
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              New Members
-            </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+          <div className={styles.preferenceLabel}>
+            <p className={styles.preferenceLabelTitle}>New Members</p>
+            <p className={styles.preferenceLabelDesc}>
               Get notified when new members join the workspace
             </p>
           </div>
         </label>
 
-        <label className="flex items-start gap-3 cursor-pointer">
-          <input
-            type="checkbox"
-            className="w-5 h-5 mt-0.5 text-primary-600 rounded border-gray-300 dark:border-gray-600 focus:ring-primary-500"
-          />
-          <div>
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Daily Digest
-            </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+        <label className={styles.preferenceItem}>
+          <input type="checkbox" className={styles.preferenceCheckbox} />
+          <div className={styles.preferenceLabel}>
+            <p className={styles.preferenceLabelTitle}>Daily Digest</p>
+            <p className={styles.preferenceLabelDesc}>
               Receive a daily summary of workspace activity
             </p>
           </div>

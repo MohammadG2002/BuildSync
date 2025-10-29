@@ -1,12 +1,11 @@
 import KeyBadge from "./KeyBadge";
+import styles from "./KeyboardShortcuts.module.css";
 
 const ProTips = () => {
   return (
-    <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-      <h4 className="text-sm font-semibold text-blue-900 dark:text-blue-300 mb-2">
-        💡 Pro Tips
-      </h4>
-      <ul className="text-sm text-blue-800 dark:text-blue-400 space-y-1">
+    <div className={styles.proTips}>
+      <h4 className={styles.proTipsTitle}>💡 Pro Tips</h4>
+      <ul className={styles.proTipsList}>
         <li>
           • Most shortcuts work globally, even when not focused on an input
         </li>

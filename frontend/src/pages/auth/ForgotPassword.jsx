@@ -6,6 +6,7 @@ import Input from "../../components/common/Input";
 import * as authService from "../../services/authService";
 import toast from "react-hot-toast";
 import { validateEmail } from "./authModule";
+import styles from "./authModule/Auth.module.css";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -39,34 +40,34 @@ const ForgotPassword = () => {
 
   if (sent) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-blue-100 px-4">
-        <div className="w-full max-w-md">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8 text-center">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Mail className="w-8 h-8 text-green-600" />
-            </div>
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">
-              Check your email
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-6">
-              We've sent a password reset link to <strong>{email}</strong>
-            </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500 mb-6">
-              Didn't receive the email? Check your spam folder or try again.
-            </p>
-            <div className="space-y-3">
-              <Button
-                onClick={() => setSent(false)}
-                variant="outline"
-                className="w-full"
-              >
-                Try another email
-              </Button>
-              <Link to="/login">
-                <Button variant="ghost" className="w-full">
-                  Back to login
+      <div className={styles.forgotContainer}>
+        <div className={styles.forgotWrapper}>
+          <div className={styles.forgotCard}>
+            <div className={styles.successContainer}>
+              <div className={styles.successIcon}>
+                <Mail className={styles.successIconSvg} />
+              </div>
+              <h2 className={styles.successTitle}>Check your email</h2>
+              <p className={styles.successDescription}>
+                We've sent a password reset link to <strong>{email}</strong>
+              </p>
+              <p className={styles.successHint}>
+                Didn't receive the email? Check your spam folder or try again.
+              </p>
+              <div className={styles.successActions}>
+                <Button
+                  onClick={() => setSent(false)}
+                  variant="outline"
+                  className="w-full"
+                >
+                  Try another email
                 </Button>
-              </Link>
+                <Link to="/login">
+                  <Button variant="ghost" className="w-full">
+                    Back to login
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -75,29 +76,25 @@ const ForgotPassword = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-blue-100 px-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-primary-600 mb-2">
+    <div className={styles.forgotContainer}>
+      <div className={styles.forgotWrapper}>
+        <div className={styles.forgotHeader}>
+          <h1 className={styles.forgotTitle}>
             {import.meta.env.VITE_APP_NAME || "ProjectHub"}
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">
-            Reset your password
-          </p>
+          <p className={styles.forgotSubtitle}>Reset your password</p>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8">
-          <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">
-              Forgot your password?
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 text-sm">
+        <div className={styles.forgotCard}>
+          <div className={styles.forgotCardHeader}>
+            <h2 className={styles.forgotCardTitle}>Forgot your password?</h2>
+            <p className={styles.forgotCardDescription}>
               Enter your email address and we'll send you a link to reset your
               password.
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className={styles.authForm}>
             <Input
               label="Email"
               type="email"
@@ -124,22 +121,16 @@ const ForgotPassword = () => {
             </Button>
           </form>
 
-          <div className="mt-6">
-            <Link
-              to="/login"
-              className="flex items-center justify-center gap-2 text-gray-600 dark:text-gray-400 dark:text-gray-500 hover:text-gray-800 dark:text-gray-100 text-sm"
-            >
-              <ArrowLeft className="w-4 h-4" />
+          <div className={styles.linkWrapper}>
+            <Link to="/login" className={styles.backLink}>
+              <ArrowLeft className={styles.backIcon} />
               Back to login
             </Link>
           </div>
         </div>
 
-        <div className="text-center mt-6">
-          <Link
-            to="/"
-            className="text-gray-600 dark:text-gray-400 dark:text-gray-500 hover:text-gray-800 dark:text-gray-100 text-sm"
-          >
+        <div className={styles.linkWrapperCenter}>
+          <Link to="/" className={styles.backLink}>
             ← Back to home
           </Link>
         </div>

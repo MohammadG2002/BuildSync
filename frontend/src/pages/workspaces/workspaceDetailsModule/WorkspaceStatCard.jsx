@@ -1,26 +1,22 @@
 import Card from "../../../components/common/Card";
+import styles from "../WorkspaceDetails.module.css";
 
 const WorkspaceStatCard = ({ label, value, icon: Icon, color }) => {
-  const colorClasses = {
-    blue: "bg-blue-100 text-blue-600",
-    green: "bg-green-100 text-green-600",
-    purple: "bg-purple-100 text-purple-600",
+  const getColorClass = (color) => {
+    if (color === "blue") return styles.statIconBlue;
+    if (color === "green") return styles.statIconGreen;
+    if (color === "purple") return styles.statIconPurple;
+    return "";
   };
 
   return (
     <Card>
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">
-            {label}
-          </p>
-          <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-            {value}
-          </p>
+      <div className={styles.statCard}>
+        <div className={styles.statInfo}>
+          <p className={styles.statLabel}>{label}</p>
+          <p className={styles.statValue}>{value}</p>
         </div>
-        <div
-          className={`w-12 h-12 ${colorClasses[color]} rounded-lg flex items-center justify-center`}
-        >
+        <div className={`${styles.statIcon} ${getColorClass(color)}`}>
           <Icon className="w-6 h-6" />
         </div>
       </div>

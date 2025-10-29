@@ -6,6 +6,7 @@ import {
   TaskDescription,
   TaskMeta,
 } from "./taskCardModule";
+import styles from "./taskCardModule/TaskCard.module.css";
 
 const TaskCard = ({ task, onEdit, onDelete, onStatusChange, onClick }) => {
   const [showMenu, setShowMenu] = useState(false);
@@ -34,11 +35,8 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange, onClick }) => {
   };
 
   return (
-    <div
-      className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md transition-shadow cursor-pointer"
-      onClick={handleClick}
-    >
-      <div className="flex items-start gap-3">
+    <div className={styles.card} onClick={handleClick}>
+      <div className={styles.cardContent}>
         <TaskCheckbox
           checked={task.status === "completed"}
           onChange={(e) => {
@@ -47,8 +45,8 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange, onClick }) => {
           }}
         />
 
-        <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between mb-2">
+        <div className={styles.contentArea}>
+          <div className={styles.header}>
             <TaskTitle
               title={task.title}
               completed={task.status === "completed"}

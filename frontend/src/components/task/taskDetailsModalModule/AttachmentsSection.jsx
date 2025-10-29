@@ -1,6 +1,7 @@
 import { Paperclip, Download, Trash2 } from "lucide-react";
 import { formatDate } from "../../../utils/helpers";
 import { formatFileSize } from "./formatFileSize";
+import styles from "./TaskDetailsModal.module.css";
 
 const AttachmentsSection = ({
   attachments,
@@ -11,16 +12,16 @@ const AttachmentsSection = ({
 }) => {
   return (
     <div>
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-2">
-          <Paperclip className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-          <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+      <div className={styles.sectionHeader}>
+        <div className={styles.metadataItemHeader}>
+          <Paperclip className={styles.metadataIcon} />
+          <h3 className={styles.metadataItemTitle}>
             Attachments {attachments?.length > 0 && `(${attachments.length})`}
           </h3>
         </div>
         <button
           onClick={() => fileInputRef.current?.click()}
-          className="text-sm text-primary-600 dark:text-primary-400 hover:underline"
+          className={styles.addFileButton}
         >
           Add File
         </button>
@@ -29,52 +30,47 @@ const AttachmentsSection = ({
           type="file"
           multiple
           onChange={onAddFile}
-          className="hidden"
+          className={styles.fileInput}
         />
       </div>
       {attachments && attachments.length > 0 ? (
-        <div className="space-y-2">
+        <div className={styles.attachmentsList}>
           {attachments.map((attachment, index) => (
-            <div
-              key={index}
-              className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600"
-            >
-              <div className="flex items-center gap-3 flex-1 min-w-0">
-                <Paperclip className="w-4 h-4 text-gray-600 dark:text-gray-400 flex-shrink-0" />
-                <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+            <div key={index} className={styles.attachmentItem}>
+              <div className={styles.attachmentContent}>
+                <Paperclip className={styles.attachmentIcon} />
+                <div className={styles.attachmentInfo}>
+                  <p className={styles.attachmentName}>
                     {attachment.originalName || attachment.filename}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className={styles.attachmentMeta}>
                     {attachment.size && formatFileSize(attachment.size)} •{" "}
                     {attachment.uploadedAt && formatDate(attachment.uploadedAt)}
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
+              <div className={styles.attachmentActions}>
                 {attachment.url && (
                   <a
                     href={attachment.url}
                     download
-                    className="p-1.5 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
+                    className={styles.downloadButton}
                   >
-                    <Download className="w-4 h-4" />
+                    <Download className={styles.actionIcon} />
                   </a>
                 )}
                 <button
                   onClick={() => onDeleteAttachment?.(taskId, attachment._id)}
-                  className="p-1.5 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
+                  className={styles.deleteButton}
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className={styles.actionIcon} />
                 </button>
               </div>
             </div>
           ))}
         </div>
       ) : (
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          No attachments
-        </p>
+        <p className={styles.metadataTextMuted}>No attachments</p>
       )}
     </div>
   );

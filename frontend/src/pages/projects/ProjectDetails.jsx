@@ -18,6 +18,7 @@ import {
   DeleteTaskModalContent,
   calculateTaskStats,
 } from "./projectDetailsModule";
+import styles from "./ProjectDetails.module.css";
 
 const ProjectDetails = () => {
   const { workspaceId, projectId } = useParams();
@@ -232,10 +233,10 @@ const ProjectDetails = () => {
   const taskStats = calculateTaskStats(tasks);
 
   return (
-    <div className="space-y-6">
+    <div className={styles.container}>
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <div className={styles.header}>
+        <div className={styles.headerLeft}>
           <Button
             variant="ghost"
             onClick={() => navigate(`/app/workspaces/${workspaceId}`)}
@@ -243,11 +244,9 @@ const ProjectDetails = () => {
           >
             <ArrowLeft className="w-5 h-5" />
           </Button>
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-              {project?.name || "Loading..."}
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-1">
+          <div className={styles.headerContent}>
+            <h1 className={styles.title}>{project?.name || "Loading..."}</h1>
+            <p className={styles.subtitle}>
               {project?.description || "Project details"}
             </p>
           </div>
@@ -263,7 +262,7 @@ const ProjectDetails = () => {
       </div>
 
       {/* Task Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+      <div className={styles.statsGrid}>
         <TaskStatCard
           label="Total"
           value={taskStats.total}
@@ -297,7 +296,7 @@ const ProjectDetails = () => {
       </div>
 
       {/* Filters and View Controls */}
-      <div className="flex items-center justify-between gap-4 flex-wrap">
+      <div className={styles.filtersControls}>
         <FilterButtons
           filterStatus={filterStatus}
           onFilterChange={setFilterStatus}
@@ -307,8 +306,8 @@ const ProjectDetails = () => {
 
       {/* Tasks List */}
       {loading ? (
-        <Card className="animate-pulse">
-          <div className="h-64 bg-gray-200 dark:bg-gray-700 rounded"></div>
+        <Card className={styles.loadingCard}>
+          <div className={styles.loadingCardInner}></div>
         </Card>
       ) : filteredTasks.length > 0 ? (
         <TaskList

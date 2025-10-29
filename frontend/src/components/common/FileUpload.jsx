@@ -14,6 +14,7 @@ import {
   removeFile as removeFileUtil,
   cleanupPreviews,
 } from "./fileUpload/index";
+import styles from "./fileUpload/FileUpload.module.css";
 
 const FileUpload = ({
   onFilesSelected,
@@ -66,7 +67,7 @@ const FileUpload = ({
   };
 
   return (
-    <div className="space-y-4">
+    <div className={styles.container}>
       <ErrorMessages errors={errors} />
 
       <DropZone

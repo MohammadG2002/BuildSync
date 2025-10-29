@@ -1,7 +1,6 @@
 import { Moon } from "lucide-react";
+import styles from "./ThemeToggle.module.css";
 
-const MoonIcon = () => (
-  <Moon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-);
+const MoonIcon = () => <Moon className={styles.icon} />;
 
 export default MoonIcon;

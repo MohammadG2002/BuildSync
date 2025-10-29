@@ -3,6 +3,7 @@ import CompletionContent from "./CompletionContent";
 import StepProgress from "./StepProgress";
 import StepContent from "./StepContent";
 import StepNavigation from "./StepNavigation";
+import styles from "./Onboarding.module.css";
 
 const OnboardingTooltip = ({
   step,
@@ -14,18 +15,15 @@ const OnboardingTooltip = ({
   onPrevious,
   onNext,
 }) => (
-  <div
-    className="fixed z-[102] bg-white dark:bg-gray-800 rounded-lg shadow-2xl p-6 max-w-md w-full mx-4 animate-scale-in"
-    style={tooltipStyle}
-  >
+  <div className={styles.tooltip} style={tooltipStyle}>
     <CloseButton onClick={onSkip} />
 
-    <div className="pr-6">
+    <div className={styles.tooltipContent}>
       {completed ? (
         <CompletionContent title={step.title} description={step.description} />
       ) : (
         <>
-          <div className="mb-4">
+          <div className={styles.tooltipContentInner}>
             <StepProgress
               currentStep={currentStep}
               totalSteps={steps.length}

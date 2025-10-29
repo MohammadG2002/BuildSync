@@ -1,27 +1,24 @@
 import { Wifi, WifiOff, Check } from "lucide-react";
+import styles from "./NotificationBell.module.css";
 
 const NotificationHeader = ({ unreadCount, isConnected, onMarkAllAsRead }) => {
+  const wifiIconClass = isConnected
+    ? `${styles.wifiIcon} ${styles.wifiIconConnected}`
+    : `${styles.wifiIcon} ${styles.wifiIconDisconnected}`;
+
   return (
-    <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
-      <div className="flex items-center gap-2">
-        <h3 className="font-semibold text-gray-800 dark:text-gray-100">
-          Notifications
-        </h3>
+    <div className={styles.header}>
+      <div className={styles.headerLeft}>
+        <h3 className={styles.headerTitle}>Notifications</h3>
         {isConnected ? (
-          <Wifi
-            className="w-4 h-4 text-green-500"
-            title="Real-time updates active"
-          />
+          <Wifi className={wifiIconClass} title="Real-time updates active" />
         ) : (
-          <WifiOff className="w-4 h-4 text-gray-400" title="Offline mode" />
+          <WifiOff className={wifiIconClass} title="Offline mode" />
         )}
       </div>
       {unreadCount > 0 && (
-        <button
-          onClick={onMarkAllAsRead}
-          className="text-xs text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 flex items-center gap-1 transition-colors"
-        >
-          <Check className="w-3 h-3" />
+        <button onClick={onMarkAllAsRead} className={styles.markAllButton}>
+          <Check className={styles.markAllIcon} />
           Mark all as read
         </button>
       )}

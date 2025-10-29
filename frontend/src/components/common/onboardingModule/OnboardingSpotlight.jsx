@@ -1,13 +1,8 @@
 import getSpotlightStyle from "./getSpotlightStyle";
+import styles from "./Onboarding.module.css";
 
 const OnboardingSpotlight = ({ target }) => (
-  <div
-    className="fixed pointer-events-none z-[101]"
-    style={{
-      boxShadow: "0 0 0 9999px rgba(0, 0, 0, 0.5)",
-      ...getSpotlightStyle(target),
-    }}
-  />
+  <div className={styles.spotlight} style={getSpotlightStyle(target)} />
 );
 
 export default OnboardingSpotlight;

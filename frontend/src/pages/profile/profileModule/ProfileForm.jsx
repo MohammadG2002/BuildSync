@@ -1,6 +1,7 @@
 import { User, Mail, Save } from "lucide-react";
 import Input from "../../../components/common/Input";
 import Button from "../../../components/common/Button";
+import styles from "./Profile.module.css";
 
 const ProfileForm = ({
   profileData,
@@ -10,7 +11,7 @@ const ProfileForm = ({
   onSubmit,
 }) => {
   return (
-    <form onSubmit={onSubmit} className="space-y-5">
+    <form onSubmit={onSubmit} className={styles.form}>
       <Input
         label="Full Name"
         type="text"
@@ -43,20 +44,18 @@ const ProfileForm = ({
       />
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          Bio (Optional)
-        </label>
+        <label className={styles.bioLabel}>Bio (Optional)</label>
         <textarea
           name="bio"
           rows="4"
           placeholder="Tell us about yourself..."
           value={profileData.bio}
           onChange={onChange}
-          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all resize-none"
+          className={styles.bioTextarea}
         />
       </div>
 
-      <div className="flex justify-end pt-4">
+      <div className={styles.formActions}>
         <Button
           type="submit"
           variant="primary"

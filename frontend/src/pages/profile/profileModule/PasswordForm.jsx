@@ -1,6 +1,7 @@
 import { Lock, Eye, EyeOff } from "lucide-react";
 import Input from "../../../components/common/Input";
 import Button from "../../../components/common/Button";
+import styles from "./Profile.module.css";
 
 const PasswordForm = ({
   passwordData,
@@ -12,9 +13,23 @@ const PasswordForm = ({
   onSubmit,
   onTogglePassword,
 }) => {
+  const getStrengthBarClass = (level, barIndex) => {
+    if (level === "weak" && barIndex === 1) return styles.strengthBarWeak;
+    if (level === "medium" && barIndex <= 2) return styles.strengthBarMedium;
+    if (level === "strong") return styles.strengthBarStrong;
+    return styles.strengthBarInactive;
+  };
+
+  const getStrengthTextClass = (level) => {
+    if (level === "weak") return styles.strengthTextWeak;
+    if (level === "medium") return styles.strengthTextMedium;
+    if (level === "strong") return styles.strengthTextStrong;
+    return "";
+  };
+
   return (
-    <form onSubmit={onSubmit} className="space-y-5">
-      <div className="relative">
+    <form onSubmit={onSubmit} className={styles.form}>
+      <div style={{ position: "relative" }}>
         <Input
           label="Current Password"
           type={showPasswords.current ? "text" : "password"}
@@ -28,17 +43,17 @@ const PasswordForm = ({
         <button
           type="button"
           onClick={() => onTogglePassword("current")}
-          className="absolute right-3 top-9 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:text-gray-500"
+          className={styles.passwordToggle}
         >
           {showPasswords.current ? (
-            <EyeOff className="w-5 h-5" />
+            <EyeOff className={styles.passwordIcon} />
           ) : (
-            <Eye className="w-5 h-5" />
+            <Eye className={styles.passwordIcon} />
           )}
         </button>
       </div>
 
-      <div className="relative">
+      <div style={{ position: "relative" }}>
         <Input
           label="New Password"
           type={showPasswords.new ? "text" : "password"}
@@ -52,53 +67,33 @@ const PasswordForm = ({
         <button
           type="button"
           onClick={() => onTogglePassword("new")}
-          className="absolute right-3 top-9 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:text-gray-500"
+          className={styles.passwordToggle}
         >
           {showPasswords.new ? (
-            <EyeOff className="w-5 h-5" />
+            <EyeOff className={styles.passwordIcon} />
           ) : (
-            <Eye className="w-5 h-5" />
+            <Eye className={styles.passwordIcon} />
           )}
         </button>
 
         {/* Password Strength Indicator */}
         {passwordStrength && (
-          <div className="mt-2">
-            <div className="flex gap-1">
-              <div
-                className={`h-1 flex-1 rounded ${
-                  passwordStrength.level === "weak"
-                    ? "bg-red-500"
-                    : passwordStrength.level === "medium"
-                    ? "bg-yellow-500"
-                    : "bg-green-500"
-                }`}
-              ></div>
-              <div
-                className={`h-1 flex-1 rounded ${
-                  passwordStrength.level === "medium"
-                    ? "bg-yellow-500"
-                    : passwordStrength.level === "strong"
-                    ? "bg-green-500"
-                    : "bg-gray-200 dark:bg-gray-700"
-                }`}
-              ></div>
-              <div
-                className={`h-1 flex-1 rounded ${
-                  passwordStrength.level === "strong"
-                    ? "bg-green-500"
-                    : "bg-gray-200 dark:bg-gray-700"
-                }`}
-              ></div>
+          <div className={styles.strengthIndicator}>
+            <div className={styles.strengthBars}>
+              {[1, 2, 3].map((index) => (
+                <div
+                  key={index}
+                  className={`${styles.strengthBar} ${getStrengthBarClass(
+                    passwordStrength.level,
+                    index
+                  )}`}
+                ></div>
+              ))}
             </div>
             <p
-              className={`text-xs mt-1 ${
-                passwordStrength.level === "weak"
-                  ? "text-red-600"
-                  : passwordStrength.level === "medium"
-                  ? "text-yellow-600"
-                  : "text-green-600"
-              }`}
+              className={`${styles.strengthText} ${getStrengthTextClass(
+                passwordStrength.level
+              )}`}
             >
               Password strength: {passwordStrength.level}
             </p>
@@ -106,7 +101,7 @@ const PasswordForm = ({
         )}
       </div>
 
-      <div className="relative">
+      <div style={{ position: "relative" }}>
         <Input
           label="Confirm New Password"
           type={showPasswords.confirm ? "text" : "password"}
@@ -120,28 +115,28 @@ const PasswordForm = ({
         <button
           type="button"
           onClick={() => onTogglePassword("confirm")}
-          className="absolute right-3 top-9 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:text-gray-500"
+          className={styles.passwordToggle}
         >
           {showPasswords.confirm ? (
-            <EyeOff className="w-5 h-5" />
+            <EyeOff className={styles.passwordIcon} />
           ) : (
-            <Eye className="w-5 h-5" />
+            <Eye className={styles.passwordIcon} />
           )}
         </button>
       </div>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <p className="text-sm text-blue-800">
+      <div className={styles.passwordRequirements}>
+        <p className={styles.requirementsTitle}>
           <strong>Password requirements:</strong>
         </p>
-        <ul className="text-sm text-blue-700 mt-2 space-y-1 list-disc list-inside">
+        <ul className={styles.requirementsList}>
           <li>At least 8 characters long</li>
           <li>Contains uppercase and lowercase letters</li>
           <li>Contains at least one number</li>
         </ul>
       </div>
 
-      <div className="flex justify-end pt-4">
+      <div className={styles.formActions}>
         <Button
           type="submit"
           variant="primary"

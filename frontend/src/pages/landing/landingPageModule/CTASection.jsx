@@ -1,15 +1,14 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import Button from "../../../components/common/Button";
+import styles from "../LandingPage.module.css";
 
 const CTASection = () => {
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-primary-600">
-      <div className="max-w-4xl mx-auto text-center">
-        <h2 className="text-4xl font-bold text-white mb-6">
-          Ready to get started?
-        </h2>
-        <p className="text-xl text-primary-100 mb-8">
+    <section className={styles.cta}>
+      <div className={styles.ctaContainer}>
+        <h2 className={styles.ctaTitle}>Ready to get started?</h2>
+        <p className={styles.ctaSubtitle}>
           Join thousands of teams already using{" "}
           {import.meta.env.VITE_APP_NAME || "ProjectHub"} to manage their
           projects.

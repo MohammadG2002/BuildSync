@@ -2,6 +2,7 @@ import SearchInput from "./SearchInput";
 import SearchCategories from "./SearchCategories";
 import SearchResults from "./SearchResults";
 import SearchFooter from "./SearchFooter";
+import styles from "./GlobalSearch.module.css";
 
 const SearchModal = ({
   searchRef,
@@ -17,14 +18,8 @@ const SearchModal = ({
   onResultClick,
 }) => {
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black bg-opacity-50 animate-fade-in"
-      data-onboarding="global-search"
-    >
-      <div
-        ref={searchRef}
-        className="w-full max-w-2xl bg-white dark:bg-gray-800 rounded-lg shadow-2xl animate-scale-in"
-      >
+    <div className={styles.overlay} data-onboarding="global-search">
+      <div ref={searchRef} className={styles.modal}>
         <SearchInput
           inputRef={inputRef}
           searchQuery={searchQuery}
@@ -41,7 +36,7 @@ const SearchModal = ({
           />
         )}
 
-        <div className="max-h-96 overflow-y-auto">
+        <div className={styles.resultsContainer}>
           <SearchResults
             searchQuery={searchQuery}
             results={filteredResults}

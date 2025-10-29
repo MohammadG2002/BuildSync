@@ -1,27 +1,48 @@
 import { Calendar } from "lucide-react";
 import { getInitials, generateColor, formatDate } from "../../../utils/helpers";
-import { statusColors } from "./statusColors";
-import { priorityColors, priorityDots } from "./priorityColors";
+import styles from "./TaskCard.module.css";
 
 const TaskMeta = ({ task }) => {
+  const statusClasses = {
+    todo: styles.statusTodo,
+    "in-progress": styles.statusInProgress,
+    completed: styles.statusCompleted,
+  };
+
+  const priorityDotClasses = {
+    low: styles.priorityDotLow,
+    medium: styles.priorityDotMedium,
+    high: styles.priorityDotHigh,
+  };
+
+  const priorityTextClasses = {
+    low: styles.priorityLow,
+    medium: styles.priorityMedium,
+    high: styles.priorityHigh,
+  };
+
   return (
-    <div className="flex items-center gap-3 flex-wrap">
+    <div className={styles.meta}>
       {/* Status Badge */}
       <span
-        className={`px-2 py-1 text-xs font-medium rounded border ${
-          statusColors[task.status]
+        className={`${styles.statusBadge} ${
+          statusClasses[task.status] || styles.statusTodo
         }`}
       >
         {task.status.replace(/-/g, " ")}
       </span>
 
       {/* Priority */}
-      <div className="flex items-center gap-1">
+      <div className={styles.priorityContainer}>
         <div
-          className={`w-2 h-2 rounded-full ${priorityDots[task.priority]}`}
+          className={`${styles.priorityDot} ${
+            priorityDotClasses[task.priority]
+          }`}
         ></div>
         <span
-          className={`text-xs font-medium ${priorityColors[task.priority]}`}
+          className={`${styles.priorityText} ${
+            priorityTextClasses[task.priority]
+          }`}
         >
           {task.priority}
         </span>
@@ -29,23 +50,21 @@ const TaskMeta = ({ task }) => {
 
       {/* Assignee */}
       {task.assignee && (
-        <div className="flex items-center gap-1">
+        <div className={styles.assigneeContainer}>
           <div
-            className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-medium"
+            className={styles.assigneeAvatar}
             style={{ backgroundColor: generateColor(task.assignee.name) }}
           >
             {getInitials(task.assignee.name)}
           </div>
-          <span className="text-xs text-gray-600 dark:text-gray-400 dark:text-gray-500">
-            {task.assignee.name}
-          </span>
+          <span className={styles.assigneeName}>{task.assignee.name}</span>
         </div>
       )}
 
       {/* Due Date */}
       {task.dueDate && (
-        <div className="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400 dark:text-gray-500">
-          <Calendar className="w-3 h-3" />
+        <div className={styles.dueDateContainer}>
+          <Calendar className={styles.dueDateIcon} />
           <span>{formatDate(task.dueDate)}</span>
         </div>
       )}

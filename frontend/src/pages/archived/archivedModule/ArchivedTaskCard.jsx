@@ -1,0 +1,71 @@
+import { Archive, Calendar, RotateCcw } from "lucide-react";
+import Button from "../../../components/common/Button";
+import Card from "../../../components/common/Card";
+import { getInitials, generateColor, formatDate } from "../../../utils/helpers";
+import getStatusClass from "./getStatusClass";
+import getPriorityClass from "./getPriorityClass";
+import styles from "../Archived.module.css";
+
+const ArchivedTaskCard = ({ task, onRestoreClick }) => {
+  return (
+    <Card className={styles.taskCard}>
+      <div className={styles.taskCardContent}>
+        <div className={styles.taskCardMain}>
+          <div className={styles.taskHeader}>
+            <h3 className={styles.taskTitle}>{task.title}</h3>
+            <span className={getStatusClass(task.status)}>
+              {task.status.replace("_", " ")}
+            </span>
+            <span className={getPriorityClass(task.priority)}>
+              {task.priority.toUpperCase()}
+            </span>
+          </div>
+
+          {task.description && (
+            <p className={styles.taskDescription}>{task.description}</p>
+          )}
+
+          <div className={styles.taskMeta}>
+            {task.assignee && (
+              <div className={styles.taskAssignee}>
+                <div
+                  className={styles.assigneeAvatar}
+                  style={{
+                    backgroundColor: generateColor(task.assignee.name),
+                  }}
+                >
+                  {getInitials(task.assignee.name)}
+                </div>
+                <span>{task.assignee.name}</span>
+              </div>
+            )}
+
+            <div className={styles.taskDate}>
+              <Archive className="w-4 h-4" />
+              <span>Archived {formatDate(task.archivedDate)}</span>
+            </div>
+
+            {task.completedDate && (
+              <div className={styles.taskDate}>
+                <Calendar className="w-4 h-4" />
+                <span>Completed {formatDate(task.completedDate)}</span>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => onRestoreClick(task)}
+          className="gap-2 ml-4"
+        >
+          <RotateCcw className="w-4 h-4" />
+          Restore
+        </Button>
+      </div>
+    </Card>
+  );
+};
+
+export default ArchivedTaskCard;

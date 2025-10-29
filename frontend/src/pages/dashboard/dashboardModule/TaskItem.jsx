@@ -1,37 +1,38 @@
 import { Calendar } from "lucide-react";
 import { formatDate } from "../../../utils/helpers";
-import { priorityColors } from "./colors";
+import styles from "./Dashboard.module.css";
 
 const TaskItem = ({ task }) => {
+  const priorityClass = {
+    low: styles.priorityLow,
+    medium: styles.priorityMedium,
+    high: styles.priorityHigh,
+    urgent: styles.priorityUrgent,
+  }[task.priority];
+
   return (
-    <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 dark:bg-gray-800 transition-colors cursor-pointer">
+    <div className={styles.taskItem}>
       <input
         type="checkbox"
         checked={task.completed}
         onChange={() => {}}
-        className="w-5 h-5 text-primary-600 rounded border-gray-300 dark:border-gray-600 focus:ring-primary-500"
+        className={styles.taskCheckbox}
       />
-      <div className="flex-1">
+      <div className={styles.taskContent}>
         <h4
-          className={`font-medium text-gray-900 dark:text-gray-100 ${
-            task.completed
-              ? "line-through text-gray-500 dark:text-gray-400 dark:text-gray-500"
-              : ""
+          className={`${styles.taskTitle} ${
+            task.completed ? styles.taskTitleCompleted : ""
           }`}
         >
           {task.title}
         </h4>
-        <div className="flex items-center gap-3 mt-1">
-          <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
-            {task.project}
-          </p>
-          <span
-            className={`text-xs font-medium ${priorityColors[task.priority]}`}
-          >
+        <div className={styles.taskMeta}>
+          <p className={styles.taskProject}>{task.project}</p>
+          <span className={`${styles.taskPriority} ${priorityClass}`}>
             {task.priority}
           </span>
-          <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 dark:text-gray-500">
-            <Calendar className="w-3 h-3" />
+          <div className={styles.taskDate}>
+            <Calendar className={styles.taskDateIcon} />
             <span>{formatDate(task.dueDate)}</span>
           </div>
         </div>

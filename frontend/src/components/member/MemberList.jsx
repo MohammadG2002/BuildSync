@@ -3,6 +3,7 @@ import {
   MemberGrid,
   MemberRoleGroup,
 } from "./memberListModule";
+import styles from "./memberCardModule/MemberCard.module.css";
 
 const MemberList = ({
   members,
@@ -25,7 +26,7 @@ const MemberList = ({
   const grouped = groupMembersByRole(members);
 
   return (
-    <div className="space-y-6">
+    <div className={styles.listContainer}>
       {Object.entries(grouped).map(([role, roleMembers]) => (
         <MemberRoleGroup
           key={role}

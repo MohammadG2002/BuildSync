@@ -1,14 +1,20 @@
 import roleIcons from "./roleIcons";
-import roleColors from "./roleColors";
+import styles from "./MemberCard.module.css";
+
+const roleClasses = {
+  owner: styles.roleOwner,
+  admin: styles.roleAdmin,
+  member: styles.roleMember,
+  viewer: styles.roleViewer,
+};
 
 const MemberRoleBadge = ({ role }) => {
   const RoleIcon = roleIcons[role] || roleIcons.member;
+  const roleClass = roleClasses[role] || styles.roleMember;
 
   return (
-    <span
-      className={`px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1 ${roleColors[role]}`}
-    >
-      <RoleIcon className="w-3 h-3" />
+    <span className={`${styles.roleBadge} ${roleClass}`}>
+      <RoleIcon className={styles.roleBadgeIcon} />
       {role}
     </span>
   );

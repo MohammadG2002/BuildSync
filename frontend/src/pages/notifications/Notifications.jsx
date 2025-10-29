@@ -5,6 +5,7 @@ import { useNotifications } from "../../hooks/useNotifications";
 import Card from "../../components/common/Card";
 import Button from "../../components/common/Button";
 import NotificationItem from "../../components/notification/NotificationItem";
+import styles from "./Notifications.module.css";
 
 const Notifications = () => {
   const navigate = useNavigate();
@@ -97,16 +98,13 @@ const Notifications = () => {
     if (notifications.length === 0) return null;
 
     return (
-      <div key={title} className="mb-6">
-        <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 uppercase tracking-wide">
+      <div key={title} className={styles.notificationGroup}>
+        <h3 className={styles.groupTitle}>
           {title} ({notifications.length})
         </h3>
-        <div className="space-y-2">
+        <div className={styles.notificationList}>
           {notifications.map((notification) => (
-            <Card
-              key={notification.id}
-              className="p-0 hover:shadow-md transition-shadow"
-            >
+            <Card key={notification.id} className={styles.notificationCard}>
               <NotificationItem
                 notification={notification}
                 onClick={() => handleNotificationClick(notification)}
@@ -123,10 +121,10 @@ const Notifications = () => {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
+    <div className={styles.container}>
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <div className={styles.header}>
+        <div className={styles.headerLeft}>
           <Button
             variant="ghost"
             onClick={() => navigate("/app/dashboard")}
@@ -135,8 +133,8 @@ const Notifications = () => {
             <ArrowLeft className="w-5 h-5" />
           </Button>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Notifications</h1>
-            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-1">
+            <h1 className={styles.title}>Notifications</h1>
+            <p className={styles.subtitle}>
               {unreadCount > 0
                 ? `You have ${unreadCount} unread notification${
                     unreadCount > 1 ? "s" : ""
@@ -154,41 +152,43 @@ const Notifications = () => {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className={styles.statsGrid}>
         <Card>
-          <div className="flex items-center justify-between">
+          <div className={styles.statCard}>
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">Total</p>
-              <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                {notifications.length}
-              </p>
+              <p className={styles.statLabel}>Total</p>
+              <p className={styles.statValue}>{notifications.length}</p>
             </div>
-            <Bell className="w-8 h-8 text-gray-400 dark:text-gray-500" />
+            <Bell className={styles.statIcon} />
           </div>
         </Card>
         <Card>
-          <div className="flex items-center justify-between">
+          <div className={styles.statCard}>
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">Unread</p>
-              <p className="text-3xl font-bold text-primary-600">
+              <p className={styles.statLabel}>Unread</p>
+              <p className={`${styles.statValue} ${styles.statValueBlue}`}>
                 {unreadCount}
               </p>
             </div>
-            <div className="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center">
-              <Bell className="w-5 h-5 text-primary-600" />
+            <div
+              className={`${styles.statIconWrapper} ${styles.statIconWrapperBlue}`}
+            >
+              <Bell className={styles.statIconInner} />
             </div>
           </div>
         </Card>
         <Card>
-          <div className="flex items-center justify-between">
+          <div className={styles.statCard}>
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">Read</p>
-              <p className="text-3xl font-bold text-green-600">
+              <p className={styles.statLabel}>Read</p>
+              <p className={`${styles.statValue} ${styles.statValueGreen}`}>
                 {notifications.length - unreadCount}
               </p>
             </div>
-            <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-              <Check className="w-5 h-5 text-green-600" />
+            <div
+              className={`${styles.statIconWrapper} ${styles.statIconWrapperGreen}`}
+            >
+              <Check className={styles.statIconInner} />
             </div>
           </div>
         </Card>
@@ -196,22 +196,22 @@ const Notifications = () => {
 
       {/* Filters */}
       <Card>
-        <div className="flex items-center gap-4 flex-wrap">
-          <div className="flex items-center gap-2">
-            <Filter className="w-5 h-5 text-gray-600 dark:text-gray-400 dark:text-gray-500" />
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Filter:</span>
+        <div className={styles.filters}>
+          <div className={styles.filterGroup}>
+            <Filter className="w-5 h-5" />
+            <span className={styles.filterLabel}>Filter:</span>
           </div>
 
           {/* Status Filter */}
-          <div className="flex gap-2">
+          <div className={styles.filterGroup}>
             {["all", "unread", "read"].map((status) => (
               <button
                 key={status}
                 onClick={() => setFilter(status)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`${styles.filterButton} ${
                   filter === status
-                    ? "bg-primary-600 text-white"
-                    : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 dark:bg-gray-700"
+                    ? styles.filterButtonActive
+                    : styles.filterButtonInactive
                 }`}
               >
                 {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -220,37 +220,39 @@ const Notifications = () => {
           </div>
 
           {/* Type Filter */}
-          <select
-            value={typeFilter}
-            onChange={(e) => setTypeFilter(e.target.value)}
-            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
-          >
-            {notificationTypes.map((type) => (
-              <option key={type.value} value={type.value}>
-                {type.label}
-              </option>
-            ))}
-          </select>
+          <div className={styles.selectWrapper}>
+            <select
+              value={typeFilter}
+              onChange={(e) => setTypeFilter(e.target.value)}
+              className={styles.select}
+            >
+              {notificationTypes.map((type) => (
+                <option key={type.value} value={type.value}>
+                  {type.label}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </Card>
 
       {/* Notifications List */}
       {filteredNotifications.length > 0 ? (
-        <div>
+        <div className={styles.notificationGroups}>
           {renderNotificationGroup("Today", groupedNotifications.today)}
           {renderNotificationGroup("Yesterday", groupedNotifications.yesterday)}
           {renderNotificationGroup("This Week", groupedNotifications.thisWeek)}
           {renderNotificationGroup("Older", groupedNotifications.older)}
         </div>
       ) : (
-        <Card className="text-center py-12">
-          <Bell className="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+        <Card className={styles.emptyState}>
+          <Bell className={styles.emptyIcon} />
+          <h3 className={styles.emptyTitle}>
             {filter === "unread"
               ? "No unread notifications"
               : "No notifications found"}
           </h3>
-          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">
+          <p className={styles.emptyDescription}>
             {filter === "unread"
               ? "You're all caught up! Check back later for updates."
               : "Try adjusting your filters to see more notifications."}

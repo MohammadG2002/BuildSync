@@ -1,4 +1,5 @@
 import TaskCard from "../TaskCard";
+import styles from "./TaskList.module.css";
 
 const TaskGroup = ({
   tasks,
@@ -8,7 +9,7 @@ const TaskGroup = ({
   onTaskClick,
 }) => {
   return (
-    <div className="space-y-3">
+    <div className={styles.taskGroup}>
       {tasks.map((task) => (
         <TaskCard
           key={task._id}

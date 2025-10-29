@@ -1,5 +1,6 @@
 import { Eye, EyeOff } from "lucide-react";
 import Input from "../../../components/common/Input";
+import styles from "./Auth.module.css";
 
 const PasswordInput = ({
   label,
@@ -16,7 +17,7 @@ const PasswordInput = ({
   passwordStrength = null,
 }) => {
   return (
-    <div className="relative">
+    <div className={styles.container}>
       <Input
         label={label}
         type={showPassword ? "text" : "password"}
@@ -31,52 +32,52 @@ const PasswordInput = ({
       <button
         type="button"
         onClick={onTogglePassword}
-        className="absolute right-3 top-9 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:text-gray-500"
+        className={styles.toggleButton}
       >
         {showPassword ? (
-          <EyeOff className="w-5 h-5" />
+          <EyeOff className={styles.toggleIcon} />
         ) : (
-          <Eye className="w-5 h-5" />
+          <Eye className={styles.toggleIcon} />
         )}
       </button>
 
       {/* Password Strength Indicator */}
       {showStrength && passwordStrength && (
-        <div className="mt-2">
-          <div className="flex gap-1">
+        <div className={styles.strengthIndicator}>
+          <div className={styles.strengthBars}>
             <div
-              className={`h-1 flex-1 rounded ${
+              className={`${styles.strengthBar} ${
                 passwordStrength.level === "weak"
-                  ? "bg-red-500"
+                  ? styles.barWeak
                   : passwordStrength.level === "medium"
-                  ? "bg-yellow-500"
-                  : "bg-green-500"
+                  ? styles.barMedium
+                  : styles.barStrong
               }`}
             ></div>
             <div
-              className={`h-1 flex-1 rounded ${
+              className={`${styles.strengthBar} ${
                 passwordStrength.level === "medium"
-                  ? "bg-yellow-500"
+                  ? styles.barMedium
                   : passwordStrength.level === "strong"
-                  ? "bg-green-500"
-                  : "bg-gray-200 dark:bg-gray-700"
+                  ? styles.barStrong
+                  : styles.barInactive
               }`}
             ></div>
             <div
-              className={`h-1 flex-1 rounded ${
+              className={`${styles.strengthBar} ${
                 passwordStrength.level === "strong"
-                  ? "bg-green-500"
-                  : "bg-gray-200 dark:bg-gray-700"
+                  ? styles.barStrong
+                  : styles.barInactive
               }`}
             ></div>
           </div>
           <p
-            className={`text-xs mt-1 ${
+            className={`${styles.strengthText} ${
               passwordStrength.level === "weak"
-                ? "text-red-600"
+                ? styles.textWeak
                 : passwordStrength.level === "medium"
-                ? "text-yellow-600"
-                : "text-green-600"
+                ? styles.textMedium
+                : styles.textStrong
             }`}
           >
             Password strength: {passwordStrength.level}

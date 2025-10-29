@@ -18,6 +18,7 @@ import { SkeletonList } from "../../components/common/Loader";
 import MemberList from "../../components/member/MemberList";
 import toast from "react-hot-toast";
 import { USER_ROLES } from "../../utils/constants";
+import styles from "./Members.module.css";
 
 const Members = () => {
   const { workspaceId } = useParams();
@@ -209,10 +210,10 @@ const Members = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className={styles.container}>
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <div className={styles.header}>
+        <div className={styles.headerLeft}>
           <Button
             variant="ghost"
             onClick={() => navigate(`/app/workspaces/${workspaceId}`)}
@@ -221,10 +222,8 @@ const Members = () => {
             <ArrowLeft className="w-5 h-5" />
           </Button>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-              Members
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-1">
+            <h1 className={styles.title}>Members</h1>
+            <p className={styles.subtitle}>
               Manage {workspace?.name || "workspace"} members and permissions
             </p>
           </div>
@@ -240,70 +239,66 @@ const Members = () => {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className={styles.statsGrid}>
         <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">
-                Total Members
-              </p>
-              <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                {members.length}
-              </p>
+          <div className={styles.statCard}>
+            <div className={styles.statInfo}>
+              <p className={styles.statLabel}>Total Members</p>
+              <p className={styles.statValue}>{members.length}</p>
             </div>
-            <UsersIcon className="w-8 h-8 text-gray-400 dark:text-gray-500" />
+            <UsersIcon className={styles.statIcon} />
           </div>
         </Card>
         <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">
-                Admins
-              </p>
-              <p className="text-3xl font-bold text-purple-600">
+          <div className={styles.statCard}>
+            <div className={styles.statInfo}>
+              <p className={styles.statLabel}>Admins</p>
+              <p className={`${styles.statValue} ${styles.statValuePurple}`}>
                 {roleStats.admin}
               </p>
             </div>
-            <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-              <UsersIcon className="w-5 h-5 text-purple-600" />
+            <div
+              className={`${styles.statIconWrapper} ${styles.statIconWrapperPurple}`}
+            >
+              <UsersIcon className={styles.statIconInner} />
             </div>
           </div>
         </Card>
         <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">
-                Members
-              </p>
-              <p className="text-3xl font-bold text-blue-600">
+          <div className={styles.statCard}>
+            <div className={styles.statInfo}>
+              <p className={styles.statLabel}>Members</p>
+              <p className={`${styles.statValue} ${styles.statValueBlue}`}>
                 {roleStats.member}
               </p>
             </div>
-            <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-              <UsersIcon className="w-5 h-5 text-blue-600" />
+            <div
+              className={`${styles.statIconWrapper} ${styles.statIconWrapperBlue}`}
+            >
+              <UsersIcon className={styles.statIconInner} />
             </div>
           </div>
         </Card>
         <Card>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">
-                Viewers
-              </p>
-              <p className="text-3xl font-bold text-gray-600 dark:text-gray-400 dark:text-gray-500">
+          <div className={styles.statCard}>
+            <div className={styles.statInfo}>
+              <p className={styles.statLabel}>Viewers</p>
+              <p className={`${styles.statValue} ${styles.statValueGray}`}>
                 {roleStats.viewer}
               </p>
             </div>
-            <div className="w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
-              <UsersIcon className="w-5 h-5 text-gray-600 dark:text-gray-400 dark:text-gray-500" />
+            <div
+              className={`${styles.statIconWrapper} ${styles.statIconWrapperGray}`}
+            >
+              <UsersIcon className={styles.statIconInner} />
             </div>
           </div>
         </Card>
       </div>
 
       {/* Search and Filters */}
-      <div className="flex items-center justify-between gap-4 flex-wrap">
-        <div className="flex-1 max-w-md">
+      <div className={styles.searchFilters}>
+        <div className={styles.searchWrapper}>
           <Input
             type="text"
             placeholder="Search members..."
@@ -312,16 +307,14 @@ const Members = () => {
             icon={Search}
           />
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-            Group by role:
-          </span>
+        <div className={styles.filterGroup}>
+          <span className={styles.filterLabel}>Group by role:</span>
           <button
             onClick={() => setGroupByRole(!groupByRole)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`${styles.filterButton} ${
               groupByRole
-                ? "bg-primary-600 text-white"
-                : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 dark:bg-gray-700"
+                ? styles.filterButtonActive
+                : styles.filterButtonInactive
             }`}
           >
             {groupByRole ? "Grouped" : "All"}
@@ -331,10 +324,10 @@ const Members = () => {
 
       {/* Members List */}
       {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className={styles.loadingGrid}>
           {[1, 2, 3, 4].map((i) => (
-            <Card key={i} className="animate-pulse">
-              <div className="h-20 bg-gray-200 dark:bg-gray-700 rounded"></div>
+            <Card key={i} className={styles.loadingCard}>
+              <div className={styles.loadingCardInner}></div>
             </Card>
           ))}
         </div>
@@ -347,12 +340,12 @@ const Members = () => {
           groupByRole={groupByRole}
         />
       ) : (
-        <Card className="text-center py-12">
-          <UsersIcon className="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+        <Card className={styles.emptyState}>
+          <UsersIcon className={styles.emptyIcon} />
+          <h3 className={styles.emptyTitle}>
             {searchQuery ? "No members found" : "No members yet"}
           </h3>
-          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-4">
+          <p className={styles.emptyDescription}>
             {searchQuery
               ? "Try adjusting your search query"
               : "Invite members to collaborate on this workspace"}
@@ -380,7 +373,7 @@ const Members = () => {
         }}
         title="Invite Member"
       >
-        <form onSubmit={handleInviteMember} className="space-y-5">
+        <form onSubmit={handleInviteMember} className={styles.inviteForm}>
           <Input
             label="Email Address"
             type="email"
@@ -394,14 +387,12 @@ const Members = () => {
           />
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Role
-            </label>
+            <label className={styles.formLabel}>Role</label>
             <select
               name="role"
               value={inviteData.role}
               onChange={handleInviteChange}
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+              className={styles.roleSelect}
             >
               {Object.entries(USER_ROLES).map(([key, value]) => (
                 <option key={value} value={value}>
@@ -409,7 +400,7 @@ const Members = () => {
                 </option>
               ))}
             </select>
-            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
+            <p className={styles.roleDescription}>
               {inviteData.role === "admin" &&
                 "Can manage workspace settings and members"}
               {inviteData.role === "member" &&
@@ -419,7 +410,7 @@ const Members = () => {
             </p>
           </div>
 
-          <div className="flex gap-3 justify-end pt-4">
+          <div className={styles.formActions}>
             <Button
               type="button"
               variant="secondary"
@@ -448,13 +439,13 @@ const Members = () => {
         title="Remove Member"
         size="sm"
       >
-        <div className="space-y-4">
-          <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500">
+        <div className={styles.removeContent}>
+          <p className={styles.removeText}>
             Are you sure you want to remove{" "}
             <strong>{selectedMember?.name}</strong> from this workspace? They
             will lose access to all projects and tasks.
           </p>
-          <div className="flex gap-3 justify-end pt-4">
+          <div className={styles.removeActions}>
             <Button
               variant="secondary"
               onClick={() => {

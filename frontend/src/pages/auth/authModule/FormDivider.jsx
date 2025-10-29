@@ -1,13 +1,13 @@
+import styles from "./Auth.module.css";
+
 const FormDivider = ({ text = "Or" }) => {
   return (
-    <div className="relative my-6">
-      <div className="absolute inset-0 flex items-center">
-        <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
+    <div className={styles.divider}>
+      <div className={styles.dividerLine}>
+        <div className={styles.dividerBorder}></div>
       </div>
-      <div className="relative flex justify-center text-sm">
-        <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 dark:text-gray-500">
-          {text}
-        </span>
+      <div className={styles.dividerText}>
+        <span className={styles.dividerTextSpan}>{text}</span>
       </div>
     </div>
   );

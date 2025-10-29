@@ -2,6 +2,7 @@ import NotificationHeader from "./NotificationHeader";
 import NotificationList from "./NotificationList";
 import NotificationEmptyState from "./NotificationEmptyState";
 import NotificationFooter from "./NotificationFooter";
+import styles from "./NotificationBell.module.css";
 
 const NotificationDropdown = ({
   notifications,
@@ -13,7 +14,7 @@ const NotificationDropdown = ({
   onViewAll,
 }) => {
   return (
-    <div className="absolute top-full right-0 mt-2 w-96 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50 animate-slide-in-top">
+    <div className={styles.dropdown}>
       <NotificationHeader
         unreadCount={unreadCount}
         isConnected={isConnected}

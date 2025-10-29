@@ -2,6 +2,7 @@ import { Save } from "lucide-react";
 import Button from "../../../components/common/Button";
 import Card from "../../../components/common/Card";
 import Input from "../../../components/common/Input";
+import styles from "./Settings.module.css";
 
 const GeneralSettingsForm = ({
   formData,
@@ -12,7 +13,7 @@ const GeneralSettingsForm = ({
 }) => {
   return (
     <Card title="General Settings">
-      <form onSubmit={onSubmit} className="space-y-5">
+      <form onSubmit={onSubmit} className={styles.form}>
         <Input
           label="Workspace Name"
           type="text"
@@ -24,20 +25,18 @@ const GeneralSettingsForm = ({
         />
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Description
-          </label>
+          <label className={styles.descriptionLabel}>Description</label>
           <textarea
             name="description"
             rows="3"
             placeholder="What is this workspace for?"
             value={formData.description}
             onChange={onChange}
-            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all resize-none"
+            className={styles.descriptionTextarea}
           />
         </div>
 
-        <div className="flex justify-end">
+        <div className={styles.formActions}>
           <Button
             type="submit"
             variant="primary"

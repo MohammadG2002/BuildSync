@@ -6,10 +6,11 @@ import {
   CTASection,
   Footer,
 } from "./landingPageModule";
+import styles from "./LandingPage.module.css";
 
 const LandingPage = () => {
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-800">
+    <div className={styles.container}>
       <Navigation />
       <HeroSection />
       <FeaturesSection />

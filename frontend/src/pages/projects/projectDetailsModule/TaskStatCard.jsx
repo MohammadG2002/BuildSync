@@ -1,32 +1,33 @@
 import Card from "../../../components/common/Card";
+import styles from "../ProjectDetails.module.css";
 
 const TaskStatCard = ({ label, value, icon: Icon, color = "gray" }) => {
-  const colorClasses = {
-    gray: "text-gray-400 dark:text-gray-500",
-    blue: "text-blue-400",
-    yellow: "text-yellow-400",
-    green: "text-green-400",
+  const getIconClass = (color) => {
+    if (color === "gray") return styles.statIconGray;
+    if (color === "blue") return styles.statIconBlue;
+    if (color === "yellow") return styles.statIconYellow;
+    if (color === "green") return styles.statIconGreen;
+    return "";
   };
 
-  const valueColorClasses = {
-    gray: "text-gray-900 dark:text-gray-100",
-    blue: "text-blue-600",
-    yellow: "text-yellow-600",
-    green: "text-green-600",
+  const getValueClass = (color) => {
+    if (color === "gray") return styles.statValueGray;
+    if (color === "blue") return styles.statValueBlue;
+    if (color === "yellow") return styles.statValueYellow;
+    if (color === "green") return styles.statValueGreen;
+    return "";
   };
 
   return (
     <Card>
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-1">
-            {label}
-          </p>
-          <p className={`text-2xl font-bold ${valueColorClasses[color]}`}>
+      <div className={styles.statCard}>
+        <div className={styles.statInfo}>
+          <p className={styles.statLabel}>{label}</p>
+          <p className={`${styles.statValue} ${getValueClass(color)}`}>
             {value}
           </p>
         </div>
-        <Icon className={`w-8 h-8 ${colorClasses[color]}`} />
+        <Icon className={`${styles.statIcon} ${getIconClass(color)}`} />
       </div>
     </Card>
   );

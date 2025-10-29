@@ -1,21 +1,20 @@
 import { User, Calendar, CheckCircle } from "lucide-react";
 import { getInitials, generateColor, formatDate } from "../../../utils/helpers";
+import styles from "./TaskDetailsModal.module.css";
 
 const MetadataGrid = ({ task }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className={styles.metadataGrid}>
       {/* Assignee */}
       <div>
-        <div className="flex items-center gap-2 mb-2">
-          <User className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-          <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-            Assignee
-          </h3>
+        <div className={styles.metadataItemHeader}>
+          <User className={styles.metadataIcon} />
+          <h3 className={styles.metadataItemTitle}>Assignee</h3>
         </div>
         {task.assignedTo || task.assignee ? (
-          <div className="flex items-center gap-2">
+          <div className={styles.userInfo}>
             <div
-              className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-medium"
+              className={styles.userAvatar}
               style={{
                 backgroundColor: generateColor(
                   task.assignedTo?.name || task.assignee?.name || "Unassigned"
@@ -25,44 +24,40 @@ const MetadataGrid = ({ task }) => {
               {getInitials(task.assignedTo?.name || task.assignee?.name || "U")}
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+              <p className={styles.userName}>
                 {task.assignedTo?.name || task.assignee?.name}
               </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+              <p className={styles.userEmail}>
                 {task.assignedTo?.email || task.assignee?.email}
               </p>
             </div>
           </div>
         ) : (
-          <p className="text-sm text-gray-500 dark:text-gray-400">Unassigned</p>
+          <p className={styles.metadataTextMuted}>Unassigned</p>
         )}
       </div>
 
       {/* Due Date */}
       <div>
-        <div className="flex items-center gap-2 mb-2">
-          <Calendar className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-          <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-            Due Date
-          </h3>
+        <div className={styles.metadataItemHeader}>
+          <Calendar className={styles.metadataIcon} />
+          <h3 className={styles.metadataItemTitle}>Due Date</h3>
         </div>
-        <p className="text-sm text-gray-900 dark:text-gray-100">
+        <p className={styles.metadataText}>
           {task.dueDate ? formatDate(task.dueDate) : "No due date"}
         </p>
       </div>
 
       {/* Created By */}
       <div>
-        <div className="flex items-center gap-2 mb-2">
-          <User className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-          <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-            Created By
-          </h3>
+        <div className={styles.metadataItemHeader}>
+          <User className={styles.metadataIcon} />
+          <h3 className={styles.metadataItemTitle}>Created By</h3>
         </div>
         {task.createdBy ? (
-          <div className="flex items-center gap-2">
+          <div className={styles.userInfo}>
             <div
-              className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-medium"
+              className={styles.userAvatar}
               style={{
                 backgroundColor: generateColor(task.createdBy.name || "U"),
               }}
@@ -70,31 +65,23 @@ const MetadataGrid = ({ task }) => {
               {getInitials(task.createdBy.name || "U")}
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                {task.createdBy.name}
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                {task.createdBy.email}
-              </p>
+              <p className={styles.userName}>{task.createdBy.name}</p>
+              <p className={styles.userEmail}>{task.createdBy.email}</p>
             </div>
           </div>
         ) : (
-          <p className="text-sm text-gray-500 dark:text-gray-400">Unknown</p>
+          <p className={styles.metadataTextMuted}>Unknown</p>
         )}
       </div>
 
       {/* Completed At */}
       {task.completedAt && (
         <div>
-          <div className="flex items-center gap-2 mb-2">
-            <CheckCircle className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-              Completed At
-            </h3>
+          <div className={styles.metadataItemHeader}>
+            <CheckCircle className={styles.metadataIcon} />
+            <h3 className={styles.metadataItemTitle}>Completed At</h3>
           </div>
-          <p className="text-sm text-gray-900 dark:text-gray-100">
-            {formatDate(task.completedAt)}
-          </p>
+          <p className={styles.metadataText}>{formatDate(task.completedAt)}</p>
         </div>
       )}
     </div>

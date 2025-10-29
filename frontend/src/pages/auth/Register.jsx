@@ -11,6 +11,7 @@ import {
   FormDivider,
   validateRegister,
 } from "./authModule";
+import styles from "./authModule/Auth.module.css";
 
 const Register = () => {
   const { register } = useAuth();
@@ -62,7 +63,7 @@ const Register = () => {
 
   return (
     <AuthLayout subtitle="Create your account">
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className={styles.authForm}>
         <Input
           label="Full Name"
           type="text"
@@ -115,19 +116,15 @@ const Register = () => {
           onTogglePassword={() => setShowConfirmPassword(!showConfirmPassword)}
         />
 
-        <div className="flex items-start gap-2">
-          <input
-            type="checkbox"
-            required
-            className="w-4 h-4 mt-1 text-primary-600 rounded border-gray-300 dark:border-gray-600 focus:ring-primary-500"
-          />
-          <label className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">
+        <div className={styles.termsRow}>
+          <input type="checkbox" required className={styles.termsCheckbox} />
+          <label className={styles.termsText}>
             I agree to the{" "}
-            <a href="#" className="text-primary-600 hover:text-primary-700">
+            <a href="#" className={styles.link}>
               Terms of Service
             </a>{" "}
             and{" "}
-            <a href="#" className="text-primary-600 hover:text-primary-700">
+            <a href="#" className={styles.link}>
               Privacy Policy
             </a>
           </label>
@@ -146,12 +143,9 @@ const Register = () => {
 
       <FormDivider />
 
-      <p className="text-center text-gray-600 dark:text-gray-400 dark:text-gray-500">
+      <p className={styles.footer}>
         Already have an account?{" "}
-        <Link
-          to="/login"
-          className="text-primary-600 hover:text-primary-700 font-medium"
-        >
+        <Link to="/login" className={styles.link}>
           Sign in
         </Link>
       </p>

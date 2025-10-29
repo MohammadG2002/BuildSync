@@ -21,6 +21,7 @@ import {
   QuickActions,
   CurrentWorkspaceCard,
 } from "./dashboardModule";
+import styles from "./dashboardModule/Dashboard.module.css";
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -74,13 +75,13 @@ const Dashboard = () => {
   const upcomingDeadlines = [];
 
   return (
-    <div className="space-y-6">
+    <div className={styles.container}>
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+      <div className={styles.header}>
+        <h1 className={styles.title}>
           Welcome back, {user?.name?.split(" ")[0] || "User"}! 👋
         </h1>
-        <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mt-1">
+        <p className={styles.subtitle}>
           Here's what's happening with your projects today.
         </p>
       </div>
@@ -89,7 +90,7 @@ const Dashboard = () => {
       {loading ? (
         <SkeletonStats />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className={styles.statsGrid}>
           {stats.map((stat, index) => (
             <StatCard key={index} stat={stat} />
           ))}
@@ -97,9 +98,9 @@ const Dashboard = () => {
       )}
 
       {/* Main Content Grid */}
-      <div className="grid lg:grid-cols-3 gap-6">
+      <div className={styles.mainGrid}>
         {/* Recent Projects - Takes 2 columns */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className={styles.mainColumn}>
           {/* Recent Projects Card */}
           <Card
             title="Recent Projects"
@@ -118,7 +119,7 @@ const Dashboard = () => {
             {loading ? (
               <SkeletonList count={3} />
             ) : (
-              <div className="space-y-4">
+              <div className={styles.projectsContainer}>
                 {recentProjects.map((project) => (
                   <ProjectCard
                     key={project.id}
@@ -137,7 +138,7 @@ const Dashboard = () => {
             {loading ? (
               <SkeletonList count={4} />
             ) : (
-              <div className="space-y-3">
+              <div className={styles.tasksContainer}>
                 {recentTasks.map((task) => (
                   <TaskItem key={task.id} task={task} />
                 ))}
@@ -145,7 +146,7 @@ const Dashboard = () => {
             )}
             <Button
               variant="ghost"
-              className="w-full mt-4 gap-2"
+              className={`w-full ${styles.addTaskButton} gap-2`}
               onClick={() => navigate("/app/workspaces")}
             >
               <Plus className="w-4 h-4" />
@@ -155,10 +156,10 @@ const Dashboard = () => {
         </div>
 
         {/* Sidebar - Takes 1 column */}
-        <div className="space-y-6">
+        <div className={styles.sidebar}>
           {/* Upcoming Deadlines */}
           <Card title="Upcoming Deadlines">
-            <div className="space-y-3">
+            <div className={styles.deadlinesContainer}>
               {upcomingDeadlines.map((deadline) => (
                 <DeadlineItem key={deadline.id} deadline={deadline} />
               ))}

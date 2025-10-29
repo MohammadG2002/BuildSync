@@ -1,0 +1,140 @@
+/* TaskForm main */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* DescriptionField */
+.descriptionContainer {
+}
+
+.descriptionLabel {
+  display: block;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.25rem;
+}
+
+:global(.dark) .descriptionLabel {
+  color: #d1d5db;
+}
+
+.descriptionTextarea {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  resize: none;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.descriptionTextarea:focus {
+  box-shadow: 0 0 0 2px #3b82f6;
+  border-color: #3b82f6;
+}
+
+:global(.dark) .descriptionTextarea {
+  border-color: #4b5563;
+  background-color: #1f2937;
+  color: #f3f4f6;
+}
+
+/* StatusAndPriorityFields */
+.gridTwo {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.fieldContainer {
+}
+
+.fieldLabel {
+  display: block;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.25rem;
+}
+
+:global(.dark) .fieldLabel {
+  color: #d1d5db;
+}
+
+.select {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.select:focus {
+  box-shadow: 0 0 0 2px #3b82f6;
+  border-color: #3b82f6;
+}
+
+:global(.dark) .select {
+  border-color: #4b5563;
+  background-color: #1f2937;
+  color: #f3f4f6;
+}
+
+/* AttachmentsField */
+.attachmentsContainer {
+}
+
+.attachmentsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.attachmentsLabel {
+  display: block;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+:global(.dark) .attachmentsLabel {
+  color: #d1d5db;
+}
+
+.attachmentsButton {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.attachmentsButton:hover {
+  color: #1d4ed8;
+}
+
+.attachmentsIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* TaskFormActions */
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  padding-top: 1rem;
+}

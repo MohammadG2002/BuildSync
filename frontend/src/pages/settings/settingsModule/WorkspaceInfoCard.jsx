@@ -1,33 +1,28 @@
 import Card from "../../../components/common/Card";
+import styles from "./Settings.module.css";
 
 const WorkspaceInfoCard = ({ workspaceId, createdDate, memberCount }) => {
   return (
     <Card title="Workspace Information">
-      <div className="space-y-4">
-        <div className="flex justify-between items-center py-3 border-b border-gray-100">
-          <div>
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Workspace ID
-            </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+      <div className={styles.infoList}>
+        <div className={styles.infoItem}>
+          <div className={styles.infoLabel}>
+            <p className={styles.infoLabelTitle}>Workspace ID</p>
+            <p className={styles.infoLabelDesc}>
               Unique identifier for this workspace
             </p>
           </div>
-          <code className="px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded text-sm font-mono">
-            {workspaceId}
-          </code>
+          <code className={styles.infoCode}>{workspaceId}</code>
         </div>
 
-        <div className="flex justify-between items-center py-3 border-b border-gray-100">
-          <div>
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Created Date
-            </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+        <div className={styles.infoItem}>
+          <div className={styles.infoLabel}>
+            <p className={styles.infoLabelTitle}>Created Date</p>
+            <p className={styles.infoLabelDesc}>
               When this workspace was created
             </p>
           </div>
-          <p className="text-sm text-gray-900 dark:text-gray-100">
+          <p className={styles.infoValue}>
             {createdDate
               ? new Date(createdDate).toLocaleDateString("en-US", {
                   year: "numeric",
@@ -38,18 +33,14 @@ const WorkspaceInfoCard = ({ workspaceId, createdDate, memberCount }) => {
           </p>
         </div>
 
-        <div className="flex justify-between items-center py-3">
-          <div>
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Total Members
-            </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+        <div className={styles.infoItem}>
+          <div className={styles.infoLabel}>
+            <p className={styles.infoLabelTitle}>Total Members</p>
+            <p className={styles.infoLabelDesc}>
               Number of members in this workspace
             </p>
           </div>
-          <p className="text-sm text-gray-900 dark:text-gray-100">
-            {memberCount || 0}
-          </p>
+          <p className={styles.infoValue}>{memberCount || 0}</p>
         </div>
       </div>
     </Card>

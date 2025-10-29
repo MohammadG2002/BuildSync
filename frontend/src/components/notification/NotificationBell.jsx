@@ -5,6 +5,7 @@ import {
   NotificationButton,
   NotificationDropdown,
 } from "./notificationBellModule";
+import styles from "./notificationBellModule/NotificationBell.module.css";
 
 const NotificationBell = () => {
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ const NotificationBell = () => {
 
   return (
     <div
-      className="relative"
+      className={styles.container}
       ref={notificationRef}
       data-onboarding="notification-bell"
     >

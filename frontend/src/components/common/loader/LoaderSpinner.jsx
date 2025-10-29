@@ -1,12 +1,15 @@
 import { Loader2 } from "lucide-react";
+import styles from "./Loader.module.css";
 
-const LoaderSpinner = ({ size, sizes, text }) => {
+const LoaderSpinner = ({ size = "md", text }) => {
   return (
-    <div className="flex flex-col items-center gap-3">
-      <Loader2 className={`${sizes[size]} animate-spin text-primary-600`} />
-      {text && (
-        <p className="text-sm text-gray-600 dark:text-gray-400">{text}</p>
-      )}
+    <div className={styles.spinnerContainer}>
+      <Loader2
+        className={`${styles.spinner} ${
+          styles[`spinner${size.charAt(0).toUpperCase() + size.slice(1)}`]
+        }`}
+      />
+      {text && <p className={styles.text}>{text}</p>}
     </div>
   );
 };

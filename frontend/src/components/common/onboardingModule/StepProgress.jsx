@@ -1,21 +1,23 @@
+import styles from "./Onboarding.module.css";
+
 const StepProgress = ({ currentStep, totalSteps, steps }) => (
-  <div className="flex items-center justify-between mb-2">
-    <span className="text-sm font-medium text-primary-600 dark:text-primary-400">
+  <div className={styles.progressContainer}>
+    <span className={styles.progressText}>
       Step {currentStep + 1} of {totalSteps}
     </span>
-    <div className="flex gap-1">
-      {steps.map((_, index) => (
-        <div
-          key={index}
-          className={`w-2 h-2 rounded-full transition-colors ${
-            index === currentStep
-              ? "bg-primary-600 dark:bg-primary-400"
-              : index < currentStep
-              ? "bg-primary-300 dark:bg-primary-600"
-              : "bg-gray-300 dark:bg-gray-600"
-          }`}
-        />
-      ))}
+    <div className={styles.progressDots}>
+      {steps.map((_, index) => {
+        const dotClass = [
+          styles.progressDot,
+          index === currentStep && styles.progressDotCurrent,
+          index < currentStep && styles.progressDotCompleted,
+          index > currentStep && styles.progressDotUpcoming,
+        ]
+          .filter(Boolean)
+          .join(" ");
+
+        return <div key={index} className={dotClass} />;
+      })}
     </div>
   </div>
 );

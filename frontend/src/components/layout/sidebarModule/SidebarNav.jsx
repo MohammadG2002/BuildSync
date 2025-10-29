@@ -1,9 +1,10 @@
 import SidebarNavItem from "./SidebarNavItem";
+import styles from "./Sidebar.module.css";
 
 const SidebarNav = ({ menuItems, currentWorkspace, collapsed }) => {
   return (
-    <nav className="flex-1 overflow-y-auto py-4 px-2">
-      <div className="space-y-1">
+    <nav className={styles.nav}>
+      <div className={styles.navList}>
         {menuItems.map((item) => (
           <SidebarNavItem
             key={item.name}

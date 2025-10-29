@@ -10,6 +10,7 @@ import {
   FormDivider,
   validateLogin,
 } from "./authModule";
+import styles from "./authModule/Auth.module.css";
 
 const Login = () => {
   const { login } = useAuth();
@@ -50,7 +51,7 @@ const Login = () => {
 
   return (
     <AuthLayout subtitle="Sign in to your account">
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className={styles.authForm}>
         <Input
           label="Email"
           type="email"
@@ -76,20 +77,12 @@ const Login = () => {
           onTogglePassword={() => setShowPassword(!showPassword)}
         />
 
-        <div className="flex items-center justify-between text-sm">
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              className="w-4 h-4 text-primary-600 rounded border-gray-300 dark:border-gray-600 focus:ring-primary-500"
-            />
-            <span className="text-gray-700 dark:text-gray-300">
-              Remember me
-            </span>
+        <div className={styles.rememberRow}>
+          <label className={styles.rememberLabel}>
+            <input type="checkbox" className={styles.checkbox} />
+            <span className={styles.rememberText}>Remember me</span>
           </label>
-          <Link
-            to="/forgot-password"
-            className="text-primary-600 hover:text-primary-700 font-medium"
-          >
+          <Link to="/forgot-password" className={styles.link}>
             Forgot password?
           </Link>
         </div>
@@ -107,12 +100,9 @@ const Login = () => {
 
       <FormDivider />
 
-      <p className="text-center text-gray-600 dark:text-gray-400 dark:text-gray-500">
+      <p className={styles.footer}>
         Don't have an account?{" "}
-        <Link
-          to="/register"
-          className="text-primary-600 hover:text-primary-700 font-medium"
-        >
+        <Link to="/register" className={styles.link}>
           Sign up
         </Link>
       </p>

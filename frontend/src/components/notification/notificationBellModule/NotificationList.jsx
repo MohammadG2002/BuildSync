@@ -1,8 +1,9 @@
 import NotificationItem from "../NotificationItem";
+import styles from "./NotificationBell.module.css";
 
 const NotificationList = ({ notifications, onNotificationClick, onDelete }) => {
   return (
-    <div className="max-h-96 overflow-y-auto">
+    <div className={styles.list}>
       {notifications.map((notification) => (
         <NotificationItem
           key={notification.id}

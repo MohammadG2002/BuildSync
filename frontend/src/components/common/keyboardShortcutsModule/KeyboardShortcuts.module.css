@@ -1,0 +1,252 @@
+/* ShortcutsButton */
+.shortcutsButton {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  padding: 0.75rem;
+  background-color: #2563eb;
+  color: white;
+  border-radius: 9999px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.2s, box-shadow 0.2s;
+  z-index: 40;
+  border: none;
+  cursor: pointer;
+}
+
+.shortcutsButton:hover {
+  background-color: #1d4ed8;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+:global(.dark) .shortcutsButton {
+  background-color: #3b82f6;
+}
+
+:global(.dark) .shortcutsButton:hover {
+  background-color: #2563eb;
+}
+
+.shortcutsIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.shortcutsTooltip {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  margin-bottom: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  background-color: #111827;
+  color: white;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  border-radius: 0.25rem;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+
+.shortcutsButton:hover .shortcutsTooltip {
+  opacity: 1;
+}
+
+:global(.dark) .shortcutsTooltip {
+  background-color: #374151;
+}
+
+/* ShortcutsModal - uses Modal component, only content styling needed */
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.modalDescription {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #4b5563;
+}
+
+:global(.dark) .modalDescription {
+  color: #9ca3af;
+}
+
+/* KeyBadge */
+.keyBadge {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+:global(.dark) .keyBadge {
+  color: #e5e7eb;
+  background-color: #374151;
+  border-color: #4b5563;
+}
+
+/* ShortcutSection */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sectionHeader {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+:global(.dark) .sectionHeader {
+  color: #f3f4f6;
+}
+
+.sectionIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #2563eb;
+}
+
+:global(.dark) .sectionIcon {
+  color: #60a5fa;
+}
+
+.sectionItems {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.shortcutItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  background-color: #f9fafb;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.shortcutItem:hover {
+  background-color: #f3f4f6;
+}
+
+:global(.dark) .shortcutItem {
+  background-color: #111827;
+}
+
+:global(.dark) .shortcutItem:hover {
+  background-color: #1f2937;
+}
+
+.shortcutDescription {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #374151;
+}
+
+:global(.dark) .shortcutDescription {
+  color: #d1d5db;
+}
+
+.shortcutKeys {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.keySeparator {
+  color: #9ca3af;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+:global(.dark) .keySeparator {
+  color: #4b5563;
+}
+
+/* ProTips */
+.proTips {
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+:global(.dark) .proTips {
+  background-color: rgba(30, 64, 175, 0.2);
+  border-color: #1e3a8a;
+}
+
+.proTipsTitle {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  color: #1e3a8a;
+  margin-bottom: 0.5rem;
+}
+
+:global(.dark) .proTipsTitle {
+  color: #93c5fd;
+}
+
+.proTipsList {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #1e40af;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+:global(.dark) .proTipsList {
+  color: #60a5fa;
+}
+
+/* ShortcutsFooter */
+.footer {
+  text-align: center;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+:global(.dark) .footer {
+  border-color: #374151;
+}
+
+.footerButton {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #4b5563;
+  transition: color 0.2s;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.footerButton:hover {
+  color: #111827;
+}
+
+:global(.dark) .footerButton {
+  color: #9ca3af;
+}
+
+:global(.dark) .footerButton:hover {
+  color: #e5e7eb;
+}

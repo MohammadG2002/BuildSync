@@ -1,16 +1,17 @@
 import { CheckCircle, Users } from "lucide-react";
+import styles from "./ProjectCard.module.css";
 
 const ProjectStats = ({ project }) => {
   return (
-    <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-      <div className="flex items-center gap-1">
-        <CheckCircle className="w-4 h-4" />
+    <div className={styles.stats}>
+      <div className={styles.stat}>
+        <CheckCircle className={styles.statIcon} />
         <span>
           {project.completedTasks || 0}/{project.totalTasks || 0} tasks
         </span>
       </div>
-      <div className="flex items-center gap-1">
-        <Users className="w-4 h-4" />
+      <div className={styles.stat}>
+        <Users className={styles.statIcon} />
         <span>{project.memberCount || 0} members</span>
       </div>
     </div>

@@ -1,14 +1,12 @@
+import styles from "./Card.module.css";
+
 const CardHeader = ({ title, action }) => {
   if (!title && !action) return null;
 
   return (
-    <div className="flex items-center justify-between mb-4">
-      {title && (
-        <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
-          {title}
-        </h3>
-      )}
-      {action && <div>{action}</div>}
+    <div className={styles.header}>
+      {title && <h3 className={styles.title}>{title}</h3>}
+      {action && <div className={styles.action}>{action}</div>}
     </div>
   );
 };
