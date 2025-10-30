@@ -1,6 +1,6 @@
 import { Camera } from "lucide-react";
-import Button from "../../../components/common/Button";
-import { getInitials, generateColor } from "../../../utils/helpers";
+import Button from "../common/Button";
+import { getInitials, generateColor } from "../../utils/helpers";
 import styles from "./Profile.module.css";
 
 const AvatarSection = ({ userName, userEmail, onAvatarUpload }) => {

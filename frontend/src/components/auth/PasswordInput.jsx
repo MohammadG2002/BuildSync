@@ -1,5 +1,5 @@
 import { Eye, EyeOff } from "lucide-react";
-import Input from "../../../components/common/Input";
+import Input from "../common/Input";
 import styles from "./Auth.module.css";
 
 const PasswordInput = ({

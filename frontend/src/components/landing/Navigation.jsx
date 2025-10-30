@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import Button from "../../../components/common/Button";
-import styles from "../LandingPage.module.css";
+import Button from "../common/Button";
+import styles from "../../pages/landing/LandingPage.module.css";
 
 const Navigation = () => {
   return (

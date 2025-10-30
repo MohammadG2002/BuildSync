@@ -1,7 +1,7 @@
 import { Search } from "lucide-react";
-import Input from "../../../components/common/Input";
+import Input from "../common/Input";
 import ContactCard from "./ContactCard";
-import styles from "../Chat.module.css";
+import styles from "../../pages/chat/Chat.module.css";
 
 const ContactsSidebar = ({
   searchQuery,

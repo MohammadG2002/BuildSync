@@ -1,6 +1,6 @@
-import * as authService from "../../../services/authService";
+import * as authService from "../../services/authService";
 import toast from "react-hot-toast";
-import { validatePassword } from "../../../components/profile";
+import validatePassword from "./validatePassword";
 
 /**
  * Handle password change submission

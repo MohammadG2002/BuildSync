@@ -1,6 +1,6 @@
 import { Phone, Video, MoreVertical } from "lucide-react";
-import { getInitials, generateColor } from "../../../utils/helpers";
-import styles from "../Chat.module.css";
+import { getInitials, generateColor } from "../../utils/helpers";
+import styles from "../../pages/chat/Chat.module.css";
 
 const ChatHeader = ({ selectedContact }) => {
   return (

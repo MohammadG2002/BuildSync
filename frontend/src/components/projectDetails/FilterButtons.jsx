@@ -1,5 +1,5 @@
 import { Filter } from "lucide-react";
-import styles from "../ProjectDetails.module.css";
+import styles from "../../pages/projects/ProjectDetails.module.css";
 
 const FilterButtons = ({ filterStatus, onFilterChange }) => {
   const filters = [

@@ -1,5 +1,5 @@
 import MessageBubble from "./MessageBubble";
-import styles from "../Chat.module.css";
+import styles from "../../pages/chat/Chat.module.css";
 
 const MessagesArea = ({ messages, currentUserId, messagesEndRef }) => {
   return (

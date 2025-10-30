@@ -7,9 +7,9 @@ import {
   ArchivedLoadingState,
   ArchivedEmptyState,
   RestoreTaskModal,
-  filterArchivedTasks,
-  groupTasksByProject,
 } from "../../components/archived";
+import filterArchivedTasks from "../../utils/archived/filterArchivedTasks";
+import groupTasksByProject from "../../utils/archived/groupTasksByProject";
 import fetchData from "../../utils/archived/fetchData";
 import handleRestoreClick from "../../utils/archived/handleRestoreClick";
 import handleRestoreTask from "../../utils/archived/handleRestoreTask";

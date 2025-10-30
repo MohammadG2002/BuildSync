@@ -1,6 +1,6 @@
 import { FolderKanban } from "lucide-react";
 import ArchivedTaskCard from "./ArchivedTaskCard";
-import styles from "../Archived.module.css";
+import styles from "../../pages/archived/Archived.module.css";
 
 const ArchivedTaskGroup = ({ projectName, tasks, onRestoreClick }) => {
   return (

@@ -1,4 +1,4 @@
-import * as taskService from "../../../services/taskService";
+import * as taskService from "../../services/taskService";
 
 /**
  * Handle task click to view details

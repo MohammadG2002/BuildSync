@@ -1,4 +1,4 @@
-import * as chatService from "../../../services/chatService";
+import * as chatService from "../../services/chatService";
 
 /**
  * Handle sending a message

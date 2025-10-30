@@ -1,5 +1,5 @@
-import Button from "../../../components/common/Button";
-import styles from "../Workspaces.module.css";
+import Button from "../common/Button";
+import styles from "../../pages/workspaces/Workspaces.module.css";
 
 const DeleteWorkspaceModalContent = ({
   workspaceName,

@@ -1,4 +1,4 @@
-import styles from "../Archived.module.css";
+import styles from "../../pages/archived/Archived.module.css";
 
 const getStatusClass = (status) => {
   const statusMap = {

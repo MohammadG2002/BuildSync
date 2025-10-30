@@ -1,7 +1,7 @@
 import { AlertTriangle } from "lucide-react";
-import Button from "../../../components/common/Button";
-import Modal from "../../../components/common/Modal";
-import Input from "../../../components/common/Input";
+import Button from "../common/Button";
+import Modal from "../common/Modal";
+import Input from "../common/Input";
 import styles from "./Settings.module.css";
 
 const DeleteWorkspaceModal = ({

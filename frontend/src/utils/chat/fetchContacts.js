@@ -1,4 +1,4 @@
-import * as chatService from "../../../services/chatService";
+import * as chatService from "../../services/chatService";
 
 /**
  * Fetch contacts for current workspace

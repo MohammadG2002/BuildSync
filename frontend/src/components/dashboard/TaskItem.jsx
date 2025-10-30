@@ -1,5 +1,5 @@
 import { Calendar } from "lucide-react";
-import { formatDate } from "../../../utils/helpers";
+import { formatDate } from "../../utils/helpers";
 import styles from "./Dashboard.module.css";
 
 const TaskItem = ({ task }) => {

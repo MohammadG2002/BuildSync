@@ -1,6 +1,6 @@
 import { Save } from "lucide-react";
-import Button from "../../../components/common/Button";
-import Card from "../../../components/common/Card";
+import Button from "../common/Button";
+import Card from "../common/Card";
 import Input from "../../../components/common/Input";
 import styles from "./Settings.module.css";
 

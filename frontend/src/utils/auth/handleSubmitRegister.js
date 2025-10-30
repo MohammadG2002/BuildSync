@@ -1,4 +1,4 @@
-import { validateRegister } from "../../../components/auth";
+import { validateRegister } from "./validators";
 
 /**
  * Handle register form submission

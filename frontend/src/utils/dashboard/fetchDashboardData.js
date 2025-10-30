@@ -1,7 +1,7 @@
 import { Briefcase, Clock, CheckCircle, Users } from "lucide-react";
-import * as projectService from "../../../services/projectService";
-import * as taskService from "../../../services/taskService";
-import * as workspaceService from "../../../services/workspaceService";
+import * as projectService from "../../services/projectService";
+import * as taskService from "../../services/taskService";
+import * as workspaceService from "../../services/workspaceService";
 
 /**
  * Fetch all dashboard data

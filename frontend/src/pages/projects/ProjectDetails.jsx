@@ -13,8 +13,8 @@ import {
   GroupBySelector,
   EmptyTasksState,
   DeleteTaskModalContent,
-  calculateTaskStats,
 } from "../../components/projectDetails";
+import { calculateTaskStats } from "../../utils/project/calculateTaskStats";
 import fetchProjectAndTasks from "../../utils/project/fetchProjectAndTasks";
 import handleCreateTask from "../../utils/project/handleCreateTask";
 import handleEditTask from "../../utils/project/handleEditTask";

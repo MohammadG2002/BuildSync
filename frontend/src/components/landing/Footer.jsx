@@ -1,4 +1,4 @@
-import styles from "../LandingPage.module.css";
+import styles from "../../pages/landing/LandingPage.module.css";
 
 const Footer = () => {
   return (

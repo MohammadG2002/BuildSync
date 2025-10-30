@@ -1,7 +1,7 @@
 import ChatHeader from "./ChatHeader";
 import MessagesArea from "./MessagesArea";
 import MessageInput from "./MessageInput";
-import styles from "../Chat.module.css";
+import styles from "../../pages/chat/Chat.module.css";
 
 const ChatArea = ({
   selectedContact,

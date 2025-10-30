@@ -5,7 +5,8 @@ import { useNotifications } from "../../hooks/useNotifications";
 import Card from "../../components/common/Card";
 import Button from "../../components/common/Button";
 import NotificationItem from "../../components/notification/NotificationItem";
-import { groupByDate, notificationTypes } from "../../components/notifications";
+import groupByDate from "../../utils/notification/groupByDate";
+import { notificationTypes } from "../../utils/notification/notificationTypes";
 import handleNotificationClick from "../../utils/notification/handleNotificationClick";
 import styles from "./Notifications.module.css";
 

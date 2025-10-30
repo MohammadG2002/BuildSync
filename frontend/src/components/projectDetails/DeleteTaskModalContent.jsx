@@ -1,5 +1,5 @@
-import Button from "../../../components/common/Button";
-import styles from "../ProjectDetails.module.css";
+import Button from "../common/Button";
+import styles from "../../pages/projects/ProjectDetails.module.css";
 
 const DeleteTaskModalContent = ({
   taskTitle,

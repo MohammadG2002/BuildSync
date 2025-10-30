@@ -5,4 +5,4 @@ export { default as NotificationPreferences } from "./NotificationPreferences";
 export { default as PrivacySettings } from "./PrivacySettings";
 export { default as DangerZone } from "./DangerZone";
 export { default as DeleteWorkspaceModal } from "./DeleteWorkspaceModal";
-export { validateWorkspaceSettings } from "./validators";
+export { validateWorkspaceSettings } from "../../utils/settings/validators";

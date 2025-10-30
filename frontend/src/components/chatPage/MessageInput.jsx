@@ -1,6 +1,6 @@
 import { Send, Paperclip, Smile } from "lucide-react";
-import Button from "../../../components/common/Button";
-import styles from "../Chat.module.css";
+import Button from "../common/Button";
+import styles from "../../pages/chat/Chat.module.css";
 
 const MessageInput = ({ message, onMessageChange, onSendMessage }) => {
   const handleSubmit = (e) => {

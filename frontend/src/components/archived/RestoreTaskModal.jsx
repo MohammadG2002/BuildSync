@@ -1,7 +1,7 @@
 import { RotateCcw } from "lucide-react";
-import Button from "../../../components/common/Button";
-import Modal from "../../../components/common/Modal";
-import styles from "../Archived.module.css";
+import Button from "../common/Button";
+import Modal from "../common/Modal";
+import styles from "../../pages/archived/Archived.module.css";
 
 const RestoreTaskModal = ({
   isOpen,

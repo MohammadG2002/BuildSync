@@ -6,8 +6,8 @@ import {
   ContactsSidebar,
   ChatArea,
   ChatEmptyState,
-  filterContacts,
 } from "../../components/chatPage";
+import filterContacts from "../../utils/chat/filterContacts";
 import fetchContacts from "../../utils/chat/fetchContacts";
 import fetchMessages from "../../utils/chat/fetchMessages";
 import scrollToBottom from "../../utils/chat/scrollToBottom";

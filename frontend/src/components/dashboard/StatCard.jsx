@@ -1,4 +1,4 @@
-import Card from "../../../components/common/Card";
+import Card from "../common/Card";
 import { TrendingUp } from "lucide-react";
 import styles from "./Dashboard.module.css";
 

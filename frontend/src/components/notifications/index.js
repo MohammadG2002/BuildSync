@@ -1,2 +1,2 @@
-export { default as groupByDate } from "./groupByDate";
-export { notificationTypes } from "./notificationTypes";
+export { default as groupByDate } from "../../utils/notification/groupByDate";
+export { notificationTypes } from "../../utils/notification/notificationTypes";

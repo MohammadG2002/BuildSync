@@ -6,7 +6,7 @@ import Button from "../../components/common/Button";
 import Modal from "../../components/common/Modal";
 import { SkeletonList } from "../../components/common/Loader";
 import WorkspaceCard from "../../components/workspace/WorkspaceCard";
-import CreateWorkspaceModal from "../../components/workspace/CreateWorkspaceModal";
+import WorkspaceForm from "../../components/workspace/WorkspaceForm";
 import {
   EmptyWorkspacesState,
   DeleteWorkspaceModalContent,

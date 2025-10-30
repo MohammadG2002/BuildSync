@@ -6,7 +6,7 @@ import MessageBubble from "./MessageBubble";
 import MessageInput from "./MessageInput";
 import ChatEmptyState from "./ChatEmptyState";
 import ChatArea from "./ChatArea";
-import filterContacts from "./filterContacts";
+import filterContacts from "../../utils/chat/filterContacts";
 // Mock data imports commented out - uncomment for testing
 // import { mockContacts } from "./mockContacts";
 // import { mockMessages } from "./mockMessages";

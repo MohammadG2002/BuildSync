@@ -1,6 +1,6 @@
 import { Lock, Eye, EyeOff } from "lucide-react";
-import Input from "../../../components/common/Input";
-import Button from "../../../components/common/Button";
+import Input from "../common/Input";
+import Button from "../common/Button";
 import styles from "./Profile.module.css";
 
 const PasswordForm = ({

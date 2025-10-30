@@ -1,6 +1,6 @@
 import { Archive } from "lucide-react";
-import Card from "../../../components/common/Card";
-import styles from "../Archived.module.css";
+import Card from "../common/Card";
+import styles from "../../pages/archived/Archived.module.css";
 
 const ArchivedStats = ({ archivedTasks }) => {
   const completedCount = archivedTasks.filter(

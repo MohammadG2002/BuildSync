@@ -1,4 +1,4 @@
-import * as workspaceService from "../../../services/workspaceService";
+import * as workspaceService from "../../services/workspaceService";
 import toast from "react-hot-toast";
 
 /**

@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import { validateWorkspaceSettings } from "../../../components/settings";
+import { validateWorkspaceSettings } from "./validators";
 
 /**
  * Handle save workspace settings

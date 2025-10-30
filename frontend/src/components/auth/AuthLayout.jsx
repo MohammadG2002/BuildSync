@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { useTheme } from "../../../hooks/useTheme";
-import assets from "../../../assets/assets";
+import { useTheme } from "../../hooks/useTheme";
+import assets from "../../assets/assets";
 import styles from "./AuthLayout.module.css";
 
 const AuthLayout = ({ children, title, subtitle }) => {

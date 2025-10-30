@@ -5,8 +5,8 @@ import ArchivedTaskGroup from "./ArchivedTaskGroup";
 import ArchivedLoadingState from "./ArchivedLoadingState";
 import ArchivedEmptyState from "./ArchivedEmptyState";
 import RestoreTaskModal from "./RestoreTaskModal";
-import filterArchivedTasks from "./filterArchivedTasks";
-import groupTasksByProject from "./groupTasksByProject";
+import filterArchivedTasks from "../../utils/archived/filterArchivedTasks";
+import groupTasksByProject from "../../utils/archived/groupTasksByProject";
 import getStatusClass from "./getStatusClass";
 import getPriorityClass from "./getPriorityClass";
 // Mock data import commented out - uncomment for testing

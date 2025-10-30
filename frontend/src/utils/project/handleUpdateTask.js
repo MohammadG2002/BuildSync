@@ -1,4 +1,4 @@
-import * as taskService from "../../../services/taskService";
+import * as taskService from "../../services/taskService";
 import toast from "react-hot-toast";
 
 /**

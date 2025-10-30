@@ -1,5 +1,5 @@
 import { Send } from "lucide-react";
-import styles from "../Chat.module.css";
+import styles from "../../pages/chat/Chat.module.css";
 
 const ChatEmptyState = () => {
   return (

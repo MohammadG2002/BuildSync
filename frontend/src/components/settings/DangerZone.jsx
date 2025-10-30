@@ -1,6 +1,6 @@
 import { AlertTriangle, Trash2 } from "lucide-react";
-import Button from "../../../components/common/Button";
-import Card from "../../../components/common/Card";
+import Button from "../common/Button";
+import Card from "../common/Card";
 import styles from "./Settings.module.css";
 
 const DangerZone = ({ onDeleteClick }) => {

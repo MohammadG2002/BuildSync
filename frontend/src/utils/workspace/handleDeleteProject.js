@@ -1,4 +1,4 @@
-import * as projectService from "../../../services/projectService";
+import * as projectService from "../../services/projectService";
 import toast from "react-hot-toast";
 
 /**

@@ -2,8 +2,8 @@ import {
   getInitials,
   generateColor,
   getRelativeTime,
-} from "../../../utils/helpers";
-import styles from "../Chat.module.css";
+} from "../../utils/helpers";
+import styles from "../../pages/chat/Chat.module.css";
 
 const ContactCard = ({ contact, isSelected, onSelect }) => {
   return (

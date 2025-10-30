@@ -1,5 +1,5 @@
-import Card from "../../../components/common/Card";
-import styles from "../Archived.module.css";
+import Card from "../common/Card";
+import styles from "../../pages/archived/Archived.module.css";
 
 const ArchivedLoadingState = () => {
   return (

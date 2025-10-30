@@ -1,4 +1,4 @@
-import Card from "../../../components/common/Card";
+import Card from "../common/Card";
 import styles from "./Settings.module.css";
 
 const NotificationPreferences = () => {

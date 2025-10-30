@@ -1,4 +1,4 @@
-import { validateLogin } from "../../../components/auth";
+import { validateLogin } from "./validators";
 
 /**
  * Handle login form submission
