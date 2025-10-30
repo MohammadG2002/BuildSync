@@ -1,5 +1,6 @@
 import Button from "../Button";
 import { Plus } from "lucide-react";
+import styles from "./IconButton.module.css";
 
 const IconButton = ({
   icon,
@@ -17,7 +18,7 @@ const IconButton = ({
       variant={variant}
       size={size}
       aria-label={ariaLabel}
-      className="!p-2"
+      className={styles.iconButton}
       {...props}
     >
       {icon}

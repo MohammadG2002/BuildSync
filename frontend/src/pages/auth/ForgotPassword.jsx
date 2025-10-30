@@ -3,40 +3,15 @@ import { Link } from "react-router-dom";
 import { Mail, ArrowLeft } from "lucide-react";
 import Button from "../../components/common/Button";
 import Input from "../../components/common/Input";
-import * as authService from "../../services/authService";
-import toast from "react-hot-toast";
-import { validateEmail } from "./authModule";
-import styles from "./authModule/Auth.module.css";
+import { validateEmail } from "../../components/auth";
+import handleSubmit from "../../utils/auth/handleSubmitForgotPassword";
+import styles from "../../components/auth/Auth.module.css";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const validationError = validateEmail(email);
-    if (validationError) {
-      setError(validationError);
-      return;
-    }
-
-    setLoading(true);
-    setError("");
-
-    try {
-      await authService.forgotPassword(email);
-      setSent(true);
-      toast.success("Password reset email sent!");
-    } catch (error) {
-      setError(error.message || "Failed to send reset email");
-      toast.error("Failed to send reset email");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   if (sent) {
     return (
@@ -58,12 +33,12 @@ const ForgotPassword = () => {
                 <Button
                   onClick={() => setSent(false)}
                   variant="outline"
-                  className="w-full"
+                  className={styles.fullWidthButton}
                 >
                   Try another email
                 </Button>
                 <Link to="/login">
-                  <Button variant="ghost" className="w-full">
+                  <Button variant="ghost" className={styles.fullWidthButton}>
                     Back to login
                   </Button>
                 </Link>
@@ -94,7 +69,12 @@ const ForgotPassword = () => {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className={styles.authForm}>
+          <form
+            onSubmit={(e) =>
+              handleSubmit(e, email, setError, setLoading, setSent)
+            }
+            className={styles.authForm}
+          >
             <Input
               label="Email"
               type="email"
@@ -115,7 +95,7 @@ const ForgotPassword = () => {
               variant="primary"
               size="lg"
               loading={loading}
-              className="w-full"
+              className={styles.fullWidthButton}
             >
               Send Reset Link
             </Button>

@@ -4,13 +4,10 @@ import { Mail, Lock } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 import Button from "../../components/common/Button";
 import Input from "../../components/common/Input";
-import {
-  AuthLayout,
-  PasswordInput,
-  FormDivider,
-  validateLogin,
-} from "./authModule";
-import styles from "./authModule/Auth.module.css";
+import { AuthLayout, PasswordInput, FormDivider } from "../../components/auth";
+import handleChange from "../../utils/auth/handleChangeLogin";
+import handleSubmit from "../../utils/auth/handleSubmitLogin";
+import styles from "../../components/auth/Auth.module.css";
 
 const Login = () => {
   const { login } = useAuth();
@@ -22,43 +19,21 @@ const Login = () => {
   });
   const [errors, setErrors] = useState({});
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const newErrors = validateLogin(formData);
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
-
-    setLoading(true);
-    try {
-      await login(formData);
-    } catch (error) {
-      console.error("Login error:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <AuthLayout subtitle="Sign in to your account">
-      <form onSubmit={handleSubmit} className={styles.authForm}>
+      <form
+        onSubmit={(e) =>
+          handleSubmit(e, formData, setErrors, login, setLoading)
+        }
+        className={styles.authForm}
+      >
         <Input
           label="Email"
           type="email"
           name="email"
           placeholder="you@example.com"
           value={formData.email}
-          onChange={handleChange}
+          onChange={(e) => handleChange(e, setFormData, errors, setErrors)}
           error={errors.email}
           icon={Mail}
           autoComplete="email"
@@ -69,7 +44,7 @@ const Login = () => {
           name="password"
           placeholder="Enter your password"
           value={formData.password}
-          onChange={handleChange}
+          onChange={(e) => handleChange(e, setFormData, errors, setErrors)}
           error={errors.password}
           icon={Lock}
           autoComplete="current-password"
@@ -92,7 +67,7 @@ const Login = () => {
           variant="primary"
           size="lg"
           loading={loading}
-          className="w-full"
+          className={styles.fullWidthButton}
         >
           Sign In
         </Button>

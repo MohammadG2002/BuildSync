@@ -32,53 +32,54 @@ export const getActivityDescription = (type, user, project, task) => {
   }
 };
 
+// MOCK DATA - Commented out for production, uncomment for testing
 // Generate mock activities for demonstration
-export const generateMockActivities = (activityConfig) => {
-  const types = Object.keys(activityConfig);
-  const users = [
-    "John Doe",
-    "Jane Smith",
-    "Mike Johnson",
-    "Sarah Williams",
-    "Tom Brown",
-  ];
-  const projects = [
-    "Website Redesign",
-    "Mobile App",
-    "API Development",
-    "Marketing Campaign",
-  ];
-  const tasks = [
-    "Update homepage",
-    "Fix navigation bug",
-    "Add dark mode",
-    "Create user guide",
-  ];
+// export const generateMockActivities = (activityConfig) => {
+//   const types = Object.keys(activityConfig);
+//   const users = [
+//     "John Doe",
+//     "Jane Smith",
+//     "Mike Johnson",
+//     "Sarah Williams",
+//     "Tom Brown",
+//   ];
+//   const projects = [
+//     "Website Redesign",
+//     "Mobile App",
+//     "API Development",
+//     "Marketing Campaign",
+//   ];
+//   const tasks = [
+//     "Update homepage",
+//     "Fix navigation bug",
+//     "Add dark mode",
+//     "Create user guide",
+//   ];
 
-  return Array.from({ length: 20 }, (_, i) => {
-    const type = types[Math.floor(Math.random() * types.length)];
-    const user = users[Math.floor(Math.random() * users.length)];
-    const project = projects[Math.floor(Math.random() * projects.length)];
-    const task = tasks[Math.floor(Math.random() * tasks.length)];
+//   return Array.from({ length: 20 }, (_, i) => {
+//     const type = types[Math.floor(Math.random() * types.length)];
+//     const user = users[Math.floor(Math.random() * users.length)];
+//     const project = projects[Math.floor(Math.random() * projects.length)];
+//     const task = tasks[Math.floor(Math.random() * tasks.length)];
 
-    return {
-      id: i + 1,
-      type,
-      user: {
-        name: user,
-        avatar: `https://ui-avatars.com/api/?name=${user.replace(
-          " ",
-          "+"
-        )}&background=random`,
-      },
-      description: getActivityDescription(type, user, project, task),
-      timestamp: new Date(
-        Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000
-      ).toISOString(),
-      metadata: {
-        project,
-        task,
-      },
-    };
-  }).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-};
+//     return {
+//       id: i + 1,
+//       type,
+//       user: {
+//         name: user,
+//         avatar: `https://ui-avatars.com/api/?name=${user.replace(
+//           " ",
+//           "+"
+//         )}&background=random`,
+//       },
+//       description: getActivityDescription(type, user, project, task),
+//       timestamp: new Date(
+//         Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000
+//       ).toISOString(),
+//       metadata: {
+//         project,
+//         task,
+//       },
+//     };
+//   }).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+// };

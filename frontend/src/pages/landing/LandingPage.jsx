@@ -5,7 +5,7 @@ import {
   BenefitsSection,
   CTASection,
   Footer,
-} from "./landingPageModule";
+} from "../../components/landing";
 import styles from "./LandingPage.module.css";
 
 const LandingPage = () => {

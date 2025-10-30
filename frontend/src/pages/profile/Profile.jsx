@@ -2,11 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
-import * as authService from "../../services/authService";
 import Card from "../../components/common/Card";
 import Button from "../../components/common/Button";
 import { getPasswordStrength } from "../../utils/validators";
-import toast from "react-hot-toast";
 import {
   AvatarSection,
   ProfileTabs,
@@ -14,10 +12,14 @@ import {
   PasswordForm,
   AccountInfo,
   PreferencesSection,
-  validateProfile,
-  validatePassword,
-} from "./profileModule";
-import styles from "./profileModule/Profile.module.css";
+} from "../../components/profile";
+import handleProfileChange from "../../utils/profile/handleProfileChange";
+import handlePasswordChange from "../../utils/profile/handlePasswordChange";
+import handleTogglePassword from "../../utils/profile/handleTogglePassword";
+import handleUpdateProfile from "../../utils/profile/handleUpdateProfile";
+import handleChangePassword from "../../utils/profile/handleChangePassword";
+import handleAvatarUpload from "../../utils/profile/handleAvatarUpload";
+import styles from "../../components/profile/Profile.module.css";
 
 const Profile = () => {
   const { user, updateUser } = useAuth();
@@ -48,84 +50,6 @@ const Profile = () => {
     confirm: false,
   });
 
-  const handleProfileChange = (e) => {
-    const { name, value } = e.target;
-    setProfileData((prev) => ({ ...prev, [name]: value }));
-    if (profileErrors[name]) {
-      setProfileErrors((prev) => ({ ...prev, [name]: "" }));
-    }
-  };
-
-  const handlePasswordChange = (e) => {
-    const { name, value } = e.target;
-    setPasswordData((prev) => ({ ...prev, [name]: value }));
-    if (passwordErrors[name]) {
-      setPasswordErrors((prev) => ({ ...prev, [name]: "" }));
-    }
-  };
-
-  const handleTogglePassword = (field) => {
-    setShowPasswords((prev) => ({ ...prev, [field]: !prev[field] }));
-  };
-
-  const handleUpdateProfile = async (e) => {
-    e.preventDefault();
-
-    const errors = validateProfile(profileData);
-    if (Object.keys(errors).length > 0) {
-      setProfileErrors(errors);
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const updated = await authService.updateProfile(profileData);
-      updateUser(updated);
-      toast.success("Profile updated successfully!");
-    } catch (error) {
-      console.error("Error updating profile:", error);
-      // Mock success for development
-      updateUser(profileData);
-      toast.success("Profile updated successfully!");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleChangePassword = async (e) => {
-    e.preventDefault();
-
-    const errors = validatePassword(passwordData);
-    if (Object.keys(errors).length > 0) {
-      setPasswordErrors(errors);
-      return;
-    }
-
-    setLoading(true);
-    try {
-      await authService.changePassword({
-        currentPassword: passwordData.currentPassword,
-        newPassword: passwordData.newPassword,
-      });
-      setPasswordData({
-        currentPassword: "",
-        newPassword: "",
-        confirmPassword: "",
-      });
-      toast.success("Password changed successfully!");
-    } catch (error) {
-      console.error("Error changing password:", error);
-      toast.error("Failed to change password");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleAvatarUpload = () => {
-    // TODO: Implement avatar upload
-    toast.info("Avatar upload coming soon!");
-  };
-
   const passwordStrength = passwordData.newPassword
     ? getPasswordStrength(passwordData.newPassword)
     : null;
@@ -137,9 +61,9 @@ const Profile = () => {
         <Button
           variant="ghost"
           onClick={() => navigate("/app/dashboard")}
-          className="gap-2"
+          className={styles.backButton}
         >
-          <ArrowLeft className="w-5 h-5" />
+          <ArrowLeft className={styles.backIcon} />
         </Button>
         <div className={styles.headerContent}>
           <h1 className={styles.title}>Profile Settings</h1>
@@ -168,8 +92,23 @@ const Profile = () => {
             profileData={profileData}
             profileErrors={profileErrors}
             loading={loading}
-            onChange={handleProfileChange}
-            onSubmit={handleUpdateProfile}
+            onChange={(e) =>
+              handleProfileChange(
+                e,
+                setProfileData,
+                profileErrors,
+                setProfileErrors
+              )
+            }
+            onSubmit={(e) =>
+              handleUpdateProfile(
+                e,
+                profileData,
+                setProfileErrors,
+                updateUser,
+                setLoading
+              )
+            }
           />
         </Card>
       )}
@@ -183,9 +122,26 @@ const Profile = () => {
             showPasswords={showPasswords}
             passwordStrength={passwordStrength}
             loading={loading}
-            onChange={handlePasswordChange}
-            onSubmit={handleChangePassword}
-            onTogglePassword={handleTogglePassword}
+            onChange={(e) =>
+              handlePasswordChange(
+                e,
+                setPasswordData,
+                passwordErrors,
+                setPasswordErrors
+              )
+            }
+            onSubmit={(e) =>
+              handleChangePassword(
+                e,
+                passwordData,
+                setPasswordErrors,
+                setPasswordData,
+                setLoading
+              )
+            }
+            onTogglePassword={(field) =>
+              handleTogglePassword(field, setShowPasswords)
+            }
           />
         </Card>
       )}

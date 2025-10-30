@@ -20,7 +20,13 @@
   gap: 1rem;
 }
 
-.headerContent {
+.backButton {
+  gap: 0.5rem;
+}
+
+.backIcon {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 .title {
@@ -48,6 +54,24 @@
   gap: 0.75rem;
 }
 
+.membersButton {
+  gap: 0.5rem;
+}
+
+.membersIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.settingsButton {
+  gap: 0.5rem;
+}
+
+.settingsIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
 /* Stats Grid */
 .statsGrid {
   display: grid;
@@ -66,9 +90,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.statInfo {
 }
 
 .statLabel {
@@ -98,6 +119,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.statIconImage {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .statIconBlue {
@@ -131,9 +157,6 @@
 }
 
 /* Projects Section */
-.projectsSection {
-}
-
 .projectsHeader {
   display: flex;
   align-items: center;
@@ -149,6 +172,15 @@
 
 :global(.dark) .projectsTitle {
   color: #f9fafb;
+}
+
+.newProjectButton {
+  gap: 0.5rem;
+}
+
+.newProjectIcon {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 .projectsGrid {

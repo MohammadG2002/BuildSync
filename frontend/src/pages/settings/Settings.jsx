@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useWorkspace } from "../../hooks/useWorkspace";
 import Button from "../../components/common/Button";
-import toast from "react-hot-toast";
 import {
   WorkspaceNotFoundState,
   GeneralSettingsForm,
@@ -12,9 +11,11 @@ import {
   PrivacySettings,
   DangerZone,
   DeleteWorkspaceModal,
-  validateWorkspaceSettings,
-} from "./settingsModule";
-import styles from "./settingsModule/Settings.module.css";
+} from "../../components/settings";
+import handleChange from "../../utils/settings/handleChange";
+import handleSaveChanges from "../../utils/settings/handleSaveChanges";
+import handleDeleteWorkspace from "../../utils/settings/handleDeleteWorkspace";
+import styles from "../../components/settings/Settings.module.css";
 
 const Settings = () => {
   const { workspaceId } = useParams();
@@ -43,59 +44,6 @@ const Settings = () => {
     }
   }, [workspaceId, workspaces]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
-    }
-  };
-
-  const validate = () => {
-    return validateWorkspaceSettings(formData);
-  };
-
-  const handleSaveChanges = async (e) => {
-    e.preventDefault();
-
-    const newErrors = validate();
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
-
-    setLoading(true);
-    try {
-      await updateWorkspace(workspaceId, formData);
-      toast.success("Workspace settings updated successfully!");
-    } catch (error) {
-      console.error("Error updating workspace:", error);
-      toast.error("Failed to update workspace settings");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDeleteWorkspace = async () => {
-    if (deleteConfirmation !== workspace?.name) {
-      toast.error("Please type the workspace name correctly to confirm");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      await deleteWorkspace(workspaceId);
-      setShowDeleteModal(false);
-      navigate("/app/workspaces");
-      toast.success("Workspace deleted successfully");
-    } catch (error) {
-      console.error("Error deleting workspace:", error);
-      toast.error("Failed to delete workspace");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   if (!workspace) {
     return (
       <WorkspaceNotFoundState onBackClick={() => navigate("/app/workspaces")} />
@@ -109,9 +57,9 @@ const Settings = () => {
         <Button
           variant="ghost"
           onClick={() => navigate(`/app/workspaces/${workspaceId}`)}
-          className="gap-2"
+          className={styles.backButton}
         >
-          <ArrowLeft className="w-5 h-5" />
+          <ArrowLeft className={styles.backIcon} />
         </Button>
         <div className={styles.headerContent}>
           <h1 className={styles.title}>Workspace Settings</h1>
@@ -126,8 +74,17 @@ const Settings = () => {
         formData={formData}
         errors={errors}
         loading={loading}
-        onChange={handleChange}
-        onSubmit={handleSaveChanges}
+        onChange={(e) => handleChange(e, setFormData, errors, setErrors)}
+        onSubmit={(e) =>
+          handleSaveChanges(
+            e,
+            formData,
+            setErrors,
+            updateWorkspace,
+            workspaceId,
+            setLoading
+          )
+        }
       />
 
       {/* Workspace Information */}
@@ -156,8 +113,18 @@ const Settings = () => {
           setShowDeleteModal(false);
           setDeleteConfirmation("");
         }}
-        onConfirmationChange={(e) => setDeleteConfirmation(e.target.value)}
-        onDelete={handleDeleteWorkspace}
+        onConfirmationChange={setDeleteConfirmation}
+        onDelete={() =>
+          handleDeleteWorkspace(
+            deleteConfirmation,
+            workspace,
+            deleteWorkspace,
+            workspaceId,
+            setShowDeleteModal,
+            navigate,
+            setLoading
+          )
+        }
       />
     </div>
   );

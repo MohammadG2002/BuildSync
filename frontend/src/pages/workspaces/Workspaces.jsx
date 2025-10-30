@@ -6,11 +6,16 @@ import Button from "../../components/common/Button";
 import Modal from "../../components/common/Modal";
 import { SkeletonList } from "../../components/common/Loader";
 import WorkspaceCard from "../../components/workspace/WorkspaceCard";
-import WorkspaceForm from "../../components/workspace/WorkspaceForm";
+import CreateWorkspaceModal from "../../components/workspace/CreateWorkspaceModal";
 import {
   EmptyWorkspacesState,
   DeleteWorkspaceModalContent,
-} from "./workspacesModule";
+} from "../../components/workspaces";
+import handleCreate from "../../utils/workspace/handleCreate";
+import handleEdit from "../../utils/workspace/handleEdit";
+import handleUpdate from "../../utils/workspace/handleUpdate";
+import handleDeleteClick from "../../utils/workspace/handleDeleteClick";
+import handleDelete from "../../utils/workspace/handleDelete";
 import styles from "./Workspaces.module.css";
 
 const Workspaces = () => {
@@ -28,55 +33,6 @@ const Workspaces = () => {
   const [selectedWorkspace, setSelectedWorkspace] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
-  const handleCreate = async (formData) => {
-    setSubmitting(true);
-    try {
-      const workspace = await createWorkspace(formData);
-      setShowCreateModal(false);
-      navigate(`/app/workspaces/${workspace.id}`);
-    } catch (error) {
-      console.error("Error creating workspace:", error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const handleEdit = (workspace) => {
-    setSelectedWorkspace(workspace);
-    setShowEditModal(true);
-  };
-
-  const handleUpdate = async (formData) => {
-    setSubmitting(true);
-    try {
-      await updateWorkspace(selectedWorkspace.id, formData);
-      setShowEditModal(false);
-      setSelectedWorkspace(null);
-    } catch (error) {
-      console.error("Error updating workspace:", error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const handleDeleteClick = (workspace) => {
-    setSelectedWorkspace(workspace);
-    setShowDeleteModal(true);
-  };
-
-  const handleDelete = async () => {
-    setSubmitting(true);
-    try {
-      await deleteWorkspace(selectedWorkspace.id);
-      setShowDeleteModal(false);
-      setSelectedWorkspace(null);
-    } catch (error) {
-      console.error("Error deleting workspace:", error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
   return (
     <div className={styles.container}>
       {/* Header */}
@@ -90,9 +46,9 @@ const Workspaces = () => {
         <Button
           variant="primary"
           onClick={() => setShowCreateModal(true)}
-          className="gap-2"
+          className={styles.createButton}
         >
-          <Plus className="w-5 h-5" />
+          <Plus className={styles.createIcon} />
           New Workspace
         </Button>
       </div>
@@ -106,8 +62,13 @@ const Workspaces = () => {
             <WorkspaceCard
               key={workspace.id}
               workspace={workspace}
-              onEdit={handleEdit}
-              onDelete={handleDeleteClick}
+              onClick={() => navigate(`/app/workspaces/${workspace.id}`)}
+              onEdit={(ws) =>
+                handleEdit(ws, setSelectedWorkspace, setShowEditModal)
+              }
+              onDelete={(ws) =>
+                handleDeleteClick(ws, setSelectedWorkspace, setShowDeleteModal)
+              }
             />
           ))}
         </div>
@@ -124,7 +85,15 @@ const Workspaces = () => {
         title="Create New Workspace"
       >
         <WorkspaceForm
-          onSubmit={handleCreate}
+          onSubmit={(formData) =>
+            handleCreate(
+              formData,
+              createWorkspace,
+              setShowCreateModal,
+              setSubmitting,
+              navigate
+            )
+          }
           onCancel={() => setShowCreateModal(false)}
           loading={submitting}
         />
@@ -141,7 +110,16 @@ const Workspaces = () => {
       >
         <WorkspaceForm
           workspace={selectedWorkspace}
-          onSubmit={handleUpdate}
+          onSubmit={(formData) =>
+            handleUpdate(
+              formData,
+              selectedWorkspace,
+              updateWorkspace,
+              setShowEditModal,
+              setSelectedWorkspace,
+              setSubmitting
+            )
+          }
           onCancel={() => {
             setShowEditModal(false);
             setSelectedWorkspace(null);
@@ -166,7 +144,15 @@ const Workspaces = () => {
             setShowDeleteModal(false);
             setSelectedWorkspace(null);
           }}
-          onConfirm={handleDelete}
+          onConfirm={() =>
+            handleDelete(
+              selectedWorkspace,
+              deleteWorkspace,
+              setShowDeleteModal,
+              setSelectedWorkspace,
+              setSubmitting
+            )
+          }
           loading={submitting}
         />
       </Modal>

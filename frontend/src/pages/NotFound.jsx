@@ -14,17 +14,17 @@ const NotFound = () => {
         </p>
         <div className={styles.actions}>
           <Link to="/">
-            <Button variant="primary" className="gap-2">
-              <Home className="w-5 h-5" />
+            <Button variant="primary" className={styles.homeButton}>
+              <Home className={styles.homeIcon} />
               Go Home
             </Button>
           </Link>
           <Button
             variant="secondary"
             onClick={() => window.history.back()}
-            className="gap-2"
+            className={styles.backButton}
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className={styles.backIcon} />
             Go Back
           </Button>
         </div>

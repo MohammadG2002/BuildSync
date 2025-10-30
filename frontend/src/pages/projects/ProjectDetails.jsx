@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Plus, ArrowLeft, CheckCircle, Clock, AlertCircle } from "lucide-react";
-import * as taskService from "../../services/taskService";
-import * as projectService from "../../services/projectService";
 import Button from "../../components/common/Button";
 import Card from "../../components/common/Card";
 import Modal from "../../components/common/Modal";
 import TaskList from "../../components/task/TaskList";
 import TaskForm from "../../components/task/TaskForm";
 import TaskDetailsModal from "../../components/task/TaskDetailsModal";
-import toast from "react-hot-toast";
 import {
   TaskStatCard,
   FilterButtons,
@@ -17,7 +14,18 @@ import {
   EmptyTasksState,
   DeleteTaskModalContent,
   calculateTaskStats,
-} from "./projectDetailsModule";
+} from "../../components/projectDetails";
+import fetchProjectAndTasks from "../../utils/project/fetchProjectAndTasks";
+import handleCreateTask from "../../utils/project/handleCreateTask";
+import handleEditTask from "../../utils/project/handleEditTask";
+import handleUpdateTask from "../../utils/project/handleUpdateTask";
+import handleDeleteClick from "../../utils/project/handleDeleteClick";
+import handleDeleteTask from "../../utils/project/handleDeleteTask";
+import handleStatusChange from "../../utils/project/handleStatusChange";
+import handleTaskClick from "../../utils/project/handleTaskClick";
+import handleTaskDetailsUpdate from "../../utils/project/handleTaskDetailsUpdate";
+import handleAddComment from "../../utils/project/handleAddComment";
+import handleDeleteAttachment from "../../utils/project/handleDeleteAttachment";
 import styles from "./ProjectDetails.module.css";
 
 const ProjectDetails = () => {
@@ -41,189 +49,15 @@ const ProjectDetails = () => {
   const [members, setMembers] = useState([]);
 
   useEffect(() => {
-    fetchProjectAndTasks();
+    fetchProjectAndTasks(
+      workspaceId,
+      projectId,
+      setProject,
+      setTasks,
+      setMembers,
+      setLoading
+    );
   }, [projectId]);
-
-  const fetchProjectAndTasks = async () => {
-    setLoading(true);
-    try {
-      const projectData = await projectService.getProjectById(
-        workspaceId,
-        projectId
-      );
-      setProject(projectData);
-
-      const tasksData = await taskService.getTasks(workspaceId, projectId);
-      setTasks(tasksData);
-
-      // Fetch workspace members for assignee dropdown
-      // TODO: Implement memberService.getWorkspaceMembers(workspaceId)
-      setMembers([]);
-    } catch (error) {
-      console.error("Error fetching project details:", error);
-      toast.error("Failed to fetch project details");
-      setProject(null);
-      setTasks([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleCreateTask = async (formData) => {
-    setSubmitting(true);
-    try {
-      const newTask = await taskService.createTask(
-        workspaceId,
-        projectId,
-        formData
-      );
-      setTasks([...tasks, newTask]);
-      setShowCreateModal(false);
-      toast.success("Task created successfully!");
-    } catch (error) {
-      console.error("Error creating task:", error);
-      toast.error("Failed to create task");
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const handleEditTask = (task) => {
-    setSelectedTask(task);
-    setShowEditModal(true);
-  };
-
-  const handleUpdateTask = async (formData) => {
-    setSubmitting(true);
-    try {
-      const updatedTask = await taskService.updateTask(
-        workspaceId,
-        projectId,
-        selectedTask._id,
-        formData
-      );
-      setTasks(
-        tasks.map((t) => (t._id === selectedTask._id ? updatedTask : t))
-      );
-      setShowEditModal(false);
-      setSelectedTask(null);
-      toast.success("Task updated successfully!");
-    } catch (error) {
-      console.error("Error updating task:", error);
-      toast.error("Failed to update task");
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const handleDeleteClick = (task) => {
-    setSelectedTask(task);
-    setShowDeleteModal(true);
-  };
-
-  const handleDeleteTask = async () => {
-    setSubmitting(true);
-    try {
-      await taskService.deleteTask(workspaceId, projectId, selectedTask._id);
-      setTasks(tasks.filter((t) => t._id !== selectedTask._id));
-      setShowDeleteModal(false);
-      setSelectedTask(null);
-      toast.success("Task deleted successfully!");
-    } catch (error) {
-      console.error("Error deleting task:", error);
-      toast.error("Failed to delete task");
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const handleStatusChange = async (task, newStatus) => {
-    try {
-      const updatedTask = await taskService.updateTask(
-        workspaceId,
-        projectId,
-        task._id,
-        { status: newStatus }
-      );
-      setTasks(tasks.map((t) => (t._id === task._id ? updatedTask : t)));
-      toast.success(`Task marked as ${newStatus.replace(/-/g, " ")}`);
-    } catch (error) {
-      console.error("Error updating task status:", error);
-      toast.error("Failed to update task status");
-    }
-  };
-
-  const handleTaskClick = async (task) => {
-    try {
-      // Fetch full task details with populated fields
-      const fullTask = await taskService.getTaskById(
-        workspaceId,
-        projectId,
-        task._id
-      );
-      setSelectedTask(fullTask);
-      setShowDetailsModal(true);
-    } catch (error) {
-      console.error("Error fetching task details:", error);
-      // Fall back to showing the task we have
-      setSelectedTask(task);
-      setShowDetailsModal(true);
-    }
-  };
-
-  const handleTaskDetailsUpdate = async (updatedTaskData) => {
-    try {
-      const updatedTask = await taskService.updateTask(
-        workspaceId,
-        projectId,
-        updatedTaskData._id,
-        updatedTaskData
-      );
-      setTasks(
-        tasks.map((t) => (t._id === updatedTaskData._id ? updatedTask : t))
-      );
-      setSelectedTask(updatedTask);
-      toast.success("Task updated successfully!");
-    } catch (error) {
-      console.error("Error updating task:", error);
-      toast.error("Failed to update task");
-    }
-  };
-
-  const handleAddComment = async (taskId, commentContent) => {
-    try {
-      const updatedTask = await taskService.addComment(
-        workspaceId,
-        projectId,
-        taskId,
-        commentContent
-      );
-      setTasks(tasks.map((t) => (t._id === taskId ? updatedTask : t)));
-      setSelectedTask(updatedTask);
-      toast.success("Comment added successfully!");
-    } catch (error) {
-      console.error("Error adding comment:", error);
-      toast.error("Failed to add comment");
-      throw error;
-    }
-  };
-
-  const handleDeleteAttachment = async (taskId, attachmentId) => {
-    try {
-      const updatedTask = await taskService.deleteAttachment(
-        workspaceId,
-        projectId,
-        taskId,
-        attachmentId
-      );
-      setTasks(tasks.map((t) => (t._id === taskId ? updatedTask : t)));
-      setSelectedTask(updatedTask);
-      toast.success("Attachment deleted successfully!");
-    } catch (error) {
-      console.error("Error deleting attachment:", error);
-      toast.error("Failed to delete attachment");
-    }
-  };
 
   const filteredTasks =
     filterStatus === "all"
@@ -240,9 +74,9 @@ const ProjectDetails = () => {
           <Button
             variant="ghost"
             onClick={() => navigate(`/app/workspaces/${workspaceId}`)}
-            className="gap-2"
+            className={styles.backButton}
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className={styles.backIcon} />
           </Button>
           <div className={styles.headerContent}>
             <h1 className={styles.title}>{project?.name || "Loading..."}</h1>
@@ -254,9 +88,9 @@ const ProjectDetails = () => {
         <Button
           variant="primary"
           onClick={() => setShowCreateModal(true)}
-          className="gap-2"
+          className={styles.createTaskButton}
         >
-          <Plus className="w-5 h-5" />
+          <Plus className={styles.createTaskIcon} />
           New Task
         </Button>
       </div>
@@ -312,10 +146,31 @@ const ProjectDetails = () => {
       ) : filteredTasks.length > 0 ? (
         <TaskList
           tasks={filteredTasks}
-          onEditTask={handleEditTask}
-          onDeleteTask={handleDeleteClick}
-          onStatusChange={handleStatusChange}
-          onTaskClick={handleTaskClick}
+          onEditTask={(task) =>
+            handleEditTask(task, setSelectedTask, setShowEditModal)
+          }
+          onDeleteTask={(task) =>
+            handleDeleteClick(task, setSelectedTask, setShowDeleteModal)
+          }
+          onStatusChange={(task, newStatus) =>
+            handleStatusChange(
+              task,
+              newStatus,
+              workspaceId,
+              projectId,
+              tasks,
+              setTasks
+            )
+          }
+          onTaskClick={(task) =>
+            handleTaskClick(
+              task,
+              workspaceId,
+              projectId,
+              setSelectedTask,
+              setShowDetailsModal
+            )
+          }
           groupBy={groupBy}
         />
       ) : (
@@ -332,7 +187,17 @@ const ProjectDetails = () => {
         title="Create New Task"
       >
         <TaskForm
-          onSubmit={handleCreateTask}
+          onSubmit={(formData) =>
+            handleCreateTask(
+              formData,
+              workspaceId,
+              projectId,
+              tasks,
+              setTasks,
+              setShowCreateModal,
+              setSubmitting
+            )
+          }
           onCancel={() => setShowCreateModal(false)}
           loading={submitting}
           members={members}
@@ -350,7 +215,19 @@ const ProjectDetails = () => {
       >
         <TaskForm
           task={selectedTask}
-          onSubmit={handleUpdateTask}
+          onSubmit={(formData) =>
+            handleUpdateTask(
+              formData,
+              workspaceId,
+              projectId,
+              selectedTask,
+              tasks,
+              setTasks,
+              setShowEditModal,
+              setSelectedTask,
+              setSubmitting
+            )
+          }
           onCancel={() => {
             setShowEditModal(false);
             setSelectedTask(null);
@@ -376,7 +253,18 @@ const ProjectDetails = () => {
             setShowDeleteModal(false);
             setSelectedTask(null);
           }}
-          onConfirm={handleDeleteTask}
+          onConfirm={() =>
+            handleDeleteTask(
+              workspaceId,
+              projectId,
+              selectedTask,
+              tasks,
+              setTasks,
+              setShowDeleteModal,
+              setSelectedTask,
+              setSubmitting
+            )
+          }
           loading={submitting}
         />
       </Modal>
@@ -389,9 +277,38 @@ const ProjectDetails = () => {
             setShowDetailsModal(false);
             setSelectedTask(null);
           }}
-          onUpdate={handleTaskDetailsUpdate}
-          onAddComment={handleAddComment}
-          onDeleteAttachment={handleDeleteAttachment}
+          onUpdate={(updatedTaskData) =>
+            handleTaskDetailsUpdate(
+              updatedTaskData,
+              workspaceId,
+              projectId,
+              tasks,
+              setTasks,
+              setSelectedTask
+            )
+          }
+          onAddComment={(taskId, commentContent) =>
+            handleAddComment(
+              taskId,
+              commentContent,
+              workspaceId,
+              projectId,
+              tasks,
+              setTasks,
+              setSelectedTask
+            )
+          }
+          onDeleteAttachment={(taskId, attachmentId) =>
+            handleDeleteAttachment(
+              taskId,
+              attachmentId,
+              workspaceId,
+              projectId,
+              tasks,
+              setTasks,
+              setSelectedTask
+            )
+          }
         />
       )}
     </div>

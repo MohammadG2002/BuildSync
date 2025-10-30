@@ -132,6 +132,15 @@
   }
 }
 
+.heroStartButton {
+  gap: 0.5rem;
+}
+
+.heroStartIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
 /* Features Section */
 .features {
   padding: 5rem 1rem;
@@ -460,6 +469,15 @@
   font-size: 1.25rem;
   color: #dbeafe;
   margin-bottom: 2rem;
+}
+
+.ctaButton {
+  gap: 0.5rem;
+}
+
+.ctaButtonIcon {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 /* Footer */

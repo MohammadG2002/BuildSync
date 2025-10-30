@@ -1,49 +1,46 @@
 import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../../hooks/useAuth";
+import { useWorkspace } from "../../hooks/useWorkspace";
 import Card from "../../components/common/Card";
 import {
   ContactsSidebar,
   ChatArea,
   ChatEmptyState,
   filterContacts,
-  mockContacts,
-  mockMessages,
-} from "./chatModule";
+} from "../../components/chatPage";
+import fetchContacts from "../../utils/chat/fetchContacts";
+import fetchMessages from "../../utils/chat/fetchMessages";
+import scrollToBottom from "../../utils/chat/scrollToBottom";
+import handleSendMessage from "../../utils/chat/handleSendMessage";
 import styles from "./Chat.module.css";
 
 const Chat = () => {
   const { user } = useAuth();
+  const { currentWorkspace } = useWorkspace();
   const [selectedContact, setSelectedContact] = useState(null);
   const [message, setMessage] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const messagesEndRef = useRef(null);
 
-  const [contacts] = useState(mockContacts);
-  const [messages, setMessages] = useState(mockMessages);
+  const [contacts, setContacts] = useState([]);
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    scrollToBottom();
+    if (currentWorkspace) {
+      fetchContacts(currentWorkspace, setContacts, setLoading);
+    }
+  }, [currentWorkspace]);
+
+  useEffect(() => {
+    if (selectedContact) {
+      fetchMessages(selectedContact.id, setMessages);
+    }
+  }, [selectedContact]);
+
+  useEffect(() => {
+    scrollToBottom(messagesEndRef);
   }, [messages]);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const handleSendMessage = () => {
-    if (!message.trim() || !selectedContact) return;
-
-    const newMessage = {
-      id: Date.now().toString(),
-      senderId: user?.id,
-      senderName: user?.name,
-      content: message,
-      timestamp: new Date().toISOString(),
-      read: false,
-    };
-
-    setMessages([...messages, newMessage]);
-    setMessage("");
-  };
 
   const filteredContacts = filterContacts(contacts, searchQuery);
 
@@ -66,7 +63,16 @@ const Chat = () => {
               currentUserId={user?.id}
               message={message}
               onMessageChange={setMessage}
-              onSendMessage={handleSendMessage}
+              onSendMessage={() =>
+                handleSendMessage(
+                  message,
+                  selectedContact,
+                  user,
+                  messages,
+                  setMessages,
+                  setMessage
+                )
+              }
               messagesEndRef={messagesEndRef}
             />
           ) : (

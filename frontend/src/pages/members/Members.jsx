@@ -9,15 +9,21 @@ import {
 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 import { useWorkspace } from "../../hooks/useWorkspace";
-import * as workspaceService from "../../services/workspaceService";
 import Button from "../../components/common/Button";
 import Card from "../../components/common/Card";
 import Modal from "../../components/common/Modal";
 import Input from "../../components/common/Input";
 import { SkeletonList } from "../../components/common/Loader";
 import MemberList from "../../components/member/MemberList";
-import toast from "react-hot-toast";
 import { USER_ROLES } from "../../utils/constants";
+import fetchMembers from "../../utils/member/fetchMembers";
+import handleInviteChange from "../../utils/member/handleInviteChange";
+import handleInviteMember from "../../utils/member/handleInviteMember";
+import handleChangeRole from "../../utils/member/handleChangeRole";
+import handleRemoveClick from "../../utils/member/handleRemoveClick";
+import handleRemoveMember from "../../utils/member/handleRemoveMember";
+import filterMembers from "../../utils/member/filterMembers";
+import calculateRoleStats from "../../utils/member/calculateRoleStats";
 import styles from "./Members.module.css";
 
 const Members = () => {
@@ -52,162 +58,13 @@ const Members = () => {
 
   useEffect(() => {
     if (workspaceId) {
-      fetchMembers();
+      fetchMembers(workspaceId, setMembers, setLoading);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [workspaceId]);
 
-  const fetchMembers = async () => {
-    setLoading(true);
-    try {
-      const data = await workspaceService.getWorkspaceMembers(workspaceId);
-      setMembers(data);
-    } catch (error) {
-      console.error("Error fetching members:", error);
-      // Mock data for development
-      setMembers([
-        {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          role: "admin",
-          joinedDate: "2024-01-15",
-        },
-        {
-          id: "2",
-          name: "Jane Smith",
-          email: "jane@example.com",
-          role: "member",
-          joinedDate: "2024-02-20",
-        },
-        {
-          id: "3",
-          name: "Bob Johnson",
-          email: "bob@example.com",
-          role: "member",
-          joinedDate: "2024-03-10",
-        },
-        {
-          id: "4",
-          name: "Alice Williams",
-          email: "alice@example.com",
-          role: "viewer",
-          joinedDate: "2024-04-05",
-        },
-      ]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleInviteChange = (e) => {
-    const { name, value } = e.target;
-    setInviteData((prev) => ({ ...prev, [name]: value }));
-    if (inviteErrors[name]) {
-      setInviteErrors((prev) => ({ ...prev, [name]: "" }));
-    }
-  };
-
-  const validateInvite = () => {
-    const errors = {};
-    if (!inviteData.email) {
-      errors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(inviteData.email)) {
-      errors.email = "Email is invalid";
-    } else if (members.some((m) => m.email === inviteData.email)) {
-      errors.email = "This user is already a member";
-    }
-    return errors;
-  };
-
-  const handleInviteMember = async (e) => {
-    e.preventDefault();
-
-    const errors = validateInvite();
-    if (Object.keys(errors).length > 0) {
-      setInviteErrors(errors);
-      return;
-    }
-
-    setSubmitting(true);
-    try {
-      const newMember = await workspaceService.addWorkspaceMember(
-        workspaceId,
-        inviteData
-      );
-      // Mock success
-      const mockMember = {
-        id: Date.now().toString(),
-        name: inviteData.email.split("@")[0],
-        email: inviteData.email,
-        role: inviteData.role,
-        joinedDate: new Date().toISOString(),
-      };
-      setMembers([...members, mockMember]);
-      setShowInviteModal(false);
-      setInviteData({ email: "", role: "member" });
-      toast.success("Member invited successfully!");
-    } catch (error) {
-      console.error("Error inviting member:", error);
-      toast.error("Failed to invite member");
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const handleChangeRole = async (member, newRole) => {
-    try {
-      await workspaceService.updateMemberRole(workspaceId, member.id, newRole);
-      setMembers(
-        members.map((m) => (m.id === member.id ? { ...m, role: newRole } : m))
-      );
-      toast.success(`${member.name}'s role updated to ${newRole}`);
-    } catch (error) {
-      console.error("Error updating role:", error);
-      // Mock success
-      setMembers(
-        members.map((m) => (m.id === member.id ? { ...m, role: newRole } : m))
-      );
-      toast.success(`${member.name}'s role updated to ${newRole}`);
-    }
-  };
-
-  const handleRemoveClick = (member) => {
-    setSelectedMember(member);
-    setShowRemoveModal(true);
-  };
-
-  const handleRemoveMember = async () => {
-    setSubmitting(true);
-    try {
-      await workspaceService.removeMember(workspaceId, selectedMember.id);
-      setMembers(members.filter((m) => m.id !== selectedMember.id));
-      setShowRemoveModal(false);
-      setSelectedMember(null);
-      toast.success(`${selectedMember.name} removed from workspace`);
-    } catch (error) {
-      console.error("Error removing member:", error);
-      // Mock success
-      setMembers(members.filter((m) => m.id !== selectedMember.id));
-      setShowRemoveModal(false);
-      setSelectedMember(null);
-      toast.success(`${selectedMember.name} removed from workspace`);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const filteredMembers = members.filter(
-    (member) =>
-      member.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      member.email.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const roleStats = {
-    admin: members.filter((m) => m.role === "admin").length,
-    member: members.filter((m) => m.role === "member").length,
-    viewer: members.filter((m) => m.role === "viewer").length,
-  };
+  const filteredMembers = filterMembers(members, searchQuery);
+  const roleStats = calculateRoleStats(members);
 
   return (
     <div className={styles.container}>
@@ -217,9 +74,9 @@ const Members = () => {
           <Button
             variant="ghost"
             onClick={() => navigate(`/app/workspaces/${workspaceId}`)}
-            className="gap-2"
+            className={styles.headerBackButton}
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className={styles.headerBackIcon} />
           </Button>
           <div>
             <h1 className={styles.title}>Members</h1>
@@ -231,9 +88,9 @@ const Members = () => {
         <Button
           variant="primary"
           onClick={() => setShowInviteModal(true)}
-          className="gap-2"
+          className={styles.headerInviteButton}
         >
-          <UserPlus className="w-5 h-5" />
+          <UserPlus className={styles.headerInviteIcon} />
           Invite Member
         </Button>
       </div>
@@ -335,8 +192,12 @@ const Members = () => {
         <MemberList
           members={filteredMembers}
           currentUserId={user?.id}
-          onChangeRole={handleChangeRole}
-          onRemove={handleRemoveClick}
+          onChangeRole={(member, newRole) =>
+            handleChangeRole(member, newRole, workspaceId, members, setMembers)
+          }
+          onRemove={(member) =>
+            handleRemoveClick(member, setSelectedMember, setShowRemoveModal)
+          }
           groupByRole={groupByRole}
         />
       ) : (
@@ -354,9 +215,9 @@ const Members = () => {
             <Button
               variant="primary"
               onClick={() => setShowInviteModal(true)}
-              className="gap-2"
+              className={styles.emptyInviteButton}
             >
-              <UserPlus className="w-5 h-5" />
+              <UserPlus className={styles.emptyInviteIcon} />
               Invite Member
             </Button>
           )}
@@ -373,14 +234,36 @@ const Members = () => {
         }}
         title="Invite Member"
       >
-        <form onSubmit={handleInviteMember} className={styles.inviteForm}>
+        <form
+          onSubmit={(e) =>
+            handleInviteMember(
+              e,
+              workspaceId,
+              inviteData,
+              members,
+              setMembers,
+              setShowInviteModal,
+              setInviteData,
+              setInviteErrors,
+              setSubmitting
+            )
+          }
+          className={styles.inviteForm}
+        >
           <Input
             label="Email Address"
             type="email"
             name="email"
             placeholder="colleague@example.com"
             value={inviteData.email}
-            onChange={handleInviteChange}
+            onChange={(e) =>
+              handleInviteChange(
+                e,
+                setInviteData,
+                inviteErrors,
+                setInviteErrors
+              )
+            }
             error={inviteErrors.email}
             icon={Mail}
             autoFocus
@@ -391,7 +274,14 @@ const Members = () => {
             <select
               name="role"
               value={inviteData.role}
-              onChange={handleInviteChange}
+              onChange={(e) =>
+                handleInviteChange(
+                  e,
+                  setInviteData,
+                  inviteErrors,
+                  setInviteErrors
+                )
+              }
               className={styles.roleSelect}
             >
               {Object.entries(USER_ROLES).map(([key, value]) => (
@@ -457,7 +347,17 @@ const Members = () => {
             </Button>
             <Button
               variant="danger"
-              onClick={handleRemoveMember}
+              onClick={() =>
+                handleRemoveMember(
+                  workspaceId,
+                  selectedMember,
+                  members,
+                  setMembers,
+                  setShowRemoveModal,
+                  setSelectedMember,
+                  setSubmitting
+                )
+              }
               loading={submitting}
             >
               Remove Member

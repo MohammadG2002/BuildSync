@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useWorkspace } from "../../hooks/useWorkspace";
 import { activityConfig } from "./activity/activityConfig";
-import { generateMockActivities } from "./activity/mockActivityData";
 import { filterActivities } from "./activity/utils";
 import ActivityFilters from "./activity/ActivityFilters";
 import ActivityItem from "./activity/ActivityItem";
@@ -27,16 +26,13 @@ const ActivityFeed = ({
       try {
         // TODO: Replace with actual API call
         // const response = await activityService.getActivities({ workspaceId, projectId, limit });
+        // setActivities(response);
 
-        // Mock data for demonstration
-        const mockActivities = generateMockActivities(activityConfig);
-
-        setTimeout(() => {
-          setActivities(mockActivities);
-          setLoading(false);
-        }, 500);
+        setActivities([]);
+        setLoading(false);
       } catch (error) {
         console.error("Failed to fetch activities:", error);
+        setActivities([]);
         setLoading(false);
       }
     };

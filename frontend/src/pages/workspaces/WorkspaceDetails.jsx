@@ -9,18 +9,23 @@ import {
   FolderKanban,
 } from "lucide-react";
 import { useWorkspace } from "../../hooks/useWorkspace";
-import * as projectService from "../../services/projectService";
 import Button from "../../components/common/Button";
 import Card from "../../components/common/Card";
 import Modal from "../../components/common/Modal";
 import ProjectCard from "../../components/project/ProjectCard";
 import ProjectForm from "../../components/project/ProjectForm";
-import toast from "react-hot-toast";
 import {
   WorkspaceStatCard,
   EmptyProjectsState,
   DeleteProjectModalContent,
-} from "./workspaceDetailsModule";
+} from "../../components/workspaceDetails";
+import fetchProjects from "../../utils/workspace/fetchProjects";
+import handleCreateProject from "../../utils/workspace/handleCreateProject";
+import handleEditProject from "../../utils/workspace/handleEditProject";
+import handleUpdateProject from "../../utils/workspace/handleUpdateProject";
+import handleDeleteProjectClick from "../../utils/workspace/handleDeleteProjectClick";
+import handleDeleteProject from "../../utils/workspace/handleDeleteProject";
+import handleProjectClick from "../../utils/workspace/handleProjectClick";
 import styles from "./WorkspaceDetails.module.css";
 
 const WorkspaceDetails = () => {
@@ -47,93 +52,8 @@ const WorkspaceDetails = () => {
         switchWorkspace(ws);
       }
     }
-    fetchProjects();
+    fetchProjects(workspaceId, setProjects, setLoading);
   }, [workspaceId, workspaces]);
-
-  const fetchProjects = async () => {
-    setLoading(true);
-    try {
-      const data = await projectService.getProjects(workspaceId);
-      setProjects(data);
-    } catch (error) {
-      console.error("Error fetching projects:", error);
-      toast.error("Failed to fetch projects");
-      setProjects([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleCreateProject = async (formData) => {
-    setSubmitting(true);
-    try {
-      const newProject = await projectService.createProject(
-        workspaceId,
-        formData
-      );
-      setProjects([...projects, newProject]);
-      setShowCreateModal(false);
-      toast.success("Project created successfully!");
-    } catch (error) {
-      console.error("Error creating project:", error);
-      toast.error("Failed to create project");
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const handleEditProject = (project) => {
-    setSelectedProject(project);
-    setShowEditModal(true);
-  };
-
-  const handleUpdateProject = async (formData) => {
-    setSubmitting(true);
-    try {
-      const updated = await projectService.updateProject(
-        workspaceId,
-        selectedProject.id,
-        formData
-      );
-      setProjects(
-        projects.map((p) => (p.id === selectedProject.id ? updated : p))
-      );
-      setShowEditModal(false);
-      setSelectedProject(null);
-      toast.success("Project updated successfully!");
-    } catch (error) {
-      console.error("Error updating project:", error);
-      toast.error("Failed to update project");
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const handleDeleteClick = (project) => {
-    setSelectedProject(project);
-    setShowDeleteModal(true);
-  };
-
-  const handleDeleteProject = async () => {
-    setSubmitting(true);
-    try {
-      await projectService.deleteProject(workspaceId, selectedProject.id);
-      setProjects(projects.filter((p) => p.id !== selectedProject.id));
-      setShowDeleteModal(false);
-      setSelectedProject(null);
-      toast.success("Project deleted successfully!");
-    } catch (error) {
-      console.error("Error deleting project:", error);
-      toast.error("Failed to delete project");
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const handleProjectClick = (project) => {
-    // Navigate to project details (we'll create this page next)
-    navigate(`/app/workspaces/${workspaceId}/projects/${project.id}`);
-  };
 
   if (!workspace && !loading) {
     return (
@@ -156,9 +76,9 @@ const WorkspaceDetails = () => {
           <Button
             variant="ghost"
             onClick={() => navigate("/app/workspaces")}
-            className="gap-2"
+            className={styles.backButton}
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className={styles.backIcon} />
           </Button>
           <div className={styles.headerContent}>
             <h1 className={styles.title}>{workspace?.name || "Loading..."}</h1>
@@ -171,17 +91,17 @@ const WorkspaceDetails = () => {
           <Button
             variant="outline"
             onClick={() => navigate(`/app/workspaces/${workspaceId}/members`)}
-            className="gap-2"
+            className={styles.membersButton}
           >
-            <Users className="w-5 h-5" />
+            <Users className={styles.membersIcon} />
             Members
           </Button>
           <Button
             variant="outline"
             onClick={() => navigate(`/app/workspaces/${workspaceId}/settings`)}
-            className="gap-2"
+            className={styles.settingsButton}
           >
-            <SettingsIcon className="w-5 h-5" />
+            <SettingsIcon className={styles.settingsIcon} />
             Settings
           </Button>
         </div>
@@ -216,9 +136,9 @@ const WorkspaceDetails = () => {
           <Button
             variant="primary"
             onClick={() => setShowCreateModal(true)}
-            className="gap-2"
+            className={styles.newProjectButton}
           >
-            <Plus className="w-5 h-5" />
+            <Plus className={styles.newProjectIcon} />
             New Project
           </Button>
         </div>
@@ -237,9 +157,19 @@ const WorkspaceDetails = () => {
               <ProjectCard
                 key={project.id}
                 project={project}
-                onEdit={handleEditProject}
-                onDelete={handleDeleteClick}
-                onClick={handleProjectClick}
+                onEdit={(proj) =>
+                  handleEditProject(proj, setSelectedProject, setShowEditModal)
+                }
+                onDelete={(proj) =>
+                  handleDeleteProjectClick(
+                    proj,
+                    setSelectedProject,
+                    setShowDeleteModal
+                  )
+                }
+                onClick={(proj) =>
+                  handleProjectClick(proj, workspaceId, navigate)
+                }
               />
             ))}
           </div>
@@ -257,7 +187,16 @@ const WorkspaceDetails = () => {
         title="Create New Project"
       >
         <ProjectForm
-          onSubmit={handleCreateProject}
+          onSubmit={(formData) =>
+            handleCreateProject(
+              formData,
+              workspaceId,
+              projects,
+              setProjects,
+              setShowCreateModal,
+              setSubmitting
+            )
+          }
           onCancel={() => setShowCreateModal(false)}
           loading={submitting}
         />
@@ -274,7 +213,18 @@ const WorkspaceDetails = () => {
       >
         <ProjectForm
           project={selectedProject}
-          onSubmit={handleUpdateProject}
+          onSubmit={(formData) =>
+            handleUpdateProject(
+              formData,
+              workspaceId,
+              selectedProject,
+              projects,
+              setProjects,
+              setShowEditModal,
+              setSelectedProject,
+              setSubmitting
+            )
+          }
           onCancel={() => {
             setShowEditModal(false);
             setSelectedProject(null);
@@ -299,7 +249,17 @@ const WorkspaceDetails = () => {
             setShowDeleteModal(false);
             setSelectedProject(null);
           }}
-          onConfirm={handleDeleteProject}
+          onConfirm={() =>
+            handleDeleteProject(
+              workspaceId,
+              selectedProject,
+              projects,
+              setProjects,
+              setShowDeleteModal,
+              setSelectedProject,
+              setSubmitting
+            )
+          }
           loading={submitting}
         />
       </Modal>

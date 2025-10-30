@@ -213,6 +213,17 @@
   margin-bottom: 0.75rem;
 }
 
+.groupHeaderIcon {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.groupHeaderIconImage {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
 .groupTitle {
   font-size: 1.125rem;
   font-weight: 600;
@@ -406,6 +417,21 @@
   gap: 0.25rem;
 }
 
+.taskDateIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.taskRestoreButton {
+  gap: 0.5rem;
+  margin-left: 1rem;
+}
+
+.taskRestoreIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
 .modalContent {
   display: flex;
   flex-direction: column;
@@ -425,6 +451,15 @@
   gap: 0.75rem;
   justify-content: flex-end;
   padding-top: 1rem;
+}
+
+.modalRestoreButton {
+  gap: 0.5rem;
+}
+
+.modalRestoreIcon {
+  width: 1rem;
+  height: 1rem;
 }
 
 /* Empty State */

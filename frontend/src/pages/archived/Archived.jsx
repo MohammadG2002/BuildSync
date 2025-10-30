@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { useWorkspace } from "../../hooks/useWorkspace";
-import * as taskService from "../../services/taskService";
-import toast from "react-hot-toast";
 import {
   ArchivedStats,
   ArchivedFilters,
@@ -11,13 +9,16 @@ import {
   RestoreTaskModal,
   filterArchivedTasks,
   groupTasksByProject,
-  mockProjects,
-} from "./archivedModule";
+} from "../../components/archived";
+import fetchData from "../../utils/archived/fetchData";
+import handleRestoreClick from "../../utils/archived/handleRestoreClick";
+import handleRestoreTask from "../../utils/archived/handleRestoreTask";
 import styles from "./Archived.module.css";
 
 const Archived = () => {
   const { currentWorkspace, workspaces } = useWorkspace();
   const [archivedTasks, setArchivedTasks] = useState([]);
+  const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterProject, setFilterProject] = useState("all");
@@ -27,44 +28,9 @@ const Archived = () => {
 
   useEffect(() => {
     if (currentWorkspace) {
-      fetchArchivedTasks();
+      fetchData(currentWorkspace, setArchivedTasks, setProjects, setLoading);
     }
   }, [currentWorkspace]);
-
-  const fetchArchivedTasks = async () => {
-    setLoading(true);
-    try {
-      if (currentWorkspace) {
-        const data = await taskService.getArchivedTasks(currentWorkspace.id);
-        setArchivedTasks(data);
-      }
-    } catch (error) {
-      console.error("Error fetching archived tasks:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleRestoreClick = (task) => {
-    setSelectedTask(task);
-    setShowRestoreModal(true);
-  };
-
-  const handleRestoreTask = async () => {
-    setRestoring(true);
-    try {
-      // API call to restore task would go here
-      setArchivedTasks(archivedTasks.filter((t) => t.id !== selectedTask.id));
-      setShowRestoreModal(false);
-      setSelectedTask(null);
-      toast.success("Task restored successfully!");
-    } catch (error) {
-      console.error("Error restoring task:", error);
-      toast.error("Failed to restore task");
-    } finally {
-      setRestoring(false);
-    }
-  };
 
   const filteredTasks = filterArchivedTasks(
     archivedTasks,
@@ -96,7 +62,7 @@ const Archived = () => {
         onSearchChange={setSearchQuery}
         filterProject={filterProject}
         onFilterChange={setFilterProject}
-        projects={mockProjects}
+        projects={projects}
       />
 
       {/* Archived Tasks */}
@@ -109,7 +75,9 @@ const Archived = () => {
               key={projectName}
               projectName={projectName}
               tasks={tasks}
-              onRestoreClick={handleRestoreClick}
+              onRestoreClick={(task) =>
+                handleRestoreClick(task, setSelectedTask, setShowRestoreModal)
+              }
             />
           ))}
         </div>
@@ -128,7 +96,16 @@ const Archived = () => {
           setSelectedTask(null);
         }}
         selectedTask={selectedTask}
-        onRestore={handleRestoreTask}
+        onRestore={() =>
+          handleRestoreTask(
+            selectedTask,
+            archivedTasks,
+            setArchivedTasks,
+            setShowRestoreModal,
+            setSelectedTask,
+            setRestoring
+          )
+        }
         restoring={restoring}
       />
     </div>

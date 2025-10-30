@@ -5,6 +5,8 @@ import { useNotifications } from "../../hooks/useNotifications";
 import Card from "../../components/common/Card";
 import Button from "../../components/common/Button";
 import NotificationItem from "../../components/notification/NotificationItem";
+import { groupByDate, notificationTypes } from "../../components/notifications";
+import handleNotificationClick from "../../utils/notification/handleNotificationClick";
 import styles from "./Notifications.module.css";
 
 const Notifications = () => {
@@ -24,15 +26,6 @@ const Notifications = () => {
     fetchNotifications();
   }, []);
 
-  const handleNotificationClick = (notification) => {
-    if (!notification.read) {
-      markAsRead(notification.id);
-    }
-    if (notification.actionUrl) {
-      navigate(notification.actionUrl);
-    }
-  };
-
   const filteredNotifications = notifications.filter((notification) => {
     // Filter by read status
     if (filter === "unread" && notification.read) return false;
@@ -44,55 +37,7 @@ const Notifications = () => {
     return true;
   });
 
-  // Group notifications by date
-  const groupByDate = (notifications) => {
-    const groups = {
-      today: [],
-      yesterday: [],
-      thisWeek: [],
-      older: [],
-    };
-
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-    const weekAgo = new Date(today);
-    weekAgo.setDate(weekAgo.getDate() - 7);
-
-    notifications.forEach((notification) => {
-      const notificationDate = new Date(notification.timestamp);
-      const notificationDay = new Date(
-        notificationDate.getFullYear(),
-        notificationDate.getMonth(),
-        notificationDate.getDate()
-      );
-
-      if (notificationDay.getTime() === today.getTime()) {
-        groups.today.push(notification);
-      } else if (notificationDay.getTime() === yesterday.getTime()) {
-        groups.yesterday.push(notification);
-      } else if (notificationDate >= weekAgo) {
-        groups.thisWeek.push(notification);
-      } else {
-        groups.older.push(notification);
-      }
-    });
-
-    return groups;
-  };
-
   const groupedNotifications = groupByDate(filteredNotifications);
-
-  const notificationTypes = [
-    { value: "all", label: "All Types" },
-    { value: "task_assigned", label: "Task Assigned" },
-    { value: "project_updated", label: "Project Updates" },
-    { value: "member_added", label: "New Members" },
-    { value: "mention", label: "Mentions" },
-    { value: "message", label: "Messages" },
-    { value: "deadline", label: "Deadlines" },
-  ];
 
   const renderNotificationGroup = (title, notifications) => {
     if (notifications.length === 0) return null;
@@ -107,7 +52,9 @@ const Notifications = () => {
             <Card key={notification.id} className={styles.notificationCard}>
               <NotificationItem
                 notification={notification}
-                onClick={() => handleNotificationClick(notification)}
+                onClick={() =>
+                  handleNotificationClick(notification, markAsRead, navigate)
+                }
                 onDelete={(e) => {
                   e.stopPropagation();
                   deleteNotification(notification.id);
@@ -128,9 +75,9 @@ const Notifications = () => {
           <Button
             variant="ghost"
             onClick={() => navigate("/app/dashboard")}
-            className="gap-2"
+            className={styles.headerBackButton}
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className={styles.headerBackIcon} />
           </Button>
           <div>
             <h1 className={styles.title}>Notifications</h1>
@@ -144,8 +91,12 @@ const Notifications = () => {
           </div>
         </div>
         {unreadCount > 0 && (
-          <Button variant="outline" onClick={markAllAsRead} className="gap-2">
-            <Check className="w-5 h-5" />
+          <Button
+            variant="outline"
+            onClick={markAllAsRead}
+            className={styles.headerMarkButton}
+          >
+            <Check className={styles.headerMarkIcon} />
             Mark all as read
           </Button>
         )}
@@ -198,7 +149,7 @@ const Notifications = () => {
       <Card>
         <div className={styles.filters}>
           <div className={styles.filterGroup}>
-            <Filter className="w-5 h-5" />
+            <Filter className={styles.filterIcon} />
             <span className={styles.filterLabel}>Filter:</span>
           </div>
 

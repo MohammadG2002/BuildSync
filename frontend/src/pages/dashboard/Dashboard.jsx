@@ -5,14 +5,7 @@ import { useAuth } from "../../hooks/useAuth";
 import Card from "../../components/common/Card";
 import Button from "../../components/common/Button";
 import { SkeletonStats, SkeletonList } from "../../components/common/Loader";
-import {
-  Briefcase,
-  CheckCircle,
-  Clock,
-  Users,
-  ArrowRight,
-  Plus,
-} from "lucide-react";
+import { ArrowRight, Plus } from "lucide-react";
 import {
   StatCard,
   ProjectCard,
@@ -20,59 +13,32 @@ import {
   DeadlineItem,
   QuickActions,
   CurrentWorkspaceCard,
-} from "./dashboardModule";
-import styles from "./dashboardModule/Dashboard.module.css";
+} from "../../components/dashboard";
+import fetchDashboardData from "../../utils/dashboard/fetchDashboardData";
+import styles from "../../components/dashboard/Dashboard.module.css";
 
 const Dashboard = () => {
   const { user } = useAuth();
   const { workspaces, currentWorkspace } = useWorkspace();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState([]);
+  const [projects, setProjects] = useState([]);
+  const [tasks, setTasks] = useState([]);
+  const [deadlines, setDeadlines] = useState([]);
 
   useEffect(() => {
-    // Simulate loading data
-    setTimeout(() => setLoading(false), 500);
-  }, []);
-
-  // Mock stats (replace with real data from API)
-  const stats = [
-    {
-      title: "Total Projects",
-      value: "12",
-      icon: Briefcase,
-      color: "blue",
-      change: "+2 this month",
-      trend: "up",
-    },
-    {
-      title: "Active Tasks",
-      value: "45",
-      icon: Clock,
-      color: "yellow",
-      change: "23 in progress",
-      trend: "neutral",
-    },
-    {
-      title: "Completed",
-      value: "156",
-      icon: CheckCircle,
-      color: "green",
-      change: "+18 this week",
-      trend: "up",
-    },
-    {
-      title: "Team Members",
-      value: "8",
-      icon: Users,
-      color: "purple",
-      change: "2 active now",
-      trend: "neutral",
-    },
-  ];
-
-  const recentProjects = [];
-  const recentTasks = [];
-  const upcomingDeadlines = [];
+    if (currentWorkspace) {
+      fetchDashboardData(
+        currentWorkspace,
+        setStats,
+        setProjects,
+        setTasks,
+        setDeadlines,
+        setLoading
+      );
+    }
+  }, [currentWorkspace]);
 
   return (
     <div className={styles.container}>
@@ -109,10 +75,10 @@ const Dashboard = () => {
                 variant="ghost"
                 size="sm"
                 onClick={() => navigate("/app/workspaces")}
-                className="gap-1"
+                className={styles.viewAllButton}
               >
                 View All
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className={styles.viewAllIcon} />
               </Button>
             }
           >
@@ -120,12 +86,14 @@ const Dashboard = () => {
               <SkeletonList count={3} />
             ) : (
               <div className={styles.projectsContainer}>
-                {recentProjects.map((project) => (
+                {projects.map((project) => (
                   <ProjectCard
                     key={project.id}
                     project={project}
                     onClick={() =>
-                      navigate(`/app/workspaces/1/projects/${project.id}`)
+                      navigate(
+                        `/app/workspaces/${currentWorkspace.id}/projects/${project.id}`
+                      )
                     }
                   />
                 ))}
@@ -139,17 +107,17 @@ const Dashboard = () => {
               <SkeletonList count={4} />
             ) : (
               <div className={styles.tasksContainer}>
-                {recentTasks.map((task) => (
+                {tasks.map((task) => (
                   <TaskItem key={task.id} task={task} />
                 ))}
               </div>
             )}
             <Button
               variant="ghost"
-              className={`w-full ${styles.addTaskButton} gap-2`}
+              className={`w-full ${styles.addTaskButton} ${styles.addTaskButtonInner}`}
               onClick={() => navigate("/app/workspaces")}
             >
-              <Plus className="w-4 h-4" />
+              <Plus className={styles.addTaskIcon} />
               Add New Task
             </Button>
           </Card>
@@ -160,7 +128,7 @@ const Dashboard = () => {
           {/* Upcoming Deadlines */}
           <Card title="Upcoming Deadlines">
             <div className={styles.deadlinesContainer}>
-              {upcomingDeadlines.map((deadline) => (
+              {deadlines.map((deadline) => (
                 <DeadlineItem key={deadline.id} deadline={deadline} />
               ))}
             </div>

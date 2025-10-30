@@ -52,3 +52,21 @@
   gap: 1rem;
   justify-content: center;
 }
+
+.homeButton {
+  gap: 0.5rem;
+}
+
+.homeIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.backButton {
+  gap: 0.5rem;
+}
+
+.backIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}

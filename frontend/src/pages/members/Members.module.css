@@ -20,7 +20,22 @@
   gap: 1rem;
 }
 
-.headerContent {
+.headerBackButton {
+  gap: 0.5rem;
+}
+
+.headerBackIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.headerInviteButton {
+  gap: 0.5rem;
+}
+
+.headerInviteIcon {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 .title {
@@ -60,9 +75,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.statInfo {
 }
 
 .statLabel {
@@ -394,4 +406,14 @@
   gap: 0.75rem;
   justify-content: flex-end;
   padding-top: 1rem;
+}
+
+/* Empty state button */
+.emptyInviteButton {
+  gap: 0.5rem;
+}
+
+.emptyInviteIcon {
+  width: 1.25rem;
+  height: 1.25rem;
 }

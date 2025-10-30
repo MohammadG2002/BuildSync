@@ -5,13 +5,10 @@ import { useAuth } from "../../hooks/useAuth";
 import Button from "../../components/common/Button";
 import Input from "../../components/common/Input";
 import { getPasswordStrength } from "../../utils/validators";
-import {
-  AuthLayout,
-  PasswordInput,
-  FormDivider,
-  validateRegister,
-} from "./authModule";
-import styles from "./authModule/Auth.module.css";
+import { AuthLayout, PasswordInput, FormDivider } from "../../components/auth";
+import handleChange from "../../utils/auth/handleChangeRegister";
+import handleSubmit from "../../utils/auth/handleSubmitRegister";
+import styles from "../../components/auth/Auth.module.css";
 
 const Register = () => {
   const { register } = useAuth();
@@ -26,51 +23,25 @@ const Register = () => {
   });
   const [errors, setErrors] = useState({});
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const newErrors = validateRegister(formData);
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
-
-    setLoading(true);
-    try {
-      await register({
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-      });
-    } catch (error) {
-      console.error("Registration error:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const passwordStrength = formData.password
     ? getPasswordStrength(formData.password)
     : null;
 
   return (
     <AuthLayout subtitle="Create your account">
-      <form onSubmit={handleSubmit} className={styles.authForm}>
+      <form
+        onSubmit={(e) =>
+          handleSubmit(e, formData, setErrors, register, setLoading)
+        }
+        className={styles.authForm}
+      >
         <Input
           label="Full Name"
           type="text"
           name="name"
           placeholder="John Doe"
           value={formData.name}
-          onChange={handleChange}
+          onChange={(e) => handleChange(e, setFormData, errors, setErrors)}
           error={errors.name}
           icon={User}
           autoComplete="name"
@@ -82,7 +53,7 @@ const Register = () => {
           name="email"
           placeholder="you@example.com"
           value={formData.email}
-          onChange={handleChange}
+          onChange={(e) => handleChange(e, setFormData, errors, setErrors)}
           error={errors.email}
           icon={Mail}
           autoComplete="email"
@@ -93,7 +64,7 @@ const Register = () => {
           name="password"
           placeholder="Create a strong password"
           value={formData.password}
-          onChange={handleChange}
+          onChange={(e) => handleChange(e, setFormData, errors, setErrors)}
           error={errors.password}
           icon={Lock}
           autoComplete="new-password"
@@ -108,7 +79,7 @@ const Register = () => {
           name="confirmPassword"
           placeholder="Confirm your password"
           value={formData.confirmPassword}
-          onChange={handleChange}
+          onChange={(e) => handleChange(e, setFormData, errors, setErrors)}
           error={errors.confirmPassword}
           icon={Lock}
           autoComplete="new-password"
@@ -135,7 +106,7 @@ const Register = () => {
           variant="primary"
           size="lg"
           loading={loading}
-          className="w-full"
+          className={styles.fullWidthButton}
         >
           Create Account
         </Button>
