@@ -2,8 +2,8 @@ import { Archive, Calendar, RotateCcw } from "lucide-react";
 import Button from "../common/Button";
 import Card from "../common/Card";
 import { getInitials, generateColor, formatDate } from "../../utils/helpers";
-import getStatusClass from "./getStatusClass";
-import getPriorityClass from "./getPriorityClass";
+import getStatusClass from "../../utils/archived/getStatusClass";
+import getPriorityClass from "../../utils/archived/getPriorityClass";
 import styles from "../../pages/archived/Archived.module.css";
 
 const ArchivedTaskCard = ({ task, onRestoreClick }) => {

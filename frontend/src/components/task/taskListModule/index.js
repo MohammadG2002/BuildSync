@@ -1,2 +1,2 @@
-export { groupTasks, getGroupTitle } from "./groupTasks";
+export { groupTasks, getGroupTitle } from "../../../utils/task/groupTasks";
 export { default as TaskGroup } from "./TaskGroup";

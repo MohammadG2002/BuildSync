@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import { statusColors, priorityColors } from "./colors";
+import { statusColors, priorityColors } from "../../../utils/task/colors";
 import styles from "./TaskDetailsModal.module.css";
 
 const ModalHeader = ({ task, onClose, onStatusChange, onPriorityChange }) => {

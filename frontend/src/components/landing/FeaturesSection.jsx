@@ -1,5 +1,5 @@
 import FeatureCard from "./FeatureCard";
-import featuresData from "./featuresData";
+import featuresData from "../../utils/landing/featuresData";
 import styles from "../../pages/landing/LandingPage.module.css";
 
 const FeaturesSection = () => {

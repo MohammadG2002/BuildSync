@@ -1,4 +1,4 @@
-export { validateTaskForm } from "./validateTaskForm";
+export { validateTaskForm } from "../../../utils/task/validateTaskForm";
 export { default as DescriptionField } from "./DescriptionField";
 export { default as StatusAndPriorityFields } from "./StatusAndPriorityFields";
 export { default as AssigneeAndDateFields } from "./AssigneeAndDateFields";

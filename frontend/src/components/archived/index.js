@@ -7,8 +7,8 @@ import ArchivedEmptyState from "./ArchivedEmptyState";
 import RestoreTaskModal from "./RestoreTaskModal";
 import filterArchivedTasks from "../../utils/archived/filterArchivedTasks";
 import groupTasksByProject from "../../utils/archived/groupTasksByProject";
-import getStatusClass from "./getStatusClass";
-import getPriorityClass from "./getPriorityClass";
+import getStatusClass from "../../utils/archived/getStatusClass";
+import getPriorityClass from "../../utils/archived/getPriorityClass";
 
 export {
   ArchivedStats,

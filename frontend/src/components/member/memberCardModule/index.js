@@ -1,5 +1,4 @@
-export { default as roleIcons } from "./roleIcons";
-export { default as roleColors } from "./roleColors";
+export { default as roleIcons } from "../../../utils/member/roleIcons";
 export { default as MemberAvatar } from "./MemberAvatar";
 export { default as MemberInfo } from "./MemberInfo";
 export { default as MemberRoleBadge } from "./MemberRoleBadge";

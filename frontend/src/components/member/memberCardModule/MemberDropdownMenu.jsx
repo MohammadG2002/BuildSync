@@ -1,6 +1,6 @@
 import { Trash2 } from "lucide-react";
 import { USER_ROLES } from "../../../utils/constants";
-import roleIcons from "./roleIcons";
+import roleIcons from "../../../utils/member/roleIcons";
 import styles from "./MemberCard.module.css";
 
 const MemberDropdownMenu = ({ member, onChangeRole, onRemove, onClose }) => {

@@ -1,4 +1,4 @@
-export { default as getMenuItems } from "./menuItems";
+export { default as getMenuItems } from "../../../utils/layout/menuItems";
 export { default as SidebarBackdrop } from "./SidebarBackdrop";
 export { default as SidebarHeader } from "./SidebarHeader";
 export { default as SidebarNavItem } from "./SidebarNavItem";

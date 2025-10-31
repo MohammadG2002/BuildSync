@@ -1,4 +1,4 @@
-import roleIcons from "./roleIcons";
+import roleIcons from "../../../utils/member/roleIcons";
 import styles from "./MemberCard.module.css";
 
 const roleClasses = {
