@@ -39,6 +39,7 @@ export const updateWorkspace = async (workspaceId, updateData, userId) => {
   await workspace.save();
   await workspace.populate("owner", "name email avatar");
   await workspace.populate("members.user", "name email avatar");
+  await workspace.populate("projects");
 
   return workspace;
 };

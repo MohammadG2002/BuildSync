@@ -42,7 +42,7 @@ const DeleteWorkspaceModal = ({
             type="text"
             placeholder={workspaceName}
             value={deleteConfirmation}
-            onChange={onConfirmationChange}
+            onChange={(e) => onConfirmationChange(e.target.value)}
           />
         </div>
 

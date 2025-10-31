@@ -12,3 +12,4 @@ export { getArchivedTasks } from "./getArchivedTasks.js";
 export { addComment } from "./addComment.js";
 export { addAttachment } from "./addAttachment.js";
 export { deleteAttachment } from "./deleteAttachment.js";
+export { addCommentAttachment } from "./addCommentAttachment.js";

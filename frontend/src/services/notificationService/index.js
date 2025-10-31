@@ -6,7 +6,7 @@ import apiClient from "../apiClient";
  */
 export const getNotifications = async () => {
   const response = await apiClient.get("/notifications");
-  return response.data;
+  return response.data.notifications || [];
 };
 
 /**

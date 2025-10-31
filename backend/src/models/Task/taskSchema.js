@@ -27,11 +27,12 @@ export const taskSchema = new mongoose.Schema(
       ref: "Workspace",
       required: true,
     },
-    assignedTo: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      default: null,
-    },
+    assignedTo: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -88,6 +89,22 @@ export const taskSchema = new mongoose.Schema(
           type: String,
           required: true,
         },
+        attachments: [
+          {
+            name: String,
+            url: String,
+            size: Number,
+            type: String,
+            uploadedBy: {
+              type: mongoose.Schema.Types.ObjectId,
+              ref: "User",
+            },
+            uploadedAt: {
+              type: Date,
+              default: Date.now,
+            },
+          },
+        ],
         createdAt: {
           type: Date,
           default: Date.now,

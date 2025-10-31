@@ -2,13 +2,15 @@ import apiClient, { API_ENDPOINTS } from "../apiClient";
 import { ResponseNormalizer } from "../shared";
 
 export const updateTask = async (workspaceId, projectId, taskId, taskData) => {
-  // Map assigneeId to assignedTo for backend compatibility
-  const { assigneeId, files, ...rest } = taskData;
+  // Extract files and assigneeIds from taskData
+  const { files, assigneeIds, ...rest } = taskData;
 
   // Build update payload, only include defined values
   const payload = { ...rest };
-  if (assigneeId !== undefined) {
-    payload.assignedTo = assigneeId;
+
+  // Add assigneeIds if provided
+  if (assigneeIds !== undefined) {
+    payload.assigneeIds = assigneeIds;
   }
 
   // Remove undefined values

@@ -16,6 +16,7 @@ const TaskDetailsModal = ({
   onUpdate,
   onAddComment,
   onDeleteAttachment,
+  onAddAttachment,
 }) => {
   const [isEditingDescription, setIsEditingDescription] = useState(false);
   const [editedDescription, setEditedDescription] = useState(
@@ -23,20 +24,23 @@ const TaskDetailsModal = ({
   );
   const [newComment, setNewComment] = useState("");
   const [isSubmittingComment, setIsSubmittingComment] = useState(false);
+  const [isUploadingFile, setIsUploadingFile] = useState(false);
+  const [commentFiles, setCommentFiles] = useState([]);
   const fileInputRef = useRef(null);
+  const commentFileInputRef = useRef(null);
 
   if (!task) return null;
 
   const handleStatusChange = (newStatus) => {
-    onUpdate?.({ ...task, status: newStatus });
+    onUpdate?.({ _id: task._id, status: newStatus });
   };
 
   const handlePriorityChange = (newPriority) => {
-    onUpdate?.({ ...task, priority: newPriority });
+    onUpdate?.({ _id: task._id, priority: newPriority });
   };
 
   const handleSaveDescription = () => {
-    onUpdate?.({ ...task, description: editedDescription });
+    onUpdate?.({ _id: task._id, description: editedDescription });
     setIsEditingDescription(false);
   };
 
@@ -46,8 +50,13 @@ const TaskDetailsModal = ({
 
     setIsSubmittingComment(true);
     try {
-      await onAddComment?.(task._id, newComment);
+      await onAddComment?.(task._id, newComment, commentFiles);
       setNewComment("");
+      setCommentFiles([]);
+      // Reset file input
+      if (commentFileInputRef.current) {
+        commentFileInputRef.current.value = "";
+      }
     } catch (error) {
       console.error("Failed to add comment:", error);
     } finally {
@@ -55,9 +64,34 @@ const TaskDetailsModal = ({
     }
   };
 
-  const handleFileUpload = (e) => {
+  const handleCommentFileSelect = (e) => {
     const files = Array.from(e.target.files);
-    console.log("Files to upload:", files);
+    setCommentFiles((prev) => [...prev, ...files]);
+  };
+
+  const handleRemoveCommentFile = (index) => {
+    setCommentFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleFileUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+
+    setIsUploadingFile(true);
+    try {
+      // Upload files one by one
+      for (const file of files) {
+        await onAddAttachment?.(file);
+      }
+    } catch (error) {
+      console.error("Failed to upload file:", error);
+    } finally {
+      setIsUploadingFile(false);
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
   };
 
   return (
@@ -93,6 +127,7 @@ const TaskDetailsModal = ({
             onDeleteAttachment={onDeleteAttachment}
             taskId={task._id}
             fileInputRef={fileInputRef}
+            isUploading={isUploadingFile}
           />
 
           <CommentsSection
@@ -101,6 +136,10 @@ const TaskDetailsModal = ({
             setNewComment={setNewComment}
             onSubmit={handleAddComment}
             isSubmitting={isSubmittingComment}
+            selectedFiles={commentFiles}
+            onFileSelect={handleCommentFileSelect}
+            onRemoveFile={handleRemoveCommentFile}
+            fileInputRef={commentFileInputRef}
           />
         </div>
 

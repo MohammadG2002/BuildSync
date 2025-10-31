@@ -7,6 +7,7 @@ import {
   deleteTask,
   addComment,
   addAttachment,
+  addCommentAttachment,
 } from "../controllers/taskController/index.js";
 import {
   authenticate,
@@ -41,5 +42,14 @@ router
 router
   .route("/:id/attachments")
   .post(mongoIdValidation("id"), validate, addAttachment);
+
+router
+  .route("/:id/comments/:commentId/attachments")
+  .post(
+    mongoIdValidation("id"),
+    mongoIdValidation("commentId"),
+    validate,
+    addCommentAttachment
+  );
 
 export default router;

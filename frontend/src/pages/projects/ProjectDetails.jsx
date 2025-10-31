@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Plus, ArrowLeft, CheckCircle, Clock, AlertCircle } from "lucide-react";
+import {
+  Plus,
+  ArrowLeft,
+  CheckCircle,
+  Clock,
+  AlertCircle,
+  UserPlus,
+} from "lucide-react";
 import Button from "../../components/common/Button";
 import Card from "../../components/common/Card";
 import Modal from "../../components/common/Modal";
@@ -13,6 +20,7 @@ import {
   GroupBySelector,
   EmptyTasksState,
   DeleteTaskModalContent,
+  AddProjectMemberModal,
 } from "../../components/projectDetails";
 import { calculateTaskStats } from "../../utils/project/calculateTaskStats";
 import fetchProjectAndTasks from "../../utils/project/fetchProjectAndTasks";
@@ -26,6 +34,8 @@ import handleTaskClick from "../../utils/project/handleTaskClick";
 import handleTaskDetailsUpdate from "../../utils/project/handleTaskDetailsUpdate";
 import handleAddComment from "../../utils/project/handleAddComment";
 import handleDeleteAttachment from "../../utils/project/handleDeleteAttachment";
+import handleAddAttachment from "../../utils/project/handleAddAttachment";
+import handleAddProjectMember from "../../utils/project/handleAddProjectMember";
 import styles from "./ProjectDetails.module.css";
 
 const ProjectDetails = () => {
@@ -43,7 +53,9 @@ const ProjectDetails = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [showAddMemberModal, setShowAddMemberModal] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
+  const [selectedMemberId, setSelectedMemberId] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
   const [members, setMembers] = useState([]);
@@ -85,14 +97,24 @@ const ProjectDetails = () => {
             </p>
           </div>
         </div>
-        <Button
-          variant="primary"
-          onClick={() => setShowCreateModal(true)}
-          className={styles.createTaskButton}
-        >
-          <Plus className={styles.createTaskIcon} />
-          New Task
-        </Button>
+        <div className={styles.headerButtons}>
+          <Button
+            variant="secondary"
+            onClick={() => setShowAddMemberModal(true)}
+            className={styles.addMemberButton}
+          >
+            <UserPlus className={styles.addMemberIcon} />
+            Add Member
+          </Button>
+          <Button
+            variant="primary"
+            onClick={() => setShowCreateModal(true)}
+            className={styles.createTaskButton}
+          >
+            <Plus className={styles.createTaskIcon} />
+            New Task
+          </Button>
+        </div>
       </div>
 
       {/* Task Stats */}
@@ -287,7 +309,7 @@ const ProjectDetails = () => {
               setSelectedTask
             )
           }
-          onAddComment={(taskId, commentContent) =>
+          onAddComment={(taskId, commentContent, attachmentFiles) =>
             handleAddComment(
               taskId,
               commentContent,
@@ -295,7 +317,8 @@ const ProjectDetails = () => {
               projectId,
               tasks,
               setTasks,
-              setSelectedTask
+              setSelectedTask,
+              attachmentFiles
             )
           }
           onDeleteAttachment={(taskId, attachmentId) =>
@@ -309,8 +332,60 @@ const ProjectDetails = () => {
               setSelectedTask
             )
           }
+          onAddAttachment={(file) =>
+            handleAddAttachment(
+              file,
+              workspaceId,
+              projectId,
+              selectedTask._id,
+              tasks,
+              setTasks,
+              setSelectedTask
+            )
+          }
         />
       )}
+
+      {/* Add Member Modal */}
+      <Modal
+        isOpen={showAddMemberModal}
+        onClose={() => {
+          setShowAddMemberModal(false);
+          setSelectedMemberId(null);
+        }}
+        title="Add Member to Project"
+        size="md"
+      >
+        <AddProjectMemberModal
+          workspaceMembers={members}
+          projectMembers={project?.members || []}
+          selectedMemberId={selectedMemberId}
+          onMemberSelect={setSelectedMemberId}
+          onCancel={() => {
+            setShowAddMemberModal(false);
+            setSelectedMemberId(null);
+          }}
+          onConfirm={() =>
+            handleAddProjectMember(
+              workspaceId,
+              projectId,
+              selectedMemberId,
+              setShowAddMemberModal,
+              setSubmitting,
+              () =>
+                fetchProjectAndTasks(
+                  workspaceId,
+                  projectId,
+                  setProject,
+                  setTasks,
+                  setMembers,
+                  setLoading
+                )
+            )
+          }
+          loading={submitting}
+        />
+      </Modal>
     </div>
   );
 };

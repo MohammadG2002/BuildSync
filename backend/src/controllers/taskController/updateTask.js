@@ -7,10 +7,11 @@
 
 import Task from "../../models/Task/index.js";
 import Notification from "../../models/Notification/index.js";
+import Project from "../../models/Project/index.js";
 
 export const updateTask = async (req, res) => {
   try {
-    const { title, description, assignedTo, status, priority, dueDate, tags } =
+    const { title, description, assigneeIds, status, priority, dueDate, tags } =
       req.body;
 
     const task = await Task.findById(req.params.id);
@@ -22,24 +23,46 @@ export const updateTask = async (req, res) => {
       });
     }
 
-    // Check if user can edit
-    const canEdit =
-      task.createdBy.toString() === req.user._id.toString() ||
-      task.assignedTo?.toString() === req.user._id.toString();
+    // Check if user can edit - creator, assigned user, or project member
+    const isCreator = task.createdBy.toString() === req.user._id.toString();
+    const isAssigned =
+      task.assignedTo && Array.isArray(task.assignedTo)
+        ? task.assignedTo.some(
+            (userId) => userId.toString() === req.user._id.toString()
+          )
+        : false;
 
-    if (!canEdit) {
+    // Check if user is a project member
+    const project = await Project.findById(task.project);
+    const isProjectMember = project?.members.some(
+      (member) => member.user.toString() === req.user._id.toString()
+    );
+
+    if (!isCreator && !isAssigned && !isProjectMember) {
       return res.status(403).json({
         success: false,
         message: "You do not have permission to update this task",
       });
     }
 
-    const oldAssignedTo = task.assignedTo?.toString();
+    const oldAssignedTo =
+      task.assignedTo && Array.isArray(task.assignedTo)
+        ? task.assignedTo.map((id) => id.toString())
+        : [];
     const oldStatus = task.status;
 
     if (title) task.title = title;
     if (description !== undefined) task.description = description;
-    if (assignedTo !== undefined) task.assignedTo = assignedTo;
+    if (assigneeIds !== undefined) {
+      // Process assigneeIds - ensure it's an array
+      if (Array.isArray(assigneeIds)) {
+        task.assignedTo = assigneeIds;
+      } else if (assigneeIds) {
+        task.assignedTo = [assigneeIds];
+      } else {
+        task.assignedTo = [];
+      }
+    }
     if (status) task.status = status;
     if (priority) task.priority = priority;
     if (dueDate !== undefined) task.dueDate = dueDate;
@@ -51,37 +74,47 @@ export const updateTask = async (req, res) => {
     await task.populate("project", "name color");
     await task.populate("workspace", "name");
 
-    // Create notifications for changes
-    if (
-      assignedTo &&
-      assignedTo !== oldAssignedTo &&
-      assignedTo !== req.user._id.toString()
-    ) {
-      await Notification.create({
-        recipient: assignedTo,
-        sender: req.user._id,
-        type: "task_assigned",
-        title: "New task assigned",
-        message: `You have been assigned to "${task.title}"`,
-        link: `/tasks/${task._id}`,
-        metadata: {
-          taskId: task._id,
-          projectId: task.project,
-          workspaceId: task.workspace,
-        },
-      });
+    // Create notifications for newly assigned members
+    if (assigneeIds !== undefined) {
+      const newAssignedTo = task.assignedTo.map((id) => id._id.toString());
+      const newlyAssigned = newAssignedTo.filter(
+        (userId) => !oldAssignedTo.includes(userId)
+      );
+
+      const notificationPromises = newlyAssigned
+        .filter((userId) => userId !== req.user._id.toString())
+        .map((userId) =>
+          Notification.create({
+            recipient: userId,
+            sender: req.user._id,
+            type: "task_assigned",
+            title: "New task assigned",
+            message: `You have been assigned to "${task.title}"`,
+            link: `/tasks/${task._id}`,
+            metadata: {
+              taskId: task._id,
+              projectId: task.project,
+              workspaceId: task.workspace,
+            },
+          })
+        );
+
+      await Promise.all(notificationPromises);
     }
 
+    // Notify about status changes
     if (status && status !== oldStatus) {
-      const notifyUsers = [task.createdBy.toString()];
-      if (
-        task.assignedTo &&
-        task.assignedTo.toString() !== req.user._id.toString()
-      ) {
-        notifyUsers.push(task.assignedTo.toString());
-      }
+      const notifyUsers = [task.createdBy._id.toString()];
+      task.assignedTo.forEach((user) => {
+        const userId = user._id.toString();
+        if (userId !== req.user._id.toString()) {
+          notifyUsers.push(userId);
+        }
+      });
 
-      for (const userId of notifyUsers) {
+      const uniqueUsers = [...new Set(notifyUsers)];
+
+      for (const userId of uniqueUsers) {
         if (userId !== req.user._id.toString()) {
           await Notification.create({
             recipient: userId,
@@ -92,8 +125,8 @@ export const updateTask = async (req, res) => {
             link: `/tasks/${task._id}`,
             metadata: {
               taskId: task._id,
-              projectId: task.project,
-              workspaceId: task.workspace,
+              projectId: task.project._id || task.project,
+              workspaceId: task.workspace._id || task.workspace,
             },
           });
         }

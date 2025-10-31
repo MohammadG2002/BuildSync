@@ -6,6 +6,7 @@
  */
 
 import Task from "../../models/Task/index.js";
+import Project from "../../models/Project/index.js";
 
 export const getTask = async (req, res) => {
   try {
@@ -14,7 +15,8 @@ export const getTask = async (req, res) => {
       .populate("createdBy", "name email avatar")
       .populate("project", "name color")
       .populate("workspace", "name")
-      .populate("comments.user", "name email avatar");
+      .populate("comments.user", "name email avatar")
+      .populate("attachments.uploadedBy", "name email avatar");
 
     if (!task) {
       return res.status(404).json({
@@ -23,12 +25,19 @@ export const getTask = async (req, res) => {
       });
     }
 
-    // Check if user has access
-    const hasAccess =
-      task.assignedTo?._id.toString() === req.user._id.toString() ||
-      task.createdBy._id.toString() === req.user._id.toString();
+    // Check if user has access - creator, assigned user, or project member
+    const isCreator = task.createdBy._id.toString() === req.user._id.toString();
+    const isAssigned = task.assignedTo.some(
+      (user) => user._id.toString() === req.user._id.toString()
+    );
 
-    if (!hasAccess) {
+    // Check if user is a project member
+    const project = await Project.findById(task.project._id);
+    const isProjectMember = project?.members.some(
+      (member) => member.user.toString() === req.user._id.toString()
+    );
+
+    if (!isCreator && !isAssigned && !isProjectMember) {
       return res.status(403).json({
         success: false,
         message: "Access denied",

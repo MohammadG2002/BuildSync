@@ -27,14 +27,24 @@ export class RequestExecutor {
       const timeoutId = setTimeout(() => controller.abort(), timeout);
 
       try {
+        // Check if data is FormData to determine header type
+        const isFormData = data instanceof FormData;
+
         const config = {
           method,
-          headers: HeaderBuilder.build(headers),
+          headers: isFormData
+            ? HeaderBuilder.buildForUpload()
+            : HeaderBuilder.build(headers),
           signal: controller.signal,
         };
 
         if (data) {
-          config.body = JSON.stringify(data);
+          // If data is FormData, send it directly without JSON.stringify
+          if (isFormData) {
+            config.body = data;
+          } else {
+            config.body = JSON.stringify(data);
+          }
         }
 
         const response = await fetch(url, config);

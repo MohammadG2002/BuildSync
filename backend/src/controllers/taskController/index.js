@@ -9,3 +9,4 @@ export { updateTask } from "./updateTask.js";
 export { deleteTask } from "./deleteTask.js";
 export { addComment } from "./addComment.js";
 export { addAttachment } from "./addAttachment.js";
+export { addCommentAttachment } from "./addCommentAttachment.js";

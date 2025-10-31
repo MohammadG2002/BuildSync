@@ -45,8 +45,10 @@ const getMenuItems = (currentWorkspace) => [
   {
     name: "Archived",
     icon: Archive,
-    path: "/app/archived",
-    global: true,
+    path: currentWorkspace
+      ? `/app/workspaces/${currentWorkspace.id}/archived`
+      : "#",
+    requiresWorkspace: true,
   },
 ];
 

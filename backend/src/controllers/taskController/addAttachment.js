@@ -37,6 +37,16 @@ export const addAttachment = async (req, res) => {
 
     await task.save();
 
+    // Populate task before returning
+    await task.populate([
+      { path: "assignedTo", select: "name email avatar" },
+      { path: "createdBy", select: "name email avatar" },
+      { path: "project", select: "name" },
+      { path: "workspace", select: "name" },
+      { path: "comments.user", select: "name email avatar" },
+      { path: "attachments.uploadedBy", select: "name email avatar" },
+    ]);
+
     res.status(201).json({
       success: true,
       message: "Attachment added successfully",

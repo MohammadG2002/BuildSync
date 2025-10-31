@@ -11,13 +11,23 @@ import {
 import styles from "./taskFormModule/TaskForm.module.css";
 
 const TaskForm = ({ task, onSubmit, onCancel, loading, members = [] }) => {
+  // Transform task.assignedTo array to assigneeIds array
+  const getAssigneeIds = () => {
+    if (!task) return [];
+    if (task.assigneeIds) return task.assigneeIds; // If already transformed
+    if (task.assignedTo && Array.isArray(task.assignedTo)) {
+      return task.assignedTo.map((user) => user._id || user.id || user);
+    }
+    return [];
+  };
+
   const [formData, setFormData] = useState({
     title: task?.title || "",
     description: task?.description || "",
     status: task?.status || "todo",
     priority: task?.priority || "medium",
-    assigneeId: task?.assigneeId || "",
-    dueDate: task?.dueDate || "",
+    assigneeIds: getAssigneeIds(),
+    dueDate: task?.dueDate ? task.dueDate.split("T")[0] : "",
   });
   const [errors, setErrors] = useState({});
   const [files, setFiles] = useState([]);
@@ -65,7 +75,7 @@ const TaskForm = ({ task, onSubmit, onCancel, loading, members = [] }) => {
       />
 
       <AssigneeAndDateFields
-        assigneeId={formData.assigneeId}
+        assigneeIds={formData.assigneeIds}
         dueDate={formData.dueDate}
         onChange={handleChange}
         members={members}

@@ -5,32 +5,39 @@ import styles from "./TaskDetailsModal.module.css";
 const MetadataGrid = ({ task }) => {
   return (
     <div className={styles.metadataGrid}>
-      {/* Assignee */}
+      {/* Assignees */}
       <div>
         <div className={styles.metadataItemHeader}>
           <User className={styles.metadataIcon} />
-          <h3 className={styles.metadataItemTitle}>Assignee</h3>
+          <h3 className={styles.metadataItemTitle}>Assignees</h3>
         </div>
-        {task.assignedTo || task.assignee ? (
-          <div className={styles.userInfo}>
-            <div
-              className={styles.userAvatar}
-              style={{
-                backgroundColor: generateColor(
-                  task.assignedTo?.name || task.assignee?.name || "Unassigned"
-                ),
-              }}
-            >
-              {getInitials(task.assignedTo?.name || task.assignee?.name || "U")}
-            </div>
-            <div>
-              <p className={styles.userName}>
-                {task.assignedTo?.name || task.assignee?.name}
-              </p>
-              <p className={styles.userEmail}>
-                {task.assignedTo?.email || task.assignee?.email}
-              </p>
-            </div>
+        {task.assignedTo && task.assignedTo.length > 0 ? (
+          <div className={styles.assigneesList}>
+            {task.assignedTo.map((assignee, index) => (
+              <div
+                key={assignee._id || assignee.id || index}
+                className={styles.userInfo}
+              >
+                <div
+                  className={styles.userAvatar}
+                  style={{
+                    backgroundColor: generateColor(
+                      assignee?.name || "Unknown User"
+                    ),
+                  }}
+                >
+                  {getInitials(assignee?.name || "U")}
+                </div>
+                <div>
+                  <p className={styles.userName}>
+                    {assignee?.name || "Unknown User"}
+                  </p>
+                  <p className={styles.userEmail}>
+                    {assignee?.email || "No email"}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         ) : (
           <p className={styles.metadataTextMuted}>Unassigned</p>

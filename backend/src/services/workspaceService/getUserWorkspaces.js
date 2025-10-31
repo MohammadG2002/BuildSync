@@ -17,6 +17,7 @@ export const getUserWorkspaces = async (userId) => {
   })
     .populate("owner", "name email avatar")
     .populate("members.user", "name email avatar")
+    .populate("projects")
     .sort({ createdAt: -1 });
 
   return workspaces;

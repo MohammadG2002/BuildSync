@@ -15,10 +15,19 @@ export const updateTaskValidation = [
     .trim()
     .isLength({ max: 2000 })
     .withMessage("Description cannot exceed 2000 characters"),
-  body("assignedTo").optional().isMongoId().withMessage("Invalid user ID"),
+  body("assigneeIds")
+    .optional()
+    .custom((value) => {
+      // Allow single ID, array of IDs, or null/undefined
+      if (value === null || value === undefined) return true;
+      if (typeof value === "string") return true; // Single ID
+      if (Array.isArray(value)) return true; // Array of IDs
+      return false;
+    })
+    .withMessage("Invalid assignee IDs format"),
   body("status")
     .optional()
-    .isIn(["todo", "in-progress", "review", "done", "blocked"])
+    .isIn(["todo", "in-progress", "review", "completed", "blocked"])
     .withMessage("Invalid status"),
   body("priority")
     .optional()

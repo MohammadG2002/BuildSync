@@ -4,7 +4,6 @@
  */
 
 import Workspace from "../../models/Workspace/index.js";
-import Project from "../../models/Project/index.js";
 import { isValidObjectId } from "../../utils/validators/index.js";
 
 /**
@@ -20,7 +19,8 @@ export const getWorkspaceById = async (workspaceId, userId) => {
 
   const workspace = await Workspace.findById(workspaceId)
     .populate("owner", "name email avatar")
-    .populate("members.user", "name email avatar");
+    .populate("members.user", "name email avatar")
+    .populate("projects");
 
   if (!workspace) {
     throw new Error("Workspace not found");
@@ -32,14 +32,5 @@ export const getWorkspaceById = async (workspaceId, userId) => {
     throw new Error("Access denied");
   }
 
-  // Get projects count
-  const projectsCount = await Project.countDocuments({
-    workspace: workspace._id,
-    isArchived: false,
-  });
-
-  return {
-    ...workspace.toObject(),
-    projectsCount,
-  };
+  return workspace;
 };

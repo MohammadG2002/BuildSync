@@ -5,7 +5,7 @@ const MemberAvatar = ({ member }) => {
   return (
     <div
       className={styles.avatar}
-      style={{ backgroundColor: generateColor(member.userId) }}
+      style={{ backgroundColor: generateColor(member.id) }}
     >
       {getInitials(member.name)}
     </div>

@@ -1,5 +1,6 @@
 import * as projectService from "../../services/projectService";
 import * as taskService from "../../services/taskService";
+import * as memberService from "../../services/memberService";
 import toast from "react-hot-toast";
 
 /**
@@ -25,8 +26,8 @@ const fetchProjectAndTasks = async (
     setTasks(tasksData);
 
     // Fetch workspace members for assignee dropdown
-    // TODO: Implement memberService.getWorkspaceMembers(workspaceId)
-    setMembers([]);
+    const membersData = await memberService.getWorkspaceMembers(workspaceId);
+    setMembers(membersData);
   } catch (error) {
     console.error("Error fetching project details:", error);
     toast.error("Failed to fetch project details");

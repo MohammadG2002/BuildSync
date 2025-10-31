@@ -93,8 +93,11 @@ const AppRoutes = () => {
             path="workspaces/:workspaceId/settings"
             element={<Settings />}
           />
+          <Route
+            path="workspaces/:workspaceId/archived"
+            element={<Archived />}
+          />
           <Route path="chat" element={<Chat />} />
-          <Route path="archived" element={<Archived />} />
           <Route path="profile" element={<Profile />} />
           <Route path="notifications" element={<Notifications />} />
         </Route>

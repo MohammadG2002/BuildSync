@@ -9,6 +9,7 @@ const AttachmentsSection = ({
   onDeleteAttachment,
   taskId,
   fileInputRef,
+  isUploading,
 }) => {
   return (
     <div>
@@ -22,8 +23,9 @@ const AttachmentsSection = ({
         <button
           onClick={() => fileInputRef.current?.click()}
           className={styles.addFileButton}
+          disabled={isUploading}
         >
-          Add File
+          {isUploading ? "Uploading..." : "Add File"}
         </button>
         <input
           ref={fileInputRef}
@@ -31,6 +33,7 @@ const AttachmentsSection = ({
           multiple
           onChange={onAddFile}
           className={styles.fileInput}
+          disabled={isUploading}
         />
       </div>
       {attachments && attachments.length > 0 ? (

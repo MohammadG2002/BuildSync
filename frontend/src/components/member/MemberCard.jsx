@@ -30,7 +30,7 @@ const MemberCard = ({ member, currentUserId, onChangeRole, onRemove }) => {
     <div className={styles.card}>
       <div className={styles.cardTop}>
         <div className={styles.cardLeft}>
-          <MemberAvatar name={member.name} />
+          <MemberAvatar member={member} />
           <MemberInfo member={member} isCurrentUser={isCurrentUser} />
         </div>
 

@@ -48,16 +48,31 @@ const TaskMeta = ({ task }) => {
         </span>
       </div>
 
-      {/* Assignee */}
-      {task.assignee && (
+      {/* Assignees */}
+      {task.assignedTo && task.assignedTo.length > 0 && (
         <div className={styles.assigneeContainer}>
-          <div
-            className={styles.assigneeAvatar}
-            style={{ backgroundColor: generateColor(task.assignee.name) }}
-          >
-            {getInitials(task.assignee.name)}
-          </div>
-          <span className={styles.assigneeName}>{task.assignee.name}</span>
+          {task.assignedTo.slice(0, 3).map((assignee, index) => (
+            <div
+              key={assignee._id || assignee.id || index}
+              className={styles.assigneeAvatar}
+              style={{
+                backgroundColor: generateColor(
+                  assignee?.name || "Unknown User"
+                ),
+              }}
+              title={assignee?.name || "Unknown User"}
+            >
+              {getInitials(assignee?.name || "U")}
+            </div>
+          ))}
+          {task.assignedTo.length > 3 && (
+            <div
+              className={styles.assigneeAvatar}
+              title={`+${task.assignedTo.length - 3} more`}
+            >
+              +{task.assignedTo.length - 3}
+            </div>
+          )}
         </div>
       )}
 
