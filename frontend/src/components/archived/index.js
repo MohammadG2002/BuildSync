@@ -9,8 +9,6 @@ import filterArchivedTasks from "../../utils/archived/filterArchivedTasks";
 import groupTasksByProject from "../../utils/archived/groupTasksByProject";
 import getStatusClass from "./getStatusClass";
 import getPriorityClass from "./getPriorityClass";
-// Mock data import commented out - uncomment for testing
-// import { mockProjects } from "./mockProjects";
 
 export {
   ArchivedStats,
@@ -24,6 +22,4 @@ export {
   groupTasksByProject,
   getStatusClass,
   getPriorityClass,
-  // Mock data export commented out - uncomment for testing
-  // mockProjects,
 };

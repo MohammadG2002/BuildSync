@@ -1,4 +1,4 @@
-import getSpotlightStyle from "./getSpotlightStyle";
+import getSpotlightStyle from "../../../utils/common/onboarding/getSpotlightStyle";
 import styles from "./Onboarding.module.css";
 
 const OnboardingSpotlight = ({ target }) => (

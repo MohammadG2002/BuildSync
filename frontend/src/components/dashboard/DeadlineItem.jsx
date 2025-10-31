@@ -1,5 +1,5 @@
-import { Calendar } from "lucide-react";
-import { formatDate } from "../../../utils/helpers";
+import { Calendar, Clock } from "lucide-react";
+import { formatDate } from "../../utils/helpers";
 import styles from "./Dashboard.module.css";
 
 const DeadlineItem = ({ deadline }) => {

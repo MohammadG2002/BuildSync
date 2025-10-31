@@ -1,4 +1,4 @@
-import Button from "../../../components/common/Button";
+import Button from "../common/Button";
 import { Plus, Briefcase, Users } from "lucide-react";
 import styles from "./Dashboard.module.css";
 

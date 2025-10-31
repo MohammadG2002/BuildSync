@@ -1,5 +1,4 @@
 export { statusColors, priorityColors, priorityDots } from "./colors";
-export { formatFileSize } from "./formatFileSize";
 export { default as ModalHeader } from "./ModalHeader";
 export { default as DescriptionSection } from "./DescriptionSection";
 export { default as MetadataGrid } from "./MetadataGrid";

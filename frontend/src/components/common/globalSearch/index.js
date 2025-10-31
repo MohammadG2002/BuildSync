@@ -1,8 +1,8 @@
-export { default as categoriesConfig } from "./categoriesConfig";
-export { default as getResultIcon } from "./getResultIcon";
-export { default as filterResults } from "./filterResults";
-export { default as handleResultClick } from "./handleResultClick";
-export { default as performSearch } from "./performSearch";
+export { default as categoriesConfig } from "../../../utils/common/globalSearch/categoriesConfig";
+export { default as getResultIcon } from "../../../utils/common/globalSearch/getResultIcon";
+export { default as filterResults } from "../../../utils/common/globalSearch/filterResults";
+export { default as handleResultClick } from "../../../utils/common/globalSearch/handleResultClick";
+export { default as performSearch } from "../../../utils/common/globalSearch/performSearch";
 export { default as SearchTriggerButton } from "./SearchTriggerButton";
 export { default as SearchInput } from "./SearchInput";
 export { default as SearchCategories } from "./SearchCategories";

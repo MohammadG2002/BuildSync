@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import Button from "../../../components/common/Button";
+import Button from "../common/Button";
 import styles from "../../pages/landing/LandingPage.module.css";
 
 const CTASection = () => {

@@ -2,11 +2,11 @@ import { createContext, useState, useEffect, useRef } from "react";
 import { useAuth } from "../hooks/useAuth";
 import toast from "react-hot-toast";
 import {
-  mockNotifications,
   WebSocketManager,
   NotificationTransformer,
   NotificationOperations,
 } from "./notificationContextModule";
+import { getNotifications } from "../services/notificationService";
 
 export const NotificationContext = createContext();
 
@@ -57,11 +57,9 @@ export const NotificationProvider = ({ children }) => {
 
   const fetchNotifications = async () => {
     try {
-      // Mock data - replace with actual API call
-      setNotifications(mockNotifications);
-      setUnreadCount(
-        NotificationOperations.calculateUnreadCount(mockNotifications)
-      );
+      const data = await getNotifications();
+      setNotifications(data);
+      setUnreadCount(NotificationOperations.calculateUnreadCount(data));
     } catch (error) {
       console.error("Error fetching notifications:", error);
     }

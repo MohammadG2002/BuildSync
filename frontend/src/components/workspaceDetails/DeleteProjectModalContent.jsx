@@ -1,5 +1,5 @@
 import Button from "../common/Button";
-import styles from "../WorkspaceDetails.module.css";
+import styles from "../../pages/workspaces/WorkspaceDetails.module.css";
 
 const DeleteProjectModalContent = ({
   projectName,

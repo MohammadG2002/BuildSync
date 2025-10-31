@@ -7,9 +7,6 @@ import MessageInput from "./MessageInput";
 import ChatEmptyState from "./ChatEmptyState";
 import ChatArea from "./ChatArea";
 import filterContacts from "../../utils/chat/filterContacts";
-// Mock data imports commented out - uncomment for testing
-// import { mockContacts } from "./mockContacts";
-// import { mockMessages } from "./mockMessages";
 
 export {
   ContactsSidebar,
@@ -21,6 +18,4 @@ export {
   ChatEmptyState,
   ChatArea,
   filterContacts,
-  // mockContacts,
-  // mockMessages,
 };

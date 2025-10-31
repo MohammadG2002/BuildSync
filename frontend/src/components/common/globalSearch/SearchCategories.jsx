@@ -1,4 +1,4 @@
-import getResultIcon from "./getResultIcon";
+import getResultIcon from "../../../utils/common/globalSearch/getResultIcon";
 import styles from "./GlobalSearch.module.css";
 
 const SearchCategories = ({

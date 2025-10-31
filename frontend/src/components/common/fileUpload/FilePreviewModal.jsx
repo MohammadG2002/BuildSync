@@ -1,5 +1,5 @@
 import Modal from "../Modal";
-import formatFileSize from "./formatFileSize";
+import formatFileSize from "../../../utils/helpers/formatFileSize";
 import styles from "./FileUpload.module.css";
 
 const FilePreviewModal = ({ file, onClose }) => {

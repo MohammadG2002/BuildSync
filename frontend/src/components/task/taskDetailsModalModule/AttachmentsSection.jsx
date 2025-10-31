@@ -1,6 +1,6 @@
 import { Paperclip, Download, Trash2 } from "lucide-react";
 import { formatDate } from "../../../utils/helpers";
-import { formatFileSize } from "./formatFileSize";
+import formatFileSize from "../../../utils/helpers/formatFileSize";
 import styles from "./TaskDetailsModal.module.css";
 
 const AttachmentsSection = ({

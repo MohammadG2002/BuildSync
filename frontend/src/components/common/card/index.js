@@ -1,2 +1,2 @@
-export { default as getCardClassName } from "./getCardClassName";
+export { default as getCardClassName } from "../../../utils/common/card/getCardClassName";
 export { default as CardHeader } from "./CardHeader";

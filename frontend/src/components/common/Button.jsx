@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { getButtonClassName } from "./button/buttonStyles";
+import { getButtonClassName } from "../../utils/common/button/buttonStyles";
 import LoadingSpinner from "./button/LoadingSpinner";
 
 const Button = ({

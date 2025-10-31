@@ -1,4 +1,8 @@
-// Format file size in bytes to human-readable format
+/**
+ * Format file size in bytes to human-readable format
+ * @param {number} bytes - File size in bytes
+ * @returns {string} Formatted file size
+ */
 const formatFileSize = (bytes) => {
   if (bytes === 0) return "0 Bytes";
   const k = 1024;

@@ -1,7 +1,7 @@
-export { default as stepsData } from "./stepsData";
-export { default as getTooltipPosition } from "./getTooltipPosition";
-export { default as getSpotlightStyle } from "./getSpotlightStyle";
-export { default as restartOnboarding } from "./restartOnboarding";
+export { default as stepsData } from "../../../utils/common/onboarding/stepsData";
+export { default as getTooltipPosition } from "../../../utils/common/onboarding/getTooltipPosition";
+export { default as getSpotlightStyle } from "../../../utils/common/onboarding/getSpotlightStyle";
+export { default as restartOnboarding } from "../../../utils/common/onboarding/restartOnboarding";
 export { default as OnboardingBackdrop } from "./OnboardingBackdrop";
 export { default as OnboardingSpotlight } from "./OnboardingSpotlight";
 export { default as CloseButton } from "./CloseButton";

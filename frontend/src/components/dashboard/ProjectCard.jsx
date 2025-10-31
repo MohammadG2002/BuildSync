@@ -1,5 +1,5 @@
 import { Calendar } from "lucide-react";
-import { getInitials, generateColor, formatDate } from "../../../utils/helpers";
+import { getInitials, generateColor, formatDate } from "../../utils/helpers";
 import styles from "./Dashboard.module.css";
 
 const ProjectCard = ({ project, onClick }) => {

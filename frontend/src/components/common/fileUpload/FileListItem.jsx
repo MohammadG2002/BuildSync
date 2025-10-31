@@ -1,6 +1,6 @@
 import { X, Eye } from "lucide-react";
-import getFileIcon from "./getFileIcon";
-import formatFileSize from "./formatFileSize";
+import getFileIcon from "../../../utils/common/fileUpload/getFileIcon";
+import formatFileSize from "../../../utils/helpers/formatFileSize";
 import styles from "./FileUpload.module.css";
 
 const FileListItem = ({ file, index, onRemove, onPreview }) => {
