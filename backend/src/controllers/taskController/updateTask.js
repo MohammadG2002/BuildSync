@@ -8,6 +8,7 @@
 import Task from "../../models/Task/index.js";
 import Notification from "../../models/Notification/index.js";
 import Project from "../../models/Project/index.js";
+import Workspace from "../../models/Workspace/index.js";
 
 export const updateTask = async (req, res) => {
   try {
@@ -38,7 +39,22 @@ export const updateTask = async (req, res) => {
       (member) => member.user.toString() === req.user._id.toString()
     );
 
-    if (!isCreator && !isAssigned && !isProjectMember) {
+    // Workspace viewers are read-only even if assigned/member
+    const workspaceDoc = await Workspace.findById(task.workspace);
+    const roleInWorkspace = workspaceDoc?.getUserRole(req.user._id);
+
+    if (roleInWorkspace === "viewer") {
+      return res.status(403).json({
+        success: false,
+        message: "Viewers cannot update tasks",
+      });
+    }
+
+    // Check if user can edit - project member or workspace owner/admin
+    if (
+      !isProjectMember &&
+      !(roleInWorkspace === "owner" || roleInWorkspace === "admin")
+    ) {
       return res.status(403).json({
         success: false,
         message: "You do not have permission to update this task",

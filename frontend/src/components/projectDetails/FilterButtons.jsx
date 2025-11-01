@@ -1,13 +1,14 @@
 import { Filter } from "lucide-react";
+import { TASK_STATUS } from "../../utils/constants";
 import styles from "../../pages/projects/ProjectDetails.module.css";
 
 const FilterButtons = ({ filterStatus, onFilterChange }) => {
   const filters = [
     { value: "all", label: "All" },
-    { value: "todo", label: "To Do" },
-    { value: "in_progress", label: "In Progress" },
-    { value: "in_review", label: "In Review" },
-    { value: "done", label: "Done" },
+    { value: TASK_STATUS.TODO, label: "To Do" },
+    { value: TASK_STATUS.IN_PROGRESS, label: "In Progress" },
+    { value: TASK_STATUS.REVIEW, label: "In Review" },
+    { value: TASK_STATUS.COMPLETED, label: "Done" },
   ];
 
   return (

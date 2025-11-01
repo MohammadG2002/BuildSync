@@ -131,9 +131,6 @@
   justify-content: space-between;
 }
 
-.statInfo {
-}
-
 .statTitle {
   font-size: 0.875rem;
   line-height: 1.25rem;
@@ -237,9 +234,6 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 0.75rem;
-}
-
-.projectInfo {
 }
 
 .projectName {
@@ -656,4 +650,127 @@
 .switchButtonIcon {
   width: 1rem;
   height: 1rem;
+}
+
+/* Charts */
+.chartContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.chartGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.75rem;
+  align-items: end;
+}
+
+.chartDayColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.chartBarStack {
+  width: 100%;
+  height: 120px;
+  display: flex;
+  flex-direction: column-reverse;
+  background-color: #f3f4f6;
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+:global(.dark) .chartBarStack {
+  background-color: #1f2937;
+}
+
+.chartBarSegment {
+  width: 100%;
+}
+
+.chartDayLabel {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+:global(.dark) .chartDayLabel {
+  color: #9ca3af;
+}
+
+.chartLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+}
+
+.chartLegendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chartLegendSwatch {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 0.125rem;
+}
+
+.chartLegendLabel {
+  font-size: 0.75rem;
+  color: #4b5563;
+}
+
+:global(.dark) .chartLegendLabel {
+  color: #d1d5db;
+}
+
+.hBarList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.hBarRow {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.hBarLabel {
+  font-size: 0.875rem;
+  color: #4b5563;
+  text-transform: capitalize;
+}
+
+:global(.dark) .hBarLabel {
+  color: #d1d5db;
+}
+
+.hBarTrack {
+  height: 0.75rem;
+  background-color: #f3f4f6;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+:global(.dark) .hBarTrack {
+  background-color: #1f2937;
+}
+
+.hBarFill {
+  height: 100%;
+  border-radius: 9999px;
+}
+
+.hBarValue {
+  font-size: 0.875rem;
+  color: #111827;
+}
+
+:global(.dark) .hBarValue {
+  color: #f3f4f6;
 }

@@ -7,6 +7,7 @@ const TaskGroup = ({
   onDeleteTask,
   onStatusChange,
   onTaskClick,
+  readOnly = false,
 }) => {
   return (
     <div className={styles.taskGroup}>
@@ -18,6 +19,7 @@ const TaskGroup = ({
           onDelete={onDeleteTask}
           onStatusChange={onStatusChange}
           onClick={onTaskClick}
+          readOnly={readOnly}
         />
       ))}
     </div>

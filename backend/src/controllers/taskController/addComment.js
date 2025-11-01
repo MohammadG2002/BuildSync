@@ -8,6 +8,7 @@
 import Task from "../../models/Task/index.js";
 import Notification from "../../models/Notification/index.js";
 import mongoose from "mongoose";
+import Workspace from "../../models/Workspace/index.js";
 
 export const addComment = async (req, res) => {
   try {
@@ -27,6 +28,16 @@ export const addComment = async (req, res) => {
       return res.status(404).json({
         success: false,
         message: "Task not found",
+      });
+    }
+
+    // Workspace viewers cannot add comments
+    const workspaceDoc = await Workspace.findById(task.workspace);
+    const roleInWorkspace = workspaceDoc?.getUserRole(req.user._id);
+    if (roleInWorkspace === "viewer") {
+      return res.status(403).json({
+        success: false,
+        message: "Viewers cannot add comments",
       });
     }
 

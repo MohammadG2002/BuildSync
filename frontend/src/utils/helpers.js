@@ -65,11 +65,8 @@ export const getPriorityColor = (priority) => {
 
 // Generate random color for avatars
 export const generateColor = (str) => {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  const colors = [
+  // Safe defaults: ensure stable color even if input is missing
+  const palette = [
     "#3b82f6",
     "#ef4444",
     "#10b981",
@@ -79,7 +76,18 @@ export const generateColor = (str) => {
     "#06b6d4",
     "#84cc16",
   ];
-  return colors[Math.abs(hash) % colors.length];
+
+  if (str == null || str === "") {
+    // Return a deterministic default color when name is missing
+    return palette[0];
+  }
+
+  const s = String(str);
+  let hash = 0;
+  for (let i = 0; i < s.length; i++) {
+    hash = s.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return palette[Math.abs(hash) % palette.length];
 };
 
 // Check if user has permission

@@ -1,7 +1,13 @@
 import MemberCard from "../MemberCard";
 import styles from "../memberCardModule/MemberCard.module.css";
 
-const MemberGrid = ({ members, currentUserId, onChangeRole, onRemove }) => {
+const MemberGrid = ({
+  members,
+  currentUserId,
+  currentUserRole,
+  onChangeRole,
+  onRemove,
+}) => {
   return (
     <div className={styles.memberGrid}>
       {members.map((member) => (
@@ -9,6 +15,7 @@ const MemberGrid = ({ members, currentUserId, onChangeRole, onRemove }) => {
           key={member.id}
           member={member}
           currentUserId={currentUserId}
+          currentUserRole={currentUserRole}
           onChangeRole={onChangeRole}
           onRemove={onRemove}
         />

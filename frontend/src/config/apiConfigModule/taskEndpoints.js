@@ -16,4 +16,7 @@ export const TASK_ENDPOINTS = {
   DELETE: (workspaceId, projectId, taskId) => `/tasks/${taskId}`,
   ARCHIVE: (workspaceId, projectId, taskId) => `/tasks/${taskId}/archive`,
   ARCHIVED: (workspaceId) => `/tasks/archived?workspace=${workspaceId}`,
+  SUBTASKS: (workspaceId, projectId, taskId) => `/tasks/${taskId}/subtasks`,
+  SUBTASK: (workspaceId, projectId, taskId, subtaskId) =>
+    `/tasks/${taskId}/subtasks/${subtaskId}`,
 };

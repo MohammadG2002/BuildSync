@@ -79,6 +79,24 @@ export const taskSchema = new mongoose.Schema(
         },
       },
     ],
+    subtasks: [
+      {
+        title: {
+          type: String,
+          required: true,
+          trim: true,
+          maxlength: [200, "Subtask title cannot exceed 200 characters"],
+        },
+        completed: {
+          type: Boolean,
+          default: false,
+        },
+        createdAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
     comments: [
       {
         user: {

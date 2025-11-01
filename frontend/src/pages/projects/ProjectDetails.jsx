@@ -6,7 +6,7 @@ import {
   CheckCircle,
   Clock,
   AlertCircle,
-  UserPlus,
+  Users,
 } from "lucide-react";
 import Button from "../../components/common/Button";
 import Card from "../../components/common/Card";
@@ -22,6 +22,8 @@ import {
   DeleteTaskModalContent,
   AddProjectMemberModal,
 } from "../../components/projectDetails";
+import { useContext, useCallback, useMemo } from "react";
+import { AuthContext } from "../../context/AuthContext";
 import { calculateTaskStats } from "../../utils/project/calculateTaskStats";
 import fetchProjectAndTasks from "../../utils/project/fetchProjectAndTasks";
 import handleCreateTask from "../../utils/project/handleCreateTask";
@@ -35,11 +37,12 @@ import handleTaskDetailsUpdate from "../../utils/project/handleTaskDetailsUpdate
 import handleAddComment from "../../utils/project/handleAddComment";
 import handleDeleteAttachment from "../../utils/project/handleDeleteAttachment";
 import handleAddAttachment from "../../utils/project/handleAddAttachment";
-import handleAddProjectMember from "../../utils/project/handleAddProjectMember";
+// removed handleAddProjectMember - modal now toggles membership directly within component
 import styles from "./ProjectDetails.module.css";
 
 const ProjectDetails = () => {
   const { workspaceId, projectId } = useParams();
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [project, setProject] = useState(null);
@@ -55,21 +58,27 @@ const ProjectDetails = () => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showAddMemberModal, setShowAddMemberModal] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
-  const [selectedMemberId, setSelectedMemberId] = useState(null);
+  // removed selectedMemberId - not needed with new Members modal behavior
   const [submitting, setSubmitting] = useState(false);
 
   const [members, setMembers] = useState([]);
 
+  const refreshAll = useCallback(
+    () =>
+      fetchProjectAndTasks(
+        workspaceId,
+        projectId,
+        setProject,
+        setTasks,
+        setMembers,
+        setLoading
+      ),
+    [workspaceId, projectId]
+  );
+
   useEffect(() => {
-    fetchProjectAndTasks(
-      workspaceId,
-      projectId,
-      setProject,
-      setTasks,
-      setMembers,
-      setLoading
-    );
-  }, [projectId]);
+    refreshAll();
+  }, [projectId, refreshAll]);
 
   const filteredTasks =
     filterStatus === "all"
@@ -77,6 +86,67 @@ const ProjectDetails = () => {
       : tasks.filter((task) => task.status === filterStatus);
 
   const taskStats = calculateTaskStats(tasks);
+  const currentUserId = user?._id || user?.id;
+  const projectOwnerId = project?.owner?._id || project?.owner;
+  const currentProjectMember = (project?.members || []).find(
+    (m) => (m?.user?._id || m?.user || m?.id || m?._id) === currentUserId
+  );
+  const canManageMembers =
+    !!currentUserId &&
+    (currentUserId === projectOwnerId ||
+      currentProjectMember?.role === "admin");
+
+  // Determine workspace role for current user (used to enforce viewer read-only UI)
+  const currentWorkspaceRole = useMemo(() => {
+    const found = (members || []).find((m) => m.id === currentUserId);
+    return found?.role || null; // owner isn't in members payload; treat as null (not viewer)
+  }, [members, currentUserId]);
+  const isViewer = currentWorkspaceRole === "viewer";
+
+  // Assignee options: only project members by default
+  const projectMemberIds = useMemo(
+    () =>
+      new Set(
+        (project?.members || []).map(
+          (m) => m?.user?._id || m?.user || m?.id || m?._id
+        )
+      ),
+    [project]
+  );
+
+  const workspaceMembersById = useMemo(() => {
+    const map = new Map();
+    (members || []).forEach((m) => {
+      if (m?.id) map.set(m.id, m);
+    });
+    return map;
+  }, [members]);
+
+  const projectAssigneeOptions = useMemo(() => {
+    return Array.from(projectMemberIds)
+      .map((id) => workspaceMembersById.get(id))
+      .filter(Boolean);
+  }, [projectMemberIds, workspaceMembersById]);
+
+  const editAssigneeOptions = useMemo(() => {
+    if (!selectedTask) return projectAssigneeOptions;
+    const map = new Map(projectAssigneeOptions.map((m) => [m.id, m]));
+    const assigned = Array.isArray(selectedTask?.assignedTo)
+      ? selectedTask.assignedTo
+      : [];
+    assigned.forEach((a) => {
+      const id = a?._id || a?.id || a;
+      if (!id) return;
+      if (!map.has(id)) {
+        map.set(id, {
+          id,
+          name: a?.name || "Unknown User",
+          email: a?.email || "",
+        });
+      }
+    });
+    return Array.from(map.values());
+  }, [projectAssigneeOptions, selectedTask]);
 
   return (
     <div className={styles.container}>
@@ -103,13 +173,15 @@ const ProjectDetails = () => {
             onClick={() => setShowAddMemberModal(true)}
             className={styles.addMemberButton}
           >
-            <UserPlus className={styles.addMemberIcon} />
-            Add Member
+            <Users className={styles.addMemberIcon} />
+            Members
           </Button>
           <Button
             variant="primary"
             onClick={() => setShowCreateModal(true)}
             className={styles.createTaskButton}
+            disabled={isViewer}
+            title={isViewer ? "Viewers cannot create tasks" : undefined}
           >
             <Plus className={styles.createTaskIcon} />
             New Task
@@ -126,15 +198,9 @@ const ProjectDetails = () => {
           color="gray"
         />
         <TaskStatCard
-          label="To Do"
-          value={taskStats.todo}
-          icon={Clock}
-          color="gray"
-        />
-        <TaskStatCard
           label="In Progress"
           value={taskStats.inProgress}
-          icon={AlertCircle}
+          icon={Clock}
           color="blue"
         />
         <TaskStatCard
@@ -151,16 +217,6 @@ const ProjectDetails = () => {
         />
       </div>
 
-      {/* Filters and View Controls */}
-      <div className={styles.filtersControls}>
-        <FilterButtons
-          filterStatus={filterStatus}
-          onFilterChange={setFilterStatus}
-        />
-        <GroupBySelector value={groupBy} onChange={setGroupBy} />
-      </div>
-
-      {/* Tasks List */}
       {loading ? (
         <Card className={styles.loadingCard}>
           <div className={styles.loadingCardInner}></div>
@@ -194,6 +250,7 @@ const ProjectDetails = () => {
             )
           }
           groupBy={groupBy}
+          readOnly={isViewer}
         />
       ) : (
         <EmptyTasksState
@@ -222,7 +279,7 @@ const ProjectDetails = () => {
           }
           onCancel={() => setShowCreateModal(false)}
           loading={submitting}
-          members={members}
+          members={projectAssigneeOptions}
         />
       </Modal>
 
@@ -255,7 +312,7 @@ const ProjectDetails = () => {
             setSelectedTask(null);
           }}
           loading={submitting}
-          members={members}
+          members={editAssigneeOptions}
         />
       </Modal>
 
@@ -343,47 +400,25 @@ const ProjectDetails = () => {
               setSelectedTask
             )
           }
+          readOnly={isViewer}
         />
       )}
 
-      {/* Add Member Modal */}
+      {/* Project Members Modal */}
       <Modal
         isOpen={showAddMemberModal}
-        onClose={() => {
-          setShowAddMemberModal(false);
-          setSelectedMemberId(null);
-        }}
-        title="Add Member to Project"
+        onClose={() => setShowAddMemberModal(false)}
+        title="Project Members"
         size="md"
       >
         <AddProjectMemberModal
           workspaceMembers={members}
-          projectMembers={project?.members || []}
-          selectedMemberId={selectedMemberId}
-          onMemberSelect={setSelectedMemberId}
-          onCancel={() => {
-            setShowAddMemberModal(false);
-            setSelectedMemberId(null);
-          }}
-          onConfirm={() =>
-            handleAddProjectMember(
-              workspaceId,
-              projectId,
-              selectedMemberId,
-              setShowAddMemberModal,
-              setSubmitting,
-              () =>
-                fetchProjectAndTasks(
-                  workspaceId,
-                  projectId,
-                  setProject,
-                  setTasks,
-                  setMembers,
-                  setLoading
-                )
-            )
-          }
-          loading={submitting}
+          project={project}
+          workspaceId={workspaceId}
+          projectId={projectId}
+          canEdit={canManageMembers}
+          onCancel={() => setShowAddMemberModal(false)}
+          onRefresh={refreshAll}
         />
       </Modal>
     </div>

@@ -1,25 +1,15 @@
 /**
- * Add Attachment Controller
- * @desc    Add attachment to task
- * @route   POST /api/tasks/:id/attachments
+ * Delete Subtask Controller
+ * @desc    Remove a subtask from a task
+ * @route   DELETE /api/tasks/:id/subtasks/:subtaskId
  * @access  Private
  */
 
 import Task from "../../models/Task/index.js";
 import Workspace from "../../models/Workspace/index.js";
 
-export const addAttachment = async (req, res) => {
+export const deleteSubtask = async (req, res) => {
   try {
-    const { name, url, size, type, filename, originalName, mimetype } =
-      req.body;
-
-    if (!name || !url) {
-      return res.status(400).json({
-        success: false,
-        message: "Attachment name and URL are required",
-      });
-    }
-
     const task = await Task.findById(req.params.id);
 
     if (!task) {
@@ -29,29 +19,27 @@ export const addAttachment = async (req, res) => {
       });
     }
 
-    // Viewers cannot add attachments
+    // Viewers cannot modify tasks
     const workspaceDoc = await Workspace.findById(task.workspace);
     const roleInWorkspace = workspaceDoc?.getUserRole(req.user._id);
     if (roleInWorkspace === "viewer") {
       return res.status(403).json({
         success: false,
-        message: "Viewers cannot add attachments",
+        message: "Viewers cannot modify subtasks",
       });
     }
 
-    // Map incoming fields to schema fields for compatibility
-    task.attachments.push({
-      filename: filename || name || originalName || undefined,
-      originalName: originalName || name || undefined,
-      mimetype: mimetype || type || undefined,
-      url,
-      size,
-      uploadedBy: req.user._id,
-    });
+    const subtask = task.subtasks.id(req.params.subtaskId);
+    if (!subtask) {
+      return res.status(404).json({
+        success: false,
+        message: "Subtask not found",
+      });
+    }
 
+    subtask.deleteOne();
     await task.save();
 
-    // Populate task before returning
     await task.populate([
       { path: "assignedTo", select: "name email avatar" },
       { path: "createdBy", select: "name email avatar" },
@@ -61,16 +49,16 @@ export const addAttachment = async (req, res) => {
       { path: "attachments.uploadedBy", select: "name email avatar" },
     ]);
 
-    res.status(201).json({
+    res.status(200).json({
       success: true,
-      message: "Attachment added successfully",
+      message: "Subtask deleted successfully",
       data: { task },
     });
   } catch (error) {
-    console.error("Add attachment error:", error);
+    console.error("Delete subtask error:", error);
     res.status(500).json({
       success: false,
-      message: "Failed to add attachment",
+      message: "Failed to delete subtask",
     });
   }
 };

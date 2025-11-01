@@ -10,3 +10,4 @@ export { default as TagsSection } from "./TagsSection";
 export { default as AttachmentsSection } from "./AttachmentsSection";
 export { default as CommentsSection } from "./CommentsSection";
 export { default as ModalFooter } from "./ModalFooter";
+export { default as SubtasksSection } from "./SubtasksSection";

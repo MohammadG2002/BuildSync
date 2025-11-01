@@ -1,22 +1,21 @@
 /**
- * Add Attachment Controller
- * @desc    Add attachment to task
- * @route   POST /api/tasks/:id/attachments
+ * Add Subtask Controller
+ * @desc    Add a subtask to a task
+ * @route   POST /api/tasks/:id/subtasks
  * @access  Private
  */
 
 import Task from "../../models/Task/index.js";
 import Workspace from "../../models/Workspace/index.js";
 
-export const addAttachment = async (req, res) => {
+export const addSubtask = async (req, res) => {
   try {
-    const { name, url, size, type, filename, originalName, mimetype } =
-      req.body;
+    const { title, completed } = req.body;
 
-    if (!name || !url) {
+    if (!title || title.trim() === "") {
       return res.status(400).json({
         success: false,
-        message: "Attachment name and URL are required",
+        message: "Subtask title is required",
       });
     }
 
@@ -29,29 +28,19 @@ export const addAttachment = async (req, res) => {
       });
     }
 
-    // Viewers cannot add attachments
+    // Viewers cannot modify tasks
     const workspaceDoc = await Workspace.findById(task.workspace);
     const roleInWorkspace = workspaceDoc?.getUserRole(req.user._id);
     if (roleInWorkspace === "viewer") {
       return res.status(403).json({
         success: false,
-        message: "Viewers cannot add attachments",
+        message: "Viewers cannot modify subtasks",
       });
     }
 
-    // Map incoming fields to schema fields for compatibility
-    task.attachments.push({
-      filename: filename || name || originalName || undefined,
-      originalName: originalName || name || undefined,
-      mimetype: mimetype || type || undefined,
-      url,
-      size,
-      uploadedBy: req.user._id,
-    });
-
+    task.subtasks.push({ title: title.trim(), completed: !!completed });
     await task.save();
 
-    // Populate task before returning
     await task.populate([
       { path: "assignedTo", select: "name email avatar" },
       { path: "createdBy", select: "name email avatar" },
@@ -63,14 +52,14 @@ export const addAttachment = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: "Attachment added successfully",
+      message: "Subtask added successfully",
       data: { task },
     });
   } catch (error) {
-    console.error("Add attachment error:", error);
+    console.error("Add subtask error:", error);
     res.status(500).json({
       success: false,
-      message: "Failed to add attachment",
+      message: "Failed to add subtask",
     });
   }
 };

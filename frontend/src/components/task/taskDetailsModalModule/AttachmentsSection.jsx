@@ -1,6 +1,9 @@
 import { Paperclip, Download, Trash2 } from "lucide-react";
 import { formatDate } from "../../../utils/helpers";
 import formatFileSize from "../../../utils/helpers/formatFileSize";
+import { buildAbsoluteUrl } from "../../../utils/buildAbsoluteUrl";
+import { API_CONFIG } from "../../../config/api.config";
+import { downloadFromApi } from "../../../utils/downloadFromApi";
 import styles from "./TaskDetailsModal.module.css";
 
 const AttachmentsSection = ({
@@ -10,6 +13,7 @@ const AttachmentsSection = ({
   taskId,
   fileInputRef,
   isUploading,
+  readOnly = false,
 }) => {
   return (
     <div>
@@ -23,7 +27,7 @@ const AttachmentsSection = ({
         <button
           onClick={() => fileInputRef.current?.click()}
           className={styles.addFileButton}
-          disabled={isUploading}
+          disabled={isUploading || readOnly}
         >
           {isUploading ? "Uploading..." : "Add File"}
         </button>
@@ -33,34 +37,56 @@ const AttachmentsSection = ({
           multiple
           onChange={onAddFile}
           className={styles.fileInput}
-          disabled={isUploading}
+          disabled={isUploading || readOnly}
         />
       </div>
       {attachments && attachments.length > 0 ? (
         <div className={styles.attachmentsList}>
           {attachments.map((attachment, index) => (
             <div key={index} className={styles.attachmentItem}>
-              <div className={styles.attachmentContent}>
+              <a
+                href={
+                  attachment.url ? buildAbsoluteUrl(attachment.url) : undefined
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.attachmentContent}
+                title={
+                  attachment.originalName ||
+                  attachment.filename ||
+                  "View attachment"
+                }
+              >
                 <Paperclip className={styles.attachmentIcon} />
                 <div className={styles.attachmentInfo}>
                   <p className={styles.attachmentName}>
                     {attachment.originalName || attachment.filename}
                   </p>
                   <p className={styles.attachmentMeta}>
-                    {attachment.size && formatFileSize(attachment.size)} •{" "}
+                    {attachment.size && formatFileSize(attachment.size)} • {""}
                     {attachment.uploadedAt && formatDate(attachment.uploadedAt)}
                   </p>
                 </div>
-              </div>
+              </a>
               <div className={styles.attachmentActions}>
-                {attachment.url && (
-                  <a
-                    href={attachment.url}
-                    download
+                {attachment._id && (
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      try {
+                        await downloadFromApi(
+                          `/tasks/${taskId}/attachments/${attachment._id}/download`,
+                          attachment.originalName || attachment.filename
+                        );
+                      } catch (err) {
+                        console.error("Download failed:", err);
+                      }
+                    }}
                     className={styles.downloadButton}
+                    title="Download"
                   >
                     <Download className={styles.actionIcon} />
-                  </a>
+                  </button>
                 )}
                 <button
                   onClick={() => onDeleteAttachment?.(taskId, attachment._id)}

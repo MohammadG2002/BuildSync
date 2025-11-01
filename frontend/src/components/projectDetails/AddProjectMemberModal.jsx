@@ -1,71 +1,138 @@
-import { Users } from "lucide-react";
-import Button from "../common/Button";
+import React, { useState } from "react";
+import { Users, Lock, EyeOff } from "lucide-react";
+import * as projectService from "../../services/projectService";
 import styles from "../../pages/projects/ProjectDetails.module.css";
 
 const AddProjectMemberModal = ({
-  workspaceMembers,
-  projectMembers,
-  selectedMemberId,
-  onMemberSelect,
+  workspaceMembers = [],
+  project,
+  workspaceId,
+  projectId,
+  canEdit = false,
   onCancel,
-  onConfirm,
-  loading,
+  onRefresh,
 }) => {
-  // Filter out members who are already in the project
+  const [search, setSearch] = useState("");
+  const [togglingId, setTogglingId] = useState(null);
+
   const projectMemberIds = new Set(
-    projectMembers?.map((m) => m.id || m.userId) || []
+    (project?.members || []).map(
+      (m) => m?.user?._id || m?.user || m?.id || m?._id
+    )
   );
-  const availableMembers = workspaceMembers.filter(
-    (member) => !projectMemberIds.has(member.id)
-  );
+  const ownerId = project?.owner?._id || project?.owner;
+
+  const isProjectMember = (member) => projectMemberIds.has(member.id);
+  const isOwner = (member) => ownerId && member.id === ownerId;
+  const isToggleLocked = (member) => !canEdit || isOwner(member);
+
+  const filteredMembers = workspaceMembers.filter((m) => {
+    if (!search.trim()) return true;
+    const q = search.toLowerCase();
+    return (
+      (m.name || "").toLowerCase().includes(q) ||
+      (m.email || "").toLowerCase().includes(q)
+    );
+  });
+
+  const handleToggle = async (member) => {
+    if (isToggleLocked(member) || togglingId) return;
+    try {
+      setTogglingId(member.id);
+      if (isProjectMember(member)) {
+        await projectService.removeProjectMember(
+          workspaceId,
+          projectId,
+          member.id
+        );
+      } else {
+        await projectService.addProjectMember(
+          workspaceId,
+          projectId,
+          member.id
+        );
+      }
+      await onRefresh?.();
+    } catch (e) {
+      console.error("Failed to toggle project member:", e);
+    } finally {
+      setTogglingId(null);
+    }
+  };
 
   return (
     <div className={styles.addMemberModal}>
       <p className={styles.addMemberDescription}>
-        Select a workspace member to add to this project
+        Browse workspace members and click to add/remove them from this project.
       </p>
 
-      {availableMembers.length === 0 ? (
+      {workspaceMembers.length === 0 ? (
         <div className={styles.noMembersAvailable}>
           <Users className={styles.noMembersIcon} />
-          <p>All workspace members are already in this project</p>
+          <p>No workspace members found</p>
         </div>
       ) : (
         <>
+          <input
+            type="text"
+            placeholder="Search members by name or email"
+            className={styles.memberSearchInput}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
           <div className={styles.memberSelectList}>
-            {availableMembers.map((member) => (
-              <div
-                key={member.id}
-                className={`${styles.memberSelectItem} ${
-                  selectedMemberId === member.id
-                    ? styles.memberSelectItemActive
-                    : ""
-                }`}
-                onClick={() => onMemberSelect(member.id)}
-              >
-                <div className={styles.memberSelectInfo}>
-                  <span className={styles.memberSelectName}>{member.name}</span>
-                  <span className={styles.memberSelectEmail}>
-                    {member.email}
-                  </span>
+            {filteredMembers.map((member) => {
+              const active = isProjectMember(member);
+              const locked = isToggleLocked(member);
+              return (
+                <div
+                  key={member.id}
+                  className={`${styles.memberSelectItem} ${
+                    active ? styles.memberSelectItemActive : ""
+                  } ${locked ? styles.memberSelectItemDisabled : ""}`}
+                  onClick={() => handleToggle(member)}
+                  title={
+                    locked
+                      ? canEdit
+                        ? "Cannot remove project owner"
+                        : "View-only"
+                      : active
+                      ? "Click to remove from project"
+                      : "Click to add to project"
+                  }
+                >
+                  <div className={styles.memberSelectInfo}>
+                    <span className={styles.memberSelectName}>
+                      {member.name}
+                    </span>
+                    <span className={styles.memberSelectEmail}>
+                      {member.email}
+                    </span>
+                  </div>
+                  {isOwner(member) ? (
+                    <span
+                      className={`${styles.memberSelectRole} ${styles.memberLockedTag}`}
+                    >
+                      <Lock style={{ width: 14, height: 14, marginRight: 6 }} />
+                      Owner
+                    </span>
+                  ) : active ? (
+                    <span className={styles.memberSelectRole}>Member</span>
+                  ) : canEdit ? (
+                    <span className={styles.memberSelectRole}>Add</span>
+                  ) : (
+                    <span
+                      className={`${styles.memberSelectRole} ${styles.memberLockedTag}`}
+                    >
+                      <EyeOff
+                        style={{ width: 14, height: 14, marginRight: 6 }}
+                      />
+                      View Only
+                    </span>
+                  )}
                 </div>
-                <span className={styles.memberSelectRole}>{member.role}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className={styles.addMemberActions}>
-            <Button variant="secondary" onClick={onCancel}>
-              Cancel
-            </Button>
-            <Button
-              variant="primary"
-              onClick={onConfirm}
-              loading={loading}
-              disabled={!selectedMemberId}
-            >
-              Add Member
-            </Button>
+              );
+            })}
           </div>
         </>
       )}

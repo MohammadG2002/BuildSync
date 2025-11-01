@@ -2,15 +2,14 @@ import apiClient, { API_ENDPOINTS } from "../apiClient";
 import { ResponseNormalizer } from "../shared";
 
 export const createTask = async (workspaceId, projectId, taskData) => {
-  // Map assigneeId to assignedTo for backend compatibility
-  const { assigneeId, ...rest } = taskData;
+  // Backend expects assigneeIds (array). Pass through if provided.
+  // Ensure required linkage fields are present.
   const response = await apiClient.post(
     API_ENDPOINTS.TASKS.CREATE(workspaceId, projectId),
     {
-      ...rest,
+      ...taskData,
       project: projectId,
       workspace: workspaceId,
-      assignedTo: assigneeId || undefined,
     }
   );
   return ResponseNormalizer.normalizeItem(response, "task");

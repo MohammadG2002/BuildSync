@@ -13,6 +13,8 @@ import {
   DeadlineItem,
   QuickActions,
   CurrentWorkspaceCard,
+  StatusTrendChart,
+  ProjectStatusChart,
 } from "../../components/dashboard";
 import fetchDashboardData from "../../utils/dashboard/fetchDashboardData";
 import styles from "../../components/dashboard/Dashboard.module.css";
@@ -26,6 +28,11 @@ const Dashboard = () => {
   const [projects, setProjects] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [deadlines, setDeadlines] = useState([]);
+  const [weeklyStatus, setWeeklyStatus] = useState({ labels: [], series: {} });
+  const [projectStatus, setProjectStatus] = useState({
+    labels: [],
+    counts: {},
+  });
 
   useEffect(() => {
     if (currentWorkspace) {
@@ -35,6 +42,8 @@ const Dashboard = () => {
         setProjects,
         setTasks,
         setDeadlines,
+        setWeeklyStatus,
+        setProjectStatus,
         setLoading
       );
     }
@@ -65,7 +74,7 @@ const Dashboard = () => {
 
       {/* Main Content Grid */}
       <div className={styles.mainGrid}>
-        {/* Recent Projects - Takes 2 columns */}
+        {/* Left: Recent Projects and My Tasks */}
         <div className={styles.mainColumn}>
           {/* Recent Projects Card */}
           <Card
@@ -86,13 +95,15 @@ const Dashboard = () => {
               <SkeletonList count={3} />
             ) : (
               <div className={styles.projectsContainer}>
-                {projects.map((project) => (
+                {projects.map((project, index) => (
                   <ProjectCard
-                    key={project.id}
+                    key={project.id || project._id || index}
                     project={project}
                     onClick={() =>
                       navigate(
-                        `/app/workspaces/${currentWorkspace.id}/projects/${project.id}`
+                        `/app/workspaces/${currentWorkspace.id}/projects/${
+                          project.id || project._id || ""
+                        }`
                       )
                     }
                   />
@@ -107,8 +118,8 @@ const Dashboard = () => {
               <SkeletonList count={4} />
             ) : (
               <div className={styles.tasksContainer}>
-                {tasks.map((task) => (
-                  <TaskItem key={task.id} task={task} />
+                {tasks.map((task, index) => (
+                  <TaskItem key={task.id || task._id || index} task={task} />
                 ))}
               </div>
             )}
@@ -123,13 +134,26 @@ const Dashboard = () => {
           </Card>
         </div>
 
-        {/* Sidebar - Takes 1 column */}
+        {/* Right: Charts + Sidebar */}
         <div className={styles.sidebar}>
+          {/* Task Status Changes (Sat - Fri) */}
+          <Card title="Task Status Changes (This Week)">
+            <StatusTrendChart data={weeklyStatus} />
+          </Card>
+
+          {/* Project Status Breakdown */}
+          <Card title="Project Status Breakdown">
+            <ProjectStatusChart data={projectStatus} />
+          </Card>
+
           {/* Upcoming Deadlines */}
           <Card title="Upcoming Deadlines">
             <div className={styles.deadlinesContainer}>
-              {deadlines.map((deadline) => (
-                <DeadlineItem key={deadline.id} deadline={deadline} />
+              {deadlines.map((deadline, index) => (
+                <DeadlineItem
+                  key={deadline.id || deadline._id || index}
+                  deadline={deadline}
+                />
               ))}
             </div>
           </Card>

@@ -16,7 +16,7 @@ const fetchData = async (
     if (currentWorkspace) {
       const [tasksData, projectsData] = await Promise.all([
         taskService.getArchivedTasks(currentWorkspace.id),
-        projectService.getProjectsByWorkspace(currentWorkspace.id),
+        projectService.getProjects(currentWorkspace.id),
       ]);
       setArchivedTasks(tasksData);
       setProjects(projectsData);

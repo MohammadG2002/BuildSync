@@ -6,6 +6,7 @@
  */
 
 import Task from "../../models/Task/index.js";
+import Workspace from "../../models/Workspace/index.js";
 
 export const deleteTask = async (req, res) => {
   try {
@@ -18,11 +19,37 @@ export const deleteTask = async (req, res) => {
       });
     }
 
-    // Check if user is creator
-    if (task.createdBy.toString() !== req.user._id.toString()) {
+    // Viewers cannot delete tasks
+    const workspaceDoc = await Workspace.findById(task.workspace);
+    const roleInWorkspace = workspaceDoc?.getUserRole(req.user._id);
+    if (roleInWorkspace === "viewer") {
       return res.status(403).json({
         success: false,
-        message: "Only task creator can delete task",
+        message: "Viewers cannot delete tasks",
+      });
+    }
+
+    const isWorkspaceAdminOrOwner =
+      roleInWorkspace === "owner" || roleInWorkspace === "admin";
+
+    // Allow delete if creator OR workspace admin/owner OR project member
+    let canDelete = task.createdBy.toString() === req.user._id.toString();
+
+    if (!canDelete) {
+      // Check project membership
+      const project = await (
+        await import("../../models/Project/index.js")
+      ).default.findById(task.project);
+      const isProjectMember = project?.members?.some(
+        (m) => m.user.toString() === req.user._id.toString()
+      );
+      canDelete = Boolean(isWorkspaceAdminOrOwner || isProjectMember);
+    }
+
+    if (!canDelete) {
+      return res.status(403).json({
+        success: false,
+        message: "You do not have permission to delete this task",
       });
     }
 

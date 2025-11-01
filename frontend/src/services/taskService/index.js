@@ -13,3 +13,6 @@ export { addComment } from "./addComment.js";
 export { addAttachment } from "./addAttachment.js";
 export { deleteAttachment } from "./deleteAttachment.js";
 export { addCommentAttachment } from "./addCommentAttachment.js";
+export { addSubtask } from "./addSubtask.js";
+export { updateSubtask } from "./updateSubtask.js";
+export { deleteSubtask } from "./deleteSubtask.js";

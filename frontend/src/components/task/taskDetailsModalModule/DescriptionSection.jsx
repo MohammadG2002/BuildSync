@@ -9,12 +9,13 @@ const DescriptionSection = ({
   onSave,
   onCancel,
   onChange,
+  readOnly = false,
 }) => {
   return (
     <div>
       <div className={styles.sectionHeader}>
         <h3 className={styles.sectionTitle}>Description</h3>
-        {!isEditing && (
+        {!isEditing && !readOnly && (
           <button onClick={onEdit} className={styles.editButton}>
             <Edit2 className={styles.editIcon} />
             Edit

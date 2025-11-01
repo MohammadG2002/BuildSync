@@ -6,7 +6,9 @@ const TaskMeta = ({ task }) => {
   const statusClasses = {
     todo: styles.statusTodo,
     "in-progress": styles.statusInProgress,
+    review: styles.statusReview,
     completed: styles.statusCompleted,
+    blocked: styles.statusBlocked,
   };
 
   const priorityDotClasses = {

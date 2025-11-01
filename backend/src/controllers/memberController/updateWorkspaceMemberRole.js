@@ -12,10 +12,10 @@ export const updateWorkspaceMemberRole = async (req, res) => {
     const { workspaceId, userId } = req.params;
     const { role } = req.body;
 
-    if (!role || !["member", "admin"].includes(role)) {
+    if (!role || !["member", "admin", "viewer"].includes(role)) {
       return res.status(400).json({
         success: false,
-        message: "Valid role is required (member or admin)",
+        message: "Valid role is required (member, admin, or viewer)",
       });
     }
 

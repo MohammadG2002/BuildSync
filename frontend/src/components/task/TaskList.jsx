@@ -8,6 +8,7 @@ const TaskList = ({
   onStatusChange,
   onTaskClick,
   groupBy = "none", // 'none', 'status', 'priority'
+  readOnly = false,
 }) => {
   const groupedTasks = groupTasks(tasks, groupBy);
 
@@ -26,6 +27,7 @@ const TaskList = ({
             onDeleteTask={onDeleteTask}
             onStatusChange={onStatusChange}
             onTaskClick={onTaskClick}
+            readOnly={readOnly}
           />
         </div>
       ))}

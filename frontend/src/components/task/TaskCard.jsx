@@ -5,10 +5,18 @@ import {
   TaskTitle,
   TaskDescription,
   TaskMeta,
+  TaskProgress,
 } from "./taskCardModule";
 import styles from "./taskCardModule/TaskCard.module.css";
 
-const TaskCard = ({ task, onEdit, onDelete, onStatusChange, onClick }) => {
+const TaskCard = ({
+  task,
+  onEdit,
+  onDelete,
+  onStatusChange,
+  onClick,
+  readOnly = false,
+}) => {
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
 
@@ -41,8 +49,11 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange, onClick }) => {
           checked={task.status === "completed"}
           onChange={(e) => {
             e.stopPropagation();
-            onStatusChange?.(task, e.target.checked ? "completed" : "todo");
+            if (!readOnly) {
+              onStatusChange?.(task, e.target.checked ? "completed" : "todo");
+            }
           }}
+          disabled={readOnly}
         />
 
         <div className={styles.contentArea}>
@@ -52,24 +63,31 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange, onClick }) => {
               completed={task.status === "completed"}
             />
 
-            <div ref={menuRef}>
-              <TaskMenu
-                showMenu={showMenu}
-                onToggle={() => setShowMenu(!showMenu)}
-                onEdit={(t) => {
-                  onEdit(t);
-                  setShowMenu(false);
-                }}
-                onDelete={(t) => {
-                  onDelete(t);
-                  setShowMenu(false);
-                }}
-                task={task}
-              />
-            </div>
+            {!readOnly && (
+              <div ref={menuRef}>
+                <TaskMenu
+                  showMenu={showMenu}
+                  onToggle={() => setShowMenu(!showMenu)}
+                  onEdit={(t) => {
+                    onEdit(t);
+                    setShowMenu(false);
+                  }}
+                  onDelete={(t) => {
+                    onDelete(t);
+                    setShowMenu(false);
+                  }}
+                  task={task}
+                />
+              </div>
+            )}
           </div>
 
           <TaskDescription description={task.description} />
+          {/* Subtasks progress bar (only if subtasks exist) */}
+          <TaskProgress
+            taskId={task._id}
+            subtasks={Array.isArray(task?.subtasks) ? task.subtasks : []}
+          />
           <TaskMeta task={task} />
         </div>
       </div>

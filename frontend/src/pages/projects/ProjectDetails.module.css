@@ -91,9 +91,6 @@
   justify-content: space-between;
 }
 
-.statInfo {
-}
-
 .statLabel {
   font-size: 0.875rem;
   color: #4b5563;
@@ -381,6 +378,34 @@
   color: #4b5563;
   margin-bottom: 0.5rem;
 }
+:global(.dark) .addMemberDescription {
+  color: #9ca3af;
+}
+
+.memberSearchInput {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.memberSearchInput:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+:global(.dark) .memberSearchInput {
+  background-color: #111827;
+  color: #f9fafb;
+  border-color: #374151;
+}
+
+:global(.dark) .memberSearchInput:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
 
 :global(.dark) .addMemberDescription {
   color: #9ca3af;
@@ -419,6 +444,14 @@
 .memberSelectItemActive {
   background-color: #dbeafe;
   border: 2px solid #3b82f6;
+}
+.memberSelectItemDisabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.memberSelectItemDisabled:hover {
+  background-color: transparent;
 }
 
 :global(.dark) .memberSelectItemActive {
@@ -463,6 +496,11 @@
 :global(.dark) .memberSelectRole {
   background-color: #374151;
   color: #9ca3af;
+}
+
+.memberLockedTag {
+  display: inline-flex;
+  align-items: center;
 }
 
 .noMembersAvailable {

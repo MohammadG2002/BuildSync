@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   UserPlus,
@@ -65,6 +65,13 @@ const Members = () => {
 
   const filteredMembers = filterMembers(members, searchQuery);
   const roleStats = calculateRoleStats(members);
+  const currentUserId = user?._id || user?.id;
+  const currentMember = useMemo(
+    () => members.find((m) => m.id === currentUserId),
+    [members, currentUserId]
+  );
+  const canInvite =
+    currentMember?.role === "owner" || currentMember?.role === "admin";
 
   return (
     <div className={styles.container}>
@@ -85,14 +92,16 @@ const Members = () => {
             </p>
           </div>
         </div>
-        <Button
-          variant="primary"
-          onClick={() => setShowInviteModal(true)}
-          className={styles.headerInviteButton}
-        >
-          <UserPlus className={styles.headerInviteIcon} />
-          Invite Member
-        </Button>
+        {canInvite && (
+          <Button
+            variant="primary"
+            onClick={() => setShowInviteModal(true)}
+            className={styles.headerInviteButton}
+          >
+            <UserPlus className={styles.headerInviteIcon} />
+            Invite Member
+          </Button>
+        )}
       </div>
 
       {/* Stats */}
@@ -191,7 +200,8 @@ const Members = () => {
       ) : filteredMembers.length > 0 ? (
         <MemberList
           members={filteredMembers}
-          currentUserId={user?.id}
+          currentUserId={user?._id || user?.id}
+          currentUserRole={currentMember?.role}
           onChangeRole={(member, newRole) =>
             handleChangeRole(member, newRole, workspaceId, members, setMembers)
           }
@@ -211,7 +221,7 @@ const Members = () => {
               ? "Try adjusting your search query"
               : "Invite members to collaborate on this workspace"}
           </p>
-          {!searchQuery && (
+          {!searchQuery && canInvite && (
             <Button
               variant="primary"
               onClick={() => setShowInviteModal(true)}
@@ -226,7 +236,7 @@ const Members = () => {
 
       {/* Invite Member Modal */}
       <Modal
-        isOpen={showInviteModal}
+        isOpen={canInvite && showInviteModal}
         onClose={() => {
           setShowInviteModal(false);
           setInviteData({ email: "", role: "member" });

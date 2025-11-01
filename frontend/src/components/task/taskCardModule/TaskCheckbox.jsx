@@ -1,12 +1,13 @@
 import styles from "./TaskCard.module.css";
 
-const TaskCheckbox = ({ checked, onChange }) => {
+const TaskCheckbox = ({ checked, onChange, disabled = false }) => {
   return (
     <div className={`checkbox-wrapper ${styles.checkboxWrapper}`}>
       <input
         type="checkbox"
         checked={checked}
         onChange={onChange}
+        disabled={disabled}
         className={styles.checkbox}
       />
     </div>

@@ -28,7 +28,7 @@ import { errorHandler, notFound, rateLimiter } from "./middleware/index.js";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+let PORT = Number(process.env.PORT) || 5000;
 
 // Create HTTP server
 const server = createServer(app);
@@ -92,6 +92,35 @@ app.use(errorHandler);
 const wss = new WebSocketServer({ server });
 setupWebSocket(wss);
 
+// Helper: listen with simple port fallback when in use (e.g., 5000 -> 5001 -> 5002)
+const listenWithFallback = (srv, initialPort, maxAttempts = 5) => {
+  return new Promise((resolve, reject) => {
+    let attempts = 0;
+
+    const tryListen = (port) => {
+      attempts += 1;
+
+      const onError = (err) => {
+        if (err && err.code === "EADDRINUSE" && attempts < maxAttempts) {
+          const nextPort = port + 1;
+          console.warn(`⚠️  Port ${port} is in use, trying ${nextPort}...`);
+          // Remove the error listener before retrying to avoid listener leaks
+          srv.removeListener("error", onError);
+          tryListen(nextPort);
+        } else {
+          srv.removeListener("error", onError);
+          reject(err);
+        }
+      };
+
+      srv.once("error", onError);
+      srv.listen(port, () => resolve(port));
+    };
+
+    tryListen(initialPort);
+  });
+};
+
 // Connect to database and start server
 const startServer = async () => {
   try {
@@ -100,11 +129,20 @@ const startServer = async () => {
     console.log("✅ Database connected successfully");
 
     // Start server
-    server.listen(PORT, () => {
-      console.log(`🚀 Server running on http://localhost:${PORT}`);
-      console.log(`📡 WebSocket server ready`);
-      console.log(`🌍 Environment: ${process.env.NODE_ENV}`);
-    });
+    const boundPort = await listenWithFallback(server, PORT, 10).catch(
+      (error) => {
+        throw error;
+      }
+    );
+    PORT = boundPort;
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
+    console.log(`📡 WebSocket server ready`);
+    console.log(`🌍 Environment: ${process.env.NODE_ENV}`);
+    if (boundPort !== Number(process.env.PORT || 5000)) {
+      console.warn(
+        `🔁 Note: Default port was busy. Running on ${boundPort}. Update your frontend API base URL (VITE_API_URL) if needed.`
+      );
+    }
   } catch (error) {
     console.error("❌ Failed to start server:", error);
     process.exit(1);

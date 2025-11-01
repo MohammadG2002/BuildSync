@@ -1,6 +1,7 @@
 import { MessageSquare, Send, Paperclip, Download, Upload } from "lucide-react";
 import { getInitials, generateColor, formatDate } from "../../../utils/helpers";
 import formatFileSize from "../../../utils/helpers/formatFileSize";
+import { buildAbsoluteUrl } from "../../../utils/buildAbsoluteUrl";
 import styles from "./TaskDetailsModal.module.css";
 
 const CommentsSection = ({
@@ -13,6 +14,7 @@ const CommentsSection = ({
   onFileSelect,
   onRemoveFile,
   fileInputRef,
+  readOnly = false,
 }) => {
   return (
     <div>
@@ -57,9 +59,19 @@ const CommentsSection = ({
                           className={styles.commentAttachmentItem}
                         >
                           <Paperclip className={styles.commentAttachmentIcon} />
-                          <span className={styles.commentAttachmentName}>
+                          <a
+                            href={
+                              attachment.url
+                                ? buildAbsoluteUrl(attachment.url)
+                                : undefined
+                            }
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.commentAttachmentName}
+                            title={attachment.name || "View attachment"}
+                          >
                             {attachment.name}
-                          </span>
+                          </a>
                           {attachment.size && (
                             <span className={styles.commentAttachmentSize}>
                               ({formatFileSize(attachment.size)})
@@ -67,8 +79,8 @@ const CommentsSection = ({
                           )}
                           {attachment.url && (
                             <a
-                              href={attachment.url}
-                              download
+                              href={buildAbsoluteUrl(attachment.url)}
+                              download={attachment.name || undefined}
                               className={styles.commentAttachmentDownload}
                             >
                               <Download size={14} />
@@ -94,13 +106,13 @@ const CommentsSection = ({
             onChange={(e) => setNewComment(e.target.value)}
             placeholder="Add a comment..."
             className={styles.commentInput}
-            disabled={isSubmitting}
+            disabled={isSubmitting || readOnly}
           />
           <button
             type="button"
             onClick={() => fileInputRef?.current?.click()}
             className={styles.commentAttachButton}
-            disabled={isSubmitting}
+            disabled={isSubmitting || readOnly}
             title="Attach file"
           >
             <Paperclip size={18} />
@@ -111,7 +123,7 @@ const CommentsSection = ({
             multiple
             onChange={onFileSelect}
             className={styles.fileInput}
-            disabled={isSubmitting}
+            disabled={isSubmitting || readOnly}
           />
         </div>
 
@@ -140,7 +152,7 @@ const CommentsSection = ({
 
         <button
           type="submit"
-          disabled={!newComment.trim() || isSubmitting}
+          disabled={!newComment.trim() || isSubmitting || readOnly}
           className={styles.commentSubmit}
         >
           <Send className={styles.commentSubmitIcon} />

@@ -51,6 +51,15 @@ export const createTask = async (req, res) => {
       });
     }
 
+    // Viewers are read-only at the workspace level
+    const roleInWorkspace = workspaceDoc.getUserRole(req.user._id);
+    if (roleInWorkspace === "viewer") {
+      return res.status(403).json({
+        success: false,
+        message: "Viewers cannot create tasks",
+      });
+    }
+
     // Process assigneeIds - ensure it's an array
     let assignedToArray = [];
     if (assigneeIds && Array.isArray(assigneeIds) && assigneeIds.length > 0) {

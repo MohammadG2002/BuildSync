@@ -8,6 +8,13 @@ import {
   addComment,
   addAttachment,
   addCommentAttachment,
+  deleteAttachment,
+  downloadAttachment,
+} from "../controllers/taskController/index.js";
+import {
+  addSubtask,
+  updateSubtask,
+  deleteSubtask,
 } from "../controllers/taskController/index.js";
 import {
   authenticate,
@@ -44,12 +51,50 @@ router
   .post(mongoIdValidation("id"), validate, addAttachment);
 
 router
+  .route("/:id/attachments/:attachmentId")
+  .delete(
+    mongoIdValidation("id"),
+    mongoIdValidation("attachmentId"),
+    validate,
+    deleteAttachment
+  );
+
+router
+  .route("/:id/attachments/:attachmentId/download")
+  .get(
+    mongoIdValidation("id"),
+    mongoIdValidation("attachmentId"),
+    validate,
+    downloadAttachment
+  );
+
+router
   .route("/:id/comments/:commentId/attachments")
   .post(
     mongoIdValidation("id"),
     mongoIdValidation("commentId"),
     validate,
     addCommentAttachment
+  );
+
+// Subtasks routes
+router
+  .route("/:id/subtasks")
+  .post(mongoIdValidation("id"), validate, addSubtask);
+
+router
+  .route("/:id/subtasks/:subtaskId")
+  .patch(
+    mongoIdValidation("id"),
+    mongoIdValidation("subtaskId"),
+    validate,
+    updateSubtask
+  )
+  .delete(
+    mongoIdValidation("id"),
+    mongoIdValidation("subtaskId"),
+    validate,
+    deleteSubtask
   );
 
 export default router;

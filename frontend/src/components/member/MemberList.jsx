@@ -8,6 +8,7 @@ import styles from "./memberCardModule/MemberCard.module.css";
 const MemberList = ({
   members,
   currentUserId,
+  currentUserRole,
   onChangeRole,
   onRemove,
   groupByRole = false,
@@ -17,6 +18,7 @@ const MemberList = ({
       <MemberGrid
         members={members}
         currentUserId={currentUserId}
+        currentUserRole={currentUserRole}
         onChangeRole={onChangeRole}
         onRemove={onRemove}
       />
@@ -33,6 +35,7 @@ const MemberList = ({
           role={role}
           members={roleMembers}
           currentUserId={currentUserId}
+          currentUserRole={currentUserRole}
           onChangeRole={onChangeRole}
           onRemove={onRemove}
         />

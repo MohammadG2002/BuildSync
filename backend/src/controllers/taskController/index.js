@@ -10,3 +10,8 @@ export { deleteTask } from "./deleteTask.js";
 export { addComment } from "./addComment.js";
 export { addAttachment } from "./addAttachment.js";
 export { addCommentAttachment } from "./addCommentAttachment.js";
+export { deleteAttachment } from "./deleteAttachment.js";
+export { downloadAttachment } from "./downloadAttachment.js";
+export { addSubtask } from "./addSubtask.js";
+export { updateSubtask } from "./updateSubtask.js";
+export { deleteSubtask } from "./deleteSubtask.js";

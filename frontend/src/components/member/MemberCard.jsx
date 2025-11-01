@@ -9,7 +9,13 @@ import {
 } from "./memberCardModule";
 import styles from "./memberCardModule/MemberCard.module.css";
 
-const MemberCard = ({ member, currentUserId, onChangeRole, onRemove }) => {
+const MemberCard = ({
+  member,
+  currentUserId,
+  currentUserRole,
+  onChangeRole,
+  onRemove,
+}) => {
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
 
@@ -26,6 +32,9 @@ const MemberCard = ({ member, currentUserId, onChangeRole, onRemove }) => {
 
   const isCurrentUser = member.id === currentUserId;
 
+  const canOpenMenu =
+    currentUserRole === "owner" || currentUserRole === "admin";
+
   return (
     <div className={styles.card}>
       <div className={styles.cardTop}>
@@ -38,13 +47,14 @@ const MemberCard = ({ member, currentUserId, onChangeRole, onRemove }) => {
         <div className={styles.cardRight}>
           <MemberRoleBadge role={member.role} />
 
-          {!isCurrentUser && (
+          {!isCurrentUser && canOpenMenu && (
             <div className={styles.menuContainer} ref={menuRef}>
               <MemberMenuButton onClick={() => setShowMenu(!showMenu)} />
 
               {showMenu && (
                 <MemberDropdownMenu
                   member={member}
+                  currentUserRole={currentUserRole}
                   onChangeRole={onChangeRole}
                   onRemove={onRemove}
                   onClose={() => setShowMenu(false)}

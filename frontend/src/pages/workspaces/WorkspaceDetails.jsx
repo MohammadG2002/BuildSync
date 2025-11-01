@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   Plus,
@@ -9,6 +9,8 @@ import {
   FolderKanban,
 } from "lucide-react";
 import { useWorkspace } from "../../hooks/useWorkspace";
+import { AuthContext } from "../../context/AuthContext";
+import { getWorkspaceMembers } from "../../services/workspaceService";
 import Button from "../../components/common/Button";
 import Card from "../../components/common/Card";
 import Modal from "../../components/common/Modal";
@@ -32,6 +34,7 @@ const WorkspaceDetails = () => {
   const { workspaceId } = useParams();
   const navigate = useNavigate();
   const { workspaces, currentWorkspace, switchWorkspace } = useWorkspace();
+  const { user } = useContext(AuthContext);
 
   const [workspace, setWorkspace] = useState(null);
   const [projects, setProjects] = useState([]);
@@ -41,6 +44,7 @@ const WorkspaceDetails = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const [wsMembers, setWsMembers] = useState([]);
 
   useEffect(() => {
     // Find workspace from context
@@ -53,7 +57,20 @@ const WorkspaceDetails = () => {
       }
     }
     fetchProjects(workspaceId, setProjects, setLoading);
+    // fetch workspace members to determine permissions
+    (async () => {
+      try {
+        const m = await getWorkspaceMembers(workspaceId);
+        setWsMembers(m);
+      } catch {
+        setWsMembers([]);
+      }
+    })();
   }, [workspaceId, workspaces]);
+  const currentUserId = user?._id || user?.id;
+  const currentMember = wsMembers.find((m) => m.id === currentUserId);
+  const canCreateProject =
+    currentMember?.role === "owner" || currentMember?.role === "admin";
 
   if (!workspace && !loading) {
     return (
@@ -133,14 +150,16 @@ const WorkspaceDetails = () => {
       <div className={styles.projectsSection}>
         <div className={styles.projectsHeader}>
           <h2 className={styles.projectsTitle}>Projects</h2>
-          <Button
-            variant="primary"
-            onClick={() => setShowCreateModal(true)}
-            className={styles.newProjectButton}
-          >
-            <Plus className={styles.newProjectIcon} />
-            New Project
-          </Button>
+          {canCreateProject && (
+            <Button
+              variant="primary"
+              onClick={() => setShowCreateModal(true)}
+              className={styles.newProjectButton}
+            >
+              <Plus className={styles.newProjectIcon} />
+              New Project
+            </Button>
+          )}
         </div>
 
         {loading ? (
@@ -175,6 +194,7 @@ const WorkspaceDetails = () => {
           </div>
         ) : (
           <EmptyProjectsState
+            canCreate={canCreateProject}
             onCreateProject={() => setShowCreateModal(true)}
           />
         )}

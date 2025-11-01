@@ -8,3 +8,4 @@ export { default as TaskMenu } from "./TaskMenu";
 export { default as TaskTitle } from "./TaskTitle";
 export { default as TaskDescription } from "./TaskDescription";
 export { default as TaskMeta } from "./TaskMeta";
+export { default as TaskProgress } from "./TaskProgress";

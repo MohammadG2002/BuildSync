@@ -17,7 +17,7 @@ export const getTasks = async (req, res) => {
     // Build base query
     const query = {};
 
-    // If project is specified, check if user is a member of that project
+    // If project is specified, check role & membership
     if (project) {
       const projectDoc = await Project.findById(project);
       if (!projectDoc) {
@@ -27,12 +27,23 @@ export const getTasks = async (req, res) => {
         });
       }
 
+      // Determine workspace role
+      const workspaceDoc = await Workspace.findById(projectDoc.workspace);
+      if (!workspaceDoc) {
+        return res.status(404).json({
+          success: false,
+          message: "Workspace not found",
+        });
+      }
+      const role = workspaceDoc.getUserRole?.(userId) || null;
+
       // Check if user is a member of the project
       const isMember = projectDoc.members.some(
         (member) => member.user.toString() === userId.toString()
       );
 
-      if (!isMember) {
+      // Owners/Admins can view any project; others require membership
+      if (!(role === "owner" || role === "admin" || isMember)) {
         return res.status(403).json({
           success: false,
           message: "Access denied: You are not a member of this project",
@@ -41,7 +52,7 @@ export const getTasks = async (req, res) => {
 
       query.project = project;
     } else if (workspace) {
-      // If only workspace is specified, check workspace membership
+      // If only workspace is specified, check workspace role & constrain
       const workspaceDoc = await Workspace.findById(workspace);
       if (!workspaceDoc) {
         return res.status(404).json({
@@ -50,21 +61,28 @@ export const getTasks = async (req, res) => {
         });
       }
 
-      // Check if user is a member of the workspace
-      const isMember =
-        workspaceDoc.owner.toString() === userId.toString() ||
-        workspaceDoc.members.some(
-          (member) => member.user.toString() === userId.toString()
-        );
+      const role = workspaceDoc.getUserRole?.(userId) || null;
+      const isWorkspaceMember = Boolean(role);
 
-      if (!isMember) {
+      if (!isWorkspaceMember) {
         return res.status(403).json({
           success: false,
           message: "Access denied: You are not a member of this workspace",
         });
       }
 
-      query.workspace = workspace;
+      // Owners/Admins: can view all tasks in workspace
+      if (role === "owner" || role === "admin") {
+        query.workspace = workspace;
+      } else {
+        // Members/Viewers: only tasks for projects where user is a member
+        const memberProjects = await Project.find({
+          workspace,
+          "members.user": userId,
+        }).select("_id");
+        const ids = memberProjects.map((p) => p._id);
+        query.project = { $in: ids };
+      }
     } else {
       // If neither project nor workspace specified, only show user's tasks
       query.$or = [{ assignedTo: userId }, { createdBy: userId }];

@@ -5,6 +5,7 @@ const MemberRoleGroup = ({
   role,
   members,
   currentUserId,
+  currentUserRole,
   onChangeRole,
   onRemove,
 }) => {
@@ -18,6 +19,7 @@ const MemberRoleGroup = ({
       <MemberGrid
         members={members}
         currentUserId={currentUserId}
+        currentUserRole={currentUserRole}
         onChangeRole={onChangeRole}
         onRemove={onRemove}
       />
