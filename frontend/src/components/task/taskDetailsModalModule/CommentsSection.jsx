@@ -152,7 +152,12 @@ const CommentsSection = ({
 
         <button
           type="submit"
-          disabled={!newComment.trim() || isSubmitting || readOnly}
+          disabled={
+            (newComment.trim().length === 0 &&
+              (!selectedFiles || selectedFiles.length === 0)) ||
+            isSubmitting ||
+            readOnly
+          }
           className={styles.commentSubmit}
         >
           <Send className={styles.commentSubmitIcon} />

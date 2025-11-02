@@ -9,6 +9,7 @@ import Task from "../../models/Task/index.js";
 import Notification from "../../models/Notification/index.js";
 import Project from "../../models/Project/index.js";
 import Workspace from "../../models/Workspace/index.js";
+import TaskActivity from "../../models/TaskActivity/index.js";
 
 export const updateTask = async (req, res) => {
   try {
@@ -66,6 +67,11 @@ export const updateTask = async (req, res) => {
         ? task.assignedTo.map((id) => id.toString())
         : [];
     const oldStatus = task.status;
+    const oldTitle = task.title;
+    const oldPriority = task.priority;
+    const oldDueDate = task.dueDate
+      ? new Date(task.dueDate).toISOString()
+      : null;
 
     if (title) task.title = title;
     if (description !== undefined) task.description = description;
@@ -147,6 +153,80 @@ export const updateTask = async (req, res) => {
           });
         }
       }
+    }
+
+    // Log activity entries (non-blocking)
+    try {
+      const activities = [];
+      if (title && title !== oldTitle) {
+        activities.push({
+          task: task._id,
+          project: task.project._id || task.project,
+          workspace: task.workspace._id || task.workspace,
+          actor: req.user._id,
+          type: "title_changed",
+          meta: { from: oldTitle, to: title },
+        });
+      }
+      if (status && status !== oldStatus) {
+        activities.push({
+          task: task._id,
+          project: task.project._id || task.project,
+          workspace: task.workspace._id || task.workspace,
+          actor: req.user._id,
+          type: "status_changed",
+          meta: { from: oldStatus, to: status },
+        });
+      }
+      if (priority && priority !== oldPriority) {
+        activities.push({
+          task: task._id,
+          project: task.project._id || task.project,
+          workspace: task.workspace._id || task.workspace,
+          actor: req.user._id,
+          type: "priority_changed",
+          meta: { from: oldPriority, to: priority },
+        });
+      }
+      if (dueDate !== undefined) {
+        const newDue = task.dueDate
+          ? new Date(task.dueDate).toISOString()
+          : null;
+        if (newDue !== oldDueDate) {
+          activities.push({
+            task: task._id,
+            project: task.project._id || task.project,
+            workspace: task.workspace._id || task.workspace,
+            actor: req.user._id,
+            type: "due_date_changed",
+            meta: { from: oldDueDate, to: newDue },
+          });
+        }
+      }
+      if (assigneeIds !== undefined) {
+        const newAssignedTo = (task.assignedTo || []).map((u) =>
+          (u._id || u).toString()
+        );
+        const added = newAssignedTo.filter((id) => !oldAssignedTo.includes(id));
+        const removed = oldAssignedTo.filter(
+          (id) => !newAssignedTo.includes(id)
+        );
+        if (added.length || removed.length) {
+          activities.push({
+            task: task._id,
+            project: task.project._id || task.project,
+            workspace: task.workspace._id || task.workspace,
+            actor: req.user._id,
+            type: "assignees_changed",
+            meta: { added, removed },
+          });
+        }
+      }
+      if (activities.length) {
+        await TaskActivity.insertMany(activities);
+      }
+    } catch (e) {
+      console.warn("Failed to log task update activity", e?.message);
     }
 
     res.json({

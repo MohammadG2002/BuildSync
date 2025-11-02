@@ -15,13 +15,24 @@ export const acceptWorkspaceInvite = async (
     throw new Error("Invalid IDs");
   }
 
-  const notification = await Notification.findById(notificationId);
-  if (!notification) throw new Error("Invite not found");
+  let notification = await Notification.findById(notificationId);
+  if (!notification) {
+    // Fallback: locate a matching pending invite for this user and workspace
+    notification = await Notification.findOne({
+      recipient: userId,
+      type: "workspace_invite",
+      $or: [{ status: "pending" }, { status: null }],
+      "metadata.workspaceId": workspaceId,
+    });
+    if (!notification) throw new Error("Invite not found");
+  }
 
+  const isPending =
+    notification.status === "pending" || notification.status == null;
   if (
     String(notification.recipient) !== String(userId) ||
     notification.type !== "workspace_invite" ||
-    notification.status !== "pending" ||
+    !isPending ||
     String(notification.metadata?.workspaceId) !== String(workspaceId)
   ) {
     throw new Error("Invalid invite");

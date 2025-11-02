@@ -42,23 +42,11 @@
   color: #9ca3af;
 }
 
-/* Workspaces Grid */
+/* Workspaces List (full-width cards, like project list) */
 .grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-}
-
-@media (min-width: 768px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 /* Empty Workspaces State */

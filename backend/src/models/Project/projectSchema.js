@@ -72,6 +72,11 @@ export const projectSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    // Counter for assigning incremental task sequence numbers within this project
+    taskCounter: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,

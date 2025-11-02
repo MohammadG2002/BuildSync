@@ -4,6 +4,7 @@
  */
 
 import Workspace from "../../models/Workspace/index.js";
+import Notification from "../../models/Notification/index.js";
 import { isValidObjectId } from "../../utils/validators/index.js";
 
 /**
@@ -26,10 +27,19 @@ export const getWorkspaceById = async (workspaceId, userId) => {
     throw new Error("Workspace not found");
   }
 
-  // Check if user has access
+  // Check if user has access: either a member OR has a pending invite
   const isMember = workspace.isMember(userId);
   if (!isMember) {
-    throw new Error("Access denied");
+    const pendingInvite = await Notification.findOne({
+      recipient: userId,
+      type: "workspace_invite",
+      // accept both explicit "pending" and legacy null status as pending
+      $or: [{ status: "pending" }, { status: null }],
+      "metadata.workspaceId": workspaceId,
+    }).lean();
+    if (!pendingInvite) {
+      throw new Error("Access denied");
+    }
   }
 
   return workspace;

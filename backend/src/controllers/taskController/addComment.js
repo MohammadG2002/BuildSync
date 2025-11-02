@@ -13,14 +13,10 @@ import Workspace from "../../models/Workspace/index.js";
 export const addComment = async (req, res) => {
   try {
     const { text, content } = req.body;
-    const commentText = text || content;
+    const commentText = text ?? content ?? "";
+    // Allow empty comment text to support attachment-only comments
 
-    if (!commentText || commentText.trim() === "") {
-      return res.status(400).json({
-        success: false,
-        message: "Comment text is required",
-      });
-    }
+    // Removed validation for empty comment text
 
     const task = await Task.findById(req.params.id);
 
@@ -95,6 +91,22 @@ export const addComment = async (req, res) => {
     );
 
     await Promise.all(notificationPromises);
+
+    // Log activity: comment added (non-blocking)
+    try {
+      const TaskActivity = (await import("../../models/TaskActivity/index.js"))
+        .default;
+      await TaskActivity.create({
+        task: updatedTask._id,
+        project: updatedTask.project,
+        workspace: updatedTask.workspace,
+        actor: req.user._id,
+        type: "comment_added",
+        meta: { hasText: commentText.trim().length > 0 },
+      });
+    } catch (e) {
+      // no-op
+    }
 
     res.status(201).json({
       success: true,

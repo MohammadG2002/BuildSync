@@ -6,7 +6,7 @@
 
 import { declineWorkspaceInvite } from "../../services/workspaceService/index.js";
 import { asyncHandler } from "../../utils/asyncHandler/index.js";
-import { sendOk } from "../../utils/responseHandler/index.js";
+import { sendSuccess } from "../../utils/responseHandler/index.js";
 
 export const declineInvite = asyncHandler(async (req, res) => {
   await declineWorkspaceInvite(
@@ -15,5 +15,5 @@ export const declineInvite = asyncHandler(async (req, res) => {
     req.user._id
   );
 
-  sendOk(res, "Invite declined");
+  sendSuccess(res, 200, "Invite declined");
 });

@@ -4,10 +4,10 @@ import {
   TaskMenu,
   TaskTitle,
   TaskDescription,
-  TaskMeta,
   TaskProgress,
 } from "./taskCardModule";
 import styles from "./taskCardModule/TaskCard.module.css";
+import { formatDate, getRelativeTime } from "../../utils/helpers";
 
 const TaskCard = ({
   task,
@@ -42,6 +42,21 @@ const TaskCard = ({
     onClick?.(task);
   };
 
+  // Map task status to badge style classes
+  const statusClasses = {
+    todo: styles.statusTodo,
+    "in-progress": styles.statusInProgress,
+    review: styles.statusReview,
+    completed: styles.statusCompleted,
+    blocked: styles.statusBlocked,
+  };
+
+  const priorityTextClasses = {
+    low: styles.priorityLow,
+    medium: styles.priorityMedium,
+    high: styles.priorityHigh,
+  };
+
   return (
     <div className={styles.card} onClick={handleClick}>
       <div className={styles.cardContent}>
@@ -61,25 +76,35 @@ const TaskCard = ({
             <TaskTitle
               title={task.title}
               completed={task.status === "completed"}
+              sequence={task.sequence}
             />
-
-            {!readOnly && (
-              <div ref={menuRef}>
-                <TaskMenu
-                  showMenu={showMenu}
-                  onToggle={() => setShowMenu(!showMenu)}
-                  onEdit={(t) => {
-                    onEdit(t);
-                    setShowMenu(false);
-                  }}
-                  onDelete={(t) => {
-                    onDelete(t);
-                    setShowMenu(false);
-                  }}
-                  task={task}
-                />
-              </div>
-            )}
+            <div className={styles.headerRight}>
+              {/* Status Badge on the right */}
+              <span
+                className={`${styles.statusBadge} ${
+                  statusClasses[task.status] || styles.statusTodo
+                }`}
+              >
+                {String(task.status || "todo").replace(/-/g, " ")}
+              </span>
+              {!readOnly && (
+                <div ref={menuRef}>
+                  <TaskMenu
+                    showMenu={showMenu}
+                    onToggle={() => setShowMenu(!showMenu)}
+                    onEdit={(t) => {
+                      onEdit(t);
+                      setShowMenu(false);
+                    }}
+                    onDelete={(t) => {
+                      onDelete(t);
+                      setShowMenu(false);
+                    }}
+                    task={task}
+                  />
+                </div>
+              )}
+            </div>
           </div>
 
           <TaskDescription description={task.description} />
@@ -88,7 +113,49 @@ const TaskCard = ({
             taskId={task._id}
             subtasks={Array.isArray(task?.subtasks) ? task.subtasks : []}
           />
-          <TaskMeta task={task} />
+
+          {/* Priority − Due date row */}
+          <div className={styles.priorityDueRow}>
+            {task.priority && (
+              <span
+                className={`${styles.priorityText} ${
+                  priorityTextClasses[task.priority]
+                }`}
+              >
+                {task.priority}
+              </span>
+            )}
+            {task.priority && task.dueDate && (
+              <span className={styles.bulletSeparator}>−</span>
+            )}
+            {task.dueDate && (
+              <span className={styles.dueDateText}>
+                {formatDate(task.dueDate)}
+              </span>
+            )}
+          </div>
+
+          {/* Bottom metadata row: #sequence . Creator - opened <relative> */}
+          <div className={styles.bottomRow}>
+            {typeof task.sequence === "number" && task.sequence > 0 && (
+              <span className={styles.bottomMuted}>{`#${task.sequence}`}</span>
+            )}
+            {typeof task.sequence === "number" && task.sequence > 0 && (
+              <span className={styles.dotSeparator}>.</span>
+            )}
+            {task?.createdBy?.name && (
+              <span className={styles.bottomMuted}>{task.createdBy.name}</span>
+            )}
+            {(task?.createdBy?.name ||
+              (typeof task.sequence === "number" && task.sequence > 0)) && (
+              <span className={styles.bulletSeparator}>-</span>
+            )}
+            {task?.createdAt && (
+              <span className={styles.bottomMuted}>{`opened ${getRelativeTime(
+                task.createdAt
+              )}`}</span>
+            )}
+          </div>
         </div>
       </div>
     </div>

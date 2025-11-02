@@ -6,7 +6,7 @@
 
 import { acceptWorkspaceInvite } from "../../services/workspaceService/index.js";
 import { asyncHandler } from "../../utils/asyncHandler/index.js";
-import { sendOk } from "../../utils/responseHandler/index.js";
+import { sendSuccess } from "../../utils/responseHandler/index.js";
 
 export const acceptInvite = asyncHandler(async (req, res) => {
   const workspace = await acceptWorkspaceInvite(
@@ -15,5 +15,5 @@ export const acceptInvite = asyncHandler(async (req, res) => {
     req.user._id
   );
 
-  sendOk(res, "Invite accepted", { data: { workspace } });
+  sendSuccess(res, 200, "Invite accepted", { data: { workspace } });
 });

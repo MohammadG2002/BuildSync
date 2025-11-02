@@ -133,6 +133,11 @@ export const taskSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    // Per-project sequence number (e.g., #1, #2)
+    sequence: {
+      type: Number,
+      default: null,
+    },
   },
   {
     timestamps: true,

@@ -9,6 +9,7 @@ import Task from "../../models/Task/index.js";
 import Project from "../../models/Project/index.js";
 import Workspace from "../../models/Workspace/index.js";
 import Notification from "../../models/Notification/index.js";
+import TaskActivity from "../../models/TaskActivity/index.js";
 
 export const createTask = async (req, res) => {
   try {
@@ -25,8 +26,9 @@ export const createTask = async (req, res) => {
     } = req.body;
 
     // Verify project exists if provided
+    let projectDoc = null;
     if (project) {
-      const projectDoc = await Project.findById(project);
+      projectDoc = await Project.findById(project);
       if (!projectDoc) {
         return res.status(404).json({
           success: false,
@@ -69,6 +71,17 @@ export const createTask = async (req, res) => {
       assignedToArray = [assigneeIds];
     }
 
+    // If part of a project, atomically increment the project's taskCounter to get a per-project sequence
+    let sequence = null;
+    if (projectDoc) {
+      const updatedProject = await Project.findByIdAndUpdate(
+        projectDoc._id,
+        { $inc: { taskCounter: 1 } },
+        { new: true }
+      );
+      sequence = updatedProject.taskCounter;
+    }
+
     const task = await Task.create({
       title,
       description,
@@ -80,12 +93,28 @@ export const createTask = async (req, res) => {
       priority: priority || "medium",
       dueDate,
       tags: tags || [],
+      sequence,
     });
 
     await task.populate("assignedTo", "name email avatar");
     await task.populate("createdBy", "name email avatar");
     await task.populate("project", "name color");
     await task.populate("workspace", "name");
+
+    // Log activity: task created
+    try {
+      await TaskActivity.create({
+        task: task._id,
+        project: task.project,
+        workspace: task.workspace,
+        actor: req.user._id,
+        type: "created",
+        meta: { title: task.title },
+      });
+    } catch (e) {
+      // Non-blocking
+      console.warn("Failed to log task creation activity", e?.message);
+    }
 
     // Create notifications for all assigned members (except the creator)
     if (assignedToArray.length > 0) {

@@ -41,6 +41,12 @@ router
   .put(mongoIdValidation("id"), taskValidation, validate, updateTask)
   .delete(mongoIdValidation("id"), validate, deleteTask);
 
+// Task activity
+import { getTaskActivity } from "../controllers/taskController/getTaskActivity.js";
+router
+  .route("/:id/activity")
+  .get(mongoIdValidation("id"), validate, getTaskActivity);
+
 // Task actions routes
 router
   .route("/:id/comments")

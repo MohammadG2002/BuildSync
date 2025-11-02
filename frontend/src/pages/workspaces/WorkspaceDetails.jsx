@@ -180,6 +180,10 @@ const WorkspaceDetails = () => {
                 onClick={() =>
                   handleProjectClick(project, workspaceId, navigate)
                 }
+                onSettings={() => {
+                  setSelectedProject(project);
+                  setShowEditModal(true);
+                }}
               />
             ))}
           </div>

@@ -19,4 +19,5 @@ export const TASK_ENDPOINTS = {
   SUBTASKS: (workspaceId, projectId, taskId) => `/tasks/${taskId}/subtasks`,
   SUBTASK: (workspaceId, projectId, taskId, subtaskId) =>
     `/tasks/${taskId}/subtasks/${subtaskId}`,
+  ACTIVITY: (workspaceId, projectId, taskId) => `/tasks/${taskId}/activity`,
 };

@@ -13,6 +13,7 @@ import {
   CommentsSection,
   ModalFooter,
   SubtasksSection,
+  ActivitySection,
 } from "./taskDetailsModalModule";
 import styles from "./taskDetailsModalModule/TaskDetailsModal.module.css";
 
@@ -25,7 +26,9 @@ const TaskDetailsModal = ({
   onAddAttachment,
   readOnly = false,
 }) => {
-  const [activeTab, setActiveTab] = useState("overview"); // 'overview' | 'subtasks' | 'comments'
+  const [activeTab, setActiveTab] = useState("overview"); // 'overview' | 'subtasks' | 'comments' | 'activity'
+  const [activity, setActivity] = useState([]);
+  const [loadingActivity, setLoadingActivity] = useState(false);
   const [isEditingDescription, setIsEditingDescription] = useState(false);
   const [editedDescription, setEditedDescription] = useState(
     task?.description || ""
@@ -102,7 +105,11 @@ const TaskDetailsModal = ({
 
   const handleAddComment = async (e) => {
     e.preventDefault();
-    if (readOnly || !newComment.trim()) return;
+    if (readOnly) return;
+    // Allow sending if there's text OR at least one attachment
+    const hasText = (newComment || "").trim().length > 0;
+    const hasFiles = Array.isArray(commentFiles) && commentFiles.length > 0;
+    if (!hasText && !hasFiles) return;
 
     setIsSubmittingComment(true);
     try {
@@ -129,6 +136,29 @@ const TaskDetailsModal = ({
   const handleRemoveCommentFile = (index) => {
     setCommentFiles((prev) => prev.filter((_, i) => i !== index));
   };
+
+  // Load activity when switching to the Activity tab
+  useEffect(() => {
+    const fetchActivity = async () => {
+      try {
+        setLoadingActivity(true);
+        const { getTaskActivity } = await import("../../services/taskService");
+        const wsId = getWorkspaceId();
+        const prId = getProjectId();
+        const items = await getTaskActivity(wsId, prId, task._id);
+        setActivity(Array.isArray(items) ? items : []);
+      } catch (e) {
+        console.error("Failed to load task activity", e);
+        setActivity([]);
+      } finally {
+        setLoadingActivity(false);
+      }
+    };
+    if (activeTab === "activity") {
+      fetchActivity();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab, task._id]);
 
   // Helpers to derive ids
   const getWorkspaceId = () =>
@@ -361,6 +391,15 @@ const TaskDetailsModal = ({
             >
               {`Comments (${commentsCount})`}
             </button>
+            <button
+              className={`${styles.tabButton} ${
+                activeTab === "activity" ? styles.tabButtonActive : ""
+              }`}
+              onClick={() => setActiveTab("activity")}
+              type="button"
+            >
+              Activity
+            </button>
           </div>
         </div>
 
@@ -422,6 +461,10 @@ const TaskDetailsModal = ({
               fileInputRef={commentFileInputRef}
               readOnly={readOnly}
             />
+          )}
+
+          {activeTab === "activity" && (
+            <ActivitySection items={activity} loading={loadingActivity} />
           )}
         </div>
 
