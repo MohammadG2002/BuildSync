@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import {
   Plus,
   ArrowLeft,
@@ -44,6 +44,7 @@ const ProjectDetails = () => {
   const { workspaceId, projectId } = useParams();
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [project, setProject] = useState(null);
   const [tasks, setTasks] = useState([]);
@@ -79,6 +80,28 @@ const ProjectDetails = () => {
   useEffect(() => {
     refreshAll();
   }, [projectId, refreshAll]);
+
+  // If navigated with ?task=ID, auto-open the Task Details once tasks are loaded
+  useEffect(() => {
+    const targetId = searchParams.get("task");
+    if (!targetId) return;
+    if (loading) return; // wait until tasks/project loaded
+
+    const t = (tasks || []).find((x) => (x?._id || x?.id || "") === targetId);
+    if (t) {
+      handleTaskClick(
+        t,
+        workspaceId,
+        projectId,
+        setSelectedTask,
+        setShowDetailsModal
+      );
+      // Optionally clear the param to avoid reopen on state changes
+      const next = new URLSearchParams(searchParams);
+      next.delete("task");
+      setSearchParams(next, { replace: true });
+    }
+  }, [searchParams, loading, tasks, workspaceId, projectId]);
 
   const filteredTasks =
     filterStatus === "all"

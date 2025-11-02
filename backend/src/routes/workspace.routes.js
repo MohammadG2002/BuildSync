@@ -7,6 +7,9 @@ import {
   deleteWorkspace,
   addMember,
   removeMember,
+  sendInvite,
+  acceptInvite,
+  declineInvite,
 } from "../controllers/workspaceController/index.js";
 import {
   authenticate,
@@ -43,6 +46,29 @@ router
     mongoIdValidation("userId"),
     validate,
     removeMember
+  );
+
+// Invites
+router
+  .route("/:id/invites")
+  .post(mongoIdValidation("id"), validate, sendInvite);
+
+router
+  .route("/:id/invites/:notificationId/accept")
+  .post(
+    mongoIdValidation("id"),
+    mongoIdValidation("notificationId"),
+    validate,
+    acceptInvite
+  );
+
+router
+  .route("/:id/invites/:notificationId/decline")
+  .post(
+    mongoIdValidation("id"),
+    mongoIdValidation("notificationId"),
+    validate,
+    declineInvite
   );
 
 export default router;

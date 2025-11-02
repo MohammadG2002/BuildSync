@@ -1,5 +1,7 @@
 const getNotificationIcon = (type) => {
   switch (type) {
+    case "workspace_invite":
+      return "📨";
     case "task_assigned":
       return "📋";
     case "project_updated":

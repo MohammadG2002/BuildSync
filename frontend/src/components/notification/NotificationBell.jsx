@@ -6,6 +6,7 @@ import {
   NotificationDropdown,
 } from "./notificationBellModule";
 import styles from "./notificationBellModule/NotificationBell.module.css";
+import InviteRequestModal from "./InviteRequestModal";
 
 const NotificationBell = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const NotificationBell = () => {
     deleteNotification,
   } = useNotifications();
   const [showNotifications, setShowNotifications] = useState(false);
+  const [inviteNotification, setInviteNotification] = useState(null);
   const notificationRef = useRef(null);
 
   useEffect(() => {
@@ -36,9 +38,11 @@ const NotificationBell = () => {
 
   const handleNotificationClick = (notification) => {
     if (!notification.read) {
-      markAsRead(notification.id);
+      markAsRead(notification.id || notification._id);
     }
-    if (notification.actionUrl) {
+    if (notification.type === "workspace_invite") {
+      setInviteNotification(notification);
+    } else if (notification.actionUrl) {
       navigate(notification.actionUrl);
     }
     setShowNotifications(false);
@@ -70,6 +74,16 @@ const NotificationBell = () => {
           }}
         />
       )}
+
+      <InviteRequestModal
+        notification={inviteNotification}
+        isOpen={!!inviteNotification}
+        onClose={() => setInviteNotification(null)}
+        onHandled={() => {
+          // After accept/decline, remove or mark the notification
+          deleteNotification(inviteNotification?.id || inviteNotification?._id);
+        }}
+      />
     </div>
   );
 };

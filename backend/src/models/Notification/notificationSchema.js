@@ -58,6 +58,12 @@ export const notificationSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    // Optional status (used for actionable notifications like invites)
+    status: {
+      type: String,
+      enum: ["pending", "accepted", "declined", null],
+      default: null,
+    },
   },
   {
     timestamps: true,

@@ -2,7 +2,7 @@ import { Calendar } from "lucide-react";
 import { formatDate, getInitials, generateColor } from "../../utils/helpers";
 import styles from "./Dashboard.module.css";
 
-const TaskItem = ({ task }) => {
+const TaskItem = ({ task, onClick }) => {
   const priorityClass =
     {
       low: styles.priorityLow,
@@ -21,14 +21,12 @@ const TaskItem = ({ task }) => {
     ? Math.round((completedSubtasks / totalSubtasks) * 100)
     : 0;
 
+  const handleContainerClick = () => {
+    onClick?.(task);
+  };
+
   return (
-    <div className={styles.taskItem}>
-      <input
-        type="checkbox"
-        checked={String(task?.status).toLowerCase() === "completed"}
-        onChange={() => {}}
-        className={styles.taskCheckbox}
-      />
+    <div className={styles.taskItem} onClick={handleContainerClick}>
       <div className={styles.taskContent}>
         <h4
           className={`${styles.taskTitle} ${
@@ -54,10 +52,7 @@ const TaskItem = ({ task }) => {
 
         {/* Assignees (up to 3) */}
         {Array.isArray(task?.assignedTo) && task.assignedTo.length > 0 && (
-          <div
-            className={styles.projectMembers}
-            style={{ marginTop: "0.5rem" }}
-          >
+          <div className={styles.taskAssignees} style={{ marginTop: "0.5rem" }}>
             {task.assignedTo.slice(0, 3).map((assignee, index) => (
               <div
                 key={assignee._id || assignee.id || index}
@@ -66,7 +61,6 @@ const TaskItem = ({ task }) => {
                   backgroundColor: generateColor(
                     assignee?.name || assignee?.email || "U"
                   ),
-                  marginLeft: "-0.5rem",
                 }}
                 title={assignee?.name || assignee?.email || "User"}
               >
@@ -76,7 +70,7 @@ const TaskItem = ({ task }) => {
             {task.assignedTo.length > 3 && (
               <div
                 className={styles.memberAvatar}
-                style={{ marginLeft: "-0.5rem", backgroundColor: "#9ca3af" }}
+                style={{ backgroundColor: "#9ca3af" }}
                 title={`+${task.assignedTo.length - 3} more`}
               >
                 +{task.assignedTo.length - 3}

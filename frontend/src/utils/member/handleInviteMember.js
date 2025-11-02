@@ -26,14 +26,10 @@ const handleInviteMember = async (
 
   setSubmitting(true);
   try {
-    const newMember = await workspaceService.addWorkspaceMember(
-      workspaceId,
-      inviteData
-    );
-    setMembers([...members, newMember]);
+    await workspaceService.sendWorkspaceInvite(workspaceId, inviteData);
     setShowInviteModal(false);
     setInviteData({ email: "", role: "member" });
-    toast.success("Member invited successfully!");
+    toast.success("Invite sent successfully");
   } catch (error) {
     console.error("Error inviting member:", error);
     toast.error("Failed to invite member");

@@ -5,8 +5,7 @@
   gap: 1.5rem;
 }
 
-.header {
-}
+/* (removed empty .header ruleset) */
 
 .title {
   font-size: 1.875rem;
@@ -211,22 +210,25 @@
 /* ProjectCard */
 .projectCard {
   padding: 1rem;
-  background-color: #f9fafb;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
-  transition: background-color 0.2s;
+  transition: border-color 0.2s, background-color 0.2s;
   cursor: pointer;
 }
 
 .projectCard:hover {
-  background-color: #f3f4f6;
+  border-color: #bfdbfe;
 }
 
 :global(.dark) .projectCard {
   background-color: #111827;
+  border-color: #374151;
 }
 
 :global(.dark) .projectCard:hover {
   background-color: #1f2937;
+  border-color: #4b5563;
 }
 
 .projectHeader {
@@ -324,6 +326,14 @@
   margin-left: -0.5rem;
 }
 
+/* Task assignees row in dashboard task item (no negative margins to prevent overflow) */
+.taskAssignees {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-wrap: nowrap;
+}
+
 .memberAvatar {
   width: 2rem;
   height: 2rem;
@@ -362,22 +372,25 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem;
-  background-color: #f9fafb;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, border-color 0.2s;
   cursor: pointer;
 }
 
 .taskItem:hover {
-  background-color: #f3f4f6;
+  border-color: #bfdbfe;
 }
 
 :global(.dark) .taskItem {
   background-color: #111827;
+  border-color: #374151;
 }
 
 :global(.dark) .taskItem:hover {
   background-color: #1f2937;
+  border-color: #4b5563;
 }
 
 .taskCheckbox {

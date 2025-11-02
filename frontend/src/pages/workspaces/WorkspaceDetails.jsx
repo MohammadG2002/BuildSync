@@ -14,7 +14,7 @@ import { getWorkspaceMembers } from "../../services/workspaceService";
 import Button from "../../components/common/Button";
 import Card from "../../components/common/Card";
 import Modal from "../../components/common/Modal";
-import ProjectCard from "../../components/project/ProjectCard";
+import ProjectCard from "../../components/dashboard/ProjectCard";
 import ProjectForm from "../../components/project/ProjectForm";
 import {
   WorkspaceStatCard,
@@ -29,6 +29,7 @@ import handleDeleteProjectClick from "../../utils/workspace/handleDeleteProjectC
 import handleDeleteProject from "../../utils/workspace/handleDeleteProject";
 import handleProjectClick from "../../utils/workspace/handleProjectClick";
 import styles from "./WorkspaceDetails.module.css";
+import dashboardStyles from "../../components/dashboard/Dashboard.module.css";
 
 const WorkspaceDetails = () => {
   const { workspaceId } = useParams();
@@ -163,7 +164,7 @@ const WorkspaceDetails = () => {
         </div>
 
         {loading ? (
-          <div className={styles.projectsGrid}>
+          <div className={dashboardStyles.projectsContainer}>
             {[1, 2, 3].map((i) => (
               <Card key={i} className={styles.loadingCard}>
                 <div className={styles.loadingCardInner}></div>
@@ -171,23 +172,13 @@ const WorkspaceDetails = () => {
             ))}
           </div>
         ) : projects.length > 0 ? (
-          <div className={styles.projectsGrid}>
+          <div className={dashboardStyles.projectsContainer}>
             {projects.map((project) => (
               <ProjectCard
-                key={project.id}
+                key={project.id || project._id}
                 project={project}
-                onEdit={(proj) =>
-                  handleEditProject(proj, setSelectedProject, setShowEditModal)
-                }
-                onDelete={(proj) =>
-                  handleDeleteProjectClick(
-                    proj,
-                    setSelectedProject,
-                    setShowDeleteModal
-                  )
-                }
-                onClick={(proj) =>
-                  handleProjectClick(proj, workspaceId, navigate)
+                onClick={() =>
+                  handleProjectClick(project, workspaceId, navigate)
                 }
               />
             ))}

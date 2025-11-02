@@ -83,7 +83,9 @@ const Dashboard = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => navigate("/app/workspaces")}
+                onClick={() =>
+                  navigate(`/app/workspaces/${currentWorkspace.id}`)
+                }
                 className={styles.viewAllButton}
               >
                 View All
@@ -118,15 +120,32 @@ const Dashboard = () => {
               <SkeletonList count={4} />
             ) : (
               <div className={styles.tasksContainer}>
-                {tasks.map((task, index) => (
-                  <TaskItem key={task.id || task._id || index} task={task} />
-                ))}
+                {tasks.map((task, index) => {
+                  const projectId =
+                    task?.project?.id ||
+                    task?.project?._id ||
+                    task?.projectId ||
+                    "";
+                  const taskId = task?._id || task?.id || "";
+                  return (
+                    <TaskItem
+                      key={task.id || task._id || index}
+                      task={task}
+                      onClick={() => {
+                        if (!projectId || !taskId) return;
+                        navigate(
+                          `/app/workspaces/${currentWorkspace.id}/projects/${projectId}?task=${taskId}`
+                        );
+                      }}
+                    />
+                  );
+                })}
               </div>
             )}
             <Button
               variant="ghost"
               className={`w-full ${styles.addTaskButton} ${styles.addTaskButtonInner}`}
-              onClick={() => navigate("/app/workspaces")}
+              onClick={() => navigate(`/app/workspaces/${currentWorkspace.id}`)}
             >
               <Plus className={styles.addTaskIcon} />
               Add New Task
