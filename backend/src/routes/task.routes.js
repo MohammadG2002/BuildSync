@@ -6,6 +6,8 @@ import {
   updateTask,
   deleteTask,
   addComment,
+  updateComment,
+  deleteComment,
   addAttachment,
   addCommentAttachment,
   deleteAttachment,
@@ -81,6 +83,21 @@ router
     mongoIdValidation("commentId"),
     validate,
     addCommentAttachment
+  );
+
+router
+  .route("/:id/comments/:commentId")
+  .patch(
+    mongoIdValidation("id"),
+    mongoIdValidation("commentId"),
+    validate,
+    updateComment
+  )
+  .delete(
+    mongoIdValidation("id"),
+    mongoIdValidation("commentId"),
+    validate,
+    deleteComment
   );
 
 // Subtasks routes

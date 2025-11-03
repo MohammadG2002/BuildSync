@@ -23,6 +23,7 @@ const CommentItem = ({
   const [isEditing, setIsEditing] = React.useState(false);
   const [editText, setEditText] = React.useState(comment.content || "");
   const menuRef = React.useRef(null);
+  const [showConfirm, setShowConfirm] = React.useState(false);
 
   React.useEffect(() => {
     const onDocClick = (e) => {
@@ -54,6 +55,7 @@ const CommentItem = ({
     if (!onDeleteComment || !comment._id) return;
     setMenuOpen(false);
     await onDeleteComment(comment._id);
+    setShowConfirm(false);
   };
 
   return (
@@ -93,7 +95,7 @@ const CommentItem = ({
               <button
                 type="button"
                 className={styles.commentMenuItemDanger}
-                onClick={handleDelete}
+                onClick={() => setShowConfirm(true)}
               >
                 Delete
               </button>
@@ -157,6 +159,46 @@ const CommentItem = ({
             </div>
           </div>
         )
+      )}
+      {showConfirm && (
+        <div className={styles.confirmOverlay}>
+          <div className={styles.confirmDialog} role="dialog" aria-modal="true">
+            <div
+              className={styles.sectionHeader}
+              style={{ marginBottom: "0.75rem" }}
+            >
+              <span className={styles.sectionTitle}>Delete comment?</span>
+            </div>
+            <p
+              className={styles.metadataText}
+              style={{ marginBottom: "0.75rem" }}
+            >
+              This will permanently remove the comment and its attachments.
+            </p>
+            <div
+              style={{
+                display: "flex",
+                gap: "0.5rem",
+                justifyContent: "flex-end",
+              }}
+            >
+              <button
+                type="button"
+                className={styles.cancelButton}
+                onClick={() => setShowConfirm(false)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className={styles.deleteButton}
+                onClick={handleDelete}
+              >
+                Confirm Delete
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

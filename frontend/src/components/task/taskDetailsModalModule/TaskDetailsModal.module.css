@@ -922,6 +922,32 @@
   background-color: rgba(127, 29, 29, 0.2);
 }
 
+/* Inline confirmation overlay for comment deletion */
+.confirmOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 60;
+  padding: 1rem;
+}
+
+.confirmDialog {
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  padding: 1rem;
+  width: 100%;
+  max-width: 24rem;
+}
+
+:global(.dark) .confirmDialog {
+  background-color: #1f2937;
+  border-color: #374151;
+}
+
 /* ModalFooter */
 .footer {
   border-top: 1px solid #e5e7eb;

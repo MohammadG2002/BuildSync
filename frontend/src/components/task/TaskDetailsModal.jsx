@@ -24,6 +24,8 @@ const TaskDetailsModal = ({
   onAddComment,
   onDeleteAttachment,
   onAddAttachment,
+  onUpdateComment,
+  onDeleteComment,
   readOnly = false,
 }) => {
   const [activeTab, setActiveTab] = useState("overview"); // 'overview' | 'subtasks' | 'comments' | 'files' | 'activity'
@@ -440,6 +442,12 @@ const TaskDetailsModal = ({
               onAddFile={handleAddTestFiles}
               onDeleteAttachment={onDeleteAttachment}
               onAddComment={onAddComment}
+              onUpdateComment={(commentId, { content }) =>
+                onUpdateComment?.(task._id, commentId, content)
+              }
+              onDeleteComment={(commentId) =>
+                onDeleteComment?.(task._id, commentId)
+              }
               taskId={task._id}
               fileInputRef={commentFileInputRef}
               isUploading={isUploadingTest}

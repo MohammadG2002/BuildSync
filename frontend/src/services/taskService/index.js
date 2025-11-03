@@ -10,6 +10,8 @@ export { deleteTask } from "./deleteTask.js";
 export { archiveTask } from "./archiveTask.js";
 export { getArchivedTasks } from "./getArchivedTasks.js";
 export { addComment } from "./addComment.js";
+export { updateComment } from "./updateComment.js";
+export { deleteComment } from "./deleteComment.js";
 export { addAttachment } from "./addAttachment.js";
 export { deleteAttachment } from "./deleteAttachment.js";
 export { addCommentAttachment } from "./addCommentAttachment.js";

@@ -8,6 +8,8 @@ export { createTask } from "./createTask.js";
 export { updateTask } from "./updateTask.js";
 export { deleteTask } from "./deleteTask.js";
 export { addComment } from "./addComment.js";
+export { updateComment } from "./updateComment.js";
+export { deleteComment } from "./deleteComment.js";
 export { addAttachment } from "./addAttachment.js";
 export { addCommentAttachment } from "./addCommentAttachment.js";
 export { deleteAttachment } from "./deleteAttachment.js";

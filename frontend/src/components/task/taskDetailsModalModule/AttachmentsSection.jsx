@@ -57,7 +57,9 @@ const AttachmentsSection = ({
                   "View attachment"
                 }
               >
-                <Paperclip className={styles.attachmentIcon} />
+                {<img src={attachment.url} alt="Attachment" /> || (
+                  <Paperclip className={styles.attachmentIcon} />
+                )}
                 <div className={styles.attachmentInfo}>
                   <p className={styles.attachmentName}>
                     {attachment.originalName || attachment.filename}
