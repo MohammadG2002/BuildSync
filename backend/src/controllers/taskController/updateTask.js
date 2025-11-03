@@ -34,15 +34,18 @@ export const updateTask = async (req, res) => {
           )
         : false;
 
-    // Check if user is a project member
+    // Check if user is a project member (defensive against missing project/members)
     const project = await Project.findById(task.project);
-    const isProjectMember = project?.members.some(
-      (member) => member.user.toString() === req.user._id.toString()
-    );
+    const isProjectMember = Array.isArray(project?.members)
+      ? project.members.some(
+          (member) => member.user.toString() === req.user._id.toString()
+        )
+      : false;
 
     // Workspace viewers are read-only even if assigned/member
     const workspaceDoc = await Workspace.findById(task.workspace);
-    const roleInWorkspace = workspaceDoc?.getUserRole(req.user._id);
+    // Use optional call to avoid calling undefined when workspace not found
+    const roleInWorkspace = workspaceDoc?.getUserRole?.(req.user._id) ?? null;
 
     if (roleInWorkspace === "viewer") {
       return res.status(403).json({
@@ -89,6 +92,56 @@ export const updateTask = async (req, res) => {
     if (priority) task.priority = priority;
     if (dueDate !== undefined) task.dueDate = dueDate;
     if (tags) task.tags = tags;
+
+    // Defensive sanitation: fix any malformed attachment arrays that could break validation
+    const coerceAttachmentArray = (value) => {
+      try {
+        if (Array.isArray(value)) {
+          const out = [];
+          for (const el of value) {
+            if (typeof el === "string") {
+              try {
+                const parsed = JSON.parse(el);
+                if (Array.isArray(parsed)) out.push(...parsed);
+                else if (parsed && typeof parsed === "object") out.push(parsed);
+                // else ignore
+              } catch (_) {
+                // ignore unparseable strings
+              }
+            } else if (el && typeof el === "object") {
+              out.push(el);
+            }
+          }
+          return out;
+        }
+        if (typeof value === "string") {
+          const parsed = JSON.parse(value);
+          if (Array.isArray(parsed)) return parsed;
+          if (parsed && typeof parsed === "object") return [parsed];
+        }
+      } catch (_) {
+        // fallthrough
+      }
+      return value;
+    };
+
+    // Coerce top-level attachments and testAttachments if needed
+    if (task.attachments != null) {
+      task.attachments = coerceAttachmentArray(task.attachments);
+    }
+    if (task.testAttachments != null) {
+      task.testAttachments = coerceAttachmentArray(task.testAttachments);
+    }
+    // Also sanitize comment attachments arrays
+    if (Array.isArray(task.comments)) {
+      task.comments = task.comments.map((c) => {
+        if (!c) return c;
+        if (c.attachments != null) {
+          c.attachments = coerceAttachmentArray(c.attachments);
+        }
+        return c;
+      });
+    }
 
     await task.save();
     await task.populate("assignedTo", "name email avatar");
