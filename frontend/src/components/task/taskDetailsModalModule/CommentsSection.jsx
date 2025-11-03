@@ -83,6 +83,17 @@ const CommentsSection = ({
 
   const handleClearQueued = () => setQueuedFiles([]);
 
+  // Unified send: if files queued, send files (and auto-comment); otherwise send comment text
+  const handleUnifiedSend = async (e) => {
+    e?.preventDefault?.();
+    if (readOnly) return;
+    if (queuedFiles.length > 0) {
+      await handleSendQueuedFiles();
+      return;
+    }
+    await handleSubmitComment();
+  };
+
   // Combined feed of attachments and comments (separate items)
   const combinedItems = React.useMemo(() => {
     const att = Array.isArray(attachments)
@@ -119,8 +130,8 @@ const CommentsSection = ({
         </div>
       </div>
 
-      {/* Comment input bar with attachment icon */}
-      <form className={styles.commentForm} onSubmit={handleSubmitComment}>
+      {/* Comment input bar with single unified Send button */}
+      <form className={styles.commentForm} onSubmit={handleUnifiedSend}>
         <div className={styles.commentInputWrapper}>
           <input
             type="text"
@@ -140,23 +151,32 @@ const CommentsSection = ({
             <Paperclip className={styles.commentSubmitIcon} />
           </button>
           <button
-            type="button"
+            type="submit"
             className={styles.commentSubmit}
-            onClick={handleSendQueuedFiles}
-            disabled={readOnly || isSendingQueued || queuedFiles.length === 0}
+            onClick={handleUnifiedSend}
+            disabled={
+              readOnly ||
+              isSubmitting ||
+              isSendingQueued ||
+              (queuedFiles.length === 0 && newComment.trim().length === 0)
+            }
             title={
               isSendingQueued
                 ? "Sending..."
-                : queuedFiles.length === 0
-                ? "Select attachments to enable"
-                : "Send selected attachments"
+                : queuedFiles.length > 0
+                ? "Send selected attachments"
+                : newComment.trim().length > 0
+                ? "Send comment"
+                : "Type a comment or add files"
             }
             aria-label={
               isSendingQueued
-                ? "Sending attachments"
-                : queuedFiles.length === 0
-                ? "Select attachments to enable"
-                : "Send attachments"
+                ? "Sending"
+                : queuedFiles.length > 0
+                ? "Send attachments"
+                : newComment.trim().length > 0
+                ? "Send comment"
+                : "Send disabled"
             }
           >
             <Send className={styles.commentSubmitIcon} />
@@ -172,21 +192,6 @@ const CommentsSection = ({
               Clear
             </button>
           )}
-          <button
-            type="submit"
-            className={styles.commentSubmit}
-            style={{ display: "none" }}
-            disabled={
-              readOnly ||
-              isSubmitting ||
-              isSendingQueued ||
-              newComment.trim().length === 0
-            }
-            title="Send comment"
-          >
-            <Send className={styles.commentSubmitIcon} />
-            {isSubmitting ? "Sending..." : "Send comment"}
-          </button>
         </div>
         {/* Hidden file input used by the attach button */}
         <input
