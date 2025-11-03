@@ -39,8 +39,16 @@ const handleAddComment = async (
     // If there are attachment files, upload them to the newly created comment
     if (attachmentFiles && attachmentFiles.length > 0) {
       console.log("Uploading attachments...");
-      // Get the newly added comment (last one in the array)
-      const newComment = updatedTask.comments[updatedTask.comments.length - 1];
+      // Get the newly added comment: pick the one with the latest createdAt to avoid ordering assumptions
+      const commentsArr = Array.isArray(updatedTask.comments)
+        ? updatedTask.comments
+        : [];
+      const newComment =
+        commentsArr
+          .slice()
+          .sort(
+            (a, b) => new Date(b?.createdAt || 0) - new Date(a?.createdAt || 0)
+          )[0] || commentsArr[commentsArr.length - 1];
       console.log("New comment ID:", newComment._id);
 
       // Upload each file to the comment

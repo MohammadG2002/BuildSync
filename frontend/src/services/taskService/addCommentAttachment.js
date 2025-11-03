@@ -14,8 +14,8 @@ export const addCommentAttachment = async (
 
   // Don't set Content-Type manually - browser sets it with boundary automatically
   const uploadResponse = await apiClient.post("/upload/attachment", formData);
-
-  const uploadedFile = uploadResponse.data;
+  // Backend responds with { success, message, data: { name, filename, url, size, type } }
+  const uploadedFile = uploadResponse?.data?.data || uploadResponse?.data || {};
 
   // Step 2: Add the attachment metadata to the comment
   const response = await apiClient.post(
@@ -25,10 +25,14 @@ export const addCommentAttachment = async (
       taskId
     )}/comments/${commentId}/attachments`,
     {
-      name: uploadedFile.name,
+      name:
+        uploadedFile.name ||
+        uploadedFile.originalName ||
+        uploadedFile.filename ||
+        file?.name,
       url: uploadedFile.url,
-      size: uploadedFile.size,
-      type: uploadedFile.type,
+      size: uploadedFile.size ?? file?.size,
+      type: uploadedFile.type || uploadedFile.mimetype || file?.type,
     }
   );
 

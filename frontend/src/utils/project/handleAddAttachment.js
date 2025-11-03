@@ -11,14 +11,16 @@ const handleAddAttachment = async (
   taskId,
   tasks,
   setTasks,
-  setSelectedTask
+  setSelectedTask,
+  section
 ) => {
   try {
     const updatedTask = await taskService.addAttachment(
       workspaceId,
       projectId,
       taskId,
-      file
+      file,
+      section ? { section } : undefined
     );
     setTasks(tasks.map((t) => (t._id === taskId ? updatedTask : t)));
     setSelectedTask(updatedTask);

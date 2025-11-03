@@ -401,7 +401,7 @@ const ProjectDetails = () => {
               attachmentFiles
             )
           }
-          onDeleteAttachment={(taskId, attachmentId) =>
+          onDeleteAttachment={(taskId, attachmentId, section) =>
             handleDeleteAttachment(
               taskId,
               attachmentId,
@@ -409,10 +409,11 @@ const ProjectDetails = () => {
               projectId,
               tasks,
               setTasks,
-              setSelectedTask
+              setSelectedTask,
+              section
             )
           }
-          onAddAttachment={(file) =>
+          onAddAttachment={(file, section) =>
             handleAddAttachment(
               file,
               workspaceId,
@@ -420,7 +421,8 @@ const ProjectDetails = () => {
               selectedTask._id,
               tasks,
               setTasks,
-              setSelectedTask
+              setSelectedTask,
+              section
             )
           }
           readOnly={isViewer}

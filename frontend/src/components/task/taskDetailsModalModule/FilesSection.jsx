@@ -1,13 +1,20 @@
 import React from "react";
 import { Paperclip, Download, Trash2, Send, MessageSquare } from "lucide-react";
-import { getRelativeTime } from "../../../utils/helpers";
+import { formatDate, getRelativeTime } from "../../../utils/helpers";
 import formatFileSize from "../../../utils/helpers/formatFileSize";
 import { buildAbsoluteUrl } from "../../../utils/buildAbsoluteUrl";
 import { downloadFromApi } from "../../../utils/downloadFromApi";
 import styles from "./TaskDetailsModal.module.css";
 
-// CommentsSection (Test-like behavior): queued attachments + auto-send comment + combined feed
-const CommentsSection = ({
+/**
+ * FilesSection
+ * A dedicated tab for importing and managing task files.
+ * Uses the exact same import method as the Overview attachments section,
+ * but also displays who imported each file.
+ */
+
+// Note: attachments are rendered as standalone items; no FileCard wrapper is used.
+const FilesSection = ({
   attachments,
   comments = [],
   onAddFile,
@@ -20,10 +27,6 @@ const CommentsSection = ({
 }) => {
   const [newComment, setNewComment] = React.useState("");
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  // Queue selected files instead of uploading immediately
-  const [queuedFiles, setQueuedFiles] = React.useState([]);
-  const [isSendingQueued, setIsSendingQueued] = React.useState(false);
-
   const handleSubmitComment = async (e) => {
     e?.preventDefault?.();
     if (readOnly) return;
@@ -34,56 +37,13 @@ const CommentsSection = ({
       await onAddComment?.(taskId, text, []);
       setNewComment("");
     } catch (err) {
-      console.error("Failed to add comment from Comments tab:", err);
+      console.error("Failed to add comment from Files tab:", err);
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Queue files on selection (do not upload immediately)
-  const handleFileSelect = (e) => {
-    if (readOnly) return;
-    const files = Array.from(e.target.files || []);
-    if (!files.length) return;
-    setQueuedFiles((prev) => [...prev, ...files]);
-    try {
-      if (e.target) e.target.value = "";
-    } catch (_) {}
-  };
-
-  const handleSendQueuedFiles = async () => {
-    if (readOnly || queuedFiles.length === 0) return;
-    if (typeof onAddFile !== "function") return;
-    setIsSendingQueued(true);
-    try {
-      // Build a synthetic event with a FileList so we can reuse onAddFile
-      const dt = new DataTransfer();
-      queuedFiles.forEach((f) => dt.items.add(f));
-      const syntheticEvent = { target: { files: dt.files } };
-      await onAddFile(syntheticEvent);
-      setQueuedFiles([]);
-      // After attachments upload, automatically send the comment.
-      // Requirement: at least send an empty comment
-      try {
-        setIsSubmitting(true);
-        const text = (newComment || "").trim();
-        await onAddComment?.(taskId, text, []);
-        setNewComment("");
-      } catch (e) {
-        console.error("Auto-send comment after attachments failed:", e);
-      } finally {
-        setIsSubmitting(false);
-      }
-    } catch (err) {
-      console.error("Failed to send queued files (Comments tab):", err);
-    } finally {
-      setIsSendingQueued(false);
-    }
-  };
-
-  const handleClearQueued = () => setQueuedFiles([]);
-
-  // Combined feed of attachments and comments (separate items)
+  // Build a single combined feed of comments and attachments as separate items
   const combinedItems = React.useMemo(() => {
     const att = Array.isArray(attachments)
       ? attachments.map((a) => ({
@@ -104,7 +64,7 @@ const CommentsSection = ({
     return [...att, ...com].sort((x, y) => {
       const dx = x.date ? new Date(x.date).getTime() : 0;
       const dy = y.date ? new Date(y.date).getTime() : 0;
-      return dy - dx;
+      return dy - dx; // newest first
     });
   }, [attachments, comments]);
 
@@ -114,7 +74,7 @@ const CommentsSection = ({
         <div className={styles.metadataItemHeader}>
           <Paperclip className={styles.metadataIcon} />
           <h3 className={styles.metadataItemTitle}>
-            Comments {attachments?.length > 0 && `(${attachments.length})`}
+            Files {attachments?.length > 0 && `(${attachments.length})`}
           </h3>
         </div>
       </div>
@@ -135,57 +95,20 @@ const CommentsSection = ({
             className={styles.commentAttachButton}
             title="Import files"
             onClick={() => fileInputRef.current?.click()}
-            disabled={readOnly || isUploading || isSendingQueued}
+            disabled={readOnly || isUploading}
           >
             <Paperclip className={styles.commentSubmitIcon} />
           </button>
           <button
-            type="button"
-            className={styles.commentSubmit}
-            onClick={handleSendQueuedFiles}
-            disabled={readOnly || isSendingQueued || queuedFiles.length === 0}
-            title={
-              isSendingQueued
-                ? "Sending..."
-                : queuedFiles.length === 0
-                ? "Select attachments to enable"
-                : "Send selected attachments"
-            }
-            aria-label={
-              isSendingQueued
-                ? "Sending attachments"
-                : queuedFiles.length === 0
-                ? "Select attachments to enable"
-                : "Send attachments"
-            }
-          >
-            <Send className={styles.commentSubmitIcon} />
-          </button>
-          {queuedFiles.length > 0 && (
-            <button
-              type="button"
-              className={styles.commentAttachButton}
-              onClick={handleClearQueued}
-              disabled={readOnly || isSendingQueued}
-              title="Clear selected attachments"
-            >
-              Clear
-            </button>
-          )}
-          <button
             type="submit"
             className={styles.commentSubmit}
-            style={{ display: "none" }}
             disabled={
-              readOnly ||
-              isSubmitting ||
-              isSendingQueued ||
-              newComment.trim().length === 0
+              readOnly || isSubmitting || newComment.trim().length === 0
             }
             title="Send comment"
           >
             <Send className={styles.commentSubmitIcon} />
-            {isSubmitting ? "Sending..." : "Send comment"}
+            {isSubmitting ? "Sending..." : "Send"}
           </button>
         </div>
         {/* Hidden file input used by the attach button */}
@@ -193,15 +116,10 @@ const CommentsSection = ({
           ref={fileInputRef}
           type="file"
           multiple
-          onChange={handleFileSelect}
+          onChange={onAddFile}
           className={styles.fileInput}
-          disabled={isUploading || isSendingQueued || readOnly}
+          disabled={isUploading || readOnly}
         />
-        {queuedFiles.length > 0 && (
-          <div className={styles.metadataTextMuted} style={{ marginTop: 8 }}>
-            {queuedFiles.length} file(s) selected
-          </div>
-        )}
       </form>
 
       {/* Combined feed of comments and attachments */}
@@ -214,7 +132,7 @@ const CommentsSection = ({
                 comment.user?.name || comment.user?.email || "Unknown User";
               const createdAt = comment.createdAt;
               const hasText = (comment.content || "").trim().length > 0;
-              const nameLine = hasText ? comment.content : "";
+              const nameLine = hasText ? comment.content : "Comment";
               const attachmentsCount = Array.isArray(comment.attachments)
                 ? comment.attachments.length
                 : 0;
@@ -229,14 +147,15 @@ const CommentsSection = ({
                   <div className={styles.attachmentItem}>
                     <div
                       className={styles.attachmentContent}
-                      title={hasText ? comment.content : undefined}
+                      title={hasText ? comment.content : "Comment"}
                     >
                       <MessageSquare className={styles.attachmentIcon} />
                       <div className={styles.attachmentInfo}>
                         <p className={styles.attachmentName}>{nameLine}</p>
                         <p className={styles.attachmentMeta}>
+                          {createdAt && formatDate(createdAt)}
                           {attachmentsCount > 0 &&
-                            `${attachmentsCount} attachment${
+                            ` • ${attachmentsCount} attachment${
                               attachmentsCount > 1 ? "s" : ""
                             }`}
                         </p>
@@ -247,10 +166,22 @@ const CommentsSection = ({
               );
             }
 
+            // attachment item
             const attachment = item.data;
             const name = attachment.originalName || attachment.filename;
+            const uploaderName =
+              attachment.uploadedBy?.name ||
+              attachment.uploadedBy?.email ||
+              "Unknown";
+            const uploadedAt = attachment.uploadedAt;
             return (
               <div key={item.key || idx}>
+                <div className={styles.commentHeader}>
+                  <span className={styles.commentAuthor}>{uploaderName}</span>
+                  <span className={styles.commentDate}>
+                    {uploadedAt ? ` - ${getRelativeTime(uploadedAt)}` : ""}
+                  </span>
+                </div>
                 <div className={styles.attachmentItem}>
                   <a
                     href={
@@ -268,6 +199,8 @@ const CommentsSection = ({
                       <p className={styles.attachmentName}>{name}</p>
                       <p className={styles.attachmentMeta}>
                         {attachment.size && formatFileSize(attachment.size)}
+                        {attachment.uploadedAt &&
+                          ` • ${formatDate(attachment.uploadedAt)}`}
                       </p>
                     </div>
                   </a>
@@ -277,14 +210,11 @@ const CommentsSection = ({
                         type="button"
                         onClick={async () => {
                           try {
-                            const baseQ = attachment.url
+                            const q = attachment.url
                               ? `?url=${encodeURIComponent(
                                   attachment.url
                                 )}&name=${encodeURIComponent(name || "")}`
-                              : "?";
-                            const q = `${baseQ}${
-                              baseQ.includes("?") && baseQ.length > 1 ? "&" : ""
-                            }section=test`;
+                              : "";
                             await downloadFromApi(
                               `/tasks/${taskId}/attachments/${attachment._id}/download${q}`,
                               name
@@ -312,7 +242,7 @@ const CommentsSection = ({
                     )}
                     <button
                       onClick={() =>
-                        onDeleteAttachment?.(taskId, attachment._id, "test")
+                        onDeleteAttachment?.(taskId, attachment._id)
                       }
                       className={styles.deleteButton}
                     >
@@ -331,4 +261,4 @@ const CommentsSection = ({
   );
 };
 
-export default CommentsSection;
+export default FilesSection;

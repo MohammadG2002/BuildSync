@@ -16,7 +16,8 @@ export const getTask = async (req, res) => {
       .populate("project", "name color")
       .populate("workspace", "name")
       .populate("comments.user", "name email avatar")
-      .populate("attachments.uploadedBy", "name email avatar");
+      .populate("attachments.uploadedBy", "name email avatar")
+      .populate("testAttachments.uploadedBy", "name email avatar");
 
     if (!task) {
       return res.status(404).json({

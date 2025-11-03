@@ -7,20 +7,25 @@
 
 import Task from "../../models/Task/index.js";
 import Workspace from "../../models/Workspace/index.js";
+import mongoose from "mongoose";
 
 export const addAttachment = async (req, res) => {
   try {
+    const { section } = req.query || {};
+    const targetArray = section === "test" ? "testAttachments" : "attachments";
     const { name, url, size, type, filename, originalName, mimetype } =
-      req.body;
+      req.body || {};
 
-    if (!name || !url) {
+    if (!url || (!name && !filename && !originalName)) {
       return res.status(400).json({
         success: false,
         message: "Attachment name and URL are required",
       });
     }
 
-    const task = await Task.findById(req.params.id);
+    const task = await Task.findById(req.params.id).select(
+      "_id workspace project"
+    );
 
     if (!task) {
       return res.status(404).json({
@@ -39,36 +44,54 @@ export const addAttachment = async (req, res) => {
       });
     }
 
-    // Map incoming fields to schema fields for compatibility
-    task.attachments.push({
-      filename: filename || name || originalName || undefined,
-      originalName: originalName || name || undefined,
-      mimetype: mimetype || type || undefined,
-      url,
-      size,
-      uploadedBy: req.user._id,
-    });
+    // Use raw update to avoid validating existing comment docs with empty content
+    const tid = new mongoose.Types.ObjectId(task._id);
+    const pushResult = await mongoose.connection.db
+      .collection("tasks")
+      .updateOne(
+        { _id: tid },
+        {
+          $push: {
+            [targetArray]: {
+              _id: new mongoose.Types.ObjectId(),
+              filename: filename || name || originalName,
+              originalName: originalName || name,
+              mimetype: mimetype || type,
+              url,
+              size: size ?? undefined,
+              uploadedBy: req.user._id,
+              uploadedAt: new Date(),
+            },
+          },
+        }
+      );
 
-    await task.save();
+    if (pushResult.matchedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Task not found",
+      });
+    }
 
-    // Populate task before returning
-    await task.populate([
+    // Return updated task populated
+    const updatedTask = await Task.findById(task._id).populate([
       { path: "assignedTo", select: "name email avatar" },
       { path: "createdBy", select: "name email avatar" },
       { path: "project", select: "name" },
       { path: "workspace", select: "name" },
       { path: "comments.user", select: "name email avatar" },
       { path: "attachments.uploadedBy", select: "name email avatar" },
+      { path: "testAttachments.uploadedBy", select: "name email avatar" },
     ]);
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       message: "Attachment added successfully",
-      data: { task },
+      data: { task: updatedTask },
     });
   } catch (error) {
     console.error("Add attachment error:", error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Failed to add attachment",
     });

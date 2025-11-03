@@ -79,6 +79,24 @@ export const taskSchema = new mongoose.Schema(
         },
       },
     ],
+    // Separate collection for Test tab files to avoid cross-impact with Files tab
+    testAttachments: [
+      {
+        filename: String,
+        originalName: String,
+        mimetype: String,
+        size: Number,
+        url: String,
+        uploadedBy: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+        uploadedAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
     subtasks: [
       {
         title: {
@@ -105,7 +123,8 @@ export const taskSchema = new mongoose.Schema(
         },
         content: {
           type: String,
-          required: true,
+          required: false,
+          default: "",
         },
         attachments: [
           {

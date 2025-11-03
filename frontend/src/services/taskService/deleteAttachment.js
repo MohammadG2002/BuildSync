@@ -5,14 +5,17 @@ export const deleteAttachment = async (
   workspaceId,
   projectId,
   taskId,
-  attachmentId
+  attachmentId,
+  options = {}
 ) => {
+  const section = options.section;
+  const query = section ? `?section=${encodeURIComponent(section)}` : "";
   const response = await apiClient.delete(
     `${API_ENDPOINTS.TASKS.GET(
       workspaceId,
       projectId,
       taskId
-    )}/attachments/${attachmentId}`
+    )}/attachments/${attachmentId}${query}`
   );
   return ResponseNormalizer.normalizeItem(response, "task");
 };

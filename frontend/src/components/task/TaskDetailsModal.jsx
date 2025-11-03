@@ -26,17 +26,16 @@ const TaskDetailsModal = ({
   onAddAttachment,
   readOnly = false,
 }) => {
-  const [activeTab, setActiveTab] = useState("overview"); // 'overview' | 'subtasks' | 'comments' | 'activity'
+  const [activeTab, setActiveTab] = useState("overview"); // 'overview' | 'subtasks' | 'comments' | 'files' | 'activity'
   const [activity, setActivity] = useState([]);
   const [loadingActivity, setLoadingActivity] = useState(false);
   const [isEditingDescription, setIsEditingDescription] = useState(false);
   const [editedDescription, setEditedDescription] = useState(
     task?.description || ""
   );
-  const [newComment, setNewComment] = useState("");
-  const [isSubmittingComment, setIsSubmittingComment] = useState(false);
   const [isUploadingFile, setIsUploadingFile] = useState(false);
-  const [commentFiles, setCommentFiles] = useState([]);
+  // Comments tab (Test-like) upload state
+  const [isUploadingTest, setIsUploadingTest] = useState(false);
   const fileInputRef = useRef(null);
   const commentFileInputRef = useRef(null);
   const [subtasks, setSubtasks] = useState(() => {
@@ -103,38 +102,21 @@ const TaskDetailsModal = ({
     setIsEditingDescription(false);
   };
 
-  const handleAddComment = async (e) => {
-    e.preventDefault();
-    if (readOnly) return;
-    // Allow sending if there's text OR at least one attachment
-    const hasText = (newComment || "").trim().length > 0;
-    const hasFiles = Array.isArray(commentFiles) && commentFiles.length > 0;
-    if (!hasText && !hasFiles) return;
-
-    setIsSubmittingComment(true);
+  // Comments tab (Test-like): upload selected files directly to testAttachments
+  const handleAddTestFiles = async (e) => {
+    const files = Array.from(e.target?.files || []);
+    if (files.length === 0) return;
+    setIsUploadingTest(true);
     try {
-      await onAddComment?.(task._id, newComment, commentFiles);
-      setNewComment("");
-      setCommentFiles([]);
-      // Reset file input
-      if (commentFileInputRef.current) {
-        commentFileInputRef.current.value = "";
+      for (const file of files) {
+        await onAddAttachment?.(file, "test");
       }
-    } catch (error) {
-      console.error("Failed to add comment:", error);
+    } catch (err) {
+      console.error("Failed to upload test attachments:", err);
     } finally {
-      setIsSubmittingComment(false);
+      setIsUploadingTest(false);
+      if (commentFileInputRef.current) commentFileInputRef.current.value = "";
     }
-  };
-
-  const handleCommentFileSelect = (e) => {
-    const files = Array.from(e.target.files);
-    if (readOnly) return;
-    setCommentFiles((prev) => [...prev, ...files]);
-  };
-
-  const handleRemoveCommentFile = (index) => {
-    setCommentFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
   // Load activity when switching to the Activity tab
@@ -349,6 +331,8 @@ const TaskDetailsModal = ({
     }
   };
 
+  // Comments tab: classic flow (files are sent with the comment on submit)
+
   return (
     <div className={styles.overlay}>
       <div className={styles.modal}>
@@ -391,6 +375,7 @@ const TaskDetailsModal = ({
             >
               {`Comments (${commentsCount})`}
             </button>
+            {/* Files and Test tabs removed */}
             <button
               className={`${styles.tabButton} ${
                 activeTab === "activity" ? styles.tabButtonActive : ""
@@ -450,15 +435,14 @@ const TaskDetailsModal = ({
 
           {activeTab === "comments" && (
             <CommentsSection
+              attachments={task.testAttachments}
               comments={task.comments}
-              newComment={newComment}
-              setNewComment={setNewComment}
-              onSubmit={handleAddComment}
-              isSubmitting={isSubmittingComment}
-              selectedFiles={commentFiles}
-              onFileSelect={handleCommentFileSelect}
-              onRemoveFile={handleRemoveCommentFile}
+              onAddFile={handleAddTestFiles}
+              onDeleteAttachment={onDeleteAttachment}
+              onAddComment={onAddComment}
+              taskId={task._id}
               fileInputRef={commentFileInputRef}
+              isUploading={isUploadingTest}
               readOnly={readOnly}
             />
           )}
@@ -466,6 +450,8 @@ const TaskDetailsModal = ({
           {activeTab === "activity" && (
             <ActivitySection items={activity} loading={loadingActivity} />
           )}
+
+          {/* Files and Test tab content removed */}
         </div>
 
         <ModalFooter createdAt={task.createdAt} updatedAt={task.updatedAt} />

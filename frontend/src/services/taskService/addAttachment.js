@@ -1,24 +1,41 @@
 import apiClient, { API_ENDPOINTS } from "../apiClient";
 import { ResponseNormalizer } from "../shared";
 
-export const addAttachment = async (workspaceId, projectId, taskId, file) => {
+export const addAttachment = async (
+  workspaceId,
+  projectId,
+  taskId,
+  file,
+  options = {}
+) => {
   // Step 1: Upload the file to get the URL
   const formData = new FormData();
   formData.append("file", file);
 
   // Don't set Content-Type manually - browser sets it with boundary automatically
   const uploadResponse = await apiClient.post("/upload/attachment", formData);
-
-  const uploadedFile = uploadResponse.data;
+  // Backend responds with { success, message, data: { name, filename, url, size, type } }
+  const uploadedFile =
+    uploadResponse?.data?.data || uploadResponse?.data || uploadResponse || {};
 
   // Step 2: Add the attachment metadata to the task
+  const section = options.section;
+  const query = section ? `?section=${encodeURIComponent(section)}` : "";
   const response = await apiClient.post(
-    `${API_ENDPOINTS.TASKS.GET(workspaceId, projectId, taskId)}/attachments`,
+    `${API_ENDPOINTS.TASKS.GET(
+      workspaceId,
+      projectId,
+      taskId
+    )}/attachments${query}`,
     {
-      name: uploadedFile.name,
+      name:
+        uploadedFile.name ||
+        uploadedFile.originalName ||
+        uploadedFile.filename ||
+        file?.name,
       url: uploadedFile.url,
-      size: uploadedFile.size,
-      type: uploadedFile.type,
+      size: uploadedFile.size ?? file?.size,
+      type: uploadedFile.type || uploadedFile.mimetype || file?.type,
     }
   );
 

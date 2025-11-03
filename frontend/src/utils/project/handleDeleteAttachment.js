@@ -11,14 +11,16 @@ const handleDeleteAttachment = async (
   projectId,
   tasks,
   setTasks,
-  setSelectedTask
+  setSelectedTask,
+  section
 ) => {
   try {
     const updatedTask = await taskService.deleteAttachment(
       workspaceId,
       projectId,
       taskId,
-      attachmentId
+      attachmentId,
+      section ? { section } : undefined
     );
     setTasks(tasks.map((t) => (t._id === taskId ? updatedTask : t)));
     setSelectedTask(updatedTask);

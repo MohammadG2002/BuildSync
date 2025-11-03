@@ -72,13 +72,14 @@ export const addCommentAttachment = async (req, res) => {
       });
     }
 
-    // Return updated task populated
+    // Return updated task populated (include attachments uploader population)
     const updatedTask = await Task.findById(taskId).populate([
       { path: "assignedTo", select: "name email avatar" },
       { path: "createdBy", select: "name email avatar" },
       { path: "project", select: "name" },
       { path: "workspace", select: "name" },
       { path: "comments.user", select: "name email avatar" },
+      { path: "attachments.uploadedBy", select: "name email avatar" },
     ]);
 
     // Log activity: attachment added (non-blocking)

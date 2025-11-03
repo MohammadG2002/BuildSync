@@ -54,43 +54,71 @@ export const addComment = async (req, res) => {
         { $push: { comments: newComment } }
       );
 
-    // Fetch updated task with populated fields
-    const updatedTask = await Task.findById(req.params.id).populate(
-      "comments.user",
-      "name email avatar"
-    );
+    // Fetch updated task with populated fields (ensure attachments and relations are populated too)
+    const updatedTask = await Task.findById(req.params.id).populate([
+      { path: "assignedTo", select: "name email avatar" },
+      { path: "createdBy", select: "name email avatar" },
+      { path: "project", select: "name" },
+      { path: "workspace", select: "name" },
+      { path: "comments.user", select: "name email avatar" },
+      { path: "attachments.uploadedBy", select: "name email avatar" },
+    ]);
 
     // Create notification for task creator and all assigned users
-    const notifyUserIds = new Set([updatedTask.createdBy.toString()]);
+    const idToString = (val) => {
+      if (!val) return null;
+      if (typeof val === "string") return val;
+      if (val._id) return val._id.toString();
+      try {
+        return val.toString();
+      } catch {
+        return null;
+      }
+    };
+
+    const createdById = idToString(updatedTask.createdBy);
+    const notifyUserIds = new Set(createdById ? [createdById] : []);
 
     // Add all assigned users to notification list
     if (updatedTask.assignedTo && Array.isArray(updatedTask.assignedTo)) {
-      updatedTask.assignedTo.forEach((userId) => {
-        notifyUserIds.add(userId.toString());
+      updatedTask.assignedTo.forEach((u) => {
+        const uid = idToString(u);
+        if (uid) notifyUserIds.add(uid);
       });
     }
 
     // Remove current user from notifications
-    notifyUserIds.delete(req.user._id.toString());
+    notifyUserIds.delete(idToString(req.user._id));
 
-    // Create notifications in parallel
-    const notificationPromises = Array.from(notifyUserIds).map((userId) =>
-      Notification.create({
-        recipient: userId,
-        sender: req.user._id,
-        type: "comment_added",
-        title: "New comment on task",
-        message: `${req.user.name} commented on "${updatedTask.title}"`,
-        link: `/tasks/${updatedTask._id}`,
-        metadata: {
-          taskId: updatedTask._id,
-          projectId: updatedTask.project,
-          workspaceId: updatedTask.workspace,
-        },
-      })
-    );
-
-    await Promise.all(notificationPromises);
+    // Create notifications in parallel, do not fail comment on notification errors
+    try {
+      const notificationPromises = Array.from(notifyUserIds).map((userIdStr) =>
+        Notification.create({
+          recipient: new mongoose.Types.ObjectId(userIdStr),
+          sender: req.user._id,
+          type: "comment_added",
+          title: "New comment on task",
+          message: `${req.user.name} commented on "${updatedTask.title}"`,
+          link: `/tasks/${updatedTask._id}`,
+          metadata: {
+            taskId: updatedTask._id,
+            projectId:
+              updatedTask.project?._id ||
+              new mongoose.Types.ObjectId(idToString(updatedTask.project)),
+            workspaceId:
+              updatedTask.workspace?._id ||
+              new mongoose.Types.ObjectId(idToString(updatedTask.workspace)),
+          },
+        })
+      );
+      await Promise.all(notificationPromises);
+    } catch (e) {
+      // Log and continue; notifications should not block adding comments
+      console.warn(
+        "Comment added, but failed to create some notifications:",
+        e
+      );
+    }
 
     // Log activity: comment added (non-blocking)
     try {

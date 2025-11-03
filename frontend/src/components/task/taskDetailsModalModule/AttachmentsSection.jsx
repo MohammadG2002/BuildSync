@@ -74,12 +74,34 @@ const AttachmentsSection = ({
                     type="button"
                     onClick={async () => {
                       try {
+                        const name =
+                          attachment.originalName || attachment.filename;
+                        const q = attachment.url
+                          ? `?url=${encodeURIComponent(
+                              attachment.url
+                            )}&name=${encodeURIComponent(name || "")}`
+                          : "";
                         await downloadFromApi(
-                          `/tasks/${taskId}/attachments/${attachment._id}/download`,
-                          attachment.originalName || attachment.filename
+                          `/tasks/${taskId}/attachments/${attachment._id}/download${q}`,
+                          name
                         );
                       } catch (err) {
                         console.error("Download failed:", err);
+                        // Fallback to direct URL open if API download is unavailable
+                        if (attachment.url) {
+                          const href = buildAbsoluteUrl(attachment.url);
+                          const a = document.createElement("a");
+                          a.href = href;
+                          a.target = "_blank";
+                          a.rel = "noopener noreferrer";
+                          a.download =
+                            attachment.originalName ||
+                            attachment.filename ||
+                            undefined;
+                          document.body.appendChild(a);
+                          a.click();
+                          a.remove();
+                        }
                       }
                     }}
                     className={styles.downloadButton}

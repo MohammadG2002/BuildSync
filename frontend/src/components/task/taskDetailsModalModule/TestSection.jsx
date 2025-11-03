@@ -1,13 +1,16 @@
 import React from "react";
 import { Paperclip, Download, Trash2, Send, MessageSquare } from "lucide-react";
-import { getRelativeTime } from "../../../utils/helpers";
+import { formatDate, getRelativeTime } from "../../../utils/helpers";
 import formatFileSize from "../../../utils/helpers/formatFileSize";
 import { buildAbsoluteUrl } from "../../../utils/buildAbsoluteUrl";
 import { downloadFromApi } from "../../../utils/downloadFromApi";
 import styles from "./TaskDetailsModal.module.css";
 
-// CommentsSection (Test-like behavior): queued attachments + auto-send comment + combined feed
-const CommentsSection = ({
+/**
+ * TestSection
+ * A duplicate of FilesSection features, isolated for the Test tab.
+ */
+const TestSection = ({
   attachments,
   comments = [],
   onAddFile,
@@ -34,18 +37,19 @@ const CommentsSection = ({
       await onAddComment?.(taskId, text, []);
       setNewComment("");
     } catch (err) {
-      console.error("Failed to add comment from Comments tab:", err);
+      console.error("Failed to add comment from Test tab:", err);
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Queue files on selection (do not upload immediately)
+  // For Test tab: queue files on selection (do not upload immediately)
   const handleFileSelect = (e) => {
     if (readOnly) return;
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
     setQueuedFiles((prev) => [...prev, ...files]);
+    // Allow re-selecting the same file name again by resetting input
     try {
       if (e.target) e.target.value = "";
     } catch (_) {}
@@ -63,19 +67,21 @@ const CommentsSection = ({
       await onAddFile(syntheticEvent);
       setQueuedFiles([]);
       // After attachments upload, automatically send the comment.
-      // Requirement: at least send an empty comment
+      // Requirement: at least send an empty comment (not "no comment").
       try {
         setIsSubmitting(true);
         const text = (newComment || "").trim();
         await onAddComment?.(taskId, text, []);
+        // Clear the input after sending (even if it was empty)
         setNewComment("");
       } catch (e) {
+        // Comment send is best-effort and independent
         console.error("Auto-send comment after attachments failed:", e);
       } finally {
         setIsSubmitting(false);
       }
     } catch (err) {
-      console.error("Failed to send queued files (Comments tab):", err);
+      console.error("Failed to send queued files (Test tab):", err);
     } finally {
       setIsSendingQueued(false);
     }
@@ -114,7 +120,7 @@ const CommentsSection = ({
         <div className={styles.metadataItemHeader}>
           <Paperclip className={styles.metadataIcon} />
           <h3 className={styles.metadataItemTitle}>
-            Comments {attachments?.length > 0 && `(${attachments.length})`}
+            Test {attachments?.length > 0 && `(${attachments.length})`}
           </h3>
         </div>
       </div>
@@ -331,4 +337,4 @@ const CommentsSection = ({
   );
 };
 
-export default CommentsSection;
+export default TestSection;

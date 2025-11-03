@@ -100,6 +100,7 @@ export const getTasks = async (req, res) => {
       .populate("workspace", "name")
       .populate("comments.user", "name email avatar")
       .populate("attachments.uploadedBy", "name email avatar")
+      .populate("testAttachments.uploadedBy", "name email avatar")
       .sort({ createdAt: -1 });
 
     res.json({
