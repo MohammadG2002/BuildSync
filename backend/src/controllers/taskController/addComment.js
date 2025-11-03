@@ -42,6 +42,8 @@ export const addComment = async (req, res) => {
       _id: new mongoose.Types.ObjectId(),
       user: req.user._id,
       content: commentText,
+      likes: [],
+      dislikes: [],
       attachments: [],
       createdAt: new Date(),
     };

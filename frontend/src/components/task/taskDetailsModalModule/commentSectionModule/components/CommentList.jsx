@@ -4,7 +4,12 @@ import styles from "../../TaskDetailsModal.module.css";
 import { getInitials, generateColor } from "../../../../../utils/helpers";
 
 // Expects an array of comments only
-const CommentList = ({ comments, onUpdateComment, onDeleteComment }) => {
+const CommentList = ({
+  comments,
+  onUpdateComment,
+  onDeleteComment,
+  onReactComment,
+}) => {
   const items = Array.isArray(comments) ? comments : [];
   return (
     <div style={{ width: "100%" }}>
@@ -29,6 +34,7 @@ const CommentList = ({ comments, onUpdateComment, onDeleteComment }) => {
                 comment={c}
                 onUpdateComment={onUpdateComment}
                 onDeleteComment={onDeleteComment}
+                onReactComment={onReactComment}
               />
             </div>
           </div>

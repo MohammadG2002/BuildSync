@@ -863,6 +863,51 @@
   height: 1rem;
 }
 
+/* Reactions */
+.reactionBar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem 0.5rem 0.5rem;
+}
+
+.reactionButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #374151;
+  cursor: pointer;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.reactionButton:hover {
+  background-color: #f9fafb;
+}
+
+:global(.dark) .reactionButton {
+  background-color: #1f2937;
+  border-color: #374151;
+  color: #d1d5db;
+}
+
+:global(.dark) .reactionButton:hover {
+  background-color: #374151;
+}
+
+.reactionActive {
+  border-color: #2563eb;
+  color: #2563eb;
+}
+
+.reactionCount {
+  font-weight: 500;
+}
+
 /* Comment item menu */
 .commentMenuContainer {
   position: relative;

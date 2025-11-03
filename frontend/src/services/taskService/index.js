@@ -19,3 +19,4 @@ export { addSubtask } from "./addSubtask.js";
 export { updateSubtask } from "./updateSubtask.js";
 export { deleteSubtask } from "./deleteSubtask.js";
 export { getTaskActivity } from "./getTaskActivity.js";
+export { reactToComment } from "./reactToComment.js";

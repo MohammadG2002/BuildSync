@@ -12,6 +12,7 @@ import {
   addCommentAttachment,
   deleteAttachment,
   downloadAttachment,
+  reactToComment,
 } from "../controllers/taskController/index.js";
 import {
   addSubtask,
@@ -36,6 +37,15 @@ router
   .route("/")
   .get(getTasks)
   .post(taskCreateValidation, validate, createTask);
+
+router
+  .route("/:id/comments/:commentId/react")
+  .patch(
+    mongoIdValidation("id"),
+    mongoIdValidation("commentId"),
+    validate,
+    reactToComment
+  );
 
 router
   .route("/:id")

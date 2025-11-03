@@ -16,6 +16,7 @@ const CommentsSection = ({
   onAddComment,
   onUpdateComment,
   onDeleteComment,
+  onReactComment,
   taskId,
   fileInputRef,
   isUploading,
@@ -52,6 +53,7 @@ const CommentsSection = ({
             comments={comments}
             onUpdateComment={onUpdateComment}
             onDeleteComment={onDeleteComment}
+            onReactComment={onReactComment}
           />
         </div>
       ) : (

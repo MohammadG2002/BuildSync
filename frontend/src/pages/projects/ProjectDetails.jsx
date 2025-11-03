@@ -39,6 +39,7 @@ import handleDeleteAttachment from "../../utils/project/handleDeleteAttachment";
 import handleAddAttachment from "../../utils/project/handleAddAttachment";
 import handleUpdateComment from "../../utils/project/handleUpdateComment";
 import handleDeleteComment from "../../utils/project/handleDeleteComment";
+import handleReactToComment from "../../utils/project/handleReactToComment";
 // removed handleAddProjectMember - modal now toggles membership directly within component
 import styles from "./ProjectDetails.module.css";
 
@@ -421,6 +422,18 @@ const ProjectDetails = () => {
               projectId,
               taskId,
               commentId,
+              tasks,
+              setTasks,
+              setSelectedTask
+            )
+          }
+          onReactComment={(taskId, commentId, action) =>
+            handleReactToComment(
+              workspaceId,
+              projectId,
+              taskId,
+              commentId,
+              action,
               tasks,
               setTasks,
               setSelectedTask

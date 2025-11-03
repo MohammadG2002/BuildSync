@@ -126,6 +126,20 @@ export const taskSchema = new mongoose.Schema(
           required: false,
           default: "",
         },
+        likes: [
+          {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            default: undefined,
+          },
+        ],
+        dislikes: [
+          {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            default: undefined,
+          },
+        ],
         attachments: [
           {
             filename: String,

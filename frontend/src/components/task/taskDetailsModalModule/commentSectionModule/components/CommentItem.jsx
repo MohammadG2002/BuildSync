@@ -1,15 +1,19 @@
 import React from "react";
-import { MoreVertical } from "lucide-react";
+import { MoreVertical, ThumbsUp, ThumbsDown } from "lucide-react";
 import styles from "../../TaskDetailsModal.module.css";
 import { getRelativeTime } from "../../../../../utils/helpers";
+import { useAuth } from "../../../../../hooks/useAuth";
 import CommentAttachmentItem from "./CommentAttachmentItem";
 
 const CommentItem = ({
   comment,
   onUpdateComment,
   onDeleteComment,
+  onReactComment,
   // props intentionally minimal for simple display
 }) => {
+  const { user } = useAuth();
+  const currentUserId = user?._id || user?.id;
   const authorName =
     comment.user?.name || comment.user?.email || "Unknown User";
   const createdAt = comment.createdAt;
@@ -18,6 +22,14 @@ const CommentItem = ({
   const attachments = Array.isArray(comment.attachments)
     ? comment.attachments
     : [];
+  const likes = Array.isArray(comment.likes) ? comment.likes : [];
+  const dislikes = Array.isArray(comment.dislikes) ? comment.dislikes : [];
+  const likedByMe = currentUserId
+    ? likes.some((u) => String(u?._id || u) === String(currentUserId))
+    : false;
+  const dislikedByMe = currentUserId
+    ? dislikes.some((u) => String(u?._id || u) === String(currentUserId))
+    : false;
 
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [isEditing, setIsEditing] = React.useState(false);
@@ -56,6 +68,18 @@ const CommentItem = ({
     setMenuOpen(false);
     await onDeleteComment(comment._id);
     setShowConfirm(false);
+  };
+
+  const handleLike = async () => {
+    if (!onReactComment || !comment._id) return;
+    const action = likedByMe ? "clear" : "like";
+    await onReactComment(comment._id, action);
+  };
+
+  const handleDislike = async () => {
+    if (!onReactComment || !comment._id) return;
+    const action = dislikedByMe ? "clear" : "dislike";
+    await onReactComment(comment._id, action);
   };
 
   return (
@@ -160,6 +184,33 @@ const CommentItem = ({
           </div>
         )
       )}
+      {/* Reactions bar */}
+      <div className={styles.reactionBar}>
+        <button
+          type="button"
+          className={`${styles.reactionButton} ${
+            likedByMe ? styles.reactionActive : ""
+          }`}
+          onClick={handleLike}
+          aria-pressed={likedByMe}
+          title={likedByMe ? "Unlike" : "Like"}
+        >
+          <ThumbsUp size={14} />
+          <span className={styles.reactionCount}>{likes.length || 0}</span>
+        </button>
+        <button
+          type="button"
+          className={`${styles.reactionButton} ${
+            dislikedByMe ? styles.reactionActive : ""
+          }`}
+          onClick={handleDislike}
+          aria-pressed={dislikedByMe}
+          title={dislikedByMe ? "Remove dislike" : "Dislike"}
+        >
+          <ThumbsDown size={14} />
+          <span className={styles.reactionCount}>{dislikes.length || 0}</span>
+        </button>
+      </div>
       {showConfirm && (
         <div className={styles.confirmOverlay}>
           <div className={styles.confirmDialog} role="dialog" aria-modal="true">
