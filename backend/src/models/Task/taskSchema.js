@@ -128,10 +128,11 @@ export const taskSchema = new mongoose.Schema(
         },
         attachments: [
           {
-            name: String,
-            url: String,
+            filename: String,
+            originalName: String,
+            mimetype: String,
             size: Number,
-            type: String,
+            url: String,
             uploadedBy: {
               type: mongoose.Schema.Types.ObjectId,
               ref: "User",

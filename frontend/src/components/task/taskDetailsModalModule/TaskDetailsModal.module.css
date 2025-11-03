@@ -566,18 +566,41 @@
 
 .attachmentsList {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 0.5rem;
+  width: 100%;
+}
+
+.commentItem {
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  margin: 0.5rem 0;
+  width: 100%;
+}
+
+.attachmentComment {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.2rem;
 }
 
 .attachmentItem {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.75rem;
+  padding: 0.5rem;
   background-color: #f9fafb;
   border-radius: 0.5rem;
   border: 1px solid #e5e7eb;
+  width: fit-content;
+}
+
+.attachmentItem:hover {
+  background-color: #d3d3d3;
 }
 
 :global(.dark) .attachmentItem {
@@ -587,7 +610,18 @@
 
 .attachmentContent {
   display: flex;
+  flex-direction: column;
   align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+  min-width: 0;
+  width: fit-content;
+}
+
+.attachmentCommentContent {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
   gap: 0.75rem;
   flex: 1;
   min-width: 0;
@@ -727,10 +761,16 @@
   background-color: #374151;
 }
 
+.commentItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem;
+}
+
 .commentHeader {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
   margin-bottom: 0.25rem;
 }
 
@@ -820,6 +860,66 @@
 .commentSubmitIcon {
   width: 1rem;
   height: 1rem;
+}
+
+/* Comment item menu */
+.commentMenuContainer {
+  position: relative;
+}
+
+.commentMenu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  padding: 0.25rem;
+  z-index: 10;
+  min-width: 8rem;
+}
+
+:global(.dark) .commentMenu {
+  background-color: #1f2937;
+  border-color: #374151;
+}
+
+.commentMenuItem,
+.commentMenuItemDanger {
+  width: 100%;
+  text-align: left;
+  padding: 0.375rem 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 0.375rem;
+  color: #111827;
+}
+
+.commentMenuItem:hover {
+  background-color: #f3f4f6;
+}
+
+:global(.dark) .commentMenuItem {
+  color: #f3f4f6;
+}
+
+:global(.dark) .commentMenuItem:hover {
+  background-color: #374151;
+}
+
+.commentMenuItemDanger {
+  color: #dc2626;
+}
+
+.commentMenuItemDanger:hover {
+  background-color: #fef2f2;
+}
+
+:global(.dark) .commentMenuItemDanger:hover {
+  background-color: rgba(127, 29, 29, 0.2);
 }
 
 /* ModalFooter */
@@ -917,6 +1017,7 @@
   display: flex;
   gap: 0.5rem;
   flex: 1;
+  margin-top: 1rem;
 }
 
 .commentAttachButton {
