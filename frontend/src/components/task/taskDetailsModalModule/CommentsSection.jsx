@@ -46,8 +46,6 @@ const CommentsSection = ({
 
   return (
     <div>
-      <div className={styles.sectionHeader}></div>
-
       {Array.isArray(comments) && comments.length > 0 ? (
         <div className={styles.attachmentsList}>
           <CommentList
