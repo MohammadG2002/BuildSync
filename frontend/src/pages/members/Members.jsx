@@ -300,11 +300,13 @@ const Members = () => {
               }
               className={styles.roleSelect}
             >
-              {Object.entries(USER_ROLES).map(([key, value]) => (
-                <option key={value} value={value}>
-                  {key}
-                </option>
-              ))}
+              {Object.entries(USER_ROLES)
+                .filter(([, value]) => value !== "admin")
+                .map(([key, value]) => (
+                  <option key={value} value={value}>
+                    {key}
+                  </option>
+                ))}
             </select>
             <p className={styles.roleDescription}>
               {inviteData.role === "admin" &&

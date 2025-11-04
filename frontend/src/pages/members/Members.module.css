@@ -351,22 +351,45 @@
   width: 100%;
   padding: 0.5rem 1rem;
   border: 1px solid #d1d5db;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   outline: none;
   transition: all 0.2s;
   background-color: #ffffff;
   color: #111827;
+  /* Make radius consistent across browsers and allow custom arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  overflow: hidden;
+  /* Custom chevron */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M6 8l4 4 4-4' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem 1rem;
+  padding-right: 2.5rem;
 }
 
 :global(.dark) .roleSelect {
   border-color: #4b5563;
   background-color: #1f2937;
   color: #f9fafb;
+  /* Light chevron for dark mode */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M6 8l4 4 4-4' stroke='%23d1d5db' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 
 .roleSelect:focus {
   border-color: #3b82f6;
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.roleOptionsDropdown {
+  display: flex;
+}
+
+.roleOption {
+  display: flex;
+  border: 1px solid black;
+  border-radius: 10px;
 }
 
 .roleDescription {
