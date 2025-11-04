@@ -28,15 +28,19 @@ export const removeWorkspaceMember = async (
     throw new Error("Workspace not found");
   }
 
-  // Check if requester is owner or admin
+  // Allow self-removal for non-owners
+  const isSelfRemoval = requesterId.toString() === memberUserId.toString();
+
   const requesterRole = workspace.getUserRole(requesterId);
-  if (!["owner", "admin"].includes(requesterRole)) {
+  if (!isSelfRemoval && !["owner", "admin"].includes(requesterRole)) {
     throw new Error("Only workspace owners and admins can remove members");
   }
 
-  // Cannot remove owner
-  if (workspace.owner.toString() === memberUserId) {
-    throw new Error("Cannot remove workspace owner");
+  // Cannot remove owner (owner must transfer ownership first)
+  if (workspace.owner.toString() === memberUserId.toString()) {
+    throw new Error(
+      "Workspace owner cannot leave. Transfer ownership first from the Members page."
+    );
   }
 
   workspace.members = workspace.members.filter(

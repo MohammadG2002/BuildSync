@@ -11,6 +11,7 @@ export { getWorkspaceMembers } from "./getWorkspaceMembers.js";
 export { addWorkspaceMember } from "./addWorkspaceMember.js";
 export { updateMemberRole } from "./updateMemberRole.js";
 export { removeMember } from "./removeMember.js";
+export { transferOwnership } from "./transferOwnership.js";
 export { sendWorkspaceInvite } from "./sendWorkspaceInvite.js";
 export { acceptWorkspaceInvite } from "./acceptWorkspaceInvite.js";
 export { declineWorkspaceInvite } from "./declineWorkspaceInvite.js";

@@ -7,6 +7,7 @@ const MemberGrid = ({
   currentUserRole,
   onChangeRole,
   onRemove,
+  onTransferOwnership,
 }) => {
   return (
     <div className={styles.memberGrid}>
@@ -18,6 +19,7 @@ const MemberGrid = ({
           currentUserRole={currentUserRole}
           onChangeRole={onChangeRole}
           onRemove={onRemove}
+          onTransferOwnership={onTransferOwnership}
         />
       ))}
     </div>

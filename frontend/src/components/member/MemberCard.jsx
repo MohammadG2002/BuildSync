@@ -15,6 +15,7 @@ const MemberCard = ({
   currentUserRole,
   onChangeRole,
   onRemove,
+  onTransferOwnership,
 }) => {
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
@@ -57,6 +58,7 @@ const MemberCard = ({
                   currentUserRole={currentUserRole}
                   onChangeRole={onChangeRole}
                   onRemove={onRemove}
+                  onTransferOwnership={onTransferOwnership}
                   onClose={() => setShowMenu(false)}
                 />
               )}

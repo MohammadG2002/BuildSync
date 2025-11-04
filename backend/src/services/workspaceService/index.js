@@ -14,3 +14,4 @@ export { checkWorkspaceMembership } from "./checkWorkspaceMembership.js";
 export { createWorkspaceInvite } from "./createWorkspaceInvite.js";
 export { acceptWorkspaceInvite } from "./acceptWorkspaceInvite.js";
 export { declineWorkspaceInvite } from "./declineWorkspaceInvite.js";
+export { transferWorkspaceOwnership } from "./transferWorkspaceOwnership.js";

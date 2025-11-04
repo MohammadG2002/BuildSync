@@ -11,6 +11,7 @@ const MemberList = ({
   currentUserRole,
   onChangeRole,
   onRemove,
+  onTransferOwnership,
   groupByRole = false,
 }) => {
   if (!groupByRole) {
@@ -21,6 +22,7 @@ const MemberList = ({
         currentUserRole={currentUserRole}
         onChangeRole={onChangeRole}
         onRemove={onRemove}
+        onTransferOwnership={onTransferOwnership}
       />
     );
   }
@@ -38,6 +40,7 @@ const MemberList = ({
           currentUserRole={currentUserRole}
           onChangeRole={onChangeRole}
           onRemove={onRemove}
+          onTransferOwnership={onTransferOwnership}
         />
       ))}
     </div>

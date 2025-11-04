@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useWorkspace } from "../../hooks/useWorkspace";
 import Button from "../../components/common/Button";
+import Modal from "../../components/common/Modal";
 import {
   WorkspaceNotFoundState,
   GeneralSettingsForm,
@@ -16,16 +17,23 @@ import handleChange from "../../utils/settings/handleChange";
 import handleSaveChanges from "../../utils/settings/handleSaveChanges";
 import handleDeleteWorkspace from "../../utils/settings/handleDeleteWorkspace";
 import styles from "../../components/settings/Settings.module.css";
+import * as workspaceService from "../../services/workspaceService";
+import { AuthContext } from "../../context/AuthContext";
+import toast from "react-hot-toast";
 
 const Settings = () => {
   const { workspaceId } = useParams();
   const navigate = useNavigate();
-  const { workspaces, updateWorkspace, deleteWorkspace } = useWorkspace();
+  const { workspaces, updateWorkspace, deleteWorkspace, fetchWorkspaces } =
+    useWorkspace();
+  const { user } = useContext(AuthContext);
 
   const [workspace, setWorkspace] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState("");
+  const [showLeaveModal, setShowLeaveModal] = useState(false);
+  const [leaving, setLeaving] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -50,11 +58,18 @@ const Settings = () => {
     );
   }
 
+  // Determine if current user is the workspace owner (id may be nested or raw)
+  const ownerId =
+    workspace?.owner?._id || workspace?.owner?.id || workspace?.owner;
+  const currentUserId = user?._id || user?.id;
+  const isOwner =
+    ownerId && currentUserId && String(ownerId) === String(currentUserId);
+
   return (
     <div className={styles.container}>
       {/* Header */}
       <div className={styles.header}>
-        <div style={{ display: "flex" }}>
+        <div className={styles.headerContainer}>
           <Button
             variant="ghost"
             onClick={() => navigate(`/app/workspaces/${workspaceId}`)}
@@ -69,7 +84,17 @@ const Settings = () => {
             </p>
           </div>
         </div>
-        <Button variant="danger" className={styles.leaveWorkspace}>
+        <Button
+          variant="danger"
+          className={styles.leaveWorkspace}
+          onClick={() => setShowLeaveModal(true)}
+          disabled={isOwner}
+          title={
+            isOwner
+              ? "Owners cannot leave. Transfer ownership first via Members."
+              : undefined
+          }
+        >
           Leave Workspace
         </Button>
       </div>
@@ -128,6 +153,77 @@ const Settings = () => {
           )
         }
       />
+
+      {/* Leave Workspace Confirmation Modal */}
+      <Modal
+        isOpen={showLeaveModal}
+        onClose={() => setShowLeaveModal(false)}
+        title="Leave Workspace"
+        size="sm"
+      >
+        <div
+          style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}
+        >
+          <p>
+            Are you sure you want to leave "{workspace.name}"? You will lose
+            access to its projects until you’re invited again.
+          </p>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              gap: "0.5rem",
+            }}
+          >
+            <Button variant="outline" onClick={() => setShowLeaveModal(false)}>
+              Cancel
+            </Button>
+            <Button
+              variant="danger"
+              loading={leaving}
+              onClick={async () => {
+                try {
+                  setLeaving(true);
+                  // Prevent owners from leaving directly
+                  if (isOwner) {
+                    toast.error(
+                      "You are the workspace owner. Transfer ownership first via the Members page."
+                    );
+                    return;
+                  }
+
+                  // Remove self from workspace membership
+                  await workspaceService.removeMember(
+                    workspaceId,
+                    currentUserId
+                  );
+
+                  toast.success(
+                    `You left ${workspace?.name || "the workspace"}`
+                  );
+                  setShowLeaveModal(false);
+
+                  // Refresh workspace list and navigate out
+                  if (typeof fetchWorkspaces === "function") {
+                    await fetchWorkspaces();
+                  }
+                  navigate("/app/workspaces");
+                } catch (err) {
+                  const msg =
+                    err?.response?.data?.message ||
+                    err?.message ||
+                    "Failed to leave workspace";
+                  toast.error(msg);
+                } finally {
+                  setLeaving(false);
+                }
+              }}
+            >
+              Confirm Leave
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

@@ -8,6 +8,7 @@ const MemberRoleGroup = ({
   currentUserRole,
   onChangeRole,
   onRemove,
+  onTransferOwnership,
 }) => {
   if (members.length === 0) return null;
 
@@ -22,6 +23,7 @@ const MemberRoleGroup = ({
         currentUserRole={currentUserRole}
         onChangeRole={onChangeRole}
         onRemove={onRemove}
+        onTransferOwnership={onTransferOwnership}
       />
     </div>
   );

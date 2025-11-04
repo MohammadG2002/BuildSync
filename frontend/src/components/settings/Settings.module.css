@@ -15,6 +15,11 @@
   justify-content: space-between;
 }
 
+.headerContainer {
+  display: flex;
+  gap: 1rem;
+}
+
 .backButton {
   gap: 0.5rem;
 }

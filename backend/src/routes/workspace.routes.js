@@ -10,6 +10,7 @@ import {
   sendInvite,
   acceptInvite,
   declineInvite,
+  transferOwnership,
 } from "../controllers/workspaceController/index.js";
 import {
   authenticate,
@@ -47,6 +48,11 @@ router
     validate,
     removeMember
   );
+
+// Transfer ownership
+router
+  .route("/:id/transfer-ownership")
+  .post(mongoIdValidation("id"), validate, transferOwnership);
 
 // Invites
 router

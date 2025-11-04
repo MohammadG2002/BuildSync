@@ -13,6 +13,7 @@ export const WORKSPACE_ENDPOINTS = {
     `/members/workspace/${workspaceId}/${memberId}`,
   REMOVE_MEMBER: (workspaceId, memberId) =>
     `/workspaces/${workspaceId}/members/${memberId}`,
+  TRANSFER_OWNERSHIP: (id) => `/workspaces/${id}/transfer-ownership`,
   INVITES: (id) => `/workspaces/${id}/invites`,
   INVITE_ACCEPT: (id, notificationId) =>
     `/workspaces/${id}/invites/${notificationId}/accept`,

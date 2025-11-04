@@ -13,7 +13,7 @@ export const getWorkspaceMembers = asyncHandler(async (req, res) => {
   const { workspaceId } = req.params;
 
   const workspace = await Workspace.findById(workspaceId)
-    .populate("owner", "name email avatar")
+    .populate("owner", "name email avatar lastLogin")
     .populate("members.user", "name email avatar lastLogin");
 
   if (!workspace) {
@@ -30,16 +30,33 @@ export const getWorkspaceMembers = asyncHandler(async (req, res) => {
     throw new Error("Access denied");
   }
 
-  // Transform members data to flat structure
-  const members = workspace.members.map((member) => ({
-    id: member.user._id.toString(),
-    name: member.user.name,
-    email: member.user.email,
-    avatar: member.user.avatar,
-    role: member.role,
-    joinedDate: member.joinedAt,
-    lastLogin: member.user.lastLogin,
-  }));
+  // Transform members data to flat structure and include owner
+  const members = [
+    // Include owner as a virtual member entry with role 'owner'
+    {
+      id: workspace.owner._id.toString(),
+      name: workspace.owner.name,
+      email: workspace.owner.email,
+      avatar: workspace.owner.avatar,
+      role: "owner",
+      // Use workspace.createdAt as an approximate joined date for owner
+      joinedDate: workspace.createdAt,
+      lastLogin: workspace.owner.lastLogin,
+    },
+    // Existing members
+    ...workspace.members.map((member) => ({
+      id: member.user._id.toString(),
+      name: member.user.name,
+      email: member.user.email,
+      avatar: member.user.avatar,
+      role: member.role,
+      joinedDate: member.joinedAt,
+      lastLogin: member.user.lastLogin,
+    })),
+  ].filter(
+    // Ensure no duplicates if data inconsistency exists
+    (m, idx, arr) => arr.findIndex((x) => x.id === m.id) === idx
+  );
 
   sendSuccess(res, 200, "Members fetched successfully", {
     count: members.length,

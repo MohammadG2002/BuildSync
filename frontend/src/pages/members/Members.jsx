@@ -22,6 +22,7 @@ import handleInviteMember from "../../utils/member/handleInviteMember";
 import handleChangeRole from "../../utils/member/handleChangeRole";
 import handleRemoveClick from "../../utils/member/handleRemoveClick";
 import handleRemoveMember from "../../utils/member/handleRemoveMember";
+import handleTransferOwnership from "../../utils/member/handleTransferOwnership";
 import filterMembers from "../../utils/member/filterMembers";
 import calculateRoleStats from "../../utils/member/calculateRoleStats";
 import styles from "./Members.module.css";
@@ -40,6 +41,7 @@ const Members = () => {
 
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [showRemoveModal, setShowRemoveModal] = useState(false);
+  const [showTransferModal, setShowTransferModal] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -208,6 +210,10 @@ const Members = () => {
           onRemove={(member) =>
             handleRemoveClick(member, setSelectedMember, setShowRemoveModal)
           }
+          onTransferOwnership={(member) => {
+            setSelectedMember(member);
+            setShowTransferModal(true);
+          }}
           groupByRole={groupByRole}
         />
       ) : (
@@ -371,6 +377,51 @@ const Members = () => {
               loading={submitting}
             >
               Remove Member
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Transfer Ownership Modal */}
+      <Modal
+        isOpen={showTransferModal}
+        onClose={() => {
+          setShowTransferModal(false);
+          setSelectedMember(null);
+        }}
+        title="Transfer Ownership"
+        size="sm"
+      >
+        <div className={styles.removeContent}>
+          <p className={styles.removeText}>
+            Transfer workspace ownership to{" "}
+            <strong>{selectedMember?.name}</strong>? You will become an admin.
+          </p>
+          <div className={styles.removeActions}>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                setShowTransferModal(false);
+                setSelectedMember(null);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="primary"
+              onClick={() =>
+                handleTransferOwnership(
+                  workspaceId,
+                  selectedMember,
+                  () => fetchMembers(workspaceId, setMembers, setLoading),
+                  setShowTransferModal,
+                  setSelectedMember,
+                  setSubmitting
+                )
+              }
+              loading={submitting}
+            >
+              Confirm Transfer
             </Button>
           </div>
         </div>

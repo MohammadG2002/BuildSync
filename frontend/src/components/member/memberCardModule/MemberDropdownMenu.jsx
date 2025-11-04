@@ -1,4 +1,4 @@
-import { Trash2 } from "lucide-react";
+import { Trash2, Crown } from "lucide-react";
 import { USER_ROLES } from "../../../utils/constants";
 import roleIcons from "../../../utils/member/roleIcons";
 import styles from "./MemberCard.module.css";
@@ -8,6 +8,7 @@ const MemberDropdownMenu = ({
   currentUserRole,
   onChangeRole,
   onRemove,
+  onTransferOwnership,
   onClose,
 }) => {
   return (
@@ -56,6 +57,33 @@ const MemberDropdownMenu = ({
           </button>
         );
       })}
+      <div className={styles.dropdownDivider}></div>
+      {(() => {
+        // Transfer ownership permissions
+        // - Only current owner can transfer
+        // - Cannot transfer to an existing owner (shouldn't appear anyway)
+        const canTransfer =
+          currentUserRole === "owner" && member.role !== "owner";
+        return (
+          <button
+            onClick={() => {
+              if (!canTransfer) return;
+              onTransferOwnership?.(member);
+              onClose();
+            }}
+            disabled={!canTransfer}
+            className={styles.dropdownItem}
+            title={
+              !canTransfer
+                ? "Only the workspace owner can transfer ownership"
+                : undefined
+            }
+          >
+            <Crown className={styles.dropdownItemIcon} />
+            <span>Transfer ownership</span>
+          </button>
+        );
+      })()}
       <div className={styles.dropdownDivider}></div>
       {(() => {
         // Removal permissions
