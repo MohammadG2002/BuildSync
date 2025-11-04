@@ -54,19 +54,24 @@ const Settings = () => {
     <div className={styles.container}>
       {/* Header */}
       <div className={styles.header}>
-        <Button
-          variant="ghost"
-          onClick={() => navigate(`/app/workspaces/${workspaceId}`)}
-          className={styles.backButton}
-        >
-          <ArrowLeft className={styles.backIcon} />
-        </Button>
-        <div className={styles.headerContent}>
-          <h1 className={styles.title}>Workspace Settings</h1>
-          <p className={styles.subtitle}>
-            Manage {workspace.name} settings and preferences
-          </p>
+        <div style={{ display: "flex" }}>
+          <Button
+            variant="ghost"
+            onClick={() => navigate(`/app/workspaces/${workspaceId}`)}
+            className={styles.backButton}
+          >
+            <ArrowLeft className={styles.backIcon} />
+          </Button>
+          <div className={styles.headerContent}>
+            <h1 className={styles.title}>Workspace Settings</h1>
+            <p className={styles.subtitle}>
+              Manage {workspace.name} settings and preferences
+            </p>
+          </div>
         </div>
+        <Button variant="danger" className={styles.leaveWorkspace}>
+          Leave Workspace
+        </Button>
       </div>
 
       {/* General Settings */}
@@ -96,9 +101,6 @@ const Settings = () => {
 
       {/* Notifications Settings */}
       <NotificationPreferences />
-
-      {/* Privacy Settings */}
-      <PrivacySettings />
 
       {/* Danger Zone */}
       <DangerZone onDeleteClick={() => setShowDeleteModal(true)} />

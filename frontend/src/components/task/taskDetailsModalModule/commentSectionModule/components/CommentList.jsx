@@ -9,6 +9,9 @@ const CommentList = ({
   onUpdateComment,
   onDeleteComment,
   onReactComment,
+  readOnly = false,
+  currentUserId,
+  canModerateComments = false,
 }) => {
   const items = Array.isArray(comments) ? comments : [];
   return (
@@ -35,6 +38,9 @@ const CommentList = ({
                 onUpdateComment={onUpdateComment}
                 onDeleteComment={onDeleteComment}
                 onReactComment={onReactComment}
+                readOnly={readOnly}
+                currentUserId={currentUserId}
+                canModerateComments={canModerateComments}
               />
             </div>
           </div>

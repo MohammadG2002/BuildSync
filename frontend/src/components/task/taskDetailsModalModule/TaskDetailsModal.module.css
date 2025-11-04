@@ -597,6 +597,7 @@
   border-radius: 0.5rem;
   border: 1px solid #e5e7eb;
   width: fit-content;
+  gap: 0.5rem;
 }
 
 .attachmentItem:hover {
@@ -669,6 +670,7 @@
 
 .attachmentActions {
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 0.5rem;
 }
@@ -679,7 +681,7 @@
   border-radius: 0.25rem;
   transition: background-color 0.2s;
   background: none;
-  border: none;
+  border: 1px solid #9ca3af;
   cursor: pointer;
   text-decoration: none;
   display: flex;

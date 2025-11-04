@@ -10,10 +10,13 @@ const CommentItem = ({
   onUpdateComment,
   onDeleteComment,
   onReactComment,
+  readOnly = false,
+  currentUserId: currentUserIdProp,
+  canModerateComments = false,
   // props intentionally minimal for simple display
 }) => {
   const { user } = useAuth();
-  const currentUserId = user?._id || user?.id;
+  const currentUserId = currentUserIdProp || user?._id || user?.id;
   const authorName =
     comment.user?.name || comment.user?.email || "Unknown User";
   const createdAt = comment.createdAt;
@@ -36,6 +39,15 @@ const CommentItem = ({
   const [editText, setEditText] = React.useState(comment.content || "");
   const menuRef = React.useRef(null);
   const [showConfirm, setShowConfirm] = React.useState(false);
+  const isAuthor = React.useMemo(() => {
+    const uid = comment?.user?._id || comment?.user;
+    if (!uid || !currentUserId) return false;
+    return String(uid) === String(currentUserId);
+  }, [comment?.user, currentUserId]);
+
+  // Permissions per requirements
+  const canEdit = !readOnly && isAuthor && !canModerateComments; // admins/owner cannot edit
+  const canDelete = !readOnly && (isAuthor || canModerateComments); // author, owner, admin
 
   React.useEffect(() => {
     const onDocClick = (e) => {
@@ -48,12 +60,17 @@ const CommentItem = ({
   }, [menuOpen]);
 
   const handleStartEdit = () => {
+    if (!canEdit) return;
     setEditText(comment.content || "");
     setIsEditing(true);
     setMenuOpen(false);
   };
 
   const handleSaveEdit = async () => {
+    if (!canEdit) {
+      setIsEditing(false);
+      return;
+    }
     const trimmed = (editText || "").trim();
     if (!trimmed || !onUpdateComment || !comment._id) {
       setIsEditing(false);
@@ -64,20 +81,20 @@ const CommentItem = ({
   };
 
   const handleDelete = async () => {
-    if (!onDeleteComment || !comment._id) return;
+    if (!canDelete || !onDeleteComment || !comment._id) return;
     setMenuOpen(false);
     await onDeleteComment(comment._id);
     setShowConfirm(false);
   };
 
   const handleLike = async () => {
-    if (!onReactComment || !comment._id) return;
+    if (readOnly || !onReactComment || !comment._id) return;
     const action = likedByMe ? "clear" : "like";
     await onReactComment(comment._id, action);
   };
 
   const handleDislike = async () => {
-    if (!onReactComment || !comment._id) return;
+    if (readOnly || !onReactComment || !comment._id) return;
     const action = dislikedByMe ? "clear" : "dislike";
     await onReactComment(comment._id, action);
   };
@@ -98,34 +115,40 @@ const CommentItem = ({
             {createdAt ? ` - ${getRelativeTime(createdAt)}` : ""}
           </span>
         </div>
-        <div className={styles.commentMenuContainer} ref={menuRef}>
-          <button
-            type="button"
-            className={styles.iconButton}
-            aria-label="Comment actions"
-            onClick={() => setMenuOpen((v) => !v)}
-          >
-            <MoreVertical size={16} />
-          </button>
-          {menuOpen && (
-            <div className={styles.commentMenu} role="menu">
-              <button
-                type="button"
-                className={styles.commentMenuItem}
-                onClick={handleStartEdit}
-              >
-                Edit
-              </button>
-              <button
-                type="button"
-                className={styles.commentMenuItemDanger}
-                onClick={() => setShowConfirm(true)}
-              >
-                Delete
-              </button>
-            </div>
-          )}
-        </div>
+        {(canEdit || canDelete) && (
+          <div className={styles.commentMenuContainer} ref={menuRef}>
+            <button
+              type="button"
+              className={styles.iconButton}
+              aria-label="Comment actions"
+              onClick={() => setMenuOpen((v) => !v)}
+            >
+              <MoreVertical size={16} />
+            </button>
+            {menuOpen && (
+              <div className={styles.commentMenu} role="menu">
+                {canEdit && (
+                  <button
+                    type="button"
+                    className={styles.commentMenuItem}
+                    onClick={handleStartEdit}
+                  >
+                    Edit
+                  </button>
+                )}
+                {canDelete && (
+                  <button
+                    type="button"
+                    className={styles.commentMenuItemDanger}
+                    onClick={() => setShowConfirm(true)}
+                  >
+                    Delete
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {attachments.length > 0 && (
@@ -192,6 +215,7 @@ const CommentItem = ({
             likedByMe ? styles.reactionActive : ""
           }`}
           onClick={handleLike}
+          disabled={readOnly}
           aria-pressed={likedByMe}
           title={likedByMe ? "Unlike" : "Like"}
         >
@@ -204,6 +228,7 @@ const CommentItem = ({
             dislikedByMe ? styles.reactionActive : ""
           }`}
           onClick={handleDislike}
+          disabled={readOnly}
           aria-pressed={dislikedByMe}
           title={dislikedByMe ? "Remove dislike" : "Dislike"}
         >
@@ -211,7 +236,7 @@ const CommentItem = ({
           <span className={styles.reactionCount}>{dislikes.length || 0}</span>
         </button>
       </div>
-      {showConfirm && (
+      {showConfirm && canDelete && (
         <div className={styles.confirmOverlay}>
           <div className={styles.confirmDialog} role="dialog" aria-modal="true">
             <div

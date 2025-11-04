@@ -16,11 +16,13 @@ const CommentsSection = ({
   onAddComment,
   onUpdateComment,
   onDeleteComment,
-  onReactComment,
   taskId,
   fileInputRef,
   isUploading,
   readOnly = false,
+  currentUserId,
+  canModerateComments = false,
+  onReactComment,
 }) => {
   const [newComment, setNewComment] = React.useState("");
   const [isSubmitting, setIsSubmitting] = React.useState(false);
@@ -54,12 +56,14 @@ const CommentsSection = ({
             onUpdateComment={onUpdateComment}
             onDeleteComment={onDeleteComment}
             onReactComment={onReactComment}
+            readOnly={readOnly}
+            currentUserId={currentUserId}
+            canModerateComments={canModerateComments}
           />
         </div>
       ) : (
         <p className={styles.metadataTextMuted}>No comments</p>
       )}
-
       {/* Bottom sentinel used for auto-scroll to bottom */}
       <div ref={bottomRef} />
 

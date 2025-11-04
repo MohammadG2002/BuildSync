@@ -28,6 +28,8 @@ const TaskDetailsModal = ({
   onDeleteComment,
   onReactComment,
   readOnly = false,
+  currentUserId,
+  canModerateComments = false,
 }) => {
   const [activeTab, setActiveTab] = useState("overview"); // 'overview' | 'subtasks' | 'comments' | 'files' | 'activity'
   const [activity, setActivity] = useState([]);
@@ -456,6 +458,8 @@ const TaskDetailsModal = ({
               fileInputRef={commentFileInputRef}
               isUploading={isUploadingTest}
               readOnly={readOnly}
+              currentUserId={currentUserId}
+              canModerateComments={canModerateComments}
             />
           )}
 

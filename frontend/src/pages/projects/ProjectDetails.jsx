@@ -464,6 +464,8 @@ const ProjectDetails = () => {
             )
           }
           readOnly={isViewer}
+          currentUserId={currentUserId}
+          canModerateComments={canManageMembers}
         />
       )}
 
