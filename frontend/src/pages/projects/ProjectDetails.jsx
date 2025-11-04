@@ -129,6 +129,13 @@ const ProjectDetails = () => {
   }, [members, currentUserId]);
   const isViewer = currentWorkspaceRole === "viewer";
 
+  // Users with workspace owner/admin should be able to moderate comments,
+  // even if they don't have project admin/owner.
+  const canModerateComments =
+    currentWorkspaceRole === "owner" ||
+    currentWorkspaceRole === "admin" ||
+    canManageMembers;
+
   // Assignee options: only project members by default
   const projectMemberIds = useMemo(
     () =>
@@ -465,7 +472,7 @@ const ProjectDetails = () => {
           }
           readOnly={isViewer}
           currentUserId={currentUserId}
-          canModerateComments={canManageMembers}
+          canModerateComments={canModerateComments}
         />
       )}
 
