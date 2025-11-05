@@ -29,7 +29,10 @@ export const uploadAvatar = (req, res) => {
       });
     }
 
-    const fileUrl = `/uploads/avatars/${req.file.filename}`;
+    // Build absolute URL so the frontend opens from the backend origin
+    const relativePath = `/uploads/avatars/${req.file.filename}`;
+    const origin = `${req.protocol}://${req.get("host")}`;
+    const fileUrl = `${origin}${relativePath}`;
 
     res.json({
       success: true,
@@ -39,6 +42,8 @@ export const uploadAvatar = (req, res) => {
         url: fileUrl,
         size: req.file.size,
         mimetype: req.file.mimetype,
+        // Provide relative path as well for compatibility if needed
+        relativeUrl: relativePath,
       },
     });
   });

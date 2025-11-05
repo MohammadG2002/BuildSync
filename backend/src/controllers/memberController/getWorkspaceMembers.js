@@ -7,7 +7,11 @@
 
 import Workspace from "../../models/Workspace/index.js";
 import { asyncHandler } from "../../utils/asyncHandler/index.js";
-import { sendSuccess } from "../../utils/responseHandler/index.js";
+import {
+  sendSuccess,
+  sendForbidden,
+  sendNotFound,
+} from "../../utils/responseHandler/index.js";
 
 export const getWorkspaceMembers = asyncHandler(async (req, res) => {
   const { workspaceId } = req.params;
@@ -17,7 +21,7 @@ export const getWorkspaceMembers = asyncHandler(async (req, res) => {
     .populate("members.user", "name email avatar lastLogin");
 
   if (!workspace) {
-    throw new Error("Workspace not found");
+    return sendNotFound(res, "Workspace not found");
   }
 
   // Check if user is member (compare with _id before population)
@@ -27,7 +31,10 @@ export const getWorkspaceMembers = asyncHandler(async (req, res) => {
     workspace.members.some((m) => m.user._id.toString() === userId);
 
   if (!isMemberCheck) {
-    throw new Error("Access denied");
+    return sendForbidden(
+      res,
+      "Access denied: You are not a member of this workspace"
+    );
   }
 
   // Transform members data to flat structure and include owner

@@ -18,7 +18,16 @@ const fetchDashboardData = async (
 ) => {
   setLoading(true);
   try {
-    if (!currentWorkspace) return;
+    if (!currentWorkspace) {
+      // Nothing to load; ensure UI stops loading state gracefully
+      setStats([]);
+      setProjects([]);
+      setTasks([]);
+      setDeadlines([]);
+      setWeeklyStatus({ labels: [], series: {} });
+      setProjectStatus({ labels: [], counts: {} });
+      return;
+    }
 
     // Fetch all dashboard data in parallel
     const [projectsData, tasksData, workspaceData] = await Promise.all([

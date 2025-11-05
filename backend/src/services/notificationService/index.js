@@ -11,3 +11,5 @@ export { deleteNotification } from "./deleteNotification.js";
 export { getUnreadNotificationsCount } from "./getUnreadNotificationsCount.js";
 export { sendWorkspaceInviteNotification } from "./sendWorkspaceInviteNotification.js";
 export { sendTaskAssignmentNotification } from "./sendTaskAssignmentNotification.js";
+export { sendContactRequestNotification } from "./sendContactRequestNotification.js";
+export { sendContactAcceptedNotification } from "./sendContactAcceptedNotification.js";

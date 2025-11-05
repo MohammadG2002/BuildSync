@@ -16,6 +16,10 @@ const getNotificationIcon = (type) => {
       return "⏰";
     case "comment":
       return "💭";
+    case "contact_request":
+      return "🤝";
+    case "contact_accepted":
+      return "✅";
     default:
       return "🔔";
   }

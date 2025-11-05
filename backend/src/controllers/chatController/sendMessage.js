@@ -12,12 +12,26 @@ import { broadcastToWorkspace } from "../../websocket/index.js";
 export const sendMessage = async (req, res) => {
   try {
     const { workspaceId } = req.params;
-    const { content, type = "text", attachments } = req.body;
+    const { content = "", type = "text", attachments } = req.body;
+    // Sanitize attachments
+    const cleanedAttachments = Array.isArray(attachments)
+      ? attachments
+          .filter((a) => a && typeof a === "object")
+          .map((a) => ({
+            name: a.name || "Attachment",
+            url: a.url,
+            size: typeof a.size === "number" ? a.size : undefined,
+            type: a.type || undefined,
+          }))
+          .filter((a) => typeof a.url === "string" && a.url.length > 0)
+      : [];
 
-    if (!content || content.trim() === "") {
+    const hasText = typeof content === "string" && content.trim() !== "";
+    const hasAttachments = cleanedAttachments.length > 0;
+    if (!hasText && !hasAttachments) {
       return res.status(400).json({
         success: false,
-        message: "Message content is required",
+        message: "Message must include text or at least one attachment",
       });
     }
 
@@ -40,9 +54,9 @@ export const sendMessage = async (req, res) => {
     const message = await Message.create({
       workspace: workspaceId,
       sender: req.user._id,
-      content,
+      content: hasText ? content : "",
       type,
-      attachments: attachments || [],
+      attachments: hasAttachments ? cleanedAttachments : [],
     });
 
     await message.populate("sender", "name email avatar");
@@ -60,9 +74,10 @@ export const sendMessage = async (req, res) => {
     });
   } catch (error) {
     console.error("Send message error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Failed to send message",
-    });
+    const body = { success: false, message: "Failed to send message" };
+    if (process.env.NODE_ENV !== "production") {
+      body.error = error?.message;
+    }
+    res.status(500).json(body);
   }
 };

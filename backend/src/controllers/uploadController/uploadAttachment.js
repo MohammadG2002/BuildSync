@@ -29,7 +29,10 @@ export const uploadAttachment = (req, res) => {
       });
     }
 
-    const fileUrl = `/uploads/attachments/${req.file.filename}`;
+    // Build absolute URL so the frontend opens from the backend origin
+    const relativePath = `/uploads/attachments/${req.file.filename}`;
+    const origin = `${req.protocol}://${req.get("host")}`;
+    const fileUrl = `${origin}${relativePath}`;
 
     res.json({
       success: true,
@@ -40,6 +43,8 @@ export const uploadAttachment = (req, res) => {
         url: fileUrl,
         size: req.file.size,
         type: req.file.mimetype,
+        // Provide relative path as well for compatibility if needed
+        relativeUrl: relativePath,
       },
     });
   });

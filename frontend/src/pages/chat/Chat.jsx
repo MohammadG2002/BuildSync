@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import { useWorkspace } from "../../hooks/useWorkspace";
 import Card from "../../components/common/Card";
 import Button from "../../components/common/Button";
 import Modal from "../../components/common/Modal";
@@ -15,13 +15,15 @@ import fetchContacts from "../../utils/chat/fetchContacts";
 import fetchMessages from "../../utils/chat/fetchMessages";
 import scrollToBottom from "../../utils/chat/scrollToBottom";
 import handleSendMessage from "../../utils/chat/handleSendMessage";
-import * as workspaceService from "../../services/workspaceService";
+import * as contactService from "../../services/contactService";
 import realtimeService from "../../services/realtime";
+import toast from "react-hot-toast";
 import styles from "./Chat.module.css";
 
 const Chat = () => {
   const { user } = useAuth();
-  const { currentWorkspace } = useWorkspace();
+  const { chatId } = useParams();
+  const navigate = useNavigate();
   const [selectedContact, setSelectedContact] = useState(null);
   const [message, setMessage] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -34,38 +36,30 @@ const Chat = () => {
   const [inviteEmail, setInviteEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
+  // Global contacts: aggregate across all workspaces
   useEffect(() => {
-    if (currentWorkspace) {
-      fetchContacts(currentWorkspace, setContacts, setLoading);
+    fetchContacts(null, setContacts, setLoading);
+  }, []);
+
+  useEffect(() => {
+    fetchMessages(
+      setMessages,
+      selectedContact ? selectedContact.id : undefined
+    );
+  }, [selectedContact]);
+
+  // When contacts load or chatId changes, preselect the contact from URL
+  useEffect(() => {
+    if (!chatId) return;
+    if (!contacts || contacts.length === 0) return;
+    const match = contacts.find((c) => String(c.id) === String(chatId));
+    if (match && (!selectedContact || selectedContact.id !== match.id)) {
+      setSelectedContact(match);
     }
-  }, [currentWorkspace]);
+  }, [chatId, contacts]);
 
+  // Subscribe to DM events (no workspace join needed)
   useEffect(() => {
-    if (currentWorkspace) {
-      fetchMessages(
-        currentWorkspace.id,
-        setMessages,
-        selectedContact ? selectedContact.id : undefined
-      );
-    }
-  }, [currentWorkspace, selectedContact]);
-
-  // Join realtime channels and subscribe to DM events
-  useEffect(() => {
-    if (!currentWorkspace) return;
-
-    const join = () => {
-      // For WS provider, explicitly join; for Pusher, subscriptions are handled on connect
-      realtimeService.send("join_workspace", {
-        workspaceId: currentWorkspace.id,
-      });
-    };
-
-    // Join immediately if connected; also join on future reconnects
-    if (realtimeService.isConnected()) join();
-    const unsubConnected = realtimeService.on("connected", join);
-
-    // DM live updates
     const unsubDM = realtimeService.on("dm_message", (msg) => {
       // Normalize payload shape to UI message
       const normalized = {
@@ -74,6 +68,7 @@ const Chat = () => {
         senderName: msg.sender?.name || msg.senderName,
         content: msg.content,
         timestamp: msg.createdAt || msg.timestamp,
+        attachments: msg.attachments || [],
       };
       // If selectedContact is the other participant, append
       const recipientId =
@@ -87,15 +82,8 @@ const Chat = () => {
         scrollToBottom(messagesEndRef);
       }
     });
-
-    return () => {
-      unsubConnected?.();
-      unsubDM?.();
-      realtimeService.send("leave_workspace", {
-        workspaceId: currentWorkspace.id,
-      });
-    };
-  }, [currentWorkspace, selectedContact]);
+    return () => unsubDM?.();
+  }, [selectedContact]);
 
   useEffect(() => {
     scrollToBottom(messagesEndRef);
@@ -112,7 +100,11 @@ const Chat = () => {
             onSearchChange={setSearchQuery}
             contacts={filteredContacts}
             selectedContact={selectedContact}
-            onSelectContact={setSelectedContact}
+            onSelectContact={(c) => {
+              setSelectedContact(c);
+              // Push route for deep-linking and reloads
+              navigate(`/app/chat/${c.id}`);
+            }}
             onAddContact={() => setShowAddModal(true)}
           />
 
@@ -123,15 +115,15 @@ const Chat = () => {
               currentUserId={user?.id}
               message={message}
               onMessageChange={setMessage}
-              onSendMessage={() =>
+              onSendMessage={({ attachments } = {}) =>
                 handleSendMessage(
                   message,
-                  currentWorkspace?.id,
                   selectedContact,
                   user,
                   messages,
                   setMessages,
-                  setMessage
+                  setMessage,
+                  attachments || []
                 )
               }
               messagesEndRef={messagesEndRef}
@@ -177,20 +169,23 @@ const Chat = () => {
               type="button"
               variant="primary"
               loading={submitting}
-              disabled={!inviteEmail.trim() || !currentWorkspace}
+              disabled={!inviteEmail.trim()}
               onClick={async () => {
                 try {
                   setSubmitting(true);
-                  await workspaceService.sendWorkspaceInvite(
-                    currentWorkspace.id,
-                    { email: inviteEmail, role: "member" }
+                  const contact = await contactService.requestContactByEmail(
+                    inviteEmail.trim()
+                  );
+                  toast.success(
+                    contact ? "Contact request sent" : "Invite processed"
                   );
                   setShowAddModal(false);
                   setInviteEmail("");
-                  // Refresh contacts from members
-                  fetchContacts(currentWorkspace, setContacts, setLoading);
+                  // Refresh accepted contacts; note a new request is pending until accepted
+                  fetchContacts(null, setContacts, setLoading);
                 } catch (e) {
                   console.error("Invite failed", e);
+                  toast.error("Failed to send contact invite");
                 } finally {
                   setSubmitting(false);
                 }

@@ -111,6 +111,15 @@ export const WorkspaceProvider = ({ children }) => {
       );
       if (workspace) {
         setCurrentWorkspace(workspace);
+      } else {
+        // Saved workspace no longer accessible; fallback to first available
+        const first = WorkspaceOperations.getFirstWorkspace(workspaces);
+        setCurrentWorkspace(first);
+        if (first?.id) {
+          WorkspaceStorage.saveWorkspaceId(first.id);
+        } else {
+          WorkspaceStorage.clearWorkspaceId();
+        }
       }
     }
   }, [workspaces]);

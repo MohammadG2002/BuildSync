@@ -50,11 +50,30 @@ export class NotificationTransformer {
    * @returns {Object} Complete notification object
    */
   static enrichNotification(notification) {
+    // Preserve server-provided identifiers and timestamps when available
+    const normalizedId =
+      notification.id || notification._id || Date.now().toString();
+    const normalizedTimestamp =
+      notification.timestamp ||
+      notification.createdAt ||
+      new Date().toISOString();
+    const normalizedRead =
+      typeof notification.read === "boolean" ? notification.read : false;
+
     return {
-      id: Date.now().toString(),
-      timestamp: new Date().toISOString(),
-      read: false,
       ...notification,
+      id: normalizedId,
+      timestamp: normalizedTimestamp,
+      read: normalizedRead,
+      // Ensure actionUrl derived from link for components that expect it
+      actionUrl:
+        notification.actionUrl ||
+        notification.link ||
+        (notification.type === "contact_request" && notification.sender
+          ? `/app/chat/${
+              notification.sender._id || notification.sender.id || ""
+            }`
+          : undefined),
     };
   }
 }

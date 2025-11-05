@@ -18,6 +18,7 @@ import taskRoutes from "./routes/task.routes.js";
 import memberRoutes from "./routes/member.routes.js";
 import notificationRoutes from "./routes/notification.routes.js";
 import chatRoutes from "./routes/chat.routes.js";
+import contactRoutes from "./routes/contact.routes.js";
 import realtimeRoutes from "./routes/realtime.routes.js";
 import uploadRoutes from "./routes/upload.routes.js";
 
@@ -80,6 +81,7 @@ app.use("/api/tasks", taskRoutes);
 app.use("/api/members", memberRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/api/contacts", contactRoutes);
 app.use("/api/realtime", realtimeRoutes);
 app.use("/api/upload", uploadRoutes);
 

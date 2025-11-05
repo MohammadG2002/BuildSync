@@ -64,4 +64,10 @@ router
     sendDirectMessage
   );
 
+// Global direct messages (not tied to a workspace)
+router
+  .route("/dm/:userId")
+  .get(mongoIdValidation("userId"), validate, getDirectMessages)
+  .post(mongoIdValidation("userId"), validate, sendDirectMessage);
+
 export default router;

@@ -1,14 +1,19 @@
 import * as chatService from "../../services/chatService";
+import { buildAbsoluteUrl } from "../buildAbsoluteUrl";
 
 /**
  * Fetch messages for the current workspace
  * Optionally filter by a selected contact (senderId)
  */
-const fetchMessages = async (workspaceId, setMessages, selectedContactId) => {
+const fetchMessages = async (setMessages, selectedContactId) => {
   try {
-    const serverMessages = selectedContactId
-      ? await chatService.getDirectMessages(workspaceId, selectedContactId)
-      : await chatService.getMessages(workspaceId);
+    if (!selectedContactId) {
+      setMessages([]);
+      return;
+    }
+    const serverMessages = await chatService.getDirectMessages(
+      selectedContactId
+    );
 
     const normalized = (serverMessages || []).map((m) => ({
       id: m._id || m.id,
@@ -16,6 +21,14 @@ const fetchMessages = async (workspaceId, setMessages, selectedContactId) => {
       senderName: m.sender?.name || m.senderName,
       content: m.content,
       timestamp: m.createdAt || m.timestamp,
+      attachments: Array.isArray(m.attachments)
+        ? m.attachments.map((a) => ({
+            ...a,
+            url: buildAbsoluteUrl(
+              a?.url || a?.path || a?.href || a?.relativeUrl
+            ),
+          }))
+        : [],
     }));
 
     setMessages(normalized);

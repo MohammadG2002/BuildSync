@@ -6,4 +6,7 @@ export const notificationTypes = [
   { value: "mention", label: "Mentions" },
   { value: "message", label: "Messages" },
   { value: "deadline", label: "Deadlines" },
+  // Contacts
+  { value: "contact_request", label: "Contact Requests" },
+  { value: "contact_accepted", label: "Contact Accepted" },
 ];

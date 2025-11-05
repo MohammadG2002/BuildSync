@@ -1,29 +1,26 @@
-import * as workspaceService from "../../services/workspaceService";
-import { ResponseNormalizer } from "../../services/shared";
+import * as contactService from "../../services/contactService";
 
 /**
- * Fetch contacts for current workspace
+ * Fetch global contacts (accepted status)
  */
-const fetchContacts = async (currentWorkspace, setContacts, setLoading) => {
+const fetchContacts = async (_currentWorkspace, setContacts, setLoading) => {
   setLoading(true);
   try {
-    if (currentWorkspace) {
-      // Load workspace members and map to contact shape
-      const members = await workspaceService.getWorkspaceMembers(
-        currentWorkspace.id
-      );
-      const contacts = (members || []).map((m) => ({
-        id: m.id,
-        name: m.name,
-        email: m.email,
-        avatar: m.avatar,
+    const contactsRaw = await contactService.listContacts("accepted");
+    const contacts = (contactsRaw || [])
+      .map((c) => c.user)
+      .filter(Boolean)
+      .map((u) => ({
+        id: u.id || u._id,
+        name: u.name,
+        email: u.email,
+        avatar: u.avatar,
         online: false,
         lastMessage: "",
         lastMessageTime: null,
         unreadCount: 0,
       }));
-      setContacts(contacts);
-    }
+    setContacts(contacts);
   } catch (error) {
     console.error("Error fetching contacts:", error);
     setContacts([]);

@@ -4,5 +4,5 @@ import apiClient from "../apiClient";
 export const sendMessage = async (workspaceId, payload) => {
   const endpoint = `/chat/${workspaceId}`;
   const res = await apiClient.post(endpoint, payload);
-  return res?.data?.message || null;
+  return res?.data?.data?.message || null;
 };

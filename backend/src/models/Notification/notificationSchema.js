@@ -28,6 +28,9 @@ export const notificationSchema = new mongoose.Schema(
         "member_added",
         "member_removed",
         "workspace_invite",
+        // Contacts
+        "contact_request",
+        "contact_accepted",
       ],
       required: true,
     },
@@ -49,6 +52,7 @@ export const notificationSchema = new mongoose.Schema(
       workspaceId: mongoose.Schema.Types.ObjectId,
       projectId: mongoose.Schema.Types.ObjectId,
       taskId: mongoose.Schema.Types.ObjectId,
+      contactId: mongoose.Schema.Types.ObjectId,
     },
     read: {
       type: Boolean,

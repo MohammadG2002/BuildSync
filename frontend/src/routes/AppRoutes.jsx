@@ -98,6 +98,7 @@ const AppRoutes = () => {
             element={<Archived />}
           />
           <Route path="chat" element={<Chat />} />
+          <Route path="chat/:chatId" element={<Chat />} />
           <Route path="profile" element={<Profile />} />
           <Route path="notifications" element={<Notifications />} />
         </Route>

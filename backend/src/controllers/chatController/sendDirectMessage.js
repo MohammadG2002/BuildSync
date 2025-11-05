@@ -12,32 +12,52 @@ import { sendEventToUser } from "../../websocket/index.js";
 export const sendDirectMessage = async (req, res) => {
   try {
     const { workspaceId, userId } = req.params;
-    const { content, type = "text", attachments } = req.body;
+    const { content = "", type = "text", attachments } = req.body;
+    // Sanitize attachments
+    const cleanedAttachments = Array.isArray(attachments)
+      ? attachments
+          .filter((a) => a && typeof a === "object")
+          .map((a) => ({
+            name: a.name || "Attachment",
+            url: a.url,
+            size: typeof a.size === "number" ? a.size : undefined,
+            type: a.type || undefined,
+          }))
+          .filter((a) => typeof a.url === "string" && a.url.length > 0)
+      : [];
 
-    if (!content || content.trim() === "") {
-      return res
-        .status(400)
-        .json({ success: false, message: "Message content is required" });
+    const hasText = typeof content === "string" && content.trim() !== "";
+    const hasAttachments = cleanedAttachments.length > 0;
+    if (!hasText && !hasAttachments) {
+      return res.status(400).json({
+        success: false,
+        message: "Message must include text or at least one attachment",
+      });
     }
 
-    const workspace = await Workspace.findById(workspaceId);
-    if (!workspace) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Workspace not found" });
-    }
-
-    if (!workspace.isMember(req.user._id) || !workspace.isMember(userId)) {
-      return res.status(403).json({ success: false, message: "Access denied" });
+    // Optional workspace membership validation when workspaceId is provided
+    let workspace = null;
+    if (workspaceId) {
+      workspace = await Workspace.findById(workspaceId);
+      if (!workspace) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Workspace not found" });
+      }
+      if (!workspace.isMember(req.user._id) || !workspace.isMember(userId)) {
+        return res
+          .status(403)
+          .json({ success: false, message: "Access denied" });
+      }
     }
 
     const message = await Message.create({
-      workspace: workspaceId,
+      workspace: workspace?._id || undefined,
       sender: req.user._id,
       recipient: userId,
-      content,
+      content: hasText ? content : "",
       type,
-      attachments: attachments || [],
+      attachments: hasAttachments ? cleanedAttachments : [],
     });
 
     await message.populate("sender", "name email avatar");
@@ -57,6 +77,10 @@ export const sendDirectMessage = async (req, res) => {
     }
   } catch (error) {
     console.error("Send direct message error:", error);
-    res.status(500).json({ success: false, message: "Failed to send message" });
+    const body = { success: false, message: "Failed to send message" };
+    if (process.env.NODE_ENV !== "production") {
+      body.error = error?.message;
+    }
+    res.status(500).json(body);
   }
 };

@@ -12,30 +12,35 @@ export const getDirectMessages = async (req, res) => {
   try {
     const { workspaceId, userId } = req.params;
     const { limit = 50, before } = req.query;
-
-    // Validate workspace membership
-    const workspace = await Workspace.findById(workspaceId);
-    if (!workspace) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Workspace not found" });
-    }
-
-    if (!workspace.isMember(req.user._id)) {
-      return res.status(403).json({ success: false, message: "Access denied" });
+    // Optional workspace membership validation and scoping
+    let workspace = null;
+    if (workspaceId) {
+      workspace = await Workspace.findById(workspaceId);
+      if (!workspace) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Workspace not found" });
+      }
+      if (!workspace.isMember(req.user._id)) {
+        return res
+          .status(403)
+          .json({ success: false, message: "Access denied" });
+      }
     }
 
     // Query for messages between current user and userId in this workspace
     const currentUserId = req.user._id;
 
     const query = {
-      workspace: workspaceId,
       isDeleted: false,
       $or: [
         { sender: currentUserId, recipient: userId },
         { sender: userId, recipient: currentUserId },
       ],
     };
+    if (workspace) {
+      query.workspace = workspace._id;
+    }
 
     if (before) {
       query.createdAt = { $lt: new Date(before) };

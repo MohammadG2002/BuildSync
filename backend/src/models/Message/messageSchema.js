@@ -4,12 +4,24 @@
 
 import mongoose from "mongoose";
 
+// Subschema for attachments to ensure predictable casting and avoid ObjectId casts
+const attachmentSchema = new mongoose.Schema(
+  {
+    name: { type: String, trim: true },
+    url: { type: String, trim: true },
+    size: { type: Number },
+    type: { type: String, trim: true },
+  },
+  { _id: false, strict: false }
+);
+
 export const messageSchema = new mongoose.Schema(
   {
+    // Optional workspace: present for workspace-wide messages; omitted for global DMs
     workspace: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Workspace",
-      required: true,
+      required: false,
       index: true,
     },
     sender: {
@@ -28,22 +40,15 @@ export const messageSchema = new mongoose.Schema(
     },
     content: {
       type: String,
-      required: [true, "Message content is required"],
       trim: true,
+      default: "",
     },
     type: {
       type: String,
       enum: ["text", "file", "image", "system"],
       default: "text",
     },
-    attachments: [
-      {
-        name: String,
-        url: String,
-        size: Number,
-        type: String,
-      },
-    ],
+    attachments: { type: [attachmentSchema], default: [] },
     isEdited: {
       type: Boolean,
       default: false,
@@ -71,3 +76,25 @@ export const messageSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+// Defensive sanitation in case controllers misshape attachments
+messageSchema.pre("validate", function (next) {
+  try {
+    if (!Array.isArray(this.attachments)) {
+      this.attachments = [];
+      return next();
+    }
+    this.attachments = this.attachments
+      .filter((a) => a && typeof a === "object")
+      .map((a) => ({
+        name: a.name || "Attachment",
+        url: typeof a.url === "string" ? a.url : undefined,
+        size: typeof a.size === "number" ? a.size : undefined,
+        type: typeof a.type === "string" ? a.type : undefined,
+      }))
+      .filter((a) => typeof a.url === "string" && a.url.length > 0);
+    return next();
+  } catch (err) {
+    return next(err);
+  }
+});

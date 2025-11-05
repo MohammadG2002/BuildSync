@@ -6,7 +6,21 @@ import apiClient from "../apiClient";
  */
 export const getNotifications = async () => {
   const response = await apiClient.get("/notifications");
-  return response.data.notifications || [];
+  // fetch returns parsed JSON, not axios-style; backend shape: { success, data: { notifications } }
+  const list = response?.data?.notifications || [];
+  // Normalize to UI shape
+  return list.map((n) => ({
+    id: n.id || n._id,
+    type: n.type,
+    title: n.title,
+    message: n.message,
+    link: n.link || null,
+    timestamp: n.timestamp || n.createdAt,
+    read: typeof n.read === "boolean" ? n.read : false,
+    readAt: n.readAt || null,
+    sender: n.sender || null,
+    metadata: n.metadata || {},
+  }));
 };
 
 /**
@@ -15,7 +29,8 @@ export const getNotifications = async () => {
  */
 export const getUnreadCount = async () => {
   const response = await apiClient.get("/notifications/unread/count");
-  return response.data.count;
+  // backend shape: { success, data: { count } }
+  return response?.data?.count ?? 0;
 };
 
 /**
