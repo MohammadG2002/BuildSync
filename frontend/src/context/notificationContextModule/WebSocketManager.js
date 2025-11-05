@@ -1,4 +1,4 @@
-import websocketService from "../../services/websocketService";
+import realtimeService from "../../services/realtime";
 
 /**
  * WebSocket Manager - Handles WebSocket connection and event subscriptions
@@ -11,32 +11,32 @@ export class WebSocketManager {
    * @returns {Array} Array of unsubscribe functions
    */
   static connect(token, handlers) {
-    websocketService.connect(token);
-
+    // Connection lifecycle is handled globally by RealtimeProvider.
+    // Here we only subscribe to events.
     const unsubscribers = [
-      websocketService.on("connected", () => {
+      realtimeService.on("connected", () => {
         console.log("WebSocket connected - real-time notifications active");
         handlers.onConnected?.();
       }),
 
-      websocketService.on("disconnected", () => {
+      realtimeService.on("disconnected", () => {
         console.log("WebSocket disconnected");
         handlers.onDisconnected?.();
       }),
 
-      websocketService.on("notification", (notification) => {
+      realtimeService.on("notification", (notification) => {
         handlers.onNotification?.(notification);
       }),
 
-      websocketService.on("task_update", (task) => {
+      realtimeService.on("task_update", (task) => {
         handlers.onTaskUpdate?.(task);
       }),
 
-      websocketService.on("project_update", (project) => {
+      realtimeService.on("project_update", (project) => {
         handlers.onProjectUpdate?.(project);
       }),
 
-      websocketService.on("member_joined", (member) => {
+      realtimeService.on("member_joined", (member) => {
         handlers.onMemberJoined?.(member);
       }),
     ];
@@ -49,8 +49,14 @@ export class WebSocketManager {
    * @param {Array} unsubscribers - Array of unsubscribe functions
    */
   static disconnect(unsubscribers) {
-    unsubscribers.forEach((unsubscribe) => unsubscribe());
-    websocketService.disconnect();
+    (unsubscribers || []).forEach((unsubscribe) => {
+      try {
+        unsubscribe && unsubscribe();
+      } catch (e) {
+        // ignore
+      }
+    });
+    // Do not disconnect the global realtime connection here.
   }
 
   /**

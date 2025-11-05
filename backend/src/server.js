@@ -5,7 +5,6 @@ import morgan from "morgan";
 import compression from "compression";
 import dotenv from "dotenv";
 import { createServer } from "http";
-import { WebSocketServer } from "ws";
 
 // Import configurations
 import { connectDB } from "./config/database/index.js";
@@ -19,6 +18,7 @@ import taskRoutes from "./routes/task.routes.js";
 import memberRoutes from "./routes/member.routes.js";
 import notificationRoutes from "./routes/notification.routes.js";
 import chatRoutes from "./routes/chat.routes.js";
+import realtimeRoutes from "./routes/realtime.routes.js";
 import uploadRoutes from "./routes/upload.routes.js";
 
 // Import middleware
@@ -80,6 +80,7 @@ app.use("/api/tasks", taskRoutes);
 app.use("/api/members", memberRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/api/realtime", realtimeRoutes);
 app.use("/api/upload", uploadRoutes);
 
 // Serve uploaded files
@@ -101,9 +102,8 @@ app.use(notFound);
 // Error handler (must be last)
 app.use(errorHandler);
 
-// Setup WebSocket
-const wss = new WebSocketServer({ server });
-setupWebSocket(wss);
+// Setup WebSocket (bind to HTTP server)
+setupWebSocket(server);
 
 // Helper: listen with simple port fallback when in use (e.g., 5000 -> 5001 -> 5002)
 const listenWithFallback = (srv, initialPort, maxAttempts = 5) => {

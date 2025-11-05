@@ -1,5 +1,8 @@
-import apiClient, { API_ENDPOINTS } from "../apiClient";
+import apiClient from "../apiClient";
 
-export const sendMessage = async (messageData) => {
-  return await apiClient.post(API_ENDPOINTS.CHAT.SEND, messageData);
+// Backend route: POST /chat/:workspaceId with { content, type?, attachments? }
+export const sendMessage = async (workspaceId, payload) => {
+  const endpoint = `/chat/${workspaceId}`;
+  const res = await apiClient.post(endpoint, payload);
+  return res?.data?.message || null;
 };

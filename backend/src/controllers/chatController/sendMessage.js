@@ -50,7 +50,7 @@ export const sendMessage = async (req, res) => {
     // Broadcast message to workspace via WebSocket
     broadcastToWorkspace(workspaceId, {
       type: "new_message",
-      data: message,
+      payload: message,
     });
 
     res.status(201).json({

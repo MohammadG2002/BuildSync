@@ -388,6 +388,35 @@ npm install
 npm run dev          # Start development server
 ```
 
+### Optional: Cloud realtime via Pusher
+
+You can switch realtime delivery from the built-in WebSocket server to a managed provider (Pusher) with minimal config.
+
+1. Backend environment variables (e.g., `backend/.env`):
+
+```
+PUSHER_APP_ID=your-app-id
+PUSHER_KEY=your-key
+PUSHER_SECRET=your-secret
+PUSHER_CLUSTER=your-cluster
+```
+
+2. Frontend environment variables (e.g., `frontend/.env`):
+
+```
+VITE_REALTIME_PROVIDER=pusher
+VITE_PUSHER_KEY=your-key
+VITE_PUSHER_CLUSTER=your-cluster
+```
+
+When configured, the app will publish chat and notification events to:
+
+- private-user-{userId}: direct messages and notifications
+- presence-workspace-{workspaceId}: workspace chat messages
+
+The backend exposes `POST /api/realtime/pusher/auth` to securely sign channel subscriptions.
+If the Pusher environment vars are not set, the app continues using the built-in WebSocket server.
+
 ## Demo Credentials
 
 After running `npm run seed` in backend:

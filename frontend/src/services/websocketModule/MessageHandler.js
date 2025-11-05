@@ -26,7 +26,13 @@ export class MessageHandler {
    * @param {Object} data - Parsed message data
    */
   processMessage(data) {
-    const { type, payload } = data;
+    const { type } = data;
+    // Support both {payload} and legacy {data}
+    const payload = Object.prototype.hasOwnProperty.call(data, "payload")
+      ? data.payload
+      : Object.prototype.hasOwnProperty.call(data, "data")
+      ? data.data
+      : data;
 
     // Emit event to all listeners
     this.eventEmitter.emit(type, payload);
@@ -48,6 +54,10 @@ export class MessageHandler {
         break;
       case "pong":
         // Response to ping
+        break;
+      case "new_message":
+      case "dm_message":
+        // Chat events consumed by chat page subscriptions
         break;
       default:
         console.log("Unknown message type:", type);

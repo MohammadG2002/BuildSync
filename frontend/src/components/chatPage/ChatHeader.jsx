@@ -5,37 +5,32 @@ import styles from "../../pages/chat/Chat.module.css";
 const ChatHeader = ({ selectedContact }) => {
   return (
     <div className={styles.chatHeader}>
-      <div className={styles.chatHeaderInfo}>
-        <div className={styles.contactAvatarContainer}>
+      <div className={styles.chatHeaderContent}>
+        <div className={styles.chatHeaderLeft}>
           <div
-            className={styles.chatAvatar}
-            style={{
-              backgroundColor: generateColor(selectedContact.name),
-            }}
+            className={styles.chatHeaderAvatar}
+            style={{ backgroundColor: generateColor(selectedContact.name) }}
           >
             {getInitials(selectedContact.name)}
           </div>
-          {selectedContact.online && (
-            <div className={styles.onlineIndicator}></div>
-          )}
+          <div>
+            <h3 className={styles.chatHeaderName}>{selectedContact.name}</h3>
+            <p className={styles.chatHeaderStatus}>
+              {selectedContact.online ? "Online" : "Offline"}
+            </p>
+          </div>
         </div>
         <div>
-          <h3 className={styles.chatTitle}>{selectedContact.name}</h3>
-          <p className={styles.chatStatus}>
-            {selectedContact.online ? "Online" : "Offline"}
-          </p>
+          <button className={styles.iconButton}>
+            <Phone className={styles.iconButtonIcon} />
+          </button>
+          <button className={styles.iconButton}>
+            <Video className={styles.iconButtonIcon} />
+          </button>
+          <button className={styles.iconButton}>
+            <MoreVertical className={styles.iconButtonIcon} />
+          </button>
         </div>
-      </div>
-      <div className={styles.chatActions}>
-        <button className={styles.actionButton}>
-          <Phone className={styles.actionIcon} />
-        </button>
-        <button className={styles.actionButton}>
-          <Video className={styles.actionIcon} />
-        </button>
-        <button className={styles.actionButton}>
-          <MoreVertical className={styles.actionIcon} />
-        </button>
       </div>
     </div>
   );

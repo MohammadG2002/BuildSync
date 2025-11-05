@@ -18,6 +18,14 @@ export const messageSchema = new mongoose.Schema(
       required: true,
       index: true,
     },
+    // Optional recipient for direct messages (DM);
+    // when absent, message is considered workspace-wide
+    recipient: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: false,
+      index: true,
+    },
     content: {
       type: String,
       required: [true, "Message content is required"],

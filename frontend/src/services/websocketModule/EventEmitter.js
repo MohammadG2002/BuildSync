@@ -21,6 +21,7 @@ export class EventEmitter {
     // Return unsubscribe function
     return () => {
       const callbacks = this.listeners.get(event);
+      if (!callbacks) return; // Already cleared
       const index = callbacks.indexOf(callback);
       if (index > -1) {
         callbacks.splice(index, 1);

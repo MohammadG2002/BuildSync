@@ -16,29 +16,29 @@ const MessageInput = ({ message, onMessageChange, onSendMessage }) => {
   };
 
   return (
-    <div className={styles.inputContainer}>
+    <div className={styles.inputArea}>
       <form onSubmit={handleSubmit} className={styles.inputForm}>
-        <button type="button" className={styles.inputActionButton}>
-          <Paperclip className={styles.inputActionIcon} />
+        <button type="button" className={styles.iconButton}>
+          <Paperclip className={styles.iconButtonIcon} />
         </button>
-        <button type="button" className={styles.inputActionButton}>
-          <Smile className={styles.inputActionIcon} />
+        <button type="button" className={styles.iconButton}>
+          <Smile className={styles.iconButtonIcon} />
         </button>
-        <div className={styles.textareaContainer}>
+        <div className={styles.inputWrapper}>
           <textarea
             value={message}
             onChange={(e) => onMessageChange(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Type a message..."
             rows="1"
-            className={styles.textarea}
+            className={styles.input}
           />
         </div>
         <Button
           type="submit"
           variant="primary"
           disabled={!message.trim()}
-          className={styles.submitButton}
+          className={styles.sendButton}
         >
           <Send className={styles.submitButtonIcon} />
         </Button>

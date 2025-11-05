@@ -1,5 +1,8 @@
 import apiClient from "../apiClient";
 
-export const markAsRead = async (messageId) => {
-  return await apiClient.put(`/chat/messages/${messageId}/read`);
+// Backend route: PUT /chat/:workspaceId/:messageId/read
+export const markAsRead = async (workspaceId, messageId) => {
+  const endpoint = `/chat/${workspaceId}/${messageId}/read`;
+  const res = await apiClient.put(endpoint);
+  return res?.data || null;
 };

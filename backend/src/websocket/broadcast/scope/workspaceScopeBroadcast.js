@@ -4,6 +4,10 @@
  */
 
 import { getAllClients, sendToClient } from "../../connection/index.js";
+import {
+  pusherEnabled,
+  publishToWorkspace as pusherPublishToWorkspace,
+} from "../../../services/realtime/index.js";
 
 /**
  * Broadcast message to all users in a workspace
@@ -37,4 +41,15 @@ export const broadcastToWorkspace = (
   console.log(
     `Broadcast to workspace ${workspaceId}: ${sentCount} connections`
   );
+
+  // Also publish to cloud provider if enabled
+  if (pusherEnabled) {
+    const type = message?.type || "message";
+    const payload = Object.prototype.hasOwnProperty.call(message, "payload")
+      ? message.payload
+      : Object.prototype.hasOwnProperty.call(message, "data")
+      ? message.data
+      : message;
+    pusherPublishToWorkspace(workspaceId, type, payload);
+  }
 };

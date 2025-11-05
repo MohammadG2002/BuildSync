@@ -5,13 +5,14 @@ import * as chatService from "../../services/chatService";
  */
 const handleSendMessage = async (
   message,
+  workspaceId,
   selectedContact,
   user,
   messages,
   setMessages,
   setMessage
 ) => {
-  if (!message.trim() || !selectedContact) return;
+  if (!message.trim()) return;
 
   const newMessage = {
     id: Date.now().toString(),
@@ -23,7 +24,13 @@ const handleSendMessage = async (
   };
 
   try {
-    await chatService.sendMessage(selectedContact.id, message);
+    if (selectedContact?.id) {
+      await chatService.sendDirectMessage(workspaceId, selectedContact.id, {
+        content: message,
+      });
+    } else {
+      await chatService.sendMessage(workspaceId, { content: message });
+    }
     setMessages([...messages, newMessage]);
     setMessage("");
   } catch (error) {

@@ -1,4 +1,4 @@
-import { Search } from "lucide-react";
+import { Search, UserPlus } from "lucide-react";
 import Input from "../common/Input";
 import ContactCard from "./ContactCard";
 import styles from "../../pages/chat/Chat.module.css";
@@ -9,11 +9,19 @@ const ContactsSidebar = ({
   contacts,
   selectedContact,
   onSelectContact,
+  onAddContact,
 }) => {
   return (
     <div className={styles.contactsSidebar}>
+      {/* Add Contact */}
+      <div className={styles.addContactRow}>
+        <button className={styles.addContactButton} onClick={onAddContact}>
+          <UserPlus className={styles.addContactIcon} />
+          Add Contact
+        </button>
+      </div>
       {/* Search */}
-      <div className={styles.searchContainer}>
+      <div className={styles.searchWrapper}>
         <Input
           type="text"
           placeholder="Search contacts..."

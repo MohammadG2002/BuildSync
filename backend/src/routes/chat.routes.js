@@ -5,6 +5,8 @@ import {
   updateMessage,
   deleteMessage,
   markAsRead,
+  getDirectMessages,
+  sendDirectMessage,
 } from "../controllers/chatController/index.js";
 import {
   authenticate,
@@ -44,6 +46,22 @@ router
     mongoIdValidation("messageId"),
     validate,
     markAsRead
+  );
+
+// Direct messages within a workspace
+router
+  .route("/:workspaceId/dm/:userId")
+  .get(
+    mongoIdValidation("workspaceId"),
+    mongoIdValidation("userId"),
+    validate,
+    getDirectMessages
+  )
+  .post(
+    mongoIdValidation("workspaceId"),
+    mongoIdValidation("userId"),
+    validate,
+    sendDirectMessage
   );
 
 export default router;
