@@ -4,6 +4,8 @@ import {
   acceptContact,
   listContacts,
   removeContact,
+  blockContact,
+  unblockContact,
 } from "../controllers/contactController/index.js";
 import {
   authenticate,
@@ -40,5 +42,21 @@ router.post(
 
 // Remove contact with userId
 router.delete("/:userId", mongoIdValidation("userId"), validate, removeContact);
+
+// Block contact with userId
+router.post(
+  "/block/:userId",
+  mongoIdValidation("userId"),
+  validate,
+  blockContact
+);
+
+// Unblock contact with userId
+router.post(
+  "/unblock/:userId",
+  mongoIdValidation("userId"),
+  validate,
+  unblockContact
+);
 
 export default router;

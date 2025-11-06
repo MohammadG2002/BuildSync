@@ -11,10 +11,14 @@ const ChatArea = ({
   onMessageChange,
   onSendMessage,
   messagesEndRef,
+  onContactStatusChange,
 }) => {
   return (
     <div className={styles.chatArea}>
-      <ChatHeader selectedContact={selectedContact} />
+      <ChatHeader
+        selectedContact={selectedContact}
+        onContactStatusChange={onContactStatusChange}
+      />
       <MessagesArea
         messages={messages}
         currentUserId={currentUserId}

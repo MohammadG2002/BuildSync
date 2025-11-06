@@ -7,6 +7,7 @@ import {
   markAsRead,
   getDirectMessages,
   sendDirectMessage,
+  markDirectRead,
 } from "../controllers/chatController/index.js";
 import {
   authenticate,
@@ -69,5 +70,13 @@ router
   .route("/dm/:userId")
   .get(mongoIdValidation("userId"), validate, getDirectMessages)
   .post(mongoIdValidation("userId"), validate, sendDirectMessage);
+
+// Mark global DM conversation as read
+router.put(
+  "/dm/:userId/read",
+  mongoIdValidation("userId"),
+  validate,
+  markDirectRead
+);
 
 export default router;

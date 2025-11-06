@@ -4,5 +4,6 @@ import apiClient from "../apiClient";
 export const sendDirectMessage = async (userId, payload) => {
   const endpoint = `/chat/dm/${userId}`;
   const res = await apiClient.post(endpoint, payload);
-  return res?.data?.data?.message || null;
+  // fetch-based client returns parsed JSON; backend shape: { success, data: { message } }
+  return res?.data?.message || null;
 };

@@ -6,6 +6,7 @@
  */
 
 import Message from "../../models/Message/index.js";
+import Contact from "../../models/Contact/index.js";
 import Workspace from "../../models/Workspace/index.js";
 import { sendEventToUser } from "../../websocket/index.js";
 
@@ -49,6 +50,26 @@ export const sendDirectMessage = async (req, res) => {
           .status(403)
           .json({ success: false, message: "Access denied" });
       }
+    }
+
+    // Prevent sending if contact is blocked
+    try {
+      const me = req.user._id.toString();
+      const other = userId.toString();
+      const pair = [me, other].sort();
+      const contact = await Contact.findOne({
+        "users.0": pair[0],
+        "users.1": pair[1],
+      }).select("status blockedBy");
+      if (contact && contact.status === "blocked") {
+        return res.status(403).json({
+          success: false,
+          message: "Messaging is blocked for this contact",
+        });
+      }
+    } catch (e) {
+      // Non-fatal; proceed if contact lookup fails
+      console.warn("Contact lookup failed during DM send:", e?.message || e);
     }
 
     const message = await Message.create({

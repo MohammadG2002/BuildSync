@@ -9,11 +9,18 @@ import Contact from "../../models/Contact/index.js";
 
 export const listContacts = async (req, res) => {
   try {
-    const { status = "accepted" } = req.query;
+    const { status } = req.query;
     const me = req.user._id;
 
-    const query = { users: me };
-    if (status) query.status = status;
+    // Support comma-separated statuses; default to accepted + blocked so blocked contacts remain visible
+    let statuses = null;
+    if (typeof status === "string" && status.trim().length > 0) {
+      statuses = status.split(",").map((s) => s.trim());
+    } else {
+      statuses = ["accepted", "blocked"]; // default visibility
+    }
+
+    const query = { users: me, status: { $in: statuses } };
 
     const contacts = await Contact.find(query)
       .sort({ updatedAt: -1 })

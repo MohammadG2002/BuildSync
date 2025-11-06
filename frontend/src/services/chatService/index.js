@@ -8,3 +8,4 @@ export { sendMessage } from "./sendMessage.js";
 export { markAsRead } from "./markAsRead.js";
 export { getDirectMessages } from "./getDirectMessages.js";
 export { sendDirectMessage } from "./sendDirectMessage.js";
+export { markDirectRead } from "./markDirectRead.js";

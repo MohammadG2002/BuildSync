@@ -17,15 +17,8 @@ const handleSendMessage = async (
   const hasFiles = Array.isArray(attachments) && attachments.length > 0;
   if (!hasText && !hasFiles) return;
 
-  const newMessage = {
-    id: Date.now().toString(),
-    senderId: user?.id,
-    senderName: user?.name,
-    content: message,
-    timestamp: new Date().toISOString(),
-    read: false,
-    attachments: [],
-  };
+  // Prepare placeholder for attachments; we'll use server-created message for UI
+  const clientUploaded = [];
 
   try {
     // Upload attachments first (if any)
@@ -45,16 +38,30 @@ const handleSendMessage = async (
           };
         })
       );
-      newMessage.attachments = uploaded;
+      clientUploaded.push(...uploaded);
     }
 
     if (selectedContact?.id) {
-      await chatService.sendDirectMessage(selectedContact.id, {
+      const created = await chatService.sendDirectMessage(selectedContact.id, {
         content: message,
         attachments: uploaded,
       });
+      // Append the server-created message to avoid duplicate with realtime echo
+      if (created) {
+        const normalized = {
+          id: created._id || created.id,
+          senderId: created.sender?._id || created.senderId || user?.id,
+          senderName: created.sender?.name || created.senderName || user?.name,
+          content: created.content ?? message,
+          timestamp:
+            created.createdAt || created.timestamp || new Date().toISOString(),
+          attachments: created.attachments?.length
+            ? created.attachments
+            : clientUploaded,
+        };
+        setMessages([...messages, normalized]);
+      }
     }
-    setMessages([...messages, newMessage]);
     setMessage("");
   } catch (error) {
     console.error("Error sending message:", error);

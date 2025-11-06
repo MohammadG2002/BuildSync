@@ -70,6 +70,10 @@ const Chat = () => {
         timestamp: msg.createdAt || msg.timestamp,
         attachments: msg.attachments || [],
       };
+      // Ignore echo of messages we just sent locally to avoid duplicates
+      if (normalized.senderId === user?.id) {
+        return;
+      }
       // If selectedContact is the other participant, append
       const recipientId =
         typeof msg.recipient === "object" ? msg.recipient?._id : msg.recipient;
@@ -127,6 +131,22 @@ const Chat = () => {
                 )
               }
               messagesEndRef={messagesEndRef}
+              onContactStatusChange={(status, blockedBy) => {
+                setSelectedContact((prev) =>
+                  prev && prev.id === selectedContact.id
+                    ? { ...prev, status, blockedBy }
+                    : prev
+                );
+                setContacts((prev) =>
+                  Array.isArray(prev)
+                    ? prev.map((c) =>
+                        c.id === selectedContact.id
+                          ? { ...c, status, blockedBy }
+                          : c
+                      )
+                    : prev
+                );
+              }}
             />
           ) : (
             <ChatEmptyState />
