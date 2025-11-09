@@ -38,6 +38,9 @@ export {
   mongoIdValidation,
   paginationValidation,
   searchValidation,
+  // Tag validations
+  createTagValidation,
+  updateTagValidation,
 } from "./validations/index.js";
 
 // Error Handling

@@ -7,3 +7,11 @@ export const sendWorkspaceInvite = async (workspaceId, inviteData) => {
   );
   return response.data?.notification || null;
 };
+
+export const sendWorkspaceInvitesBulk = async (workspaceId, invites) => {
+  const response = await apiClient.post(
+    API_ENDPOINTS.WORKSPACES.INVITES_BULK(workspaceId),
+    { invites }
+  );
+  return response.data; // { results, summary }
+};

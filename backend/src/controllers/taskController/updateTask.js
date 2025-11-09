@@ -10,11 +10,21 @@ import Notification from "../../models/Notification/index.js";
 import Project from "../../models/Project/index.js";
 import Workspace from "../../models/Workspace/index.js";
 import TaskActivity from "../../models/TaskActivity/index.js";
+import { ensureExistingTags } from "../../utils/tags/validateTags.js";
 
 export const updateTask = async (req, res) => {
   try {
-    const { title, description, assigneeIds, status, priority, dueDate, tags } =
-      req.body;
+    const {
+      title,
+      description,
+      assigneeIds,
+      status,
+      priority,
+      startDate,
+      dueDate,
+      tags,
+      dependencies: incomingDependencies,
+    } = req.body;
 
     const task = await Task.findById(req.params.id);
 
@@ -90,8 +100,52 @@ export const updateTask = async (req, res) => {
     }
     if (status) task.status = status;
     if (priority) task.priority = priority;
+    if (startDate !== undefined) task.startDate = startDate;
     if (dueDate !== undefined) task.dueDate = dueDate;
-    if (tags) task.tags = tags;
+
+    // Validate order if both dates are set
+    if (task.startDate && task.dueDate) {
+      const s = new Date(task.startDate).getTime();
+      const d = new Date(task.dueDate).getTime();
+      if (!isNaN(s) && !isNaN(d) && d < s) {
+        return res.status(400).json({
+          success: false,
+          message: "Due date cannot be before start date",
+        });
+      }
+    }
+    if (tags !== undefined) {
+      // Validate and normalize tags against workspace TagDefinitions (allow clearing with [])
+      const normalizedTags = await ensureExistingTags(task.workspace, tags);
+      task.tags = normalizedTags;
+    }
+
+    // Handle dependencies update (single implementation)
+    if (incomingDependencies !== undefined) {
+      let depIds = Array.isArray(incomingDependencies)
+        ? incomingDependencies
+        : [];
+      depIds = [...new Set(depIds.filter(Boolean))];
+      if (depIds.length > 0) {
+        const depTasks = await Task.find({
+          _id: { $in: depIds },
+          project: task.project,
+          workspace: task.workspace,
+        }).select("_id");
+        const foundIds = depTasks.map((t) => t._id.toString());
+        const missing = depIds.filter(
+          (id) => !foundIds.includes(id.toString())
+        );
+        if (missing.length > 0) {
+          return res.status(400).json({
+            success: false,
+            message: "All dependencies must be tasks in the same project",
+          });
+        }
+      }
+      const selfId = task._id.toString();
+      task.dependencies = depIds.filter((id) => id.toString() !== selfId);
+    }
 
     // Defensive sanitation: fix any malformed attachment arrays that could break validation
     const coerceAttachmentArray = (value) => {
@@ -148,6 +202,10 @@ export const updateTask = async (req, res) => {
     await task.populate("createdBy", "name email avatar");
     await task.populate("project", "name color");
     await task.populate("workspace", "name");
+    await task.populate({
+      path: "dependencies",
+      select: "title status sequence",
+    });
 
     // Create notifications for newly assigned members
     if (assigneeIds !== undefined) {

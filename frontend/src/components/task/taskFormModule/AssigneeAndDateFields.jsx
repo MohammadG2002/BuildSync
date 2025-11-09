@@ -6,32 +6,48 @@ import styles from "./TaskForm.module.css";
 
 const AssigneeAndDateFields = ({
   assigneeIds = [],
+  startDate,
+  startTime,
   dueDate,
+  dueTime,
   onChange,
   members,
 }) => {
   const [showCalendar, setShowCalendar] = useState(false);
+  const [showStartCalendar, setShowStartCalendar] = useState(false);
   const dateWrapperRef = useRef(null);
+  const startWrapperRef = useRef(null);
   const inputRef = useRef(null);
+  const startInputRef = useRef(null);
 
-  // Close calendar when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (!showCalendar) return;
       if (
+        showCalendar &&
         dateWrapperRef.current &&
         !dateWrapperRef.current.contains(e.target)
       ) {
         setShowCalendar(false);
       }
+      if (
+        showStartCalendar &&
+        startWrapperRef.current &&
+        !startWrapperRef.current.contains(e.target)
+      ) {
+        setShowStartCalendar(false);
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [showCalendar]);
+  }, [showCalendar, showStartCalendar]);
 
   const handleSelectDate = (isoDateString) => {
     onChange({ target: { name: "dueDate", value: isoDateString } });
     setShowCalendar(false);
+  };
+  const handleSelectStartDate = (isoDateString) => {
+    onChange({ target: { name: "startDate", value: isoDateString } });
+    setShowStartCalendar(false);
   };
   const handleAssigneeToggle = (memberId) => {
     const currentIds = Array.isArray(assigneeIds) ? assigneeIds : [];
@@ -39,7 +55,6 @@ const AssigneeAndDateFields = ({
       ? currentIds.filter((id) => id !== memberId)
       : [...currentIds, memberId];
 
-    // Create a synthetic event to match the onChange signature
     onChange({
       target: {
         name: "assigneeIds",
@@ -48,25 +63,18 @@ const AssigneeAndDateFields = ({
     });
   };
 
-  const getSelectedMembers = () => {
-    const currentIds = Array.isArray(assigneeIds) ? assigneeIds : [];
-    return members.filter((member) => currentIds.includes(member.id));
-  };
-
-  const getUnselectedMembers = () => {
-    const currentIds = Array.isArray(assigneeIds) ? assigneeIds : [];
-    return members.filter((member) => !currentIds.includes(member.id));
-  };
-
-  const selectedMembers = getSelectedMembers();
-  const unselectedMembers = getUnselectedMembers();
+  const selectedMembers = members.filter((m) =>
+    (assigneeIds || []).includes(m.id)
+  );
+  const unselectedMembers = members.filter(
+    (m) => !(assigneeIds || []).includes(m.id)
+  );
 
   return (
-    <div className={styles.gridTwo}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
       <div>
         <label className={styles.fieldLabel}>Assign To</label>
         <div className={styles.multiSelect}>
-          {/* Selected members */}
           {selectedMembers.length > 0 && (
             <div className={styles.selectedMembers}>
               {selectedMembers.map((member) => (
@@ -84,14 +92,10 @@ const AssigneeAndDateFields = ({
               ))}
             </div>
           )}
-
-          {/* Dropdown to add more */}
           <select
             value=""
             onChange={(e) => {
-              if (e.target.value) {
-                handleAssigneeToggle(e.target.value);
-              }
+              if (e.target.value) handleAssigneeToggle(e.target.value);
             }}
             className={styles.select}
           >
@@ -109,42 +113,103 @@ const AssigneeAndDateFields = ({
         </div>
       </div>
 
-      <div ref={dateWrapperRef} style={{ position: "relative" }}>
-        <Input
-          ref={inputRef}
-          label="Due Date"
-          type="text"
-          name="dueDate"
-          value={dueDate}
-          onChange={onChange}
-          onKeyDown={(e) => {
-            if (e.key === "Escape") {
-              setShowCalendar(false);
-              e.stopPropagation();
-            }
-            if ((e.key === "Enter" || e.key === "ArrowDown") && !showCalendar) {
-              setShowCalendar(true);
-              e.preventDefault();
-            }
-          }}
-          onFocus={() => setShowCalendar(true)}
-          onClick={() => setShowCalendar(true)}
-          readOnly
-          icon={CalendarIcon}
-        />
-        {showCalendar && (
-          <div
-            style={{
-              position: "absolute",
-              zIndex: 20,
-              top: "100%",
-              marginTop: "0.25rem",
-              right: 0,
+      <div className={styles.gridTwo}>
+        <div ref={startWrapperRef} style={{ position: "relative" }}>
+          <Input
+            ref={startInputRef}
+            label="Start Date"
+            type="text"
+            name="startDate"
+            value={startDate}
+            onChange={onChange}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") {
+                setShowStartCalendar(false);
+                e.stopPropagation();
+              }
+              if (
+                (e.key === "Enter" || e.key === "ArrowDown") &&
+                !showStartCalendar
+              ) {
+                setShowStartCalendar(true);
+                e.preventDefault();
+              }
             }}
-          >
-            <Calendar value={dueDate} onSelect={handleSelectDate} />
-          </div>
-        )}
+            onFocus={() => setShowStartCalendar(true)}
+            onClick={() => setShowStartCalendar(true)}
+            readOnly
+            icon={CalendarIcon}
+          />
+          <Input
+            label="Start Time"
+            type="time"
+            name="startTime"
+            value={startTime}
+            onChange={onChange}
+            style={{ marginTop: 4 }}
+          />
+          {showStartCalendar && (
+            <div
+              style={{
+                position: "absolute",
+                zIndex: 20,
+                top: "100%",
+                marginTop: "0.25rem",
+                right: 0,
+              }}
+            >
+              <Calendar value={startDate} onSelect={handleSelectStartDate} />
+            </div>
+          )}
+        </div>
+        <div ref={dateWrapperRef} style={{ position: "relative" }}>
+          <Input
+            ref={inputRef}
+            label="Due Date"
+            type="text"
+            name="dueDate"
+            value={dueDate}
+            onChange={onChange}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") {
+                setShowCalendar(false);
+                e.stopPropagation();
+              }
+              if (
+                (e.key === "Enter" || e.key === "ArrowDown") &&
+                !showCalendar
+              ) {
+                setShowCalendar(true);
+                e.preventDefault();
+              }
+            }}
+            onFocus={() => setShowCalendar(true)}
+            onClick={() => setShowCalendar(true)}
+            readOnly
+            icon={CalendarIcon}
+          />
+          <Input
+            label="Due Time"
+            type="time"
+            name="dueTime"
+            value={dueTime}
+            onChange={onChange}
+            style={{ marginTop: 4 }}
+          />
+          {showCalendar && (
+            <div
+              style={{
+                position: "absolute",
+                zIndex: 20,
+                top: "100%",
+                marginTop: "0.25rem",
+                right: 0,
+              }}
+            >
+              <Calendar value={dueDate} onSelect={handleSelectDate} />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

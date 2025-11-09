@@ -8,6 +8,7 @@ import {
   addMember,
   removeMember,
   sendInvite,
+  sendInvitesBulk,
   acceptInvite,
   declineInvite,
   transferOwnership,
@@ -58,6 +59,11 @@ router
 router
   .route("/:id/invites")
   .post(mongoIdValidation("id"), validate, sendInvite);
+
+// Bulk invites (array of emails or userIds)
+router
+  .route(":id/invites/bulk")
+  .post(mongoIdValidation("id"), validate, sendInvitesBulk);
 
 router
   .route("/:id/invites/:notificationId/accept")

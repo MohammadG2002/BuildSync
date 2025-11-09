@@ -10,7 +10,17 @@ export class ResponseNormalizer {
    * @returns {Array} Normalized array
    */
   static normalizeList(response, key) {
-    return response.data?.[key] || response.data || response;
+    // Prefer nested data key if present
+    if (response && response.data && response.data[key] !== undefined) {
+      return response.data[key];
+    }
+    // Handle flat top-level key (e.g., { tags: [...] })
+    if (response && response[key] !== undefined) {
+      return response[key];
+    }
+    // Fallback: if response itself is an array, return it; else empty array
+    if (Array.isArray(response)) return response;
+    return [];
   }
 
   /**
@@ -20,7 +30,14 @@ export class ResponseNormalizer {
    * @returns {Object} Normalized object
    */
   static normalizeItem(response, key) {
-    return response.data?.[key] || response.data || response;
+    if (response && response.data && response.data[key] !== undefined) {
+      return response.data[key];
+    }
+    if (response && response[key] !== undefined) {
+      return response[key];
+    }
+    // Fallback to entire response if it's an object
+    return response?.data || response || null;
   }
 
   /**
@@ -29,6 +46,6 @@ export class ResponseNormalizer {
    * @returns {Object} Normalized response
    */
   static normalizeAction(response) {
-    return response.data || response;
+    return response?.data || response || null;
   }
 }

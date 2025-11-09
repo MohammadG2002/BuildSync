@@ -14,3 +14,4 @@ export { default as SubtasksSection } from "./SubtasksSection";
 export { default as ActivitySection } from "./ActivitySection";
 export { default as FilesSection } from "./FilesSection";
 export { default as TestSection } from "./TestSection";
+export { default as TimeSchedulingSection } from "./TimeSchedulingSection";

@@ -15,6 +15,7 @@ export const getTask = async (req, res) => {
       .populate("createdBy", "name email avatar")
       .populate("project", "name color")
       .populate("workspace", "name")
+      .populate({ path: "dependencies", select: "title status sequence" })
       .populate("comments.user", "name email avatar")
       .populate("attachments.uploadedBy", "name email avatar")
       .populate("testAttachments.uploadedBy", "name email avatar");

@@ -12,6 +12,7 @@ export { addWorkspaceMember } from "./addWorkspaceMember.js";
 export { removeWorkspaceMember } from "./removeWorkspaceMember.js";
 export { checkWorkspaceMembership } from "./checkWorkspaceMembership.js";
 export { createWorkspaceInvite } from "./createWorkspaceInvite.js";
+export { createWorkspaceInvitesBulk } from "./createWorkspaceInvitesBulk.js";
 export { acceptWorkspaceInvite } from "./acceptWorkspaceInvite.js";
 export { declineWorkspaceInvite } from "./declineWorkspaceInvite.js";
 export { transferWorkspaceOwnership } from "./transferWorkspaceOwnership.js";

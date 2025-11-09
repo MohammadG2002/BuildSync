@@ -440,3 +440,104 @@
   width: 1.25rem;
   height: 1.25rem;
 }
+
+/* Tabs for invite modal */
+.tabContainer {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tab {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background: #f9fafb;
+  cursor: pointer;
+}
+
+.tab:hover {
+  background: #e5e7eb;
+}
+
+.activeTab {
+  padding: 0.5rem 1rem;
+  border: 1px solid #3b82f6;
+  border-radius: 0.5rem;
+  background: #3b82f6;
+  color: #ffffff;
+}
+
+/* Contact search and dropdown */
+.contactPicker {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.contactSearchInput {
+  margin-bottom: 0;
+}
+
+.contactDropdown {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+:global(.dark) .contactDropdown {
+  background: #1f2937;
+  border-color: #4b5563;
+}
+
+.contactItem {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.contactItem:hover {
+  background: #f3f4f6;
+}
+
+.contactItemDisabled {
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.contactItemNote {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-left: 0.5rem;
+}
+
+/* Selected contacts */
+.selectedContacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.selectedContactChip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background: #f9fafb;
+}
+
+.removeContactButton {
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  cursor: pointer;
+}

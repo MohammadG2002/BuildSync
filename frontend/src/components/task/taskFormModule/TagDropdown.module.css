@@ -1,0 +1,254 @@
+/* TagDropdown styles */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.selectedArea {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background: #fff;
+}
+:global(.dark) .selectedArea {
+  background: #1f2937;
+  border-color: #4b5563;
+}
+
+.placeholder {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+:global(.dark) .placeholder {
+  color: #9ca3af;
+}
+
+.tagPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.375rem 0.625rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  user-select: none;
+}
+
+.removeTagButton {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.removeIcon {
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+.toggleButton {
+  background: #f3f4f6;
+  border: none;
+  padding: 0.375rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.toggleButton:hover {
+  background: #e5e7eb;
+}
+:global(.dark) .toggleButton {
+  background: #374151;
+}
+:global(.dark) .toggleButton:hover {
+  background: #4b5563;
+}
+.toggleIcon {
+  width: 1rem;
+  height: 1rem;
+  color: #374151;
+}
+:global(.dark) .toggleIcon {
+  color: #d1d5db;
+}
+
+/* Select-like variant (header usage) */
+.selectLike {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  border-radius: 0.25rem;
+  border: 1px solid #d1d5db;
+  background-color: #ffffff;
+  cursor: pointer;
+  color: #374151;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+.selectLike:hover {
+  background-color: #f3f4f6;
+}
+.selectLike:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+:global(.dark) .selectLike {
+  background-color: #374151;
+  border-color: #4b5563;
+  color: #d1d5db;
+}
+:global(.dark) .selectLike:hover {
+  background-color: #4b5563;
+}
+
+.selectLikeText {
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.selectLikeIcon {
+  width: 1rem;
+  height: 1rem;
+  color: #6b7280;
+  flex-shrink: 0;
+}
+:global(.dark) .selectLikeIcon {
+  color: #9ca3af;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  margin-top: 0.25rem;
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+    0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+:global(.dark) .dropdown {
+  background: #1f2937;
+  border-color: #4b5563;
+}
+
+.listHeader {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #6b7280;
+  border-bottom: 1px solid #e5e7eb;
+}
+:global(.dark) .listHeader {
+  color: #9ca3af;
+  border-bottom-color: #374151;
+}
+
+.listBody {
+  max-height: 12rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 0.4rem 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.15s;
+}
+.item:hover {
+  background: #f3f4f6;
+}
+:global(.dark) .item:hover {
+  background: #374151;
+}
+
+.itemActive {
+  background: #dbeafe;
+}
+:global(.dark) .itemActive {
+  background: #1e3a5f;
+}
+
+.colorSwatch {
+  display: inline-flex;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.65rem;
+  line-height: 0.75rem;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.footer {
+  border-top: 1px solid #e5e7eb;
+  padding: 0.5rem;
+  display: flex;
+  justify-content: flex-end;
+}
+:global(.dark) .footer {
+  border-top-color: #374151;
+}
+
+.manageButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: #3b82f6;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.4rem 0.75rem;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.manageButton:hover {
+  background: #2563eb;
+}
+.manageIcon {
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+.empty {
+  padding: 1rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+  text-align: center;
+}
+:global(.dark) .empty {
+  color: #9ca3af;
+}

@@ -42,6 +42,7 @@ import handleDeleteComment from "../../utils/project/handleDeleteComment";
 import handleReactToComment from "../../utils/project/handleReactToComment";
 // removed handleAddProjectMember - modal now toggles membership directly within component
 import styles from "./ProjectDetails.module.css";
+import TagManagerOverlay from "../../components/common/tag/TagManagerOverlay";
 
 const ProjectDetails = () => {
   const { workspaceId, projectId } = useParams();
@@ -66,6 +67,7 @@ const ProjectDetails = () => {
   const [submitting, setSubmitting] = useState(false);
 
   const [members, setMembers] = useState([]);
+  const [showTagManager, setShowTagManager] = useState(false);
 
   const refreshAll = useCallback(
     () =>
@@ -83,6 +85,13 @@ const ProjectDetails = () => {
   useEffect(() => {
     refreshAll();
   }, [projectId, refreshAll]);
+
+  // Open Tag Manager when requested globally
+  useEffect(() => {
+    const open = () => setShowTagManager(true);
+    window.addEventListener("tags:openManager", open);
+    return () => window.removeEventListener("tags:openManager", open);
+  }, []);
 
   // If navigated with ?task=ID, auto-open the Task Details once tasks are loaded
   useEffect(() => {
@@ -201,6 +210,28 @@ const ProjectDetails = () => {
           </div>
         </div>
         <div className={styles.headerButtons}>
+          <Button
+            variant="outline"
+            onClick={() =>
+              navigate(
+                `/app/workspaces/${workspaceId}/projects/${projectId}/gantt`
+              )
+            }
+            className={styles.createTaskButton}
+          >
+            Gantt Chart
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() =>
+              navigate(
+                `/app/workspaces/${workspaceId}/projects/${projectId}/network`
+              )
+            }
+            className={styles.createTaskButton}
+          >
+            Network Diagram
+          </Button>
           <Button
             variant="secondary"
             onClick={() => setShowAddMemberModal(true)}
@@ -493,6 +524,15 @@ const ProjectDetails = () => {
           onRefresh={refreshAll}
         />
       </Modal>
+
+      {/* Tag Manager Overlay */}
+      <TagManagerOverlay
+        isOpen={showTagManager}
+        onClose={() => setShowTagManager(false)}
+        onChanged={() => {
+          /* optional hook for extra refresh */
+        }}
+      />
     </div>
   );
 };

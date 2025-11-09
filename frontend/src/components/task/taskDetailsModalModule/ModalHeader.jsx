@@ -1,6 +1,7 @@
 import { X, SquarePen, Check, X as CloseSmall } from "lucide-react";
 import { useState } from "react";
 import { statusColors, priorityColors } from "../../../utils/task/colors";
+import TagDropdown from "../../task/TagDropdown";
 import styles from "./TaskDetailsModal.module.css";
 
 const ModalHeader = ({
@@ -8,6 +9,7 @@ const ModalHeader = ({
   onClose,
   onStatusChange,
   onPriorityChange,
+  onTagsChange,
   onRename,
   readOnly = false,
 }) => {
@@ -112,6 +114,22 @@ const ModalHeader = ({
             <option value="high">High Priority</option>
             <option value="urgent">Urgent</option>
           </select>
+
+          {/* Tags Dropdown */}
+          <div className={styles.headerTagDropdownWrapper}>
+            <TagDropdown
+              variant="select"
+              showLabel={false}
+              selected={Array.isArray(task.tags) ? task.tags : []}
+              onChange={(next) => onTagsChange?.(next)}
+              onOpenManager={() => {
+                try {
+                  window.dispatchEvent(new CustomEvent("tags:openManager"));
+                } catch {}
+              }}
+              readOnly={readOnly}
+            />
+          </div>
         </div>
       </div>
 

@@ -9,6 +9,7 @@ import {
   validateRequiredFields,
   validateDateRange,
 } from "../../utils/validators/index.js";
+import { ensureExistingTags } from "../../utils/tags/validateTags.js";
 
 /**
  * Create new project
@@ -54,6 +55,9 @@ export const createProject = async (projectData, userId) => {
     throw new Error("You are not a member of this workspace");
   }
 
+  // Validate and normalize tags against workspace TagDefinitions
+  const normalizedTags = await ensureExistingTags(workspace, tags || []);
+
   const project = await Project.create({
     name,
     description,
@@ -64,7 +68,7 @@ export const createProject = async (projectData, userId) => {
     startDate,
     dueDate,
     members: members || [{ user: userId, role: "owner" }],
-    tags: tags || [],
+    tags: normalizedTags,
     color: color || "#3B82F6",
   });
 

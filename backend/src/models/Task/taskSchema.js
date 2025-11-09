@@ -52,6 +52,10 @@ export const taskSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    startDate: {
+      type: Date,
+      default: null,
+    },
     completedAt: {
       type: Date,
       default: null,
@@ -60,6 +64,13 @@ export const taskSchema = new mongoose.Schema(
       {
         type: String,
         trim: true,
+      },
+    ],
+    // Tasks this task depends on (must be in same project)
+    dependencies: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Task",
       },
     ],
     attachments: [

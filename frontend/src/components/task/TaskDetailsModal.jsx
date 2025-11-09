@@ -14,8 +14,10 @@ import {
   ModalFooter,
   SubtasksSection,
   ActivitySection,
+  TimeSchedulingSection,
 } from "./taskDetailsModalModule";
 import styles from "./taskDetailsModalModule/TaskDetailsModal.module.css";
+import DependenciesPicker from "./DependenciesPicker";
 
 const TaskDetailsModal = ({
   task,
@@ -31,7 +33,7 @@ const TaskDetailsModal = ({
   currentUserId,
   canModerateComments = false,
 }) => {
-  const [activeTab, setActiveTab] = useState("overview"); // 'overview' | 'subtasks' | 'comments' | 'files' | 'activity'
+  const [activeTab, setActiveTab] = useState("overview"); // 'overview' | 'subtasks' | 'time' | 'comments' | 'activity'
   const [activity, setActivity] = useState([]);
   const [loadingActivity, setLoadingActivity] = useState(false);
   const [isEditingDescription, setIsEditingDescription] = useState(false);
@@ -92,6 +94,10 @@ const TaskDetailsModal = ({
 
   const handlePriorityChange = (newPriority) => {
     onUpdate?.({ _id: task._id, priority: newPriority });
+  };
+
+  const handleTagsChange = (newTags) => {
+    onUpdate?.({ _id: task._id, tags: newTags });
   };
 
   const handleRenameTitle = (newTitle) => {
@@ -346,6 +352,7 @@ const TaskDetailsModal = ({
           onClose={onClose}
           onStatusChange={handleStatusChange}
           onPriorityChange={handlePriorityChange}
+          onTagsChange={handleTagsChange}
           onRename={handleRenameTitle}
           readOnly={readOnly}
         />
@@ -370,6 +377,15 @@ const TaskDetailsModal = ({
               type="button"
             >
               {`Subtasks (${completedSubtasksCount} of ${subtasksCount})`}
+            </button>
+            <button
+              className={`${styles.tabButton} ${
+                activeTab === "time" ? styles.tabButtonActive : ""
+              }`}
+              onClick={() => setActiveTab("time")}
+              type="button"
+            >
+              Time Scheduling
             </button>
             <button
               className={`${styles.tabButton} ${
@@ -413,6 +429,24 @@ const TaskDetailsModal = ({
               <MetadataGrid task={task} />
               <TagsSection tags={task.tags} />
 
+              {!readOnly && (
+                <div style={{ marginTop: 12 }}>
+                  <DependenciesPicker
+                    workspaceId={getWorkspaceId()}
+                    projectId={getProjectId()}
+                    currentTaskId={task._id}
+                    selected={
+                      Array.isArray(task.dependencies)
+                        ? task.dependencies.map((d) => d._id || d.id || d)
+                        : []
+                    }
+                    onChange={(next) =>
+                      onUpdate?.({ _id: task._id, dependencies: next })
+                    }
+                  />
+                </div>
+              )}
+
               <AttachmentsSection
                 attachments={task.attachments}
                 onAddFile={handleFileUpload}
@@ -434,6 +468,14 @@ const TaskDetailsModal = ({
               onCommit={handleCommitSubtask}
               onDelete={handleDeleteSubtask}
               onStartEdit={handleStartEditSubtask}
+              readOnly={readOnly}
+            />
+          )}
+
+          {activeTab === "time" && (
+            <TimeSchedulingSection
+              task={task}
+              onUpdate={onUpdate}
               readOnly={readOnly}
             />
           )}

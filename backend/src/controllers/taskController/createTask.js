@@ -10,6 +10,7 @@ import Project from "../../models/Project/index.js";
 import Workspace from "../../models/Workspace/index.js";
 import Notification from "../../models/Notification/index.js";
 import TaskActivity from "../../models/TaskActivity/index.js";
+import { ensureExistingTags } from "../../utils/tags/validateTags.js";
 
 export const createTask = async (req, res) => {
   try {
@@ -21,8 +22,10 @@ export const createTask = async (req, res) => {
       assigneeIds,
       status,
       priority,
+      startDate,
       dueDate,
       tags,
+      dependencies,
     } = req.body;
 
     // Verify project exists if provided
@@ -82,6 +85,42 @@ export const createTask = async (req, res) => {
       sequence = updatedProject.taskCounter;
     }
 
+    // Validate and normalize tags against workspace TagDefinitions
+    const normalizedTags = await ensureExistingTags(workspace, tags || []);
+
+    // Basic chronological validation if both dates provided
+    if (startDate && dueDate) {
+      const s = new Date(startDate).getTime();
+      const d = new Date(dueDate).getTime();
+      if (!isNaN(s) && !isNaN(d) && d < s) {
+        return res.status(400).json({
+          success: false,
+          message: "Due date cannot be before start date",
+        });
+      }
+    }
+
+    // Validate dependencies belong to same project (if provided)
+    let depIds = Array.isArray(dependencies) ? dependencies : [];
+    if (depIds.length > 0) {
+      // Filter unique and remove falsy
+      depIds = [...new Set(depIds.filter(Boolean))];
+      // Ensure all belong to same project
+      const depTasks = await Task.find({
+        _id: { $in: depIds },
+        project: projectDoc?._id || project,
+        workspace,
+      });
+      const foundIds = depTasks.map((t) => t._id.toString());
+      const missing = depIds.filter((id) => !foundIds.includes(id.toString()));
+      if (missing.length > 0) {
+        return res.status(400).json({
+          success: false,
+          message: "All dependencies must be tasks in the same project",
+        });
+      }
+    }
+
     const task = await Task.create({
       title,
       description,
@@ -91,8 +130,10 @@ export const createTask = async (req, res) => {
       createdBy: req.user._id,
       status: status || "todo",
       priority: priority || "medium",
+      startDate: startDate || new Date(),
       dueDate,
-      tags: tags || [],
+      tags: normalizedTags,
+      dependencies: depIds,
       sequence,
     });
 
@@ -100,6 +141,10 @@ export const createTask = async (req, res) => {
     await task.populate("createdBy", "name email avatar");
     await task.populate("project", "name color");
     await task.populate("workspace", "name");
+    await task.populate({
+      path: "dependencies",
+      select: "title status sequence",
+    });
 
     // Log activity: task created
     try {

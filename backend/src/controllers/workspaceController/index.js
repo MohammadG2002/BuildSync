@@ -10,6 +10,7 @@ export { deleteWorkspace } from "./deleteWorkspace.js";
 export { addMember } from "./addMember.js";
 export { removeMember } from "./removeMember.js";
 export { sendInvite } from "./sendInvite.js";
+export { sendInvitesBulk } from "./sendInvitesBulk.js";
 export { acceptInvite } from "./acceptInvite.js";
 export { declineInvite } from "./declineInvite.js";
 export { transferOwnership } from "./transferOwnership.js";

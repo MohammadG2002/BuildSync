@@ -33,6 +33,24 @@ export const updateTaskValidation = [
     .optional()
     .isIn(["low", "medium", "high", "urgent"])
     .withMessage("Invalid priority"),
+  body("startDate")
+    .optional()
+    .isISO8601()
+    .withMessage("Invalid start date format"),
   body("dueDate").optional().isISO8601().withMessage("Invalid due date format"),
   body("tags").optional().isArray().withMessage("Tags must be an array"),
+  body("tags.*")
+    .optional()
+    .isString()
+    .trim()
+    .isLength({ min: 1, max: 50 })
+    .withMessage("Each tag must be a non-empty string up to 50 characters"),
+  body("dependencies")
+    .optional()
+    .isArray()
+    .withMessage("Dependencies must be an array of task IDs"),
+  body("dependencies.*")
+    .optional()
+    .isMongoId()
+    .withMessage("Invalid dependency task ID"),
 ];

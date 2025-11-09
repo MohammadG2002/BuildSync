@@ -16,6 +16,8 @@ const WorkspaceDetails = lazy(() =>
   import("../pages/workspaces/WorkspaceDetails")
 );
 const ProjectDetails = lazy(() => import("../pages/projects/ProjectDetails"));
+const ProjectGantt = lazy(() => import("../pages/projects/ProjectGantt"));
+const ProjectNetwork = lazy(() => import("../pages/projects/ProjectNetwork"));
 const Members = lazy(() => import("../pages/members/Members"));
 const Settings = lazy(() => import("../pages/settings/Settings"));
 const Chat = lazy(() => import("../pages/chat/Chat"));
@@ -87,6 +89,14 @@ const AppRoutes = () => {
           <Route
             path="workspaces/:workspaceId/projects/:projectId"
             element={<ProjectDetails />}
+          />
+          <Route
+            path="workspaces/:workspaceId/projects/:projectId/gantt"
+            element={<ProjectGantt />}
+          />
+          <Route
+            path="workspaces/:workspaceId/projects/:projectId/network"
+            element={<ProjectNetwork />}
           />
           <Route path="workspaces/:workspaceId/members" element={<Members />} />
           <Route

@@ -1,4 +1,4 @@
-import { User, Calendar, CheckCircle } from "lucide-react";
+import { User, Calendar, CheckCircle, Link as LinkIcon } from "lucide-react";
 import { getInitials, generateColor, formatDate } from "../../../utils/helpers";
 import styles from "./TaskDetailsModal.module.css";
 
@@ -44,14 +44,16 @@ const MetadataGrid = ({ task }) => {
         )}
       </div>
 
-      {/* Due Date */}
+      {/* Start & Due Dates */}
       <div>
         <div className={styles.metadataItemHeader}>
           <Calendar className={styles.metadataIcon} />
-          <h3 className={styles.metadataItemTitle}>Due Date</h3>
+          <h3 className={styles.metadataItemTitle}>Dates</h3>
         </div>
         <p className={styles.metadataText}>
-          {task.dueDate ? formatDate(task.dueDate) : "No due date"}
+          {task.startDate ? formatDate(task.startDate) : "No start"}
+          <span style={{ margin: "0 0.35rem", color: "#9ca3af" }}>→</span>
+          {task.dueDate ? formatDate(task.dueDate) : "No due"}
         </p>
       </div>
 
@@ -91,6 +93,31 @@ const MetadataGrid = ({ task }) => {
           <p className={styles.metadataText}>{formatDate(task.completedAt)}</p>
         </div>
       )}
+
+      {/* Dependencies */}
+      <div>
+        <div className={styles.metadataItemHeader}>
+          <LinkIcon className={styles.metadataIcon} />
+          <h3 className={styles.metadataItemTitle}>Dependencies</h3>
+        </div>
+        {Array.isArray(task.dependencies) && task.dependencies.length > 0 ? (
+          <ul className={styles.metadataList}>
+            {task.dependencies.map((dep) => {
+              const id = dep._id || dep.id || dep;
+              const title = dep.title || "Untitled";
+              const seq = dep.sequence ? `#${dep.sequence} ` : "";
+              return (
+                <li key={id} className={styles.metadataText}>
+                  {seq}
+                  {title}
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <p className={styles.metadataTextMuted}>None</p>
+        )}
+      </div>
     </div>
   );
 };

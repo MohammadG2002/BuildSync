@@ -46,3 +46,6 @@ export {
   paginationValidation,
   searchValidation,
 } from "./common/index.js";
+
+// Tag validations
+export { createTagValidation, updateTagValidation } from "./tag/index.js";

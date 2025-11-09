@@ -8,6 +8,7 @@ import {
   isValidObjectId,
   validateDateRange,
 } from "../../utils/validators/index.js";
+import { ensureExistingTags } from "../../utils/tags/validateTags.js";
 
 /**
  * Update project
@@ -67,7 +68,10 @@ export const updateProject = async (projectId, updateData, userId) => {
   if (priority) project.priority = priority;
   if (startDate !== undefined) project.startDate = startDate;
   if (dueDate !== undefined) project.dueDate = dueDate;
-  if (tags) project.tags = tags;
+  if (tags !== undefined) {
+    const normalizedTags = await ensureExistingTags(project.workspace, tags);
+    project.tags = normalizedTags;
+  }
   if (color) project.color = color;
 
   await project.save();
