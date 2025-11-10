@@ -1,0 +1,60 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--bg-1);
+  border-radius: 8px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+}
+.messages {
+  flex: 1 1 auto;
+  padding: 1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.message {
+  max-width: 72%;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+}
+.message.user {
+  margin-left: auto;
+  background: var(--primary-100);
+  color: var(--primary-800);
+}
+.message.assistant {
+  margin-right: auto;
+  background: var(--muted-100);
+  color: var(--text-800);
+}
+.composer {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-top: 1px solid var(--muted-200);
+  background: var(--bg-2);
+}
+.input {
+  flex: 1 1 auto;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid var(--muted-200);
+}
+.sendButton {
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  background: var(--primary-600);
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+.header {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--muted-200);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

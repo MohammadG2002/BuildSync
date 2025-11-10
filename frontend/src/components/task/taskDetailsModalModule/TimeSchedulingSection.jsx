@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useMemo } from "react";
 import { Calendar as CalendarIcon } from "lucide-react";
 import Input from "../../common/Input";
 import Calendar from "../../common/Calendar";
+import styles from "../taskFormModule/TaskForm.module.css";
 
 const TimeSchedulingSection = ({ task, onUpdate, readOnly = false }) => {
   const [showStartCalendar, setShowStartCalendar] = useState(false);
@@ -37,22 +38,53 @@ const TimeSchedulingSection = ({ task, onUpdate, readOnly = false }) => {
 
   const startDate = task?.startDate ? task.startDate.split("T")[0] : "";
   const dueDate = task?.dueDate ? task.dueDate.split("T")[0] : "";
-  let startTime = "08:00";
-  let dueTime = "00:00";
+  // Prefer explicit times from the task's ISO datetimes where available.
+  // When the server returns a UTC ISO (or one with an offset), derive the
+  // user's local wall-clock HH:MM so the standalone time inputs show the
+  // expected local time instead of a raw UTC substring.
+  let startTime = undefined;
+  let dueTime = undefined;
   if (task?.startDate && task.startDate.includes("T")) {
-    startTime = task.startDate.split("T")[1]?.slice(0, 5) || "08:00";
+    try {
+      const d = new Date(task.startDate);
+      if (!isNaN(d.getTime())) {
+        const hh = String(d.getHours()).padStart(2, "0");
+        const mm = String(d.getMinutes()).padStart(2, "0");
+        startTime = `${hh}:${mm}`;
+      }
+    } catch {}
+    // fallback to naive substring if parsing fails
+    if (!startTime)
+      startTime = task.startDate.split("T")[1]?.slice(0, 5) || undefined;
   }
   if (task?.dueDate && task.dueDate.includes("T")) {
-    dueTime = task.dueDate.split("T")[1]?.slice(0, 5) || "00:00";
+    try {
+      const d = new Date(task.dueDate);
+      if (!isNaN(d.getTime())) {
+        const hh = String(d.getHours()).padStart(2, "0");
+        const mm = String(d.getMinutes()).padStart(2, "0");
+        dueTime = `${hh}:${mm}`;
+      }
+    } catch {}
+    if (!dueTime)
+      dueTime = task.dueDate.split("T")[1]?.slice(0, 5) || undefined;
   }
-  // If same day, default to 08:00 -> 20:00
-  if (startDate === dueDate) {
-    startTime = "08:00";
-    dueTime = "20:00";
+
+  // Apply defaults only when no explicit time was provided on the task.
+  // If the start and due are the same date, prefer an 08:00 -> 20:00 window.
+  // Otherwise default to 08:00 -> 08:00 across days.
+  if (!startTime && !dueTime) {
+    if (startDate && startDate === dueDate) {
+      startTime = "08:00";
+      dueTime = "20:00";
+    } else {
+      startTime = "08:00";
+      dueTime = "08:00";
+    }
   } else {
-    // If different days, default to 08:00 -> 08:00
-    startTime = "08:00";
-    dueTime = "08:00";
+    // If only one of them is missing, give it a sensible default.
+    if (!startTime) startTime = startDate === dueDate ? "08:00" : "08:00";
+    if (!dueTime) dueTime = startDate === dueDate ? "20:00" : "08:00";
   }
 
   // --- Load all project tasks (for schedule calculations) ---
@@ -246,151 +278,261 @@ const TimeSchedulingSection = ({ task, onUpdate, readOnly = false }) => {
 
   const handleSelectStartDate = (isoDate) => {
     if (readOnly) return;
-    onUpdate?.({ _id: task._id, startDate: isoDate });
+    // Combine date with existing time and include local timezone offset
+    const tzOffset = (() => {
+      const mins = -new Date().getTimezoneOffset();
+      const sign = mins >= 0 ? "+" : "-";
+      const a = Math.abs(mins);
+      return `${sign}${String(Math.floor(a / 60)).padStart(2, "0")}:${String(
+        a % 60
+      ).padStart(2, "0")}`;
+    })();
+    const dateTime = `${isoDate}T${startTime}:00${tzOffset}`;
+    onUpdate?.({ _id: task._id, startDate: dateTime });
     setShowStartCalendar(false);
   };
   const handleSelectDueDate = (isoDate) => {
     if (readOnly) return;
-    onUpdate?.({ _id: task._id, dueDate: isoDate });
+    // Combine date with existing time and include local timezone offset
+    const tzOffset = (() => {
+      const mins = -new Date().getTimezoneOffset();
+      const sign = mins >= 0 ? "+" : "-";
+      const a = Math.abs(mins);
+      return `${sign}${String(Math.floor(a / 60)).padStart(2, "0")}:${String(
+        a % 60
+      ).padStart(2, "0")}`;
+    })();
+    const dateTime = `${isoDate}T${dueTime}:00${tzOffset}`;
+    onUpdate?.({ _id: task._id, dueDate: dateTime });
     setShowDueCalendar(false);
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-      {/* Warning about dependency start constraints */}
-      {scheduleMetrics?.depWarnings?.length > 0 && (
-        <div
-          style={{
-            background: "#fef2f2",
-            border: "1px solid #fecaca",
-            padding: "0.75rem 1rem",
-            borderRadius: 6,
-            color: "#b91c1c",
-            fontSize: ".85rem",
-          }}
-        >
-          <strong>Dependency Warning:</strong> This task starts before the
-          completion of:
-          <ul style={{ margin: "0.35rem 0 0", paddingLeft: "1.25rem" }}>
-            {scheduleMetrics.depWarnings.map((w) => (
-              <li key={w.depId}>
-                {w.title} (finishes {w.finish})
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+    <div className={styles.form}>
       <div
         style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(2, minmax(0, 1fr)",
-          gap: "1rem",
+          background: "var(--card-bg, #ffffff)",
+          border: "1px solid #e6e9ee",
+          borderRadius: 8,
+          padding: "0.75rem",
+          boxShadow: "0 1px 3px rgba(16,24,40,0.04)",
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.75rem",
         }}
       >
-        <div ref={startWrapRef} style={{ position: "relative" }}>
-          <Input
-            ref={startRef}
-            label="Start Date"
-            type="text"
-            name="startDate"
-            value={startDate}
-            onChange={() => {}}
-            onFocus={() => !readOnly && setShowStartCalendar(true)}
-            onClick={() => !readOnly && setShowStartCalendar(true)}
-            onKeyDown={(e) => {
-              if (e.key === "Escape") {
-                setShowStartCalendar(false);
-                e.stopPropagation();
-              }
-              if ((e.key === "Enter" || e.key === "ArrowDown") && !readOnly) {
-                setShowStartCalendar(true);
-                e.preventDefault();
-              }
+        {/* Warning about dependency start constraints */}
+        {scheduleMetrics?.depWarnings?.length > 0 && (
+          <div
+            style={{
+              background: "#fef2f2",
+              border: "1px solid #fecaca",
+              padding: "0.75rem 1rem",
+              borderRadius: 6,
+              color: "#b91c1c",
+              fontSize: ".85rem",
             }}
-            readOnly
-            icon={CalendarIcon}
-          />
-          <Input
-            label="Start Time"
-            type="time"
-            name="startTime"
-            value={startTime}
-            onChange={(e) => {
-              if (readOnly) return;
-              onUpdate?.({ _id: task._id, startTime: e.target.value });
+          >
+            <strong>Dependency Warning:</strong> This task starts before the
+            completion of:
+            <ul style={{ margin: "0.35rem 0 0", paddingLeft: "1.25rem" }}>
+              {scheduleMetrics.depWarnings.map((w) => (
+                <li key={w.depId}>
+                  {w.title} (finishes {w.finish})
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        <div className={styles.gridTwo}>
+          <div
+            ref={startWrapRef}
+            style={{
+              position: "relative",
+              display: "flex",
+              flexDirection: "column",
             }}
-            style={{ marginTop: 4 }}
-            readOnly={readOnly}
-          />
-          {showStartCalendar && (
-            <div
-              style={{
-                position: "absolute",
-                zIndex: 20,
-                top: "100%",
-                marginTop: "0.25rem",
-                right: 0,
+          >
+            <Input
+              ref={startRef}
+              label="Start Date"
+              type="text"
+              name="startDate"
+              value={startDate}
+              onChange={() => {}}
+              onFocus={() => !readOnly && setShowStartCalendar(true)}
+              onClick={() => !readOnly && setShowStartCalendar(true)}
+              onKeyDown={(e) => {
+                if (e.key === "Escape") {
+                  setShowStartCalendar(false);
+                  e.stopPropagation();
+                }
+                if ((e.key === "Enter" || e.key === "ArrowDown") && !readOnly) {
+                  setShowStartCalendar(true);
+                  e.preventDefault();
+                }
               }}
-            >
-              <Calendar value={startDate} onSelect={handleSelectStartDate} />
+              readOnly
+              icon={CalendarIcon}
+            />
+            <div style={{ marginTop: 6 }}>
+              <Input
+                label="Start Time"
+                type="time"
+                name="startTime"
+                value={startTime}
+                onChange={(e) => {
+                  if (readOnly) return;
+                  // Determine a reliable date part to attach the new time to and include timezone
+                  const datePart =
+                    startDate ||
+                    (task?.startDate ? task.startDate.split("T")[0] : null) ||
+                    (task?.dueDate ? task.dueDate.split("T")[0] : null) ||
+                    new Date().toISOString().split("T")[0];
+                  const mins = -new Date().getTimezoneOffset();
+                  const sign = mins >= 0 ? "+" : "-";
+                  const a = Math.abs(mins);
+                  const tz = `${sign}${String(Math.floor(a / 60)).padStart(
+                    2,
+                    "0"
+                  )}:${String(a % 60).padStart(2, "0")}`;
+                  const dateTime = `${datePart}T${e.target.value}:00${tz}`;
+                  onUpdate?.({ _id: task._id, startDate: dateTime });
+                }}
+                style={{ marginTop: 0 }}
+                readOnly={readOnly}
+              />
             </div>
-          )}
-        </div>
-        <div ref={dueWrapRef} style={{ position: "relative" }}>
-          <Input
-            ref={dueRef}
-            label="Due Date"
-            type="text"
-            name="dueDate"
-            value={dueDate}
-            onChange={() => {}}
-            onFocus={() => !readOnly && setShowDueCalendar(true)}
-            onClick={() => !readOnly && setShowDueCalendar(true)}
-            onKeyDown={(e) => {
-              if (e.key === "Escape") {
-                setShowDueCalendar(false);
-                e.stopPropagation();
-              }
-              if ((e.key === "Enter" || e.key === "ArrowDown") && !readOnly) {
-                setShowDueCalendar(true);
-                e.preventDefault();
-              }
+            {showStartCalendar && (
+              <div
+                style={{
+                  position: "absolute",
+                  zIndex: 20,
+                  top: "100%",
+                  marginTop: "0.25rem",
+                  right: 0,
+                }}
+              >
+                <Calendar
+                  // pass the full ISO datetime when available so the calendar can show the selected time
+                  value={task?.startDate || startDate}
+                  onSelect={handleSelectStartDate}
+                  onTimePreset={(date, time) => {
+                    if (readOnly) return;
+                    const mins = -new Date().getTimezoneOffset();
+                    const sign = mins >= 0 ? "+" : "-";
+                    const a = Math.abs(mins);
+                    const tz = `${sign}${String(Math.floor(a / 60)).padStart(
+                      2,
+                      "0"
+                    )}:${String(a % 60).padStart(2, "0")}`;
+                    onUpdate?.({
+                      _id: task._id,
+                      startDate: `${date}T${time}:00${tz}`,
+                    });
+                    setShowStartCalendar(false);
+                  }}
+                />
+              </div>
+            )}
+          </div>
+          <div
+            ref={dueWrapRef}
+            style={{
+              position: "relative",
+              display: "flex",
+              flexDirection: "column",
             }}
-            readOnly
-            icon={CalendarIcon}
-          />
-          <Input
-            label="Due Time"
-            type="time"
-            name="dueTime"
-            value={dueTime}
-            onChange={(e) => {
-              if (readOnly) return;
-              onUpdate?.({ _id: task._id, dueTime: e.target.value });
-            }}
-            style={{ marginTop: 4 }}
-            readOnly={readOnly}
-          />
-          {showDueCalendar && (
-            <div
-              style={{
-                position: "absolute",
-                zIndex: 20,
-                top: "100%",
-                marginTop: "0.25rem",
-                right: 0,
+          >
+            <Input
+              ref={dueRef}
+              label="Due Date"
+              type="text"
+              name="dueDate"
+              value={dueDate}
+              onChange={() => {}}
+              onFocus={() => !readOnly && setShowDueCalendar(true)}
+              onClick={() => !readOnly && setShowDueCalendar(true)}
+              onKeyDown={(e) => {
+                if (e.key === "Escape") {
+                  setShowDueCalendar(false);
+                  e.stopPropagation();
+                }
+                if ((e.key === "Enter" || e.key === "ArrowDown") && !readOnly) {
+                  setShowDueCalendar(true);
+                  e.preventDefault();
+                }
               }}
-            >
-              <Calendar value={dueDate} onSelect={handleSelectDueDate} />
+              readOnly
+              icon={CalendarIcon}
+            />
+            <div style={{ marginTop: 6 }}>
+              <Input
+                label="Due Time"
+                type="time"
+                name="dueTime"
+                value={dueTime}
+                onChange={(e) => {
+                  if (readOnly) return;
+                  const datePart =
+                    dueDate ||
+                    (task?.dueDate ? task.dueDate.split("T")[0] : null) ||
+                    (task?.startDate ? task.startDate.split("T")[0] : null) ||
+                    new Date().toISOString().split("T")[0];
+                  const mins = -new Date().getTimezoneOffset();
+                  const sign = mins >= 0 ? "+" : "-";
+                  const a = Math.abs(mins);
+                  const tz = `${sign}${String(Math.floor(a / 60)).padStart(
+                    2,
+                    "0"
+                  )}:${String(a % 60).padStart(2, "0")}`;
+                  const dateTime = `${datePart}T${e.target.value}:00${tz}`;
+                  onUpdate?.({ _id: task._id, dueDate: dateTime });
+                }}
+                style={{ marginTop: 0 }}
+                readOnly={readOnly}
+              />
             </div>
-          )}
+            {showDueCalendar && (
+              <div
+                style={{
+                  position: "absolute",
+                  zIndex: 20,
+                  top: "100%",
+                  marginTop: "0.25rem",
+                  right: 0,
+                }}
+              >
+                <Calendar
+                  // pass the full ISO datetime when available so the calendar can show the selected time
+                  value={task?.dueDate || dueDate}
+                  onSelect={handleSelectDueDate}
+                  onTimePreset={(date, time) => {
+                    if (readOnly) return;
+                    const mins = -new Date().getTimezoneOffset();
+                    const sign = mins >= 0 ? "+" : "-";
+                    const a = Math.abs(mins);
+                    const tz = `${sign}${String(Math.floor(a / 60)).padStart(
+                      2,
+                      "0"
+                    )}:${String(a % 60).padStart(2, "0")}`;
+                    onUpdate?.({
+                      _id: task._id,
+                      dueDate: `${date}T${time}:00${tz}`,
+                    });
+                    setShowDueCalendar(false);
+                  }}
+                />
+              </div>
+            )}
+          </div>
         </div>
       </div>
       <p style={{ color: "#6b7280", fontSize: ".875rem" }}>
         Tip: Start and Due dates also show in Overview. Changes save instantly.
       </p>
       <div style={{ borderTop: "1px solid #e5e7eb", paddingTop: "0.75rem" }}>
-        <h4 style={{ margin: 0, fontSize: "0.95rem", fontWeight: 600 }}>
+        <h4 className={styles.fieldLabel} style={{ margin: 0 }}>
           Schedule Analysis
         </h4>
         {loadingSched && (

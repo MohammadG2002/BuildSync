@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import styles from "./calendar/Calendar.module.css";
 
@@ -15,7 +15,9 @@ function toISO(date) {
 
 function parseISO(iso) {
   if (!iso) return null;
-  const [y, m, d] = iso.split("-").map((s) => parseInt(s, 10));
+  // Accept either a date-only ISO (YYYY-MM-DD) or a full datetime (YYYY-MM-DDTHH:MM)
+  const dateOnly = iso.includes("T") ? iso.split("T")[0] : iso;
+  const [y, m, d] = dateOnly.split("-").map((s) => parseInt(s, 10));
   if (!y || !m || !d) return null;
   const date = new Date(y, m - 1, d);
   return isNaN(date.getTime()) ? null : date;
@@ -23,9 +25,44 @@ function parseISO(iso) {
 
 const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-const Calendar = ({ value, onSelect }) => {
+const Calendar = ({ value, onSelect, onTimePreset }) => {
   const selectedDate = parseISO(value) || new Date();
   const today = new Date();
+
+  const [customTime, setCustomTime] = useState(() => {
+    try {
+      if (value && value.includes("T")) {
+        // Parse the incoming ISO (which may be UTC with a Z or include an offset)
+        // and show it in the user's local wall-clock time (hours:minutes).
+        const d = new Date(value);
+        if (!isNaN(d.getTime())) {
+          const hh = String(d.getHours()).padStart(2, "0");
+          const mm = String(d.getMinutes()).padStart(2, "0");
+          return `${hh}:${mm}`;
+        }
+      }
+    } catch {}
+    return "08:00";
+  });
+  // Keep customTime in sync when the parent passes a new value (e.g. when reopening)
+  useEffect(() => {
+    try {
+      if (value && value.includes("T")) {
+        const d = new Date(value);
+        if (!isNaN(d.getTime())) {
+          const hh = String(d.getHours()).padStart(2, "0");
+          const mm = String(d.getMinutes()).padStart(2, "0");
+          setCustomTime(`${hh}:${mm}`);
+          return;
+        }
+        // fallback to naive split if Date parsing fails
+        setCustomTime(value.split("T")[1].slice(0, 5));
+        return;
+      }
+    } catch {}
+    // otherwise keep existing customTime or default
+  }, [value]);
+  const [showHours, setShowHours] = useState(false);
 
   const [currentMonth, setCurrentMonth] = useState(
     new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1)
@@ -147,6 +184,82 @@ const Calendar = ({ value, onSelect }) => {
           );
         })}
       </div>
+      {onTimePreset && (
+        <div className={styles.timeRow}>
+          <div className={styles.timeLabel}>Quick times</div>
+          <div className={styles.timeBtns}>
+            {["08:00", "12:00", "17:00", "20:00"].map((t) => (
+              <button
+                key={t}
+                type="button"
+                className={styles.timeBtn}
+                onClick={() => onTimePreset?.(toISO(selectedDate), t)}
+              >
+                {t}
+              </button>
+            ))}
+            <input
+              className={styles.timeInput}
+              type="time"
+              value={customTime}
+              onChange={(e) => setCustomTime(e.target.value)}
+            />
+            <button
+              type="button"
+              className={styles.timeApply}
+              onClick={() => onTimePreset?.(toISO(selectedDate), customTime)}
+            >
+              Apply
+            </button>
+            <div style={{ marginLeft: 8 }}>
+              <button
+                type="button"
+                className={styles.timeBtn}
+                onClick={() => setShowHours((s) => !s)}
+              >
+                {showHours ? "Hide hours" : "Show hours"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {onTimePreset && showHours && (
+        <div
+          className={styles.hoursGrid}
+          style={{ padding: 12, background: "#eaf6ff", borderRadius: "10px" }}
+        >
+          {Array.from({ length: 24 }).map((_, h) => {
+            const hh = String(h).padStart(2, "0");
+            const label = `${hh}:00`;
+            const selectedHour = (customTime || "").slice(0, 2);
+            const isSelected = selectedHour === hh;
+            const btnStyle = isSelected
+              ? {
+                  background: "linear-gradient(180deg,#2563eb 0%,#1d4ed8 100%)",
+                  color: "#fff",
+                  boxShadow: "0 10px 30px rgba(37,99,235,0.18)",
+                  transform: "translateY(-6px)",
+                }
+              : { background: "#fff" };
+            return (
+              <button
+                key={h}
+                type="button"
+                aria-pressed={isSelected}
+                className={styles.hourCell}
+                style={{ ...btnStyle, height: 44, fontSize: 15 }}
+                onClick={() => {
+                  const time = `${hh}:00`;
+                  setCustomTime(time);
+                  onTimePreset?.(toISO(selectedDate), time);
+                }}
+              >
+                {label}
+              </button>
+            );
+          })}
+        </div>
+      )}
       <div className={styles.footer}>
         <button
           type="button"

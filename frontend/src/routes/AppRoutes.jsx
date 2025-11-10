@@ -21,6 +21,7 @@ const ProjectNetwork = lazy(() => import("../pages/projects/ProjectNetwork"));
 const Members = lazy(() => import("../pages/members/Members"));
 const Settings = lazy(() => import("../pages/settings/Settings"));
 const Chat = lazy(() => import("../pages/chat/Chat"));
+const AIChat = lazy(() => import("../pages/chat/AIChat"));
 const Archived = lazy(() => import("../pages/archived/Archived"));
 const Profile = lazy(() => import("../pages/profile/Profile"));
 const Notifications = lazy(() =>
@@ -108,6 +109,7 @@ const AppRoutes = () => {
             element={<Archived />}
           />
           <Route path="chat" element={<Chat />} />
+          <Route path="chat/ai" element={<AIChat />} />
           <Route path="chat/:chatId" element={<Chat />} />
           <Route path="profile" element={<Profile />} />
           <Route path="notifications" element={<Notifications />} />

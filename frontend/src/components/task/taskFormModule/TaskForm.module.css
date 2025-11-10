@@ -112,18 +112,22 @@
 .attachmentsButton {
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: #2563eb;
+  color: #374151;
   display: flex;
   align-items: center;
   gap: 0.25rem;
   background: none;
-  border: none;
   cursor: pointer;
   transition: color 0.2s;
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  width: 100%;
+  justify-content: space-between;
 }
 
 .attachmentsButton:hover {
-  color: #1d4ed8;
+  background-color: #f3f4f6;
 }
 
 .attachmentsIcon {
@@ -198,3 +202,6 @@
   width: 1rem;
   height: 1rem;
 }
+
+/* Dependencies button (modern pill) */
+/* dependenciesButton removed in favor of using attachmentsButton for consistent form button styles */

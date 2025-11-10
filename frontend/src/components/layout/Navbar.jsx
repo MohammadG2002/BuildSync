@@ -77,7 +77,7 @@ const Navbar = ({ onMenuClick }) => {
       {/* Right Side Actions */}
       <div className={styles.rightSection}>
         <NavbarActions
-          onChatClick={() => navigate("/app/chat")}
+          onChatClick={() => navigate("/app/chat/ai")}
           onSettingsClick={() =>
             navigate(`/app/workspaces/${currentWorkspace?.id}/settings`)
           }

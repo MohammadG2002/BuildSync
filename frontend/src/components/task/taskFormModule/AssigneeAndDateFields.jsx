@@ -15,6 +15,8 @@ const AssigneeAndDateFields = ({
 }) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [showStartCalendar, setShowStartCalendar] = useState(false);
+  const [startCalPos, setStartCalPos] = useState(null);
+  const [dueCalPos, setDueCalPos] = useState(null);
   const dateWrapperRef = useRef(null);
   const startWrapperRef = useRef(null);
   const inputRef = useRef(null);
@@ -41,6 +43,51 @@ const AssigneeAndDateFields = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showCalendar, showStartCalendar]);
 
+  // Compute fixed-position coordinates so the calendar can render above other
+  // overflowed parents (modal overlays often create new stacking contexts).
+  useEffect(() => {
+    const compute = () => {
+      try {
+        if (startInputRef.current && showStartCalendar) {
+          const r = startInputRef.current.getBoundingClientRect();
+          let left = r.left;
+          const estHeight = 360;
+          let top = r.bottom + 6;
+          // If the calendar would overflow the viewport bottom, flip it above
+          if (r.bottom + 6 + estHeight > window.innerHeight) {
+            top = r.top - estHeight - 6;
+            if (top < 8) top = 8;
+          }
+          setStartCalPos({ left, top });
+        } else {
+          setStartCalPos(null);
+        }
+        if (inputRef.current && showCalendar) {
+          const r = inputRef.current.getBoundingClientRect();
+          let left = r.left;
+          const estHeight = 360;
+          let top = r.bottom + 6;
+          if (r.bottom + 6 + estHeight > window.innerHeight) {
+            top = r.top - estHeight - 6;
+            if (top < 8) top = 8;
+          }
+          setDueCalPos({ left, top });
+        } else {
+          setDueCalPos(null);
+        }
+      } catch (e) {
+        // ignore
+      }
+    };
+    compute();
+    window.addEventListener("resize", compute);
+    window.addEventListener("scroll", compute, { passive: true });
+    return () => {
+      window.removeEventListener("resize", compute);
+      window.removeEventListener("scroll", compute);
+    };
+  }, [showStartCalendar, showCalendar]);
+
   const handleSelectDate = (isoDateString) => {
     onChange({ target: { name: "dueDate", value: isoDateString } });
     setShowCalendar(false);
@@ -48,6 +95,19 @@ const AssigneeAndDateFields = ({
   const handleSelectStartDate = (isoDateString) => {
     onChange({ target: { name: "startDate", value: isoDateString } });
     setShowStartCalendar(false);
+  };
+  // When a time is chosen from the calendar's time-presets/hours grid,
+  // update both the date and the separate time fields used by TaskForm.
+  const handleStartTimePreset = (date, time) => {
+    // date is YYYY-MM-DD, time is HH:MM
+    onChange({ target: { name: "startDate", value: date } });
+    onChange({ target: { name: "startTime", value: time } });
+    setShowStartCalendar(false);
+  };
+  const handleDueTimePreset = (date, time) => {
+    onChange({ target: { name: "dueDate", value: date } });
+    onChange({ target: { name: "dueTime", value: time } });
+    setShowCalendar(false);
   };
   const handleAssigneeToggle = (memberId) => {
     const currentIds = Array.isArray(assigneeIds) ? assigneeIds : [];
@@ -151,14 +211,29 @@ const AssigneeAndDateFields = ({
           {showStartCalendar && (
             <div
               style={{
-                position: "absolute",
-                zIndex: 20,
-                top: "100%",
-                marginTop: "0.25rem",
-                right: 0,
+                position: startCalPos ? "fixed" : "absolute",
+                zIndex: 9999,
+                left: startCalPos ? startCalPos.left : "auto",
+                top: startCalPos ? startCalPos.top : "100%",
+                marginTop: startCalPos ? 0 : "0.25rem",
+                maxHeight: "60vh",
+                overflowY: "auto",
+                boxShadow: "0 12px 40px rgba(16,24,40,0.12)",
+                borderRadius: 8,
+                background: "var(--card-bg, #fff)",
               }}
             >
-              <Calendar value={startDate} onSelect={handleSelectStartDate} />
+              <Calendar
+                value={
+                  startDate
+                    ? startTime
+                      ? `${startDate}T${startTime}`
+                      : startDate
+                    : startDate
+                }
+                onSelect={handleSelectStartDate}
+                onTimePreset={handleStartTimePreset}
+              />
             </div>
           )}
         </div>
@@ -199,14 +274,29 @@ const AssigneeAndDateFields = ({
           {showCalendar && (
             <div
               style={{
-                position: "absolute",
-                zIndex: 20,
-                top: "100%",
-                marginTop: "0.25rem",
-                right: 0,
+                position: dueCalPos ? "fixed" : "absolute",
+                zIndex: 9999,
+                left: dueCalPos ? dueCalPos.left : "auto",
+                top: dueCalPos ? dueCalPos.top : "100%",
+                marginTop: dueCalPos ? 0 : "0.25rem",
+                maxHeight: "60vh",
+                overflowY: "auto",
+                boxShadow: "0 12px 40px rgba(16,24,40,0.12)",
+                borderRadius: 8,
+                background: "var(--card-bg, #fff)",
               }}
             >
-              <Calendar value={dueDate} onSelect={handleSelectDate} />
+              <Calendar
+                value={
+                  dueDate
+                    ? dueTime
+                      ? `${dueDate}T${dueTime}`
+                      : dueDate
+                    : dueDate
+                }
+                onSelect={handleSelectDate}
+                onTimePreset={handleDueTimePreset}
+              />
             </div>
           )}
         </div>

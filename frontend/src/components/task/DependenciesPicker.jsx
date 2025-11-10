@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link as LinkIcon, ChevronDown } from "lucide-react";
 import { useParams } from "react-router-dom";
 import styles from "./taskFormModule/TaskForm.module.css";
 
@@ -76,8 +77,24 @@ const DependenciesPicker = ({
         type="button"
         className={styles.attachmentsButton}
         onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
       >
-        {open ? "Close Dependencies" : "Dependencies"}
+        <span
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 8,
+          }}
+        >
+          <LinkIcon className={styles.attachmentsIcon} />
+          <span style={{ fontWeight: 600 }}>Dependencies</span>
+          {selected && selected.length > 0 && (
+            <span style={{ marginLeft: 8, color: "#6b7280", fontWeight: 600 }}>
+              {selected.length}
+            </span>
+          )}
+        </span>
+        <ChevronDown className={styles.attachmentsIcon} />
       </button>
       {open && (
         <div
