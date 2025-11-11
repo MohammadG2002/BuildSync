@@ -14,10 +14,93 @@ import {
   mongoIdValidation,
   validate,
 } from "../middleware/index.js";
+import fetch from "node-fetch";
+import AIChatLog from "../models/AIChatLog.js";
 
 const router = express.Router();
 
-// All routes require authentication
+// Get chat logs for a session
+router.get("/logs/:sessionId", async (req, res) => {
+  const { sessionId } = req.params;
+  const { limit = 50, skip = 0 } = req.query;
+  try {
+    const logs = await AIChatLog.find({ sessionId })
+      .sort({ timestamp: 1 })
+      .skip(Number(skip))
+      .limit(Number(limit));
+    res.json({ sessionId, logs });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch chat logs" });
+  }
+});
+
+// List all sessions for a user (or all sessions if no user)
+router.get("/sessions", async (req, res) => {
+  const userId = req.user?._id;
+  try {
+    const match = userId ? { userId } : {};
+    const sessions = await AIChatLog.aggregate([
+      { $match: match },
+      { $group: { _id: "$sessionId", lastMsg: { $max: "$timestamp" } } },
+      { $sort: { lastMsg: -1 } },
+      { $limit: 100 },
+    ]);
+    res.json({ sessions });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to list sessions" });
+  }
+});
+
+// Proxy chat to n8n webhook (public, no auth)
+router.post("/", async (req, res) => {
+  const { message, sessionId } = req.body;
+  console.log("[API/chat] Incoming:", { message, sessionId });
+  try {
+    // Log user message
+    await AIChatLog.create({
+      sessionId,
+      userId: req.user?._id || undefined,
+      role: "user",
+      content: message,
+    });
+
+    const response = await fetch(
+      "https://coohoms.app.n8n.cloud/webhook/8b085178-cf54-4bfe-812d-0e0d562ce3ac/chat",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "sendMessage",
+          sessionId: sessionId || `user-${Date.now()}`,
+          chatInput: message,
+        }),
+      }
+    );
+    console.log("[API/chat] n8n status:", response.status);
+    let data = {};
+    try {
+      data = await response.json();
+      console.log("[API/chat] n8n response:", data);
+    } catch (jsonErr) {
+      console.error("[API/chat] Failed to parse n8n response as JSON", jsonErr);
+    }
+    // Log assistant message
+    if (data.output) {
+      await AIChatLog.create({
+        sessionId,
+        userId: req.user?._id || undefined,
+        role: "assistant",
+        content: data.output,
+      });
+    }
+    res.json({ reply: data.output || null, n8n: data });
+  } catch (error) {
+    console.error("[API/chat] Proxy error:", error);
+    res.status(500).json({ error: "AI service unavailable" });
+  }
+});
+
+// All other chat routes require authentication
 router.use(authenticate);
 
 router
@@ -41,7 +124,7 @@ router
   );
 
 router
-  .route("/:workspaceId/:messageId/read")
+  .route(":/workspaceId/:messageId/read")
   .put(
     mongoIdValidation("workspaceId"),
     mongoIdValidation("messageId"),

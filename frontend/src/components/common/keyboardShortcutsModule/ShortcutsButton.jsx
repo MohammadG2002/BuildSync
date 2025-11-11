@@ -1,16 +1,18 @@
-import { Keyboard } from "lucide-react";
+import { Bot } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import styles from "./KeyboardShortcuts.module.css";
 
-const ShortcutsButton = ({ onClick }) => {
+const ShortcutsButton = () => {
+  const navigate = useNavigate();
   return (
     <button
       data-onboarding="shortcuts-button"
-      onClick={onClick}
+      onClick={() => navigate("/app/chat/ai")}
       className={styles.shortcutsButton}
-      title="Keyboard Shortcuts (Shift + ?)"
+      title="AI Chat"
     >
-      <Keyboard className={styles.shortcutsIcon} />
-      <span className={styles.shortcutsTooltip}>Shortcuts (Shift + ?)</span>
+      <Bot className={styles.shortcutsIcon} />
+      <span className={styles.shortcutsTooltip}>AI Chat</span>
     </button>
   );
 };

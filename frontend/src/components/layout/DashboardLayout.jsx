@@ -2,7 +2,6 @@ import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
-import KeyboardShortcuts from "../common/KeyboardShortcuts";
 import Onboarding from "../common/Onboarding";
 import { useWorkspace } from "../../hooks/useWorkspace";
 import styles from "./DashboardLayout.module.css";
@@ -31,8 +30,7 @@ const DashboardLayout = () => {
         </main>
       </div>
 
-      {/* Keyboard Shortcuts Helper */}
-      <KeyboardShortcuts />
+      {/* Keyboard Shortcuts Helper removed */}
 
       {/* Onboarding Tour */}
       <Onboarding />
