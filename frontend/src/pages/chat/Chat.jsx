@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import Card from "../../components/common/Card";
@@ -10,90 +10,52 @@ import {
   ChatArea,
   ChatEmptyState,
 } from "../../components/chatPage";
-import filterContacts from "../../utils/chat/filterContacts";
-import fetchContacts from "../../utils/chat/fetchContacts";
-import fetchMessages from "../../utils/chat/fetchMessages";
-import scrollToBottom from "../../utils/chat/scrollToBottom";
 import handleSendMessage from "../../utils/chat/handleSendMessage";
-import * as contactService from "../../services/contactService";
-import realtimeService from "../../services/realtime";
-import toast from "react-hot-toast";
 import styles from "./Chat.module.css";
+import { useContacts } from "./useContacts";
+import { useMessages } from "./useMessages";
+import { useSelectedContact } from "./useSelectedContact";
+import { useInviteModal } from "./useInviteModal";
 
 const Chat = () => {
   const { user } = useAuth();
   const { chatId } = useParams();
   const navigate = useNavigate();
+
+  // Contacts hook
+  const {
+    contacts,
+    setContacts,
+    loading,
+    searchQuery,
+    setSearchQuery,
+    filteredContacts,
+  } = useContacts();
+
+  // Selected contact state
   const [selectedContact, setSelectedContact] = useState(null);
+  useSelectedContact(chatId, contacts, selectedContact, setSelectedContact);
+
+  // Messages hook
+  const { messages, setMessages, messagesEndRef } = useMessages(
+    selectedContact,
+    user
+  );
+
+  // Message input
   const [message, setMessage] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
-  const messagesEndRef = useRef(null);
 
-  const [contacts, setContacts] = useState([]);
-  const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [inviteEmail, setInviteEmail] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-
-  // Global contacts: aggregate across all workspaces
-  useEffect(() => {
-    fetchContacts(null, setContacts, setLoading);
-  }, []);
-
-  useEffect(() => {
-    fetchMessages(
-      setMessages,
-      selectedContact ? selectedContact.id : undefined
-    );
-  }, [selectedContact]);
-
-  // When contacts load or chatId changes, preselect the contact from URL
-  useEffect(() => {
-    if (!chatId) return;
-    if (!contacts || contacts.length === 0) return;
-    const match = contacts.find((c) => String(c.id) === String(chatId));
-    if (match && (!selectedContact || selectedContact.id !== match.id)) {
-      setSelectedContact(match);
-    }
-  }, [chatId, contacts]);
-
-  // Subscribe to DM events (no workspace join needed)
-  useEffect(() => {
-    const unsubDM = realtimeService.on("dm_message", (msg) => {
-      // Normalize payload shape to UI message
-      const normalized = {
-        id: msg._id || msg.id,
-        senderId: msg.sender?._id || msg.senderId,
-        senderName: msg.sender?.name || msg.senderName,
-        content: msg.content,
-        timestamp: msg.createdAt || msg.timestamp,
-        attachments: msg.attachments || [],
-      };
-      // Ignore echo of messages we just sent locally to avoid duplicates
-      if (normalized.senderId === user?.id) {
-        return;
-      }
-      // If selectedContact is the other participant, append
-      const recipientId =
-        typeof msg.recipient === "object" ? msg.recipient?._id : msg.recipient;
-      if (
-        selectedContact &&
-        (normalized.senderId === selectedContact.id ||
-          recipientId === selectedContact.id)
-      ) {
-        setMessages((prev) => [...prev, normalized]);
-        scrollToBottom(messagesEndRef);
-      }
-    });
-    return () => unsubDM?.();
-  }, [selectedContact]);
-
-  useEffect(() => {
-    scrollToBottom(messagesEndRef);
-  }, [messages]);
-
-  const filteredContacts = filterContacts(contacts, searchQuery);
+  // Invite modal hook
+  const {
+    showAddModal,
+    setShowAddModal,
+    inviteEmail,
+    setInviteEmail,
+    submitting,
+    openModal,
+    closeModal,
+    sendInvite,
+  } = useInviteModal(setContacts, loading);
 
   return (
     <div className={styles.container}>
@@ -106,10 +68,9 @@ const Chat = () => {
             selectedContact={selectedContact}
             onSelectContact={(c) => {
               setSelectedContact(c);
-              // Push route for deep-linking and reloads
               navigate(`/app/chat/${c.id}`);
             }}
-            onAddContact={() => setShowAddModal(true)}
+            onAddContact={openModal}
           />
 
           {selectedContact ? (
@@ -157,10 +118,7 @@ const Chat = () => {
       {/* Add Contact / Invite Modal */}
       <Modal
         isOpen={showAddModal}
-        onClose={() => {
-          setShowAddModal(false);
-          setInviteEmail("");
-        }}
+        onClose={closeModal}
         title="Add Contact"
         size="sm"
       >
@@ -175,14 +133,7 @@ const Chat = () => {
             autoFocus
           />
           <div className={styles.formActions}>
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() => {
-                setShowAddModal(false);
-                setInviteEmail("");
-              }}
-            >
+            <Button type="button" variant="secondary" onClick={closeModal}>
               Cancel
             </Button>
             <Button
@@ -190,26 +141,7 @@ const Chat = () => {
               variant="primary"
               loading={submitting}
               disabled={!inviteEmail.trim()}
-              onClick={async () => {
-                try {
-                  setSubmitting(true);
-                  const contact = await contactService.requestContactByEmail(
-                    inviteEmail.trim()
-                  );
-                  toast.success(
-                    contact ? "Contact request sent" : "Invite processed"
-                  );
-                  setShowAddModal(false);
-                  setInviteEmail("");
-                  // Refresh accepted contacts; note a new request is pending until accepted
-                  fetchContacts(null, setContacts, setLoading);
-                } catch (e) {
-                  console.error("Invite failed", e);
-                  toast.error("Failed to send contact invite");
-                } finally {
-                  setSubmitting(false);
-                }
-              }}
+              onClick={sendInvite}
             >
               Send Invite
             </Button>

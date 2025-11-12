@@ -7,6 +7,7 @@ import RealtimeProvider from "./context/RealtimeProvider";
 import { Toaster } from "react-hot-toast";
 import AppRoutes from "./routes/AppRoutes";
 import ErrorBoundary from "./components/common/ErrorBoundary";
+import FloatingAIChat from "./components/ai/FloatingAIChat";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
                 <NotificationProvider>
                   <AppRoutes />
                   <Toaster position="top-right" />
+                  <FloatingAIChat />
                 </NotificationProvider>
               </RealtimeProvider>
             </WorkspaceProvider>

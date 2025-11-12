@@ -7,7 +7,7 @@ const AIChat = () => {
   return (
     <div className={styles.container}>
       <Card className={styles.card}>
-        <div style={{ height: "64vh" }}>
+        <div style={{ height: "100%", width: "100%" }}>
           <ChatPanel />
         </div>
       </Card>
