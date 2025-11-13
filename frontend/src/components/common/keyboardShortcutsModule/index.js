@@ -5,4 +5,4 @@ export { default as ShortcutSection } from "./ShortcutSection";
 export { default as ProTips } from "./ProTips";
 export { default as ShortcutsFooter } from "./ShortcutsFooter";
 export { default as ShortcutsModal } from "./ShortcutsModal";
-export { default as useKeyboardShortcuts } from "../../../utils/common/keyboardShortcuts/useKeyboardShortcuts";
+export { default as useKeyboardShortcuts } from "../../../hooks/common/useKeyboardShortcuts";

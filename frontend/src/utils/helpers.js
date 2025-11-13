@@ -1,5 +1,6 @@
 import { format, formatDistanceToNow } from "date-fns";
 import { DATE_FORMAT, DATETIME_FORMAT } from "./constants";
+export { formatFileSize } from "./helpers/formatFileSize.js";
 
 // Date formatting
 export const formatDate = (date, formatString = DATE_FORMAT) => {

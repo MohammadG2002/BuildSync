@@ -12,10 +12,10 @@ import {
 } from "../../components/chatPage";
 import handleSendMessage from "../../utils/chat/handleSendMessage";
 import styles from "./Chat.module.css";
-import { useContacts } from "./useContacts";
-import { useMessages } from "./useMessages";
-import { useSelectedContact } from "./useSelectedContact";
-import { useInviteModal } from "./useInviteModal";
+import { useContacts } from "../../hooks/chat/useContacts";
+import { useMessages } from "../../hooks/chat/useMessages";
+import { useSelectedContact } from "../../hooks/chat/useSelectedContact";
+import { useInviteModal } from "../../hooks/chat/useInviteModal";
 
 const Chat = () => {
   const { user } = useAuth();

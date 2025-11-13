@@ -1,5 +1,5 @@
 import Card from "../common/Card";
-import styles from "../../pages/projects/ProjectDetails.module.css";
+import styles from "./ProjectDetails.module.css";
 
 const TaskStatCard = ({ label, value, icon: Icon, color = "gray" }) => {
   const getIconClass = (color) => {

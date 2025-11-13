@@ -1,4 +1,4 @@
-import styles from "../../pages/projects/ProjectDetails.module.css";
+import styles from "./ProjectDetails.module.css";
 
 const GroupBySelector = ({ value, onChange }) => {
   return (

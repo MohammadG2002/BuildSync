@@ -3,11 +3,11 @@ import styles from "./ChatPanel.module.css";
 import ChatSessionSidebar from "./ChatSessionSidebar";
 import ChatMessages from "./ChatMessages";
 import ChatComposer from "./ChatComposer";
-import { useLoadSessions } from "./useLoadSessions";
-import { useLoadLogs } from "./useLoadLogs";
-import { useScrollMessages } from "./useScrollMessages";
-import { useChatHandlers } from "./useChatHandlers";
-import { useSendHandler } from "./useSendHandler";
+import { useLoadSessions } from "../../hooks/ai/useLoadSessions";
+import { useLoadLogs } from "../../hooks/ai/useLoadLogs";
+import { useScrollMessages } from "../../hooks/ai/useScrollMessages";
+import { useChatHandlers } from "../../hooks/ai/useChatHandlers";
+import { useSendHandler } from "../../hooks/ai/useSendHandler";
 
 export default function ChatPanel() {
   const [sessions, setSessions] = useState([]);

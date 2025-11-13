@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Users, Lock, EyeOff } from "lucide-react";
 import * as projectService from "../../services/projectService";
-import styles from "../../pages/projects/ProjectDetails.module.css";
+import styles from "./ProjectDetails.module.css";
 
 const AddProjectMemberModal = ({
   workspaceMembers = [],

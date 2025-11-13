@@ -6,28 +6,26 @@ import DashboardLayout from "../components/layout/DashboardLayout";
 import Loader from "../components/common/Loader";
 
 // Lazy load all page components for code splitting
-const LandingPage = lazy(() => import("../pages/landing/LandingPage"));
+const LandingPage = lazy(() => import("../pages/landing"));
 const Login = lazy(() => import("../pages/auth/Login"));
 const Register = lazy(() => import("../pages/auth/Register"));
 const ForgotPassword = lazy(() => import("../pages/auth/ForgotPassword"));
-const Dashboard = lazy(() => import("../pages/dashboard/Dashboard"));
-const Workspaces = lazy(() => import("../pages/workspaces/Workspaces"));
+const Dashboard = lazy(() => import("../pages/dashboard"));
+const Workspaces = lazy(() => import("../pages/workspaces"));
 const WorkspaceDetails = lazy(() =>
   import("../pages/workspaces/WorkspaceDetails")
 );
-const ProjectDetails = lazy(() => import("../pages/projects/ProjectDetails"));
+const ProjectDetails = lazy(() => import("../pages/projects"));
 const ProjectGantt = lazy(() => import("../pages/projects/ProjectGantt"));
 const ProjectNetwork = lazy(() => import("../pages/projects/ProjectNetwork"));
-const Members = lazy(() => import("../pages/members/Members"));
-const Settings = lazy(() => import("../pages/settings/Settings"));
-const Chat = lazy(() => import("../pages/chat/Chat"));
+const Members = lazy(() => import("../pages/members"));
+const Settings = lazy(() => import("../pages/settings"));
+const Chat = lazy(() => import("../pages/chat"));
 const AIChat = lazy(() => import("../pages/chat/AIChat"));
-const Archived = lazy(() => import("../pages/archived/Archived"));
-const Profile = lazy(() => import("../pages/profile/Profile"));
-const Notifications = lazy(() =>
-  import("../pages/notifications/Notifications")
-);
-const NotFound = lazy(() => import("../pages/NotFound"));
+const Archived = lazy(() => import("../pages/archived"));
+const Profile = lazy(() => import("../pages/profile"));
+const Notifications = lazy(() => import("../pages/notifications"));
+const NotFound = lazy(() => import("../pages/not-found"));
 
 // Route Guards
 import PrivateRoute from "./PrivateRoute";

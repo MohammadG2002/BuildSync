@@ -1,6 +1,6 @@
 import { Filter } from "lucide-react";
 import { TASK_STATUS } from "../../utils/constants";
-import styles from "../../pages/projects/ProjectDetails.module.css";
+import styles from "./ProjectDetails.module.css";
 
 const FilterButtons = ({ filterStatus, onFilterChange }) => {
   const filters = [
