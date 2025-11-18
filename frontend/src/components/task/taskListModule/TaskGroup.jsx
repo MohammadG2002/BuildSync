@@ -5,6 +5,7 @@ const TaskGroup = ({
   tasks,
   onEditTask,
   onDeleteTask,
+  onArchiveTask,
   onStatusChange,
   onTaskClick,
   readOnly = false,
@@ -17,6 +18,7 @@ const TaskGroup = ({
           task={task}
           onEdit={onEditTask}
           onDelete={onDeleteTask}
+          onArchive={onArchiveTask}
           onStatusChange={onStatusChange}
           onClick={onTaskClick}
           readOnly={readOnly}

@@ -20,6 +20,7 @@ import {
   GroupBySelector,
   EmptyTasksState,
   DeleteTaskModalContent,
+  ArchiveTaskModalContent,
   AddProjectMemberModal,
 } from "../../../components/projectDetails";
 import { AuthContext } from "../../../context/AuthContext";
@@ -31,6 +32,8 @@ import {
   handleUpdateTask,
   handleDeleteClick,
   handleDeleteTask,
+  handleArchiveClick,
+  handleArchiveTask,
   handleStatusChange,
   handleTaskClick,
   handleTaskDetailsUpdate,
@@ -60,6 +63,7 @@ const ProjectDetails = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showArchiveModal, setShowArchiveModal] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showAddMemberModal, setShowAddMemberModal] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
@@ -293,6 +297,9 @@ const ProjectDetails = () => {
           onDeleteTask={(task) =>
             handleDeleteClick(task, setSelectedTask, setShowDeleteModal)
           }
+          onArchiveTask={(task) =>
+            handleArchiveClick(task, setSelectedTask, setShowArchiveModal)
+          }
           onStatusChange={(task, newStatus) =>
             handleStatusChange(
               task,
@@ -403,6 +410,38 @@ const ProjectDetails = () => {
               tasks,
               setTasks,
               setShowDeleteModal,
+              setSelectedTask,
+              setSubmitting
+            )
+          }
+          loading={submitting}
+        />
+      </Modal>
+
+      {/* Archive Confirmation Modal */}
+      <Modal
+        isOpen={showArchiveModal}
+        onClose={() => {
+          setShowArchiveModal(false);
+          setSelectedTask(null);
+        }}
+        title="Archive Task"
+        size="sm"
+      >
+        <ArchiveTaskModalContent
+          taskTitle={selectedTask?.title}
+          onCancel={() => {
+            setShowArchiveModal(false);
+            setSelectedTask(null);
+          }}
+          onConfirm={() =>
+            handleArchiveTask(
+              workspaceId,
+              projectId,
+              selectedTask,
+              tasks,
+              setTasks,
+              setShowArchiveModal,
               setSelectedTask,
               setSubmitting
             )

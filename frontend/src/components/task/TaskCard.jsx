@@ -14,6 +14,7 @@ const TaskCard = ({
   task,
   onEdit,
   onDelete,
+  onArchive,
   onStatusChange,
   onClick,
   readOnly = false,
@@ -219,6 +220,10 @@ const TaskCard = ({
                     onToggle={() => setShowMenu(!showMenu)}
                     onEdit={(t) => {
                       onEdit(t);
+                      setShowMenu(false);
+                    }}
+                    onArchive={(t) => {
+                      onArchive?.(t);
                       setShowMenu(false);
                     }}
                     onDelete={(t) => {

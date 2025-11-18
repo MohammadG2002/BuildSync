@@ -14,8 +14,8 @@ export const getTasks = async (req, res) => {
     const { project, workspace, status, priority, assignedTo } = req.query;
     const userId = req.user._id;
 
-    // Build base query
-    const query = {};
+    // Build base query (exclude archived tasks by default)
+    const query = { isArchived: false };
 
     // If project is specified, check role & membership
     if (project) {

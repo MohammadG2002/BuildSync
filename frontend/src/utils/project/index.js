@@ -9,6 +9,8 @@ export { default as handleDeleteAttachment } from "./handleDeleteAttachment.js";
 export { default as handleDeleteClick } from "./handleDeleteClick.js";
 export { default as handleDeleteComment } from "./handleDeleteComment.js";
 export { default as handleDeleteTask } from "./handleDeleteTask.js";
+export { default as handleArchiveClick } from "./handleArchiveClick.js";
+export { default as handleArchiveTask } from "./handleArchiveTask.js";
 export { default as handleEditTask } from "./handleEditTask.js";
 export { default as handleReactToComment } from "./handleReactToComment.js";
 export { default as handleStatusChange } from "./handleStatusChange.js";

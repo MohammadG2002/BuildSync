@@ -1,4 +1,5 @@
 import toast from "react-hot-toast";
+import * as taskService from "../../services/taskService";
 
 /**
  * Handle task restoration
@@ -9,12 +10,17 @@ const handleRestoreTask = async (
   setArchivedTasks,
   setShowRestoreModal,
   setSelectedTask,
-  setRestoring
+  setRestoring,
+  workspaceId,
+  projectId
 ) => {
   setRestoring(true);
   try {
-    // API call to restore task would go here
-    setArchivedTasks(archivedTasks.filter((t) => t.id !== selectedTask.id));
+    const taskId = selectedTask._id || selectedTask.id;
+    if (!taskId) throw new Error("Missing task id");
+    await taskService.restoreTask(workspaceId, projectId, taskId);
+    // Remove from local archived list
+    setArchivedTasks(archivedTasks.filter((t) => (t._id || t.id) !== taskId));
     setShowRestoreModal(false);
     setSelectedTask(null);
     toast.success("Task restored successfully!");

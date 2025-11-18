@@ -1,7 +1,14 @@
-import { MoreVertical, Edit, Trash2 } from "lucide-react";
+import { MoreVertical, Edit, Trash2, Archive } from "lucide-react";
 import styles from "./TaskCard.module.css";
 
-const TaskMenu = ({ showMenu, onToggle, onEdit, onDelete, task }) => {
+const TaskMenu = ({
+  showMenu,
+  onToggle,
+  onEdit,
+  onDelete,
+  onArchive,
+  task,
+}) => {
   return (
     <div className={styles.menuContainer}>
       <button
@@ -25,6 +32,16 @@ const TaskMenu = ({ showMenu, onToggle, onEdit, onDelete, task }) => {
           >
             <Edit className={styles.menuItemIcon} />
             <span>Edit</span>
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onArchive(task);
+            }}
+            className={styles.menuItem}
+          >
+            <Archive className={styles.menuItemIcon} />
+            <span>Archive</span>
           </button>
           <button
             onClick={(e) => {

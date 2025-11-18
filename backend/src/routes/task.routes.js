@@ -1,10 +1,13 @@
 import express from "express";
 import {
   getTasks,
+  getArchivedTasks,
   getTask,
   createTask,
   updateTask,
   deleteTask,
+  archiveTask,
+  restoreTask,
   addComment,
   updateComment,
   deleteComment,
@@ -38,6 +41,9 @@ router
   .get(getTasks)
   .post(taskCreateValidation, validate, createTask);
 
+// Archived tasks listing
+router.route("/archived").get(getArchivedTasks);
+
 router
   .route("/:id/comments/:commentId/react")
   .patch(
@@ -52,6 +58,16 @@ router
   .get(mongoIdValidation("id"), validate, getTask)
   .put(mongoIdValidation("id"), taskValidation, validate, updateTask)
   .delete(mongoIdValidation("id"), validate, deleteTask);
+
+// Archive task
+router
+  .route("/:id/archive")
+  .put(mongoIdValidation("id"), validate, archiveTask);
+
+// Restore task
+router
+  .route("/:id/restore")
+  .put(mongoIdValidation("id"), validate, restoreTask);
 
 // Task activity
 import { getTaskActivity } from "../controllers/taskController/getTaskActivity.js";

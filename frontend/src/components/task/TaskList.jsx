@@ -5,6 +5,7 @@ const TaskList = ({
   tasks,
   onEditTask,
   onDeleteTask,
+  onArchiveTask,
   onStatusChange,
   onTaskClick,
   groupBy = "none", // 'none', 'status', 'priority'
@@ -25,6 +26,7 @@ const TaskList = ({
             tasks={groupTasks}
             onEditTask={onEditTask}
             onDeleteTask={onDeleteTask}
+            onArchiveTask={onArchiveTask}
             onStatusChange={onStatusChange}
             onTaskClick={onTaskClick}
             readOnly={readOnly}
