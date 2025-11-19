@@ -4,6 +4,7 @@
  */
 
 import Project from "../../models/Project/index.js";
+import Task from "../../models/Task/index.js";
 import { isValidObjectId } from "../../utils/validators/index.js";
 
 /**
@@ -28,9 +29,13 @@ export const deleteProject = async (projectId, userId) => {
     throw new Error("Only project owner can delete project");
   }
 
-  // Soft delete by archiving
+  // Soft delete by archiving the project
   project.isArchived = true;
   await project.save();
+
+  // Cascade delete all tasks (including archived) belonging to this project
+  // Using deleteMany for performance; if future audit needed, replace with archival.
+  await Task.deleteMany({ project: project._id });
 
   return true;
 };

@@ -12,10 +12,19 @@ export function useLoadSessions(
       try {
         const sessionsData = await fetchSessions();
         setSessions(sessionsData);
-        const restored = window.sessionStorage.getItem("aiSessionId");
-        if (restored) {
-          setSelectedSession(restored);
+
+        // Prefer persistent localStorage session id.
+        let restored = window.localStorage.getItem("aiSessionId");
+        // Migration: fall back to any legacy sessionStorage value once.
+        if (!restored) {
+          const legacy = window.sessionStorage.getItem("aiSessionId");
+          if (legacy) {
+            restored = legacy;
+            window.localStorage.setItem("aiSessionId", legacy);
+            window.sessionStorage.removeItem("aiSessionId");
+          }
         }
+        if (restored) setSelectedSession(restored);
       } catch (err) {
         setSessions([]);
       } finally {

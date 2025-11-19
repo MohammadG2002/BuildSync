@@ -1,9 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import styles from "./FloatingAIChat.module.css";
-import ChatPanel from "./ChatPanel";
+import PopupChatPanel from "./PopupChatPanel";
 
 export default function FloatingAIChat() {
   const [open, setOpen] = useState(false);
+  const containerRef = useRef(null);
+
+  const handleOverlayClick = useCallback((e) => {
+    // Close only if the click target is the overlay itself (outside panel)
+    if (e.target === e.currentTarget) {
+      setOpen(false);
+    }
+  }, []);
 
   return (
     <>
@@ -22,16 +30,13 @@ export default function FloatingAIChat() {
         </svg>
       </button>
       {open && (
-        <div className={styles.overlay}>
-          <div className={styles.chatContainer}>
-            <button
-              className={styles.closeButton}
-              onClick={() => setOpen(false)}
-              aria-label="Close AI Chat"
-            >
-              ×
-            </button>
-            <ChatPanel />
+        <div
+          className={styles.overlay}
+          onClick={handleOverlayClick}
+          aria-label="AI Chat Overlay"
+        >
+          <div ref={containerRef} className={styles.chatContainer}>
+            <PopupChatPanel onClose={() => setOpen(false)} />
           </div>
         </div>
       )}

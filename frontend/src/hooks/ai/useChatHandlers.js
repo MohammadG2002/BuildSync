@@ -7,16 +7,28 @@ export function useChatHandlers({
   setReloadLogs,
 }) {
   const startNewSession = useCallback(() => {
-    const newSessionId = `session-${Date.now()}`;
-    window.sessionStorage.setItem("aiSessionId", newSessionId);
-    setSessions((prev) => [
-      { _id: newSessionId, local: true },
-      ...(prev || []),
-    ]);
+    // Generate persistent session id only if none exists yet.
+    const existing = window.localStorage.getItem("aiSessionId");
+    const newSessionId = existing || `session-${Date.now()}`;
+    if (!existing) {
+      window.localStorage.setItem("aiSessionId", newSessionId);
+    }
+    setSessions((prev) => {
+      // Avoid duplicating the session if it already exists in list.
+      const already = (prev || []).some((s) => (s._id || s) === newSessionId);
+      return already
+        ? prev
+        : [{ _id: newSessionId, local: true }, ...(prev || [])];
+    });
     setSelectedSession(newSessionId);
     setMessages([]);
     setReloadLogs((c) => c + 1);
   }, [setSessions, setSelectedSession, setMessages, setReloadLogs]);
 
-  return { startNewSession };
+  const endSession = useCallback(() => {
+    window.localStorage.removeItem("aiSessionId");
+    setSelectedSession(null);
+  }, [setSelectedSession]);
+
+  return { startNewSession, endSession };
 }

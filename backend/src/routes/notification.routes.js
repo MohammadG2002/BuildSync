@@ -4,6 +4,7 @@ import {
   getUnreadCount,
   markAsRead,
   markAllAsRead,
+  markManyAsRead,
   deleteNotification,
   deleteAllRead,
 } from "../controllers/notificationController/index.js";
@@ -21,6 +22,7 @@ router.use(authenticate);
 router.get("/", getNotifications);
 router.get("/unread/count", getUnreadCount);
 router.put("/read-all", markAllAsRead);
+router.put("/read", markManyAsRead);
 router.delete("/read-all", deleteAllRead);
 
 router

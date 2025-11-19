@@ -6,7 +6,12 @@ import {
   NotificationTransformer,
   NotificationOperations,
 } from "./notificationContextModule";
-import { getNotifications } from "../services/notificationService";
+import {
+  getNotifications,
+  markAsRead as apiMarkAsRead,
+  markAllAsRead as apiMarkAllAsRead,
+  deleteNotification as apiDeleteNotification,
+} from "../services/notificationService";
 
 export const NotificationContext = createContext();
 
@@ -67,40 +72,45 @@ export const NotificationProvider = ({ children }) => {
 
   const markAsRead = async (notificationId) => {
     try {
-      // API call to mark as read
-      const result = NotificationOperations.markAsRead(
+      // Backend call (optimistic update pattern)
+      const optimistic = NotificationOperations.markAsRead(
         notifications,
         notificationId
       );
-      setNotifications(result.notifications);
-      setUnreadCount(result.unreadCount);
+      setNotifications(optimistic.notifications);
+      setUnreadCount(optimistic.unreadCount);
+      await apiMarkAsRead(notificationId);
     } catch (error) {
       console.error("Error marking notification as read:", error);
+      // Refetch to sync with server if failure
+      fetchNotifications();
     }
   };
 
   const markAllAsRead = async () => {
     try {
-      // API call to mark all as read
-      const result = NotificationOperations.markAllAsRead(notifications);
-      setNotifications(result.notifications);
-      setUnreadCount(result.unreadCount);
+      const optimistic = NotificationOperations.markAllAsRead(notifications);
+      setNotifications(optimistic.notifications);
+      setUnreadCount(optimistic.unreadCount);
+      await apiMarkAllAsRead();
     } catch (error) {
       console.error("Error marking all notifications as read:", error);
+      fetchNotifications();
     }
   };
 
   const deleteNotification = async (notificationId) => {
     try {
-      // API call to delete notification
-      const result = NotificationOperations.deleteNotification(
+      const optimistic = NotificationOperations.deleteNotification(
         notifications,
         notificationId
       );
-      setNotifications(result.notifications);
-      setUnreadCount(result.unreadCount);
+      setNotifications(optimistic.notifications);
+      setUnreadCount(optimistic.unreadCount);
+      await apiDeleteNotification(notificationId);
     } catch (error) {
       console.error("Error deleting notification:", error);
+      fetchNotifications();
     }
   };
 
