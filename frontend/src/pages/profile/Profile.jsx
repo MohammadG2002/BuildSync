@@ -19,6 +19,7 @@ import handleTogglePassword from "../../utils/profile/handleTogglePassword";
 import handleUpdateProfile from "../../utils/profile/handleUpdateProfile";
 import handleChangePassword from "../../utils/profile/handleChangePassword";
 import handleAvatarUpload from "../../utils/profile/handleAvatarUpload";
+import handleRemoveAvatar from "../../utils/profile/handleRemoveAvatar";
 import styles from "../../components/profile/Profile.module.css";
 
 const Profile = () => {
@@ -78,7 +79,9 @@ const Profile = () => {
         <AvatarSection
           userName={user?.name}
           userEmail={user?.email}
-          onAvatarUpload={handleAvatarUpload}
+          avatarUrl={user?.avatar}
+          onAvatarUpload={() => handleAvatarUpload(updateUser)}
+          onRemoveAvatar={() => handleRemoveAvatar(updateUser, user?.avatar)}
         />
       </Card>
 

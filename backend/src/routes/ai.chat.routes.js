@@ -1,6 +1,9 @@
 import express from "express";
 import rateLimit from "express-rate-limit";
 import { chatReply, moderateText } from "../services/aiChatService.js";
+import Project from "../models/Project/index.js";
+import Workspace from "../models/Workspace/index.js";
+import { executeAICommand } from "../utils/ai/aiActionService.js";
 import Chat from "../models/Chat/index.js";
 
 // Per-route rate limiter for AI to protect from runaway usage.
@@ -56,11 +59,53 @@ router.post("/chat", aiLimiter, async (req, res) => {
       }
     }
 
+    // Inject minimal project/workspace context for authenticated user
+    if (req.user) {
+      try {
+        const userProjects = await Project.find({ members: req.user._id })
+          .select("_id name")
+          .lean();
+        const userWorkspaces = await Workspace.find({ members: req.user._id })
+          .select("_id name")
+          .lean();
+        const contextMsg = {
+          role: "system",
+          content:
+            "You can optionally output a JSON command to perform an action. " +
+            "Available actions: create_project {name}, create_task {workspaceId} {optional projectId} {title} {description}. " +
+            'Return JSON ONLY in the form {\n  "action": "create_project", "name": "..."\n} or {\n  "action": "create_task", "workspaceId": "...", "projectId": "...", "title": "...", "description": "..."\n}. ' +
+            "Projects:" +
+            JSON.stringify(userProjects) +
+            " Workspaces:" +
+            JSON.stringify(userWorkspaces),
+        };
+        // Prepend context if not already included
+        trimmed.unshift(contextMsg);
+      } catch (ctxErr) {
+        console.warn("Failed to build AI context", ctxErr?.message);
+      }
+    }
+
     // Call provider
     const { text, usage } = (await chatReply(trimmed)) || {
       text: null,
       usage: null,
     };
+
+    // Attempt command parsing & execution
+    let actions = [];
+    if (text) {
+      try {
+        const jsonMatch = text.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          const parsed = JSON.parse(jsonMatch[0]);
+          const result = await executeAICommand(parsed, req.user);
+          if (result) actions.push(result);
+        }
+      } catch (cmdErr) {
+        actions.push({ type: "parse_error", message: cmdErr.message });
+      }
+    }
 
     // Persist chat session (best-effort). If user is authenticated, attach user id.
     try {
@@ -75,7 +120,7 @@ router.post("/chat", aiLimiter, async (req, res) => {
       console.warn("Failed to persist chat", saveErr?.message || saveErr);
     }
 
-    res.json({ reply: text, usage });
+    res.json({ reply: text, usage, actions });
   } catch (err) {
     console.error("AI chat error", err);
     // In development, return the provider error message to help debugging.

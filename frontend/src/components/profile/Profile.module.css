@@ -66,6 +66,14 @@
   font-weight: 600;
 }
 
+.avatarImage {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 9999px;
+  object-fit: cover;
+  display: block;
+}
+
 .avatarUploadButton {
   position: absolute;
   bottom: 0;

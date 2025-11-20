@@ -1,5 +1,6 @@
 import { Calendar } from "lucide-react";
-import { formatDate, getInitials, generateColor } from "../../utils/helpers";
+import { formatDate } from "../../utils/helpers";
+import UserAvatar from "../common/UserAvatar";
 import styles from "./Dashboard.module.css";
 
 const TaskItem = ({ task, onClick }) => {
@@ -54,18 +55,13 @@ const TaskItem = ({ task, onClick }) => {
         {Array.isArray(task?.assignedTo) && task.assignedTo.length > 0 && (
           <div className={styles.taskAssignees} style={{ marginTop: "0.5rem" }}>
             {task.assignedTo.slice(0, 3).map((assignee, index) => (
-              <div
+              <UserAvatar
                 key={assignee._id || assignee.id || index}
+                name={assignee?.name || assignee?.email || "User"}
+                avatar={assignee?.avatar}
                 className={styles.memberAvatar}
-                style={{
-                  backgroundColor: generateColor(
-                    assignee?.name || assignee?.email || "U"
-                  ),
-                }}
                 title={assignee?.name || assignee?.email || "User"}
-              >
-                {getInitials(assignee?.name || assignee?.email || "U")}
-              </div>
+              />
             ))}
             {task.assignedTo.length > 3 && (
               <div

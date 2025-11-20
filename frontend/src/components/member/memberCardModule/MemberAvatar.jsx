@@ -1,14 +1,13 @@
-import { getInitials, generateColor } from "../../../utils/helpers";
+import UserAvatar from "../../common/UserAvatar";
 import styles from "./MemberCard.module.css";
 
 const MemberAvatar = ({ member }) => {
   return (
-    <div
+    <UserAvatar
+      name={member?.name}
+      avatar={member?.avatar}
       className={styles.avatar}
-      style={{ backgroundColor: generateColor(member.id) }}
-    >
-      {getInitials(member.name)}
-    </div>
+    />
   );
 };
 

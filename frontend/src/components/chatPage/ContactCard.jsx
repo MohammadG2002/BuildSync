@@ -1,8 +1,5 @@
-import {
-  getInitials,
-  generateColor,
-  getRelativeTime,
-} from "../../utils/helpers";
+import { getRelativeTime } from "../../utils/helpers";
+import UserAvatar from "../common/UserAvatar";
 import styles from "../../pages/chat/Chat.module.css";
 
 const ContactCard = ({ contact, isSelected, onSelect }) => {
@@ -14,12 +11,11 @@ const ContactCard = ({ contact, isSelected, onSelect }) => {
       }`}
     >
       <div className={styles.contactInfo}>
-        <div
+        <UserAvatar
+          name={contact.name}
+          avatar={contact.avatar}
           className={styles.contactAvatar}
-          style={{ backgroundColor: generateColor(contact.name) }}
-        >
-          {getInitials(contact.name)}
-        </div>
+        />
         <div className={styles.contactDetails}>
           <div className={styles.contactHeader}>
             <h4 className={styles.contactName}>{contact.name}</h4>

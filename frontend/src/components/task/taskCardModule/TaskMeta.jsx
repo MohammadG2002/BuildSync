@@ -1,5 +1,6 @@
 import { Calendar } from "lucide-react";
-import { getInitials, generateColor, formatDate } from "../../../utils/helpers";
+import { formatDate } from "../../../utils/helpers";
+import UserAvatar from "../../common/UserAvatar";
 import styles from "./TaskCard.module.css";
 
 const TaskMeta = ({ task }) => {
@@ -54,18 +55,13 @@ const TaskMeta = ({ task }) => {
       {task.assignedTo && task.assignedTo.length > 0 && (
         <div className={styles.assigneeContainer}>
           {task.assignedTo.slice(0, 3).map((assignee, index) => (
-            <div
+            <UserAvatar
               key={assignee._id || assignee.id || index}
+              name={assignee?.name || "Unknown User"}
+              avatar={assignee?.avatar}
               className={styles.assigneeAvatar}
-              style={{
-                backgroundColor: generateColor(
-                  assignee?.name || "Unknown User"
-                ),
-              }}
               title={assignee?.name || "Unknown User"}
-            >
-              {getInitials(assignee?.name || "U")}
-            </div>
+            />
           ))}
           {task.assignedTo.length > 3 && (
             <div

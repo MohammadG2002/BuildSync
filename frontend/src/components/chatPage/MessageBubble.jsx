@@ -1,8 +1,5 @@
-import {
-  getInitials,
-  generateColor,
-  getRelativeTime,
-} from "../../utils/helpers";
+import { getRelativeTime } from "../../utils/helpers";
+import UserAvatar from "../common/UserAvatar";
 import styles from "../../pages/chat/Chat.module.css";
 import { buildAbsoluteUrl } from "../../utils/buildAbsoluteUrl";
 
@@ -14,12 +11,11 @@ const MessageBubble = ({ message, isOwn }) => {
       }`}
     >
       {!isOwn && (
-        <div
+        <UserAvatar
+          name={message.senderName}
+          avatar={message.senderAvatar}
           className={styles.messageAvatar}
-          style={{ backgroundColor: generateColor(message.senderName) }}
-        >
-          {getInitials(message.senderName)}
-        </div>
+        />
       )}
       <div className={styles.messageContent}>
         <div

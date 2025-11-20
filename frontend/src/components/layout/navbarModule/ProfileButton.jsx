@@ -1,15 +1,15 @@
 import { getInitials, generateColor } from "../../../utils/helpers";
+import UserAvatar from "../../common/UserAvatar";
 import styles from "./Navbar.module.css";
 
 const ProfileButton = ({ user, onClick }) => {
   return (
     <button onClick={onClick} className={styles.profileButton}>
-      <div
+      <UserAvatar
+        name={user?.name || "User"}
+        avatar={user?.avatar}
         className={styles.profileAvatar}
-        style={{ backgroundColor: generateColor(user?.name || "User") }}
-      >
-        {getInitials(user?.name || "User")}
-      </div>
+      />
     </button>
   );
 };

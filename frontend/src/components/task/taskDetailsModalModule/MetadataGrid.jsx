@@ -1,5 +1,6 @@
 import { User, Calendar, CheckCircle, Link as LinkIcon } from "lucide-react";
-import { getInitials, generateColor, formatDate } from "../../../utils/helpers";
+import { formatDate } from "../../../utils/helpers";
+import UserAvatar from "../../common/UserAvatar";
 import styles from "./TaskDetailsModal.module.css";
 
 const MetadataGrid = ({ task }) => {
@@ -18,16 +19,11 @@ const MetadataGrid = ({ task }) => {
                 key={assignee._id || assignee.id || index}
                 className={styles.userInfo}
               >
-                <div
+                <UserAvatar
+                  name={assignee?.name || "Unknown User"}
+                  avatar={assignee?.avatar}
                   className={styles.userAvatar}
-                  style={{
-                    backgroundColor: generateColor(
-                      assignee?.name || "Unknown User"
-                    ),
-                  }}
-                >
-                  {getInitials(assignee?.name || "U")}
-                </div>
+                />
                 <div>
                   <p className={styles.userName}>
                     {assignee?.name || "Unknown User"}
@@ -65,14 +61,11 @@ const MetadataGrid = ({ task }) => {
         </div>
         {task.createdBy ? (
           <div className={styles.userInfo}>
-            <div
+            <UserAvatar
+              name={task.createdBy.name}
+              avatar={task.createdBy.avatar}
               className={styles.userAvatar}
-              style={{
-                backgroundColor: generateColor(task.createdBy.name || "U"),
-              }}
-            >
-              {getInitials(task.createdBy.name || "U")}
-            </div>
+            />
             <div>
               <p className={styles.userName}>{task.createdBy.name}</p>
               <p className={styles.userEmail}>{task.createdBy.email}</p>

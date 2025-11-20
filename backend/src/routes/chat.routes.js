@@ -65,7 +65,7 @@ router.post("/", async (req, res) => {
     });
 
     const response = await fetch(
-      "https://coohoms.app.n8n.cloud/webhook/8b085178-cf54-4bfe-812d-0e0d562ce3ac/chat",
+      "https://buildsync2.app.n8n.cloud/webhook/8b085178-cf54-4bfe-812d-0e0d562ce3ac/chat",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },

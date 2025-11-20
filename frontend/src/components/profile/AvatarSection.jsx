@@ -3,16 +3,30 @@ import Button from "../common/Button";
 import { getInitials, generateColor } from "../../utils/helpers";
 import styles from "./Profile.module.css";
 
-const AvatarSection = ({ userName, userEmail, onAvatarUpload }) => {
+const AvatarSection = ({
+  userName,
+  userEmail,
+  avatarUrl,
+  onAvatarUpload,
+  onRemoveAvatar,
+}) => {
   return (
     <div className={styles.avatarContainer}>
       <div className={styles.avatarWrapper}>
-        <div
-          className={styles.avatar}
-          style={{ backgroundColor: generateColor(userName || "User") }}
-        >
-          {getInitials(userName || "User")}
-        </div>
+        {avatarUrl ? (
+          <img
+            src={avatarUrl}
+            alt={`${userName || "User"} avatar`}
+            className={styles.avatarImage}
+          />
+        ) : (
+          <div
+            className={styles.avatar}
+            style={{ backgroundColor: generateColor(userName || "User") }}
+          >
+            {getInitials(userName || "User")}
+          </div>
+        )}
         <button onClick={onAvatarUpload} className={styles.avatarUploadButton}>
           <Camera className={styles.avatarUploadIcon} />
         </button>
@@ -29,6 +43,16 @@ const AvatarSection = ({ userName, userEmail, onAvatarUpload }) => {
           <Camera className={styles.changeAvatarIcon} />
           Change Avatar
         </Button>
+        {avatarUrl && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onRemoveAvatar}
+            className={styles.changeAvatarButton}
+          >
+            Remove Avatar
+          </Button>
+        )}
       </div>
     </div>
   );

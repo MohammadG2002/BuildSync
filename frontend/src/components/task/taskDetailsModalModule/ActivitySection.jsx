@@ -1,10 +1,7 @@
 import { useMemo } from "react";
 import styles from "./TaskDetailsModal.module.css";
-import {
-  getRelativeTime,
-  getInitials,
-  generateColor,
-} from "../../../utils/helpers";
+import { getRelativeTime } from "../../../utils/helpers";
+import UserAvatar from "../../common/UserAvatar";
 
 const formatItem = (it) => {
   const actorName = it?.actor?.name || it?.actor?.email || "Someone";
@@ -49,15 +46,13 @@ const ActivitySection = ({ items = [], loading = false }) => {
           {list.map((it, idx) => {
             const actor = it?.actor || {};
             const name = actor.name || actor.email || "User";
-            const initials = getInitials(name) || "U";
             return (
               <li key={it._id || idx} className={styles.activityItem}>
-                <div
+                <UserAvatar
+                  name={name}
+                  avatar={actor.avatar}
                   className={styles.userAvatar}
-                  style={{ backgroundColor: generateColor(name) }}
-                >
-                  {initials}
-                </div>
+                />
                 <div className={styles.activityContent}>
                   <div className={styles.activityMessage}>{formatItem(it)}</div>
                   <div className={styles.activityTime}>

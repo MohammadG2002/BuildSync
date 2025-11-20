@@ -30,6 +30,18 @@ export const userSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    phone: {
+      type: String,
+      default: null,
+      trim: true,
+      maxlength: [30, "Phone cannot exceed 30 characters"],
+    },
+    bio: {
+      type: String,
+      default: "",
+      maxlength: [500, "Bio cannot exceed 500 characters"],
+      trim: true,
+    },
     role: {
       type: String,
       enum: ["user", "admin"],

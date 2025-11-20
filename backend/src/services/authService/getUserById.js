@@ -22,6 +22,8 @@ export const getUserById = async (userId) => {
     name: user.name,
     email: user.email,
     avatar: user.avatar,
+    bio: user.bio,
+    phone: user.phone,
     role: user.role,
     createdAt: user.createdAt,
   };

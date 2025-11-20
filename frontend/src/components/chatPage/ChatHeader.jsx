@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import * as contactService from "../../services/contactService";
 import * as chatService from "../../services/chatService";
-import { getInitials, generateColor } from "../../utils/helpers";
+import UserAvatar from "../common/UserAvatar";
 import styles from "../../pages/chat/Chat.module.css";
 import { useAuth } from "../../hooks/useAuth";
 
@@ -81,12 +81,11 @@ const ChatHeader = ({ selectedContact, onContactStatusChange }) => {
     <div className={styles.chatHeader}>
       <div className={styles.chatHeaderContent}>
         <div className={styles.chatHeaderLeft}>
-          <div
+          <UserAvatar
+            name={selectedContact.name}
+            avatar={selectedContact.avatar}
             className={styles.chatHeaderAvatar}
-            style={{ backgroundColor: generateColor(selectedContact.name) }}
-          >
-            {getInitials(selectedContact.name)}
-          </div>
+          />
           <div>
             <h3 className={styles.chatHeaderName}>{selectedContact.name}</h3>
             <p className={styles.chatHeaderStatus}>
