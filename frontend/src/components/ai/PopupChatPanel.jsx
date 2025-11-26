@@ -73,8 +73,9 @@ export default function PopupChatPanel({ onClose }) {
 
   const startSession = () => {
     // Force a brand new session id overriding persisted one.
-    window.localStorage.removeItem("aiSessionId");
-    startNewSession();
+    setMessages([]);
+    setSelectedSession(null);
+    startNewSession(true);
     setShowMenu(false);
   };
 
@@ -134,28 +135,62 @@ export default function PopupChatPanel({ onClose }) {
         )}
         {messages.map((m, i) => {
           const isUser = m.role !== "assistant";
+          const isSending = m.status === "sending";
+          const isFailed = m.status === "failed";
+          console.log(
+            "Message:",
+            m.content?.substring(0, 20),
+            "Status:",
+            m.status
+          );
           return (
-            <div
-              key={i}
-              className={`${styles.bubbleRow} ${
-                isUser ? styles.userRow : styles.assistantRow
-              }`}
-            >
-              {!isUser && (
-                <div className={styles.avatarIcon}>
-                  <AIAvatarIcon />
+            <div key={m.id || i}>
+              <div
+                className={`${styles.bubbleRow} ${
+                  isUser ? styles.userRow : styles.assistantRow
+                }`}
+              >
+                {!isUser && (
+                  <div className={styles.avatarIcon}>
+                    <AIAvatarIcon />
+                  </div>
+                )}
+                <div
+                  className={`${
+                    isUser ? styles.bubbleUser : styles.bubbleAssistant
+                  } ${isSending ? styles.bubbleSending : ""} ${
+                    isFailed ? styles.bubbleFailed : ""
+                  }`}
+                >
+                  {m.content}
+                  {isSending && (
+                    <div className={styles.sendingIndicator}>
+                      <span className={styles.sendingDot}></span>
+                      <span className={styles.sendingDot}></span>
+                      <span className={styles.sendingDot}></span>
+                    </div>
+                  )}
+                </div>
+                <div
+                  className={`${styles.timestamp} ${isUser ? styles.user : ""}`}
+                >
+                  {getRelativeTime(m.timestamp || new Date())}
+                </div>
+              </div>
+              {isUser && m.status && (
+                <div className={styles.statusRow}>
+                  <span
+                    className={`${styles.status} ${
+                      m.status === "failed" ? styles.statusFailed : ""
+                    } ${m.status === "sent" ? styles.statusSent : ""}`}
+                  >
+                    {m.status === "sending" && "● Sending..."}
+                    {m.status === "sent" && "✓ Sent"}
+                    {m.status === "failed" &&
+                      "✗ Failed to send message, try again"}
+                  </span>
                 </div>
               )}
-              <div
-                className={isUser ? styles.bubbleUser : styles.bubbleAssistant}
-              >
-                {m.content}
-              </div>
-              <div
-                className={`${styles.timestamp} ${isUser ? styles.user : ""}`}
-              >
-                {getRelativeTime(m.timestamp || new Date())}
-              </div>
             </div>
           );
         })}

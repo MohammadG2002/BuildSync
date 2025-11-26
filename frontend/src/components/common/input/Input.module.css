@@ -61,7 +61,7 @@
 }
 
 :global(.dark) .input {
-  background-color: #1f2937;
+  background-color: #374151;
   border-color: #4b5563;
   color: #f9fafb;
 }

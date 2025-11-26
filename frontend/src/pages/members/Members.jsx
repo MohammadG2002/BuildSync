@@ -128,25 +128,29 @@ const Members = () => {
     setSelectedContacts((prev) => prev.filter((c) => c.id !== contactId));
   };
 
-  const handleSendContactInvites = () => {
-    Promise.all(
-      selectedContacts.map((contact) =>
-        handleInviteMember(
-          null,
-          workspaceId,
-          { email: contact.email, role: contactRole },
-          members,
-          setMembers,
-          setShowInviteModal,
-          setInviteData,
-          setInviteErrors,
-          setSubmitting
+  const handleSendContactInvites = async () => {
+    try {
+      await Promise.all(
+        selectedContacts.map((contact) =>
+          handleInviteMember(
+            null,
+            workspaceId,
+            { email: contact.email, role: contactRole },
+            members,
+            setMembers,
+            setShowInviteModal,
+            setInviteData,
+            setInviteErrors,
+            setSubmitting
+          )
         )
-      )
-    ).then(() => {
+      );
       setSelectedContacts([]);
       setContactRole("member");
-    });
+      setShowInviteModal(false);
+    } catch (err) {
+      console.error("Failed to invite contacts", err);
+    }
   };
 
   return (

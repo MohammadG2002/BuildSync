@@ -13,9 +13,29 @@ export function useSendHandler({
       const trimmed = input.trim();
       if (!trimmed || !selectedSession) return;
       setInput("");
+
+      // Add optimistic user message with "sending" status
+      const userMessageId = Date.now();
+      const userMessage = {
+        id: userMessageId,
+        role: "user",
+        content: trimmed,
+        timestamp: new Date(),
+        status: "sending",
+      };
+      setMessages((m) => [...m, userMessage]);
+
       setLoading(true);
       try {
         const { ok, data } = await sendMessage(trimmed, selectedSession);
+
+        // Update user message status to "sent"
+        setMessages((m) =>
+          m.map((msg) =>
+            msg.id === userMessageId ? { ...msg, status: "sent" } : msg
+          )
+        );
+
         if (!ok) {
           const errMsg = data?.error || `HTTP ${data?.status}`;
           setMessages((m) => [
@@ -29,6 +49,12 @@ export function useSendHandler({
         }
         setReloadLogs((c) => c + 1);
       } catch (e) {
+        // Update user message status to "failed"
+        setMessages((m) =>
+          m.map((msg) =>
+            msg.id === userMessageId ? { ...msg, status: "failed" } : msg
+          )
+        );
         setMessages((m) => [
           ...m,
           {

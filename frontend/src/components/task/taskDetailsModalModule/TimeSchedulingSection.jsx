@@ -146,8 +146,8 @@ const TimeSchedulingSection = ({ task, onUpdate, readOnly = false }) => {
       const d = toDay(t.dueDate);
       let durationDays = 1; // minimum 1 day
       if (s && d) {
-        const diff = Math.ceil((d.getTime() - s.getTime()) / msPerDay) + 1; // inclusive
-        if (!isNaN(diff) && diff > 0) durationDays = diff;
+        const diff = Math.ceil((d.getTime() - s.getTime()) / msPerDay);
+        if (!isNaN(diff) && diff >= 0) durationDays = Math.max(1, diff);
       }
       nodes.set(id.toString(), {
         id: id.toString(),
