@@ -8,6 +8,8 @@ import {
   logout,
   sendVerificationCode,
   verifyEmail,
+  forgotPassword,
+  resetPassword,
 } from "../controllers/authController/index.js";
 import {
   authenticate,
@@ -25,6 +27,8 @@ router.post("/send-verification-code", authRateLimiter, sendVerificationCode);
 router.post("/verify-email", authRateLimiter, verifyEmail);
 router.post("/register", registerValidation, validate, register);
 router.post("/login", authRateLimiter, loginValidation, validate, login);
+router.post("/forgot-password", authRateLimiter, forgotPassword);
+router.post("/reset-password", authRateLimiter, resetPassword);
 
 // Protected routes
 router.get("/me", authenticate, getMe);

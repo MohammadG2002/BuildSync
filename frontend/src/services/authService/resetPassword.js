@@ -1,8 +1,9 @@
 import apiClient, { API_ENDPOINTS } from "../apiClient";
 
-export const resetPassword = async (token, password) => {
+export const resetPassword = async ({ email, code, newPassword }) => {
   return await apiClient.post(API_ENDPOINTS.AUTH.RESET_PASSWORD, {
-    token,
-    password,
+    email,
+    code,
+    newPassword,
   });
 };

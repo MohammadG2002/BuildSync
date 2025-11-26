@@ -10,3 +10,5 @@ export { changePassword } from "./changePassword.js";
 export { logout } from "./logout.js";
 export { sendVerificationCode } from "./sendVerificationCode.js";
 export { verifyEmail } from "./verifyEmail.js";
+export { forgotPassword } from "./forgotPassword.js";
+export { resetPassword } from "./resetPassword.js";

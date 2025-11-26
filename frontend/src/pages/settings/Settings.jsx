@@ -120,7 +120,7 @@ const Settings = () => {
       {/* Workspace Information */}
       <WorkspaceInfoCard
         workspaceId={workspaceId}
-        createdDate={workspace.createdDate}
+        createdDate={workspace.createdAt}
         memberCount={workspace.memberCount}
       />
 

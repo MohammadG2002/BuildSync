@@ -1,4 +1,5 @@
 import toast from "react-hot-toast";
+import { forgotPassword } from "../../services/authService";
 
 /**
  * Handle forgot password form submission
@@ -13,13 +14,12 @@ const handleSubmit = async (e, email, setLoading, setSuccess) => {
 
   setLoading(true);
   try {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    await forgotPassword(email);
     setSuccess(true);
-    toast.success("Password reset link sent to your email!");
+    toast.success("Password reset code sent to your email!");
   } catch (error) {
     console.error("Error:", error);
-    toast.error("Failed to send reset link");
+    toast.error(error.message || "Failed to send reset code");
   } finally {
     setLoading(false);
   }
