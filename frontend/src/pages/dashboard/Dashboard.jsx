@@ -49,6 +49,29 @@ const Dashboard = () => {
     }
   }, [currentWorkspace]);
 
+  // If no workspaces, show empty state
+  if (!workspaces || workspaces.length === 0) {
+    return (
+      <div className={styles.emptyState}>
+        <div className={styles.emptyStateContent}>
+          <h2 className={styles.emptyStateTitle}>
+            You are not in a workspace yet
+          </h2>
+          <p className={styles.emptyStateText}>
+            Create or join a workspace to start collaborating on projects
+          </p>
+          <Button
+            variant="primary"
+            onClick={() => navigate("/app/workspaces")}
+            className={styles.createWorkspaceButton}
+          >
+            Create Workspace
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.container}>
       {/* Header */}

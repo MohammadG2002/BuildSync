@@ -5,6 +5,47 @@
   gap: 1.5rem;
 }
 
+/* Empty State */
+.emptyState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+}
+
+.emptyStateContent {
+  text-align: center;
+  max-width: 28rem;
+  padding: 2rem;
+}
+
+.emptyStateTitle {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.75rem;
+}
+
+:global(.dark) .emptyStateTitle {
+  color: #f3f4f6;
+}
+
+.emptyStateText {
+  color: #6b7280;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+:global(.dark) .emptyStateText {
+  color: #9ca3af;
+}
+
+.createWorkspaceButton {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+}
+
 /* (removed empty .header ruleset) */
 
 .title {

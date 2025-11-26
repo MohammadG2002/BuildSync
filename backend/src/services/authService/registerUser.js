@@ -37,7 +37,37 @@ export const registerUser = async (userData) => {
   // Check if user already exists
   const existingUser = await User.findOne({ email: email.toLowerCase() });
   if (existingUser) {
-    throw new Error("User already exists with this email");
+    // If email verified and active, user is already registered
+    if (existingUser.isEmailVerified && existingUser.isActive) {
+      throw new Error("User already exists with this email");
+    }
+    // If email is verified but not active (completed verification step), update user info
+    if (existingUser.isEmailVerified && !existingUser.isActive) {
+      existingUser.name = name;
+      existingUser.password = password;
+      existingUser.isActive = true;
+      existingUser.emailVerificationCode = undefined;
+      existingUser.emailVerificationExpires = undefined;
+      await existingUser.save();
+
+      const token = generateToken(existingUser._id);
+      return {
+        user: {
+          id: existingUser._id,
+          name: existingUser.name,
+          email: existingUser.email,
+          avatar: existingUser.avatar,
+          role: existingUser.role,
+        },
+        token,
+      };
+    }
+    // If not verified, they haven't completed verification
+    if (!existingUser.isEmailVerified) {
+      throw new Error(
+        "Email verification pending. Please complete verification first"
+      );
+    }
   }
 
   // Create user

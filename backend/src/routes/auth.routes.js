@@ -6,6 +6,8 @@ import {
   updateProfile,
   changePassword,
   logout,
+  sendVerificationCode,
+  verifyEmail,
 } from "../controllers/authController/index.js";
 import {
   authenticate,
@@ -19,6 +21,8 @@ import {
 const router = express.Router();
 
 // Public routes
+router.post("/send-verification-code", authRateLimiter, sendVerificationCode);
+router.post("/verify-email", authRateLimiter, verifyEmail);
 router.post("/register", registerValidation, validate, register);
 router.post("/login", authRateLimiter, loginValidation, validate, login);
 

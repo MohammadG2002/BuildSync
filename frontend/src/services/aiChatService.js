@@ -2,14 +2,26 @@ export function getApiBase() {
   return import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 }
 
+function getAuthHeaders() {
+  const token = localStorage.getItem("token");
+  return {
+    "Content-Type": "application/json",
+    ...(token && { Authorization: `Bearer ${token}` }),
+  };
+}
+
 export async function fetchSessions() {
-  const resp = await fetch(`${getApiBase()}/chat/sessions`);
+  const resp = await fetch(`${getApiBase()}/chat/sessions`, {
+    headers: getAuthHeaders(),
+  });
   const data = await resp.json();
   return data.sessions || [];
 }
 
 export async function fetchLogs(sessionId) {
-  const resp = await fetch(`${getApiBase()}/chat/logs/${sessionId}`);
+  const resp = await fetch(`${getApiBase()}/chat/logs/${sessionId}`, {
+    headers: getAuthHeaders(),
+  });
   const data = await resp.json();
   return data.logs || [];
 }
@@ -17,7 +29,7 @@ export async function fetchLogs(sessionId) {
 export async function sendMessage(message, sessionId) {
   const resp = await fetch(`${getApiBase()}/chat`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: getAuthHeaders(),
     body: JSON.stringify({ message, sessionId }),
   });
   const data = await resp.json().catch(() => ({}));

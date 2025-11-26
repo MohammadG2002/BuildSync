@@ -15,51 +15,65 @@ import {
   validate,
 } from "../middleware/index.js";
 import fetch from "node-fetch";
+import mongoose from "mongoose";
 import AIChatLog from "../models/AIChatLog.js";
 
 const router = express.Router();
 
 // Get chat logs for a session
-router.get("/logs/:sessionId", async (req, res) => {
+router.get("/logs/:sessionId", authenticate, async (req, res) => {
   const { sessionId } = req.params;
   const { limit = 50, skip = 0 } = req.query;
+  const userId = req.user._id;
+
   try {
-    const logs = await AIChatLog.find({ sessionId })
+    // Only show logs that belong to this user (with userId set)
+    const logs = await AIChatLog.find({
+      sessionId,
+      userId: userId,
+    })
       .sort({ timestamp: 1 })
       .skip(Number(skip))
       .limit(Number(limit));
     res.json({ sessionId, logs });
   } catch (err) {
+    console.error("[API/chat] Logs error:", err);
     res.status(500).json({ error: "Failed to fetch chat logs" });
   }
 });
 
 // List all sessions for a user (or all sessions if no user)
-router.get("/sessions", async (req, res) => {
-  const userId = req.user?._id;
+router.get("/sessions", authenticate, async (req, res) => {
+  const userId = req.user._id;
   try {
-    const match = userId ? { userId } : {};
     const sessions = await AIChatLog.aggregate([
-      { $match: match },
+      {
+        $match: {
+          userId: new mongoose.Types.ObjectId(userId),
+        },
+      },
       { $group: { _id: "$sessionId", lastMsg: { $max: "$timestamp" } } },
       { $sort: { lastMsg: -1 } },
       { $limit: 100 },
     ]);
     res.json({ sessions });
   } catch (err) {
+    console.error("[API/chat] Sessions error:", err);
     res.status(500).json({ error: "Failed to list sessions" });
   }
 });
 
-// Proxy chat to n8n webhook (public, no auth)
-router.post("/", async (req, res) => {
+// Proxy chat to n8n webhook (requires authentication)
+router.post("/", authenticate, async (req, res) => {
   const { message, sessionId } = req.body;
-  console.log("[API/chat] Incoming:", { message, sessionId });
+  const userId = req.user._id;
+
+  console.log("[API/chat] Incoming:", { message, sessionId, userId });
   try {
     // Log user message
     await AIChatLog.create({
       sessionId,
-      userId: req.user?._id || undefined,
+      userId,
       role: "user",
       content: message,
     });
@@ -88,7 +102,7 @@ router.post("/", async (req, res) => {
     if (data.output) {
       await AIChatLog.create({
         sessionId,
-        userId: req.user?._id || undefined,
+        userId,
         role: "assistant",
         content: data.output,
       });

@@ -10,4 +10,6 @@ export const AUTH_ENDPOINTS = {
   RESET_PASSWORD: "/auth/reset-password",
   CHANGE_PASSWORD: "/auth/change-password",
   UPDATE_PROFILE: "/auth/profile",
+  SEND_VERIFICATION: "/auth/send-verification-code",
+  VERIFY_EMAIL: "/auth/verify-email",
 };
