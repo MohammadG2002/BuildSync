@@ -99,15 +99,30 @@
 
 .nameInput {
   width: 100%;
-  padding: 0.4rem 0.6rem;
+  padding: 0.5rem 1rem;
   border: 1px solid #d1d5db;
-  border-radius: 0.375rem;
-  font-size: 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  outline: none;
+  background-color: white;
+  color: #111827;
+  transition: all 0.2s ease-in-out;
 }
+
+.nameInput:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
 :global(.dark) .nameInput {
-  background: #1f2937;
+  background-color: #374151;
   border-color: #4b5563;
-  color: #f3f4f6;
+  color: #f9fafb;
+}
+
+:global(.dark) .nameInput:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
 .colorInput {

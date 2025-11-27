@@ -149,22 +149,28 @@
   line-height: 2rem;
   font-weight: 700;
   color: #111827;
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem 1rem;
   border: 1px solid #d1d5db;
   border-radius: 0.5rem;
   outline: none;
   background-color: white;
+  transition: all 0.2s ease-in-out;
 }
 
 .headerTitleInput:focus {
-  box-shadow: 0 0 0 2px #3b82f6;
-  border-color: transparent;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 :global(.dark) .headerTitleInput {
-  color: #f3f4f6;
+  color: #f9fafb;
   border-color: #4b5563;
   background-color: #374151;
+}
+
+:global(.dark) .headerTitleInput:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
 .iconButton {
@@ -298,22 +304,31 @@
 
 .descriptionTextarea {
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.5rem 1rem;
   border: 1px solid #d1d5db;
   border-radius: 0.5rem;
   min-height: 100px;
   outline: none;
+  resize: none;
+  background-color: white;
+  color: #111827;
+  transition: all 0.2s ease-in-out;
 }
 
 .descriptionTextarea:focus {
-  box-shadow: 0 0 0 2px #3b82f6;
-  border-color: transparent;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 :global(.dark) .descriptionTextarea {
   border-color: #4b5563;
   background-color: #374151;
-  color: #f3f4f6;
+  color: #f9fafb;
+}
+
+:global(.dark) .descriptionTextarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
 .descriptionActions {
@@ -825,22 +840,35 @@
   border: 1px solid #d1d5db;
   border-radius: 0.5rem;
   outline: none;
+  background-color: white;
+  color: #111827;
+  transition: all 0.2s ease-in-out;
 }
 
 .commentInput:focus {
-  box-shadow: 0 0 0 2px #3b82f6;
-  border-color: transparent;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .commentInput:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  background-color: #f3f4f6;
 }
 
 :global(.dark) .commentInput {
   border-color: #4b5563;
   background-color: #374151;
-  color: #f3f4f6;
+  color: #f9fafb;
+}
+
+:global(.dark) .commentInput:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+:global(.dark) .commentInput:disabled {
+  background-color: #374151;
 }
 
 .commentSubmit {
@@ -1251,21 +1279,29 @@
 
 .subtaskInput {
   flex: 1;
-  padding: 0.375rem 0.5rem;
+  padding: 0.5rem 1rem;
   border: 1px solid #d1d5db;
-  border-radius: 0.375rem;
+  border-radius: 0.5rem;
   outline: none;
+  background-color: white;
+  color: #111827;
+  transition: all 0.2s ease-in-out;
 }
 
 .subtaskInput:focus {
-  box-shadow: 0 0 0 2px #3b82f6;
-  border-color: transparent;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 :global(.dark) .subtaskInput {
   border-color: #4b5563;
   background-color: #374151;
-  color: #f3f4f6;
+  color: #f9fafb;
+}
+
+:global(.dark) .subtaskInput:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
 .subtaskText {

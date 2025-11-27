@@ -29,18 +29,25 @@
   border-radius: 0.5rem;
   resize: none;
   outline: none;
-  transition: all 0.2s;
+  transition: all 0.2s ease-in-out;
+  background-color: white;
+  color: #111827;
 }
 
 .descriptionTextarea:focus {
-  box-shadow: 0 0 0 2px #3b82f6;
   border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 :global(.dark) .descriptionTextarea {
   border-color: #4b5563;
-  background-color: #1f2937;
-  color: #f3f4f6;
+  background-color: #374151;
+  color: #f9fafb;
+}
+
+:global(.dark) .descriptionTextarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
 /* StatusAndPriorityFields */
@@ -72,18 +79,25 @@
   border: 1px solid #d1d5db;
   border-radius: 0.5rem;
   outline: none;
-  transition: all 0.2s;
+  transition: all 0.2s ease-in-out;
+  background-color: white;
+  color: #111827;
 }
 
 .select:focus {
-  box-shadow: 0 0 0 2px #3b82f6;
   border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 :global(.dark) .select {
   border-color: #4b5563;
-  background-color: #1f2937;
-  color: #f3f4f6;
+  background-color: #374151;
+  color: #f9fafb;
+}
+
+:global(.dark) .select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
 /* AttachmentsField */
@@ -112,13 +126,13 @@
 .attachmentsButton {
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: #374151;
+  color: #111827;
   display: flex;
   align-items: center;
-  gap: 0.25rem;
-  background: none;
+  gap: 0.5rem;
+  background-color: white;
   cursor: pointer;
-  transition: color 0.2s;
+  transition: all 0.2s ease-in-out;
   padding: 0.5rem 1rem;
   border: 1px solid #d1d5db;
   border-radius: 0.5rem;
@@ -127,7 +141,28 @@
 }
 
 .attachmentsButton:hover {
-  background-color: #f3f4f6;
+  background-color: #f9fafb;
+}
+
+.attachmentsButton:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+:global(.dark) .attachmentsButton {
+  background-color: #374151;
+  border-color: #4b5563;
+  color: #f9fafb;
+}
+
+:global(.dark) .attachmentsButton:hover {
+  background-color: #4b5563;
+}
+
+:global(.dark) .attachmentsButton:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
 .attachmentsIcon {

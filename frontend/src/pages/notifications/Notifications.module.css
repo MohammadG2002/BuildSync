@@ -242,21 +242,26 @@
   border: 1px solid #d1d5db;
   border-radius: 0.5rem;
   outline: none;
-  transition: all 0.2s;
-  background-color: #ffffff;
+  transition: all 0.2s ease-in-out;
+  background-color: white;
   color: #111827;
   font-size: 0.875rem;
 }
 
+.select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
 :global(.dark) .select {
   border-color: #4b5563;
-  background-color: #1f2937;
+  background-color: #374151;
   color: #f9fafb;
 }
 
-.select:focus {
+:global(.dark) .select:focus {
   border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
 /* Notification Groups */
