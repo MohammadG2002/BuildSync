@@ -1,5 +1,5 @@
 import { memo } from "react";
-import CardHeader from "../card/CardHeader";
+import CardHeader from "./CardHeader";
 import styles from "./Card.module.css";
 
 const Card = ({ children, title, action, className = "", ...props }) => {

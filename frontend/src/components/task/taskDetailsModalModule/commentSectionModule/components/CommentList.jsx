@@ -1,7 +1,7 @@
 import React from "react";
 import CommentItem from "./CommentItem";
 import styles from "../../TaskDetailsModal.module.css";
-import UserAvatar from "../../../../common/UserAvatar";
+import UserAvatar from "../../../../common/UserAvatar/UserAvatar";
 
 // Expects an array of comments only
 const CommentList = ({

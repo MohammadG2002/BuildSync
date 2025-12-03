@@ -1,4 +1,4 @@
-import Modal from "../Modal";
+import Modal from "../modal/Modal";
 import formatFileSize from "../../../utils/helpers/formatFileSize";
 import styles from "./FileUpload.module.css";
 

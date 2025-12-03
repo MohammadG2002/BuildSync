@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import Card from "../../components/common/Card";
-import Button from "../../components/common/Button";
-import Modal from "../../components/common/Modal";
-import Input from "../../components/common/Input";
+import Card from "../../components/common/card/Card";
+import Button from "../../components/common/button/Button";
+import Modal from "../../components/common/modal/Modal";
+import Input from "../../components/common/input/Input";
 import {
   ContactsSidebar,
   ChatArea,

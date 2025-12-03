@@ -1,0 +1,38 @@
+.panelExpanded {
+  display: flex;
+  height: max-content;
+  overflow: hidden;
+  width: 100%;
+  max-height: 100%;
+}
+
+.sidebarContainer {
+  width: 16rem;
+  min-width: 12rem;
+  background: var(--bg-1);
+  border-right: 1px solid var(--muted-200);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1rem;
+}
+
+.mainChatArea {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 100%;
+  position: relative;
+}
+
+.header {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--muted-200);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-height: 2.5rem;
+  background-color: transparent;
+  position: absolute;
+  width: 100%;
+}

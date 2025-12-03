@@ -1,0 +1,59 @@
+/* Task Group */
+.taskGroup {
+}
+
+.groupHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.groupHeaderIcon {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.groupHeaderIconImage {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.groupTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+:global(.dark) .groupTitle {
+  color: #f9fafb;
+}
+
+.groupCount {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 400;
+}
+
+:global(.dark) .groupCount {
+  color: #9ca3af;
+}
+
+.taskList {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .taskList {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .taskList {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

@@ -1,0 +1,54 @@
+/* Privacy Settings */
+.privacyList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.privacyItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.privacyCheckbox {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.125rem;
+  color: #3b82f6;
+  border-radius: 0.25rem;
+  border-color: #d1d5db;
+  cursor: pointer;
+}
+
+:global(.dark) .privacyCheckbox {
+  border-color: #4b5563;
+}
+
+.privacyCheckbox:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.privacyLabel {
+}
+
+.privacyLabelTitle {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+:global(.dark) .privacyLabelTitle {
+  color: #d1d5db;
+}
+
+.privacyLabelDesc {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+:global(.dark) .privacyLabelDesc {
+  color: #9ca3af;
+}

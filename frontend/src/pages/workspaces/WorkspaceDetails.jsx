@@ -11,10 +11,10 @@ import {
 import { useWorkspace } from "../../hooks/useWorkspace";
 import { AuthContext } from "../../context/AuthContext";
 import { getWorkspaceMembers } from "../../services/workspaceService";
-import Button from "../../components/common/Button";
-import Card from "../../components/common/Card";
-import Modal from "../../components/common/Modal";
-import ProjectCard from "../../components/dashboard/ProjectCard";
+import Button from "../../components/common/button/Button";
+import Card from "../../components/common/card/Card";
+import Modal from "../../components/common/modal/Modal";
+import { ProjectCard } from "../../components/dashboard";
 import ProjectForm from "../../components/project/ProjectForm";
 import {
   WorkspaceStatCard,

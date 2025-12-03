@@ -1,0 +1,81 @@
+.messageWrapper {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.messageWrapperSent {
+  justify-content: flex-end;
+}
+
+.messageAvatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+.messageContent {
+  max-width: 65%;
+}
+
+.messageBubble {
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background-color: #ffffff;
+  color: #111827;
+  word-wrap: break-word;
+}
+
+:global(.dark) .messageBubble {
+  background-color: #1f2937;
+  color: #f9fafb;
+}
+
+.messageBubbleSent {
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+.messageText {
+  margin: 0;
+}
+
+.messageTime {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+:global(.dark) .messageTime {
+  color: #9ca3af;
+}
+
+.messageAttachment {
+  margin-top: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  text-decoration: none;
+  color: inherit;
+  transition: background-color 0.2s;
+}
+
+.messageAttachment:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.messageAttachmentIcon {
+  width: 1rem;
+  height: 1rem;
+}

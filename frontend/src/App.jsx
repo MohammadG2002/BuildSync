@@ -7,7 +7,7 @@ import RealtimeProvider from "./context/RealtimeProvider";
 import { Toaster } from "react-hot-toast";
 import AppRoutes from "./routes/AppRoutes";
 import ErrorBoundary from "./components/common/ErrorBoundary";
-import FloatingAIChat from "./components/ai/FloatingAIChat";
+import FloatingAIChat from "./components/ai/FloatingAIChat/FloatingAIChat";
 
 function App() {
   return (

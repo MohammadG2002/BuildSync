@@ -1,6 +1,6 @@
 import React from "react";
-import Card from "../../components/common/Card";
-import ChatPanel from "../../components/ai/ChatPanel";
+import Card from "../../components/common/card/Card";
+import ChatPanel from "../../components/ai/ChatPanel/ChatPanel";
 import styles from "./Chat.module.css";
 
 const AIChat = () => {

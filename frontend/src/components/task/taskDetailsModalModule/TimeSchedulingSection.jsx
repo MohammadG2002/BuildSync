@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState, useMemo } from "react";
 import { Calendar as CalendarIcon } from "lucide-react";
-import Input from "../../common/Input";
-import Calendar from "../../common/Calendar";
-import styles from "../taskFormModule/TaskForm.module.css";
+import Input from "../../common/input/Input";
+import Calendar from "../../common/calendar/Calendar";
+import styles from "../TaskForm/TaskForm.module.css";
 
 const TimeSchedulingSection = ({ task, onUpdate, readOnly = false }) => {
   const [showStartCalendar, setShowStartCalendar] = useState(false);

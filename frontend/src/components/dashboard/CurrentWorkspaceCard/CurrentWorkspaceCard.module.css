@@ -1,0 +1,66 @@
+/* CurrentWorkspaceCard */
+.workspaceInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background-color: #eff6ff;
+  border-radius: 0.5rem;
+}
+
+.workspaceIconContainer {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: #dbeafe;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.workspaceIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #2563eb;
+}
+
+.workspaceDetails {
+  flex: 1;
+  min-width: 0;
+}
+
+.workspaceName {
+  font-weight: 600;
+  color: #111827;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:global(.dark) .workspaceName {
+  color: #f3f4f6;
+}
+
+.workspaceMembers {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #4b5563;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:global(.dark) .workspaceMembers {
+  color: #9ca3af;
+}
+
+.switchButton {
+  margin-top: 0.75rem;
+  width: 100%;
+  gap: 0.5rem;
+}
+
+.switchButtonIcon {
+  width: 1rem;
+  height: 1rem;
+}

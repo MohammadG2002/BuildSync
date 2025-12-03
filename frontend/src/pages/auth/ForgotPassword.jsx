@@ -2,10 +2,10 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Mail, ArrowLeft, Key, Lock } from "lucide-react";
 import toast from "react-hot-toast";
-import Button from "../../components/common/Button";
-import Input from "../../components/common/Input";
+import Button from "../../components/common/button/Button";
+import Input from "../../components/common/input/Input";
 import { forgotPassword, resetPassword } from "../../services/authService";
-import styles from "../../components/auth/Auth.module.css";
+import styles from "./Auth.module.css";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();

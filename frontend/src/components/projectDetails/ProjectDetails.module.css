@@ -1,6 +1,4 @@
-/* Moved from pages/projects/ProjectDetails.module.css to colocate with ProjectDetails components */
-
-/* Project Details page styles */
+/* Project Details page layout styles - extracted to keep page-level structure */
 
 /* Container */
 .container {
@@ -83,6 +81,40 @@
 @media (min-width: 768px) {
   .statsGrid {
     grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* Filters and Controls */
+.filtersControls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Loading Card */
+.loadingCard {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.loadingCardInner {
+  height: 16rem;
+  background-color: #e5e7eb;
+  border-radius: 0.5rem;
+}
+
+:global(.dark) .loadingCardInner {
+  background-color: #374151;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
   }
 }
 

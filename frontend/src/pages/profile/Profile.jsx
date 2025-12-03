@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
-import Card from "../../components/common/Card";
-import Button from "../../components/common/Button";
+import Card from "../../components/common/card/Card";
+import Button from "../../components/common/button/Button";
 import { getPasswordStrength } from "../../utils/validators";
 import {
   AvatarSection,

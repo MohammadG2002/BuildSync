@@ -1,0 +1,74 @@
+/* Filter Buttons */
+.filterButtons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.filterLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filterIcon {
+  color: #4b5563;
+}
+
+:global(.dark) .filterIcon {
+  color: #9ca3af;
+}
+
+.filterLabelText {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+:global(.dark) .filterLabelText {
+  color: #d1d5db;
+}
+
+.filterButtonsGroup {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.filterButton {
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+.filterButton:focus {
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.filterButtonActive {
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+.filterButtonInactive {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+:global(.dark) .filterButtonInactive {
+  background-color: #1f2937;
+  color: #d1d5db;
+}
+
+.filterButtonInactive:hover {
+  background-color: #e5e7eb;
+}
+
+:global(.dark) .filterButtonInactive:hover {
+  background-color: #374151;
+}

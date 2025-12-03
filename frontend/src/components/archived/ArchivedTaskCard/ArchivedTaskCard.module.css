@@ -1,0 +1,96 @@
+/* Task Card Internals */
+.taskCard {
+  transition: box-shadow 0.2s;
+}
+
+.taskCard:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.taskCardContent {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.taskCardMain {
+  flex: 1;
+}
+
+.taskHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.taskTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+:global(.dark) .taskTitle {
+  color: #f9fafb;
+}
+
+.taskDescription {
+  color: #4b5563;
+  margin-bottom: 0.75rem;
+}
+
+:global(.dark) .taskDescription {
+  color: #9ca3af;
+}
+
+.taskMeta {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+:global(.dark) .taskMeta {
+  color: #9ca3af;
+}
+
+.taskAssignee {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.assigneeAvatar {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.taskDate {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.taskDateIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.taskRestoreButton {
+  gap: 0.5rem;
+  margin-left: 1rem;
+}
+
+.taskRestoreIcon {
+  width: 1rem;
+  height: 1rem;
+}

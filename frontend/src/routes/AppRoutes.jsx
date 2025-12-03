@@ -3,7 +3,7 @@ import { lazy, Suspense } from "react";
 
 // Layout (not lazy-loaded as it's needed immediately)
 import DashboardLayout from "../components/layout/DashboardLayout";
-import Loader from "../components/common/Loader";
+import Loader from "../components/common/loader/Loader";
 
 // Lazy load all page components for code splitting
 const LandingPage = lazy(() => import("../pages/landing"));

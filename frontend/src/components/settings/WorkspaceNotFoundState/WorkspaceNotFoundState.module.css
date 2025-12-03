@@ -1,0 +1,22 @@
+/* Workspace Not Found State */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.notFoundCard {
+  text-align: center;
+  padding: 3rem 0;
+}
+
+.notFoundTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+:global(.dark) .notFoundTitle {
+  color: #f9fafb;
+}

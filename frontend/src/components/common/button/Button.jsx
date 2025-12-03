@@ -1,5 +1,5 @@
 import { memo } from "react";
-import LoadingSpinner from "../button/LoadingSpinner";
+import LoadingSpinner from "./LoadingSpinner";
 import styles from "./Button.module.css";
 
 const Button = ({

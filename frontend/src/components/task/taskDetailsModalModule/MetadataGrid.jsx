@@ -1,6 +1,6 @@
 import { User, Calendar, CheckCircle, Link as LinkIcon } from "lucide-react";
 import { formatDate } from "../../../utils/helpers";
-import UserAvatar from "../../common/UserAvatar";
+import UserAvatar from "../../common/UserAvatar/UserAvatar";
 import styles from "./TaskDetailsModal.module.css";
 
 const MetadataGrid = ({ task }) => {

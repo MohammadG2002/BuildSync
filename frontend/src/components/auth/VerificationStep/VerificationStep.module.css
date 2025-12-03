@@ -1,0 +1,109 @@
+/* Verification Step */
+.verificationContainer {
+  width: 100%;
+}
+
+.verificationHeader {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.verificationIcon {
+  width: 4rem;
+  height: 4rem;
+  margin: 0 auto 1rem;
+  color: #3b82f6;
+}
+
+.verificationTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+:global(.dark) .verificationTitle {
+  color: #f9fafb;
+}
+
+.verificationText {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+
+:global(.dark) .verificationText {
+  color: #9ca3af;
+}
+
+.verificationEmail {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #3b82f6;
+  margin-bottom: 0;
+}
+
+.authForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.codeInput :global(input) {
+  text-align: center;
+  font-size: 1.5rem;
+  letter-spacing: 0.5rem;
+  font-weight: 600;
+}
+
+.timerText {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: -0.5rem 0 1rem;
+}
+
+:global(.dark) .timerText {
+  color: #9ca3af;
+}
+
+.resendButton {
+  background: none;
+  border: none;
+  color: #3b82f6;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.resendButton:hover {
+  color: #2563eb;
+}
+
+.fullWidthButton {
+  width: 100%;
+}
+
+.backButton {
+  width: 100%;
+  background: none;
+  border: none;
+  color: #6b7280;
+  font-size: 0.875rem;
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.backButton:hover {
+  color: #111827;
+}
+
+:global(.dark) .backButton {
+  color: #9ca3af;
+}
+
+:global(.dark) .backButton:hover {
+  color: #f9fafb;
+}

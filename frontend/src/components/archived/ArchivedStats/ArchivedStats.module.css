@@ -1,0 +1,102 @@
+/* Stats Grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .statsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Stat Card */
+.statCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.statLabel {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-bottom: 0.25rem;
+}
+
+:global(.dark) .statLabel {
+  color: #9ca3af;
+}
+
+.statValue {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+:global(.dark) .statValue {
+  color: #f9fafb;
+}
+
+.statValueGreen {
+  color: #16a34a;
+}
+
+.statValueRed {
+  color: #dc2626;
+}
+
+.statIcon {
+  width: 2rem;
+  height: 2rem;
+  color: #9ca3af;
+}
+
+:global(.dark) .statIcon {
+  color: #6b7280;
+}
+
+.statIconWrapper {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statIconWrapperGreen {
+  background-color: #dcfce7;
+}
+
+:global(.dark) .statIconWrapperGreen {
+  background-color: #14532d;
+}
+
+.statIconWrapperGreen .statIconInner {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #16a34a;
+}
+
+:global(.dark) .statIconWrapperGreen .statIconInner {
+  color: #4ade80;
+}
+
+.statIconWrapperRed {
+  background-color: #fee2e2;
+}
+
+:global(.dark) .statIconWrapperRed {
+  background-color: #7f1d1d;
+}
+
+.statIconWrapperRed .statIconInner {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #dc2626;
+}
+
+:global(.dark) .statIconWrapperRed .statIconInner {
+  color: #f87171;
+}

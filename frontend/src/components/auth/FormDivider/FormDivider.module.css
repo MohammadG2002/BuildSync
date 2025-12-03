@@ -1,0 +1,41 @@
+/* FormDivider */
+.divider {
+  position: relative;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.dividerLine {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+}
+
+.dividerBorder {
+  width: 100%;
+  border-top: 1px solid #d1d5db;
+}
+
+:global(.dark) .dividerBorder {
+  border-color: #4b5563;
+}
+
+.dividerText {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.dividerTextSpan {
+  padding: 0 0.5rem;
+  background-color: white;
+  color: #6b7280;
+}
+
+:global(.dark) .dividerTextSpan {
+  background-color: #1f2937;
+  color: #9ca3af;
+}

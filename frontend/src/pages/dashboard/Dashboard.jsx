@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useWorkspace } from "../../hooks/useWorkspace";
 import { useAuth } from "../../hooks/useAuth";
-import Card from "../../components/common/Card";
-import Button from "../../components/common/Button";
-import { SkeletonStats, SkeletonList } from "../../components/common/Loader";
+import Card from "../../components/common/card/Card";
+import Button from "../../components/common/button/Button";
+import {
+  SkeletonStats,
+  SkeletonList,
+} from "../../components/common/loader/Loader";
 import { ArrowRight, Plus } from "lucide-react";
 import {
   StatCard,

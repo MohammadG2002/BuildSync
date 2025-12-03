@@ -1,0 +1,46 @@
+/* ProfileTabs */
+.tabs {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+:global(.dark) .tabs {
+  border-color: #374151;
+}
+
+.tabList {
+  display: flex;
+  gap: 2rem;
+}
+
+.tab {
+  padding-bottom: 0.75rem;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  border-bottom: 2px solid transparent;
+  font-weight: 500;
+  transition: all 0.2s;
+  background: none;
+  cursor: pointer;
+}
+
+.tabActive {
+  border-color: #2563eb;
+  color: #2563eb;
+}
+
+.tabInactive {
+  border-color: transparent;
+  color: #4b5563;
+}
+
+.tabInactive:hover {
+  color: #111827;
+}
+
+:global(.dark) .tabInactive {
+  color: #9ca3af;
+}
+
+:global(.dark) .tabInactive:hover {
+  color: #f3f4f6;
+}

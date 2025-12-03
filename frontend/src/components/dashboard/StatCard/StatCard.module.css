@@ -1,0 +1,92 @@
+/* StatCard */
+.statCard {
+  transition: box-shadow 0.2s;
+}
+
+.statCard:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.statContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.statTitle {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #4b5563;
+  margin-bottom: 0.25rem;
+}
+
+:global(.dark) .statTitle {
+  color: #9ca3af;
+}
+
+.statValue {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+:global(.dark) .statValue {
+  color: #f3f4f6;
+}
+
+.statChange {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: #6b7280;
+}
+
+:global(.dark) .statChange {
+  color: #9ca3af;
+}
+
+.trendIcon {
+  width: 0.75rem;
+  height: 0.75rem;
+  color: #16a34a;
+}
+
+.statIcon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statIconSvg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* Color variants for stat icons */
+.iconBlue {
+  background-color: #dbeafe;
+  color: #2563eb;
+}
+
+.iconYellow {
+  background-color: #fef3c7;
+  color: #ca8a04;
+}
+
+.iconGreen {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.iconPurple {
+  background-color: #f3e8ff;
+  color: #9333ea;
+}

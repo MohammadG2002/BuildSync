@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import styles from "./TaskDetailsModal.module.css";
 import { getRelativeTime } from "../../../utils/helpers";
-import UserAvatar from "../../common/UserAvatar";
+import UserAvatar from "../../common/UserAvatar/UserAvatar";
 
 const formatItem = (it) => {
   const actorName = it?.actor?.name || it?.actor?.email || "Someone";

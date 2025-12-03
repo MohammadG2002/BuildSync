@@ -2,8 +2,8 @@ import { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useWorkspace } from "../../hooks/useWorkspace";
-import Button from "../../components/common/Button";
-import Modal from "../../components/common/Modal";
+import Button from "../../components/common/button/Button";
+import Modal from "../../components/common/modal/Modal";
 import {
   WorkspaceNotFoundState,
   GeneralSettingsForm,

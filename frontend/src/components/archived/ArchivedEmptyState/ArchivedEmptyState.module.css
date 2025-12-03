@@ -1,0 +1,35 @@
+/* Empty State */
+.emptyState {
+  text-align: center;
+  padding: 3rem 0;
+}
+
+.emptyIcon {
+  width: 4rem;
+  height: 4rem;
+  color: #9ca3af;
+  margin: 0 auto 1rem;
+}
+
+:global(.dark) .emptyIcon {
+  color: #6b7280;
+}
+
+.emptyTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+:global(.dark) .emptyTitle {
+  color: #f9fafb;
+}
+
+.emptyDescription {
+  color: #4b5563;
+}
+
+:global(.dark) .emptyDescription {
+  color: #9ca3af;
+}

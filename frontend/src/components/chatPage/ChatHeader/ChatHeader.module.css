@@ -1,0 +1,154 @@
+.chatHeader {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #ffffff;
+  border-radius: 0.75rem 0.75rem 0 0;
+}
+
+:global(.dark) .chatHeader {
+  border-color: #374151;
+  background-color: #1f2937;
+}
+
+.chatHeaderContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chatHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.chatHeaderAvatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  flex-shrink: 0;
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+.chatHeaderName {
+  font-weight: 600;
+  color: #111827;
+}
+
+:global(.dark) .chatHeaderName {
+  color: #f9fafb;
+}
+
+.chatHeaderStatus {
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+:global(.dark) .chatHeaderStatus {
+  color: #9ca3af;
+}
+
+.menuContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.menuDropdown {
+  position: absolute;
+  right: 0;
+  top: 2.5rem;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25),
+    0 8px 10px -6px rgba(0, 0, 0, 0.2);
+  z-index: 40;
+  min-width: 12rem;
+  padding: 0.25rem;
+}
+
+:global(.dark) .menuDropdown {
+  background: #1f2937;
+  border-color: #374151;
+}
+
+.menuItem,
+.menuItemDanger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  background: transparent;
+  color: #111827;
+  cursor: pointer;
+  border-radius: 0.375rem;
+}
+
+:global(.dark) .menuItem,
+:global(.dark) .menuItemDanger {
+  color: #f9fafb;
+}
+
+.menuItem:hover {
+  background: #f3f4f6;
+}
+
+:global(.dark) .menuItem:hover {
+  background: #374151;
+}
+
+.menuItemDanger {
+  color: #b91c1c;
+}
+
+.menuItemIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.menuDivider {
+  height: 1px;
+  margin: 0.25rem 0;
+  background: #e5e7eb;
+}
+
+:global(.dark) .menuDivider {
+  background: #374151;
+}
+
+.iconButton {
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: #6b7280;
+  transition: all 0.2s;
+}
+
+:global(.dark) .iconButton {
+  color: #9ca3af;
+}
+
+.iconButton:hover {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+:global(.dark) .iconButton:hover {
+  background-color: #4b5563;
+  color: #f9fafb;
+}
+
+.iconButtonIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}

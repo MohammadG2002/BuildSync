@@ -1,0 +1,43 @@
+/* Group By Selector */
+.groupBySelector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.groupByLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+:global(.dark) .groupByLabel {
+  color: #d1d5db;
+}
+
+.groupBySelect {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+  background-color: white;
+  color: #111827;
+}
+
+.groupBySelect:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+:global(.dark) .groupBySelect {
+  border-color: #4b5563;
+  background-color: #374151;
+  color: #f9fafb;
+}
+
+:global(.dark) .groupBySelect:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}

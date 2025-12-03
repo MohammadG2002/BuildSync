@@ -1,0 +1,70 @@
+/* ProfileForm */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.bioLabel {
+  display: block;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.25rem;
+}
+
+:global(.dark) .bioLabel {
+  color: #d1d5db;
+}
+
+.bioTextarea {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+  resize: none;
+  background-color: white;
+  color: #111827;
+}
+
+.bioTextarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.bioTextarea::placeholder {
+  color: #9ca3af;
+}
+
+:global(.dark) .bioTextarea {
+  background-color: #374151;
+  border-color: #4b5563;
+  color: #f9fafb;
+}
+
+:global(.dark) .bioTextarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+:global(.dark) .bioTextarea::placeholder {
+  color: #6b7280;
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 1rem;
+}
+
+.formSaveButton {
+  gap: 0.5rem;
+}
+
+.formSaveIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}

@@ -1,0 +1,87 @@
+/* DeadlineItem */
+.deadlineItem {
+  padding: 0.75rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  transition: border-color 0.2s;
+  cursor: pointer;
+}
+
+.deadlineItem:hover {
+  border-color: #bfdbfe;
+}
+
+:global(.dark) .deadlineItem {
+  border-color: #374151;
+}
+
+.deadlineHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.deadlineTitle {
+  font-weight: 500;
+  color: #111827;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+:global(.dark) .deadlineTitle {
+  color: #f3f4f6;
+}
+
+.deadlineBadge {
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  border-radius: 0.25rem;
+}
+
+.badgeUrgent {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.badgeNormal {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+:global(.dark) .badgeNormal {
+  background-color: #1f2937;
+  color: #d1d5db;
+}
+
+.deadlineMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: #4b5563;
+}
+
+:global(.dark) .deadlineMeta {
+  color: #9ca3af;
+}
+
+.deadlineMetaIcon {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.deadlineMetaSeparator {
+  color: #9ca3af;
+}
+
+:global(.dark) .deadlineMetaSeparator {
+  color: #6b7280;
+}
+
+.deadlineType {
+  text-transform: capitalize;
+}

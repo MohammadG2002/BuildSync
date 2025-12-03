@@ -1,0 +1,54 @@
+/* Charts */
+.chartContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.hBarList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.hBarRow {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.hBarLabel {
+  font-size: 0.875rem;
+  color: #4b5563;
+  text-transform: capitalize;
+}
+
+:global(.dark) .hBarLabel {
+  color: #d1d5db;
+}
+
+.hBarTrack {
+  height: 0.75rem;
+  background-color: #f3f4f6;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+:global(.dark) .hBarTrack {
+  background-color: #1f2937;
+}
+
+.hBarFill {
+  height: 100%;
+  border-radius: 9999px;
+}
+
+.hBarValue {
+  font-size: 0.875rem;
+  color: #111827;
+}
+
+:global(.dark) .hBarValue {
+  color: #f3f4f6;
+}

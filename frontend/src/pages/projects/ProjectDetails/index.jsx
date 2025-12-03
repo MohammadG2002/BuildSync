@@ -8,9 +8,9 @@ import {
   AlertCircle,
   Users,
 } from "lucide-react";
-import Button from "../../../components/common/Button";
-import Card from "../../../components/common/Card";
-import Modal from "../../../components/common/Modal";
+import Button from "../../../components/common/button/Button";
+import Card from "../../../components/common/card/Card";
+import Modal from "../../../components/common/modal/Modal";
 import TaskList from "../../../components/task/TaskList";
 import TaskForm from "../../../components/task/TaskForm";
 import TaskDetailsModal from "../../../components/task/TaskDetailsModal";

@@ -1,0 +1,53 @@
+.emptyState {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem;
+}
+
+.emptyStateContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.emptyStateIcon {
+  width: 6rem;
+  height: 6rem;
+  color: #9ca3af;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:global(.dark) .emptyStateIcon {
+  color: #6b7280;
+}
+
+.emptyStateIconSvg {
+  width: 4rem;
+  height: 4rem;
+}
+
+.emptyStateTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+:global(.dark) .emptyStateTitle {
+  color: #f9fafb;
+}
+
+.emptyStateSubtitle {
+  color: #4b5563;
+}
+
+:global(.dark) .emptyStateSubtitle {
+  color: #9ca3af;
+}

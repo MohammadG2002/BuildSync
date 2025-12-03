@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
 import { useWorkspace } from "../../hooks/useWorkspace";
-import Button from "../../components/common/Button";
-import Modal from "../../components/common/Modal";
-import { SkeletonList } from "../../components/common/Loader";
+import Button from "../../components/common/button/Button";
+import Modal from "../../components/common/modal/Modal";
+import { SkeletonList } from "../../components/common/loader/Loader";
 import WorkspaceCard from "../../components/workspace/WorkspaceCard";
 import WorkspaceForm from "../../components/workspace/WorkspaceForm";
 import {

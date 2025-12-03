@@ -1,0 +1,74 @@
+/* Danger Zone */
+.dangerZone {
+  border: 2px solid #fecaca;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  background-color: #fef2f2;
+}
+
+:global(.dark) .dangerZone {
+  border-color: #7f1d1d;
+  background-color: #450a0a;
+}
+
+.dangerContent {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.dangerIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: #fee2e2;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #dc2626;
+}
+
+:global(.dark) .dangerIcon {
+  background-color: #7f1d1d;
+  color: #dc2626;
+}
+
+.dangerIconImage {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.dangerDetails {
+  flex: 1;
+}
+
+.dangerTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #7f1d1d;
+  margin-bottom: 0.5rem;
+}
+
+:global(.dark) .dangerTitle {
+  color: #fca5a5;
+}
+
+.dangerDescription {
+  font-size: 0.875rem;
+  color: #991b1b;
+  margin-bottom: 1rem;
+}
+
+:global(.dark) .dangerDescription {
+  color: #f87171;
+}
+
+.dangerDeleteButton {
+  gap: 0.5rem;
+}
+
+.dangerDeleteIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}

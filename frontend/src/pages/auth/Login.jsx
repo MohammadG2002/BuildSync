@@ -2,12 +2,12 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Mail, Lock } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
-import Button from "../../components/common/Button";
-import Input from "../../components/common/Input";
+import Button from "../../components/common/button/Button";
+import Input from "../../components/common/input/Input";
 import { AuthLayout, PasswordInput, FormDivider } from "../../components/auth";
 import handleChange from "../../utils/auth/handleChangeLogin";
 import handleSubmit from "../../utils/auth/handleSubmitLogin";
-import styles from "../../components/auth/Auth.module.css";
+import styles from "./Auth.module.css";
 
 const Login = () => {
   const { login } = useAuth();

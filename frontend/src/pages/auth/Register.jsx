@@ -2,11 +2,15 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Mail, Lock, User } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
-import Button from "../../components/common/Button";
-import Input from "../../components/common/Input";
+import Button from "../../components/common/button/Button";
+import Input from "../../components/common/input/Input";
 import { getPasswordStrength } from "../../utils/validators";
-import { AuthLayout, PasswordInput, FormDivider } from "../../components/auth";
-import VerificationStep from "../../components/auth/VerificationStep";
+import {
+  AuthLayout,
+  PasswordInput,
+  FormDivider,
+  VerificationStep,
+} from "../../components/auth";
 import handleChange from "../../utils/auth/handleChangeRegister";
 import handleSubmit from "../../utils/auth/handleSubmitRegister";
 import {
@@ -14,7 +18,7 @@ import {
   handleVerifyCode,
   handleResendCode,
 } from "../../utils/auth/handleVerification";
-import styles from "../../components/auth/Auth.module.css";
+import styles from "./Auth.module.css";
 
 const Register = () => {
   const { register } = useAuth();

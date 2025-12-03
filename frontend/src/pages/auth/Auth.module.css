@@ -1,0 +1,340 @@
+/* Auth Pages - Login/Register shared styles */
+.authForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.rememberRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.rememberLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.checkbox {
+  width: 1rem;
+  height: 1rem;
+  color: #2563eb;
+  border-radius: 0.25rem;
+  border-color: #d1d5db;
+}
+
+.checkbox:focus {
+  box-shadow: 0 0 0 2px #3b82f6;
+}
+
+:global(.dark) .checkbox {
+  border-color: #4b5563;
+}
+
+.rememberText {
+  color: #374151;
+}
+
+:global(.dark) .rememberText {
+  color: #d1d5db;
+}
+
+.link {
+  color: #2563eb;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.link:hover {
+  color: #1d4ed8;
+}
+
+.termsRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.termsCheckbox {
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0.25rem;
+  color: #2563eb;
+  border-radius: 0.25rem;
+  border-color: #d1d5db;
+}
+
+.termsCheckbox:focus {
+  box-shadow: 0 0 0 2px #3b82f6;
+}
+
+:global(.dark) .termsCheckbox {
+  border-color: #4b5563;
+}
+
+.termsText {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #4b5563;
+}
+
+:global(.dark) .termsText {
+  color: #9ca3af;
+}
+
+.footer {
+  text-align: center;
+  color: #4b5563;
+}
+
+:global(.dark) .footer {
+  color: #9ca3af;
+}
+
+.fullWidthButton {
+  width: 100%;
+}
+
+.successMessage {
+  text-align: center;
+  padding: 2rem;
+  background: #f0fdf4;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #86efac;
+}
+
+.successMessage p {
+  color: #166534;
+  font-weight: 500;
+  margin: 0;
+}
+
+:global(.dark) .successMessage {
+  background: #064e3b;
+  border-color: #047857;
+}
+
+:global(.dark) .successMessage p {
+  color: #86efac;
+}
+
+/* ForgotPassword specific */
+.forgotContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f0f9ff 0%, #dbeafe 100%);
+  padding: 1rem;
+}
+
+.forgotWrapper {
+  width: 100%;
+  max-width: 28rem;
+}
+
+.forgotHeader {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.forgotTitle {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 700;
+  color: #2563eb;
+  margin-bottom: 0.5rem;
+}
+
+.forgotSubtitle {
+  color: #4b5563;
+}
+
+:global(.dark) .forgotSubtitle {
+  color: #9ca3af;
+}
+
+.forgotCard {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  padding: 2rem;
+}
+
+:global(.dark) .forgotCard {
+  background-color: #1f2937;
+}
+
+.forgotCardHeader {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.forgotCardTitle {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+:global(.dark) .forgotCardTitle {
+  color: #f3f4f6;
+}
+
+.forgotCardDescription {
+  color: #4b5563;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+:global(.dark) .forgotCardDescription {
+  color: #9ca3af;
+}
+
+.linkWrapper {
+  margin-top: 1.5rem;
+}
+
+.linkWrapperCenter {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.backLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: #4b5563;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  text-decoration: none;
+  transition: color 0.2s;
+  margin-top: 1.5rem;
+}
+
+.backLink:hover {
+  color: #1f2937;
+}
+
+:global(.dark) .backLink {
+  color: #9ca3af;
+}
+
+:global(.dark) .backLink:hover {
+  color: #f3f4f6;
+}
+
+.backIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.successContainer {
+  text-align: center;
+}
+
+.successIcon {
+  width: 4rem;
+  height: 4rem;
+  background-color: #dcfce7;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.successIconSvg {
+  width: 2rem;
+  height: 2rem;
+  color: #16a34a;
+}
+
+.successTitle {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+:global(.dark) .successTitle {
+  color: #f3f4f6;
+}
+
+.successDescription {
+  color: #4b5563;
+  margin-bottom: 1.5rem;
+}
+
+:global(.dark) .successDescription {
+  color: #9ca3af;
+}
+
+.successHint {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+}
+
+:global(.dark) .successHint {
+  color: #9ca3af;
+}
+
+.successActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.forgotActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+:global(.dark) .forgotActions {
+  border-top-color: #374151;
+}
+
+.forgotActionLink {
+  background: none;
+  border: none;
+  color: #2563eb;
+  font-size: 0.875rem;
+  cursor: pointer;
+  text-align: center;
+  padding: 0.5rem;
+  transition: color 0.2s;
+}
+
+.forgotActionLink:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+.forgotActionLink:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+:global(.dark) .forgotActionLink {
+  color: #60a5fa;
+}
+
+:global(.dark) .forgotActionLink:hover {
+  color: #93c5fd;
+}

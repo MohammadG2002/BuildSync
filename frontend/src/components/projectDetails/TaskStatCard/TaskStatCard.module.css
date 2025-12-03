@@ -1,0 +1,69 @@
+/* Task Stat Card */
+.statCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.statInfo {
+}
+
+.statLabel {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-bottom: 0.25rem;
+}
+
+:global(.dark) .statLabel {
+  color: #9ca3af;
+}
+
+.statValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.statValueGray {
+  color: #111827;
+}
+
+:global(.dark) .statValueGray {
+  color: #f9fafb;
+}
+
+.statValueBlue {
+  color: #2563eb;
+}
+
+.statValueYellow {
+  color: #ca8a04;
+}
+
+.statValueGreen {
+  color: #16a34a;
+}
+
+.statIcon {
+  width: 2rem;
+  height: 2rem;
+}
+
+.statIconGray {
+  color: #9ca3af;
+}
+
+:global(.dark) .statIconGray {
+  color: #6b7280;
+}
+
+.statIconBlue {
+  color: #60a5fa;
+}
+
+.statIconYellow {
+  color: #fbbf24;
+}
+
+.statIconGreen {
+  color: #4ade80;
+}

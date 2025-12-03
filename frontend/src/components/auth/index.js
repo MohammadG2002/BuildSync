@@ -1,7 +1,7 @@
-export { default as AuthLayout } from "./AuthLayout";
-export { default as PasswordInput } from "./PasswordInput";
-export { default as FormDivider } from "./FormDivider";
-export { default as VerificationStep } from "./VerificationStep";
+export { default as AuthLayout } from "./AuthLayout/AuthLayout";
+export { default as PasswordInput } from "./PasswordInput/PasswordInput";
+export { default as FormDivider } from "./FormDivider/FormDivider";
+export { default as VerificationStep } from "./VerificationStep/VerificationStep";
 export {
   validateLogin,
   validateRegister,

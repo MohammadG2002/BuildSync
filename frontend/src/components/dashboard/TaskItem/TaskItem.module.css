@@ -1,0 +1,178 @@
+/* TaskItem */
+.taskItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s, border-color 0.2s;
+  cursor: pointer;
+}
+
+.taskItem:hover {
+  border-color: #bfdbfe;
+}
+
+:global(.dark) .taskItem {
+  background-color: #111827;
+  border-color: #374151;
+}
+
+:global(.dark) .taskItem:hover {
+  background-color: #1f2937;
+  border-color: #4b5563;
+}
+
+.taskContent {
+  flex: 1;
+}
+
+.taskTitle {
+  font-weight: 500;
+  color: #111827;
+}
+
+:global(.dark) .taskTitle {
+  color: #f3f4f6;
+}
+
+.taskTitleCompleted {
+  text-decoration: line-through;
+  color: #6b7280;
+}
+
+:global(.dark) .taskTitleCompleted {
+  color: #9ca3af;
+}
+
+.taskMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.taskProject {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #4b5563;
+}
+
+:global(.dark) .taskProject {
+  color: #9ca3af;
+}
+
+.taskPriority {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+}
+
+.priorityLow {
+  color: #6b7280;
+}
+
+:global(.dark) .priorityLow {
+  color: #9ca3af;
+}
+
+.priorityMedium {
+  color: #2563eb;
+}
+
+.priorityHigh {
+  color: #ea580c;
+}
+
+.priorityUrgent {
+  color: #dc2626;
+}
+
+.taskDate {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: #6b7280;
+}
+
+:global(.dark) .taskDate {
+  color: #9ca3af;
+}
+
+.taskDateIcon {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.taskAssignees {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-wrap: nowrap;
+}
+
+.memberAvatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  border: 2px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+}
+
+.projectProgress {
+  margin-bottom: 0.75rem;
+}
+
+.progressHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.progressLabel {
+  color: #4b5563;
+}
+
+:global(.dark) .progressLabel {
+  color: #9ca3af;
+}
+
+.progressValue {
+  font-weight: 500;
+  color: #111827;
+}
+
+:global(.dark) .progressValue {
+  color: #f3f4f6;
+}
+
+.progressBar {
+  width: 100%;
+  background-color: #e5e7eb;
+  border-radius: 9999px;
+  height: 0.5rem;
+}
+
+:global(.dark) .progressBar {
+  background-color: #374151;
+}
+
+.progressFill {
+  background-color: #2563eb;
+  height: 0.5rem;
+  border-radius: 9999px;
+  transition: width 0.3s;
+}

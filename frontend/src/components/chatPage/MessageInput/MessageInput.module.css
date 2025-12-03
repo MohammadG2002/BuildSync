@@ -1,0 +1,217 @@
+.inputArea {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  background-color: #ffffff;
+  border-radius: 0 0 0.75rem 0.75rem;
+}
+
+:global(.dark) .inputArea {
+  border-color: #374151;
+  background-color: #1f2937;
+}
+
+.inputForm {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-end;
+}
+
+.inputWrapper {
+  flex: 1;
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+  background-color: white;
+  color: #111827;
+  resize: none;
+  min-height: 2.75rem;
+  max-height: 8rem;
+}
+
+:global(.dark) .input {
+  border-color: #4b5563;
+  background-color: #374151;
+  color: #f9fafb;
+}
+
+.input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+:global(.dark) .input:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.attachmentsBar {
+  position: absolute;
+  top: -2.5rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.attachmentPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f3f4f6;
+  color: #111827;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  padding: 0.25rem 0.5rem;
+}
+
+:global(.dark) .attachmentPill {
+  background: #374151;
+  color: #f9fafb;
+  border-color: #4b5563;
+}
+
+.attachmentThumb {
+  width: 32px;
+  height: 24px;
+  object-fit: cover;
+  border-radius: 0.25rem;
+}
+
+.attachmentName {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.875rem;
+}
+
+.attachmentRemove {
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+:global(.dark) .attachmentRemove {
+  color: #9ca3af;
+}
+
+.messageAttachmentIcon {
+  font-size: 1rem;
+}
+
+.emojiTriggerWrapper {
+  position: relative;
+}
+
+.emojiPopover {
+  position: absolute;
+  bottom: 3rem;
+  left: 0;
+  z-index: 30;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25),
+    0 8px 10px -6px rgba(0, 0, 0, 0.2);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 1px solid rgba(17, 24, 39, 0.08);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: saturate(180%) blur(6px);
+  transform-origin: bottom left;
+  animation: emojiScaleIn 120ms ease-out;
+}
+
+:global(.dark) .emojiPopover {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(31, 41, 55, 0.8);
+}
+
+.emojiPopover emoji-picker {
+  --background: transparent;
+  --border-color: transparent;
+  --category-icon-size: 18px;
+  --emoji-size: 20px;
+  --font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+    Helvetica, Arial, Noto Sans, Apple Color Emoji, Segoe UI Emoji;
+}
+
+@keyframes emojiScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.iconButton {
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: #6b7280;
+  transition: all 0.2s;
+}
+
+:global(.dark) .iconButton {
+  color: #9ca3af;
+}
+
+.iconButton:hover {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+:global(.dark) .iconButton:hover {
+  background-color: #4b5563;
+  color: #f9fafb;
+}
+
+.iconButtonIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.sendButton {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  background-color: #3b82f6;
+  color: #ffffff;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sendButton:hover {
+  background-color: #2563eb;
+}
+
+.sendButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.submitButtonIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
