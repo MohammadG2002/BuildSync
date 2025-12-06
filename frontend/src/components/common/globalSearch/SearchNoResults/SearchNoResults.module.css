@@ -1,0 +1,20 @@
+/* SearchNoResults */
+.noResults {
+  padding: 2rem;
+  text-align: center;
+  color: #6b7280;
+}
+
+:global(.dark) .noResults {
+  color: #9ca3af;
+}
+
+.noResultsTitle {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.noResultsSubtitle {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}

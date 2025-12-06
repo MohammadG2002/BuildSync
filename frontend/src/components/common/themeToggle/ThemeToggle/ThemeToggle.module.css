@@ -1,0 +1,21 @@
+/* ThemeToggle Button */
+
+.button {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button:hover {
+  background-color: #f3f4f6;
+}
+
+:global(.dark) .button:hover {
+  background-color: #1f2937;
+}

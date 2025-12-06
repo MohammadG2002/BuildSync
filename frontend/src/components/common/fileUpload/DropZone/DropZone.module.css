@@ -1,0 +1,72 @@
+/* DropZone */
+.dropZone {
+  border: 2px dashed #d1d5db;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.dropZone:hover {
+  border-color: #2563eb;
+  background-color: #eff6ff;
+}
+
+:global(.dark) .dropZone {
+  border-color: #4b5563;
+}
+
+:global(.dark) .dropZone:hover {
+  border-color: #2563eb;
+  background-color: rgba(37, 99, 235, 0.1);
+}
+
+.dropZoneActive {
+  border-color: #2563eb;
+  background-color: #eff6ff;
+}
+
+:global(.dark) .dropZoneActive {
+  background-color: rgba(37, 99, 235, 0.1);
+}
+
+.dropZoneInput {
+  display: none;
+}
+
+.uploadIcon {
+  width: 3rem;
+  height: 3rem;
+  color: #9ca3af;
+  margin: 0 auto 1rem;
+}
+
+:global(.dark) .uploadIcon {
+  color: #6b7280;
+}
+
+.uploadIconActive {
+  color: #2563eb;
+}
+
+.dropZoneTitle {
+  color: #374151;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+:global(.dark) .dropZoneTitle {
+  color: #d1d5db;
+}
+
+.dropZoneSubtitle {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #6b7280;
+  margin-bottom: 1rem;
+}
+
+:global(.dark) .dropZoneSubtitle {
+  color: #9ca3af;
+}

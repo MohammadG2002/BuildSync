@@ -1,0 +1,37 @@
+/* OnboardingTooltip */
+.tooltip {
+  position: fixed;
+  z-index: 102;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  padding: 1.5rem;
+  max-width: 28rem;
+  width: 100%;
+  margin: 0 1rem;
+  animation: scaleIn 0.2s ease-out;
+}
+
+:global(.dark) .tooltip {
+  background-color: #1f2937;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.tooltipContent {
+  padding-right: 1.5rem;
+}
+
+.tooltipContentInner {
+  margin-bottom: 1rem;
+}

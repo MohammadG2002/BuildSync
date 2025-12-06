@@ -1,6 +1,6 @@
 import { CheckCircle } from "lucide-react";
 import benefitsData from "../../../utils/landing/benefitsData";
-import styles from "../../../pages/landing/LandingPage.module.css";
+import styles from "./BenefitsSection.module.css";
 
 const BenefitsSection = () => {
   return (

@@ -1,0 +1,28 @@
+/* Footer */
+.footer {
+  background-color: #111827;
+  color: #9ca3af;
+  padding: 3rem 1rem;
+}
+
+@media (min-width: 640px) {
+  .footer {
+    padding: 3rem 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .footer {
+    padding: 3rem 2rem;
+  }
+}
+
+.footerContainer {
+  max-width: 80rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.footerText {
+  font-size: 0.875rem;
+}

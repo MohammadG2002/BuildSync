@@ -5,4 +5,3 @@ export { default as IconButton } from "./IconButton";
 export { default as ButtonGroup } from "./ButtonGroup";
 export { default as LoadingSpinner } from "./LoadingSpinner";
 export * from "../../../utils/common/button/buttonStyles";
-export * from "./buttonStyles";

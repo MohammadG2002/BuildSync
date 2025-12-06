@@ -1,0 +1,23 @@
+/* Card Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+:global(.dark) .title {
+  color: #f9fafb;
+}
+
+.action {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

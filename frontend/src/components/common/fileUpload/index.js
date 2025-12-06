@@ -2,11 +2,11 @@ export { default as fileUploadConfig } from "../../../utils/common/fileUpload/fi
 export { default as getFileIcon } from "../../../utils/common/fileUpload/getFileIcon";
 export { default as validateFiles } from "../../../utils/common/fileUpload/validateFiles";
 export { default as addPreviewUrls } from "../../../utils/common/fileUpload/addPreviewUrls";
-export { default as ErrorMessages } from "./ErrorMessages";
-export { default as DropZone } from "./DropZone";
-export { default as FileListItem } from "./FileListItem";
-export { default as FileList } from "./FileList";
-export { default as FilePreviewModal } from "./FilePreviewModal";
+export { default as ErrorMessages } from "./ErrorMessages/ErrorMessages";
+export { default as DropZone } from "./DropZone/DropZone";
+export { default as FileListItem } from "./FileListItem/FileListItem";
+export { default as FileList } from "./FileList/FileList";
+export { default as FilePreviewModal } from "./FilePreviewModal/FilePreviewModal";
 export { default as handleDrag } from "../../../utils/common/fileUpload/handleDrag";
 export { default as handleDrop } from "../../../utils/common/fileUpload/handleDrop";
 export { default as handleChange } from "../../../utils/common/fileUpload/handleChange";
@@ -15,3 +15,4 @@ export { default as removeFile } from "../../../utils/common/fileUpload/removeFi
 export { default as cleanupPreviews } from "../../../utils/common/fileUpload/cleanupPreviews";
 export { default as getDropZoneClassName } from "../../../utils/common/fileUpload/getDropZoneClassName";
 export { default as getUploadIconClassName } from "../../../utils/common/fileUpload/getUploadIconClassName";
+export { default } from "./FileUpload/FileUpload";

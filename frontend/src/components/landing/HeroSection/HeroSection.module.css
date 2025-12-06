@@ -1,0 +1,79 @@
+/* Hero Section */
+.hero {
+  padding: 5rem 1rem;
+  background: linear-gradient(to bottom right, #eff6ff, #dbeafe);
+}
+
+@media (min-width: 640px) {
+  .hero {
+    padding: 5rem 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero {
+    padding: 5rem 2rem;
+  }
+}
+
+.heroContainer {
+  max-width: 80rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.heroTitle {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .heroTitle {
+    font-size: 3.75rem;
+  }
+}
+
+:global(.dark) .heroTitle {
+  color: #f9fafb;
+}
+
+.heroHighlight {
+  color: #3b82f6;
+}
+
+.heroSubtitle {
+  font-size: 1.25rem;
+  color: #4b5563;
+  margin-bottom: 2rem;
+  max-width: 48rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+:global(.dark) .heroSubtitle {
+  color: #9ca3af;
+}
+
+.heroActions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+}
+
+@media (min-width: 640px) {
+  .heroActions {
+    flex-direction: row;
+  }
+}
+
+.heroStartButton {
+  gap: 0.5rem;
+}
+
+.heroStartIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}

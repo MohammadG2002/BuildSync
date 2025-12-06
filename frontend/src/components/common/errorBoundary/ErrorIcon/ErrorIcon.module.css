@@ -1,0 +1,26 @@
+/* ErrorIcon */
+
+.iconContainer {
+  width: 4rem;
+  height: 4rem;
+  background-color: #fee2e2;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+:global(.dark) .iconContainer {
+  background-color: rgba(220, 38, 38, 0.3);
+}
+
+.icon {
+  width: 2rem;
+  height: 2rem;
+  color: #dc2626;
+}
+
+:global(.dark) .icon {
+  color: #f87171;
+}

@@ -1,0 +1,50 @@
+/* Navigation */
+.nav {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+:global(.dark) .nav {
+  border-color: #374151;
+}
+
+.navContainer {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+  .navContainer {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .navContainer {
+    padding: 0 2rem;
+  }
+}
+
+.navContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 4rem;
+}
+
+.navBrand {
+  display: flex;
+  align-items: center;
+}
+
+.navTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #3b82f6;
+}
+
+.navActions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}

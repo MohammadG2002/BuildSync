@@ -1,0 +1,44 @@
+/* ActivityFilters */
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.filterButton {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background-color 0.2s, color 0.2s;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.filterButtonActive {
+  background-color: #2563eb;
+  color: white;
+}
+
+.filterButtonInactive {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.filterButtonInactive:hover {
+  background-color: #e5e7eb;
+}
+
+:global(.dark) .filterButtonInactive {
+  background-color: #1f2937;
+  color: #d1d5db;
+}
+
+:global(.dark) .filterButtonInactive:hover {
+  background-color: #374151;
+}

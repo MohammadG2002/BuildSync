@@ -1,4 +1,4 @@
-import styles from "../../../pages/landing/LandingPage.module.css";
+import styles from "./FeatureCard.module.css";
 
 const FeatureCard = ({ icon: Icon, title, description }) => {
   return (

@@ -1,0 +1,37 @@
+/* ProTips */
+.proTips {
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+:global(.dark) .proTips {
+  background-color: rgba(30, 64, 175, 0.2);
+  border-color: #1e3a8a;
+}
+
+.proTipsTitle {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  color: #1e3a8a;
+  margin-bottom: 0.5rem;
+}
+
+:global(.dark) .proTipsTitle {
+  color: #93c5fd;
+}
+
+.proTipsList {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #1e40af;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+:global(.dark) .proTipsList {
+  color: #60a5fa;
+}

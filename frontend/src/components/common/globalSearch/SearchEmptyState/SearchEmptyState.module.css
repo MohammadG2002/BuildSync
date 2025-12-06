@@ -1,0 +1,27 @@
+/* SearchEmptyState */
+.emptyState {
+  padding: 2rem;
+  text-align: center;
+  color: #6b7280;
+}
+
+:global(.dark) .emptyState {
+  color: #9ca3af;
+}
+
+.emptyIcon {
+  width: 3rem;
+  height: 3rem;
+  margin: 0 auto 0.75rem;
+  opacity: 0.5;
+}
+
+.emptyTitle {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.emptySubtitle {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}

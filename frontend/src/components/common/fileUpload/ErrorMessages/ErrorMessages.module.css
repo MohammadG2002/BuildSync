@@ -1,0 +1,59 @@
+/* ErrorMessages */
+.errors {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+:global(.dark) .errors {
+  background-color: rgba(220, 38, 38, 0.2);
+  border-color: #7f1d1d;
+}
+
+.errorsContent {
+  display: flex;
+  align-items: start;
+  gap: 0.75rem;
+}
+
+.errorsIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #dc2626;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+:global(.dark) .errorsIcon {
+  color: #f87171;
+}
+
+.errorsBody {
+  flex: 1;
+}
+
+.errorsTitle {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: #991b1b;
+  margin-bottom: 0.25rem;
+}
+
+:global(.dark) .errorsTitle {
+  color: #fecaca;
+}
+
+.errorsList {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #b91c1c;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+:global(.dark) .errorsList {
+  color: #fca5a5;
+}

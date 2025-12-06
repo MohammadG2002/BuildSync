@@ -1,0 +1,54 @@
+/* StepProgress */
+.progressContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.progressText {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: #2563eb;
+}
+
+:global(.dark) .progressText {
+  color: #60a5fa;
+}
+
+.progressDots {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.progressDot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  transition: background-color 0.2s;
+}
+
+.progressDotCurrent {
+  background-color: #2563eb;
+}
+
+:global(.dark) .progressDotCurrent {
+  background-color: #60a5fa;
+}
+
+.progressDotCompleted {
+  background-color: #93c5fd;
+}
+
+:global(.dark) .progressDotCompleted {
+  background-color: #2563eb;
+}
+
+.progressDotUpcoming {
+  background-color: #d1d5db;
+}
+
+:global(.dark) .progressDotUpcoming {
+  background-color: #4b5563;
+}

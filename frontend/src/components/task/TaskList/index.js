@@ -1,3 +1,3 @@
-export { default } from "./TaskList";
+export { default } from "./TaskList/TaskList";
 export { groupTasks, getGroupTitle } from "../../../utils/task/groupTasks";
-export { default as TaskGroup } from "./TaskGroup";
+export { default as TaskGroup } from "./TaskGroup/TaskGroup";

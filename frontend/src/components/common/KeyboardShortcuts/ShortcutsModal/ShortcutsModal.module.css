@@ -1,0 +1,16 @@
+/* ShortcutsModal - uses Modal component, only content styling needed */
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.modalDescription {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #4b5563;
+}
+
+:global(.dark) .modalDescription {
+  color: #9ca3af;
+}

@@ -1,0 +1,52 @@
+/* ErrorDetails */
+
+.details {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.detailsToggle {
+  text-align: left;
+  background-color: #f9fafb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+:global(.dark) .detailsToggle {
+  background-color: #111827;
+}
+
+.detailsSummary {
+  cursor: pointer;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+:global(.dark) .detailsSummary {
+  color: #d1d5db;
+}
+
+.detailsError {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: #dc2626;
+  font-family: monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+:global(.dark) .detailsError {
+  color: #f87171;
+}
+
+.detailsStack {
+  margin-top: 0.5rem;
+  color: #4b5563;
+}
+
+:global(.dark) .detailsStack {
+  color: #9ca3af;
+}

@@ -1,0 +1,20 @@
+/* StepContent */
+.stepTitle {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+:global(.dark) .stepTitle {
+  color: #f3f4f6;
+}
+
+.stepDescription {
+  color: #4b5563;
+}
+
+:global(.dark) .stepDescription {
+  color: #9ca3af;
+}

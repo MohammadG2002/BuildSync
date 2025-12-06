@@ -1,0 +1,58 @@
+/* Workspace Selector Button */
+.workspaceButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+@media (min-width: 640px) {
+  .workspaceButton {
+    padding: 0.5rem 1rem;
+  }
+}
+
+.workspaceButton:hover {
+  background-color: #f3f4f6;
+}
+
+:global(.dark) .workspaceButton:hover {
+  background-color: #1f2937;
+}
+
+.workspaceName {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+}
+
+@media (min-width: 640px) {
+  .workspaceName {
+    font-size: 1rem;
+    max-width: none;
+  }
+}
+
+:global(.dark) .workspaceName {
+  color: #f3f4f6;
+}
+
+.chevronIcon {
+  width: 1rem;
+  height: 1rem;
+  color: #4b5563;
+  flex-shrink: 0;
+}
+
+:global(.dark) .chevronIcon {
+  color: #9ca3af;
+}

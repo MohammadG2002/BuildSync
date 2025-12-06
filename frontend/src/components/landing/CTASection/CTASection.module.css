@@ -1,0 +1,45 @@
+/* CTA Section */
+.cta {
+  padding: 5rem 1rem;
+  background-color: #3b82f6;
+}
+
+@media (min-width: 640px) {
+  .cta {
+    padding: 5rem 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .cta {
+    padding: 5rem 2rem;
+  }
+}
+
+.ctaContainer {
+  max-width: 56rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.ctaTitle {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+}
+
+.ctaSubtitle {
+  font-size: 1.25rem;
+  color: #dbeafe;
+  margin-bottom: 2rem;
+}
+
+.ctaButton {
+  gap: 0.5rem;
+}
+
+.ctaButtonIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}

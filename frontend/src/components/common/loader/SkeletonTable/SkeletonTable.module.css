@@ -1,0 +1,52 @@
+/* Skeleton Table */
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.skeletonCard {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+  padding: 1.5rem;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+:global(.dark) .skeletonCard {
+  background-color: #1f2937;
+  border-color: #374151;
+}
+
+.skeletonTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.skeletonTableRow {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+:global(.dark) .skeletonTableRow {
+  border-bottom-color: #374151;
+}
+
+.skeletonTableCell {
+  padding: 1rem;
+}
+
+.skeletonLine {
+  height: 1rem;
+  background-color: #e5e7eb;
+  border-radius: 0.25rem;
+}
+
+:global(.dark) .skeletonLine {
+  background-color: #374151;
+}

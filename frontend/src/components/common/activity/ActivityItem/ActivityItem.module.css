@@ -1,0 +1,98 @@
+/* ActivityItem */
+.item {
+  display: flex;
+  gap: 1rem;
+  padding: 0.75rem;
+  margin: -0.75rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.item:hover {
+  background-color: #f9fafb;
+}
+
+:global(.dark) .item:hover {
+  background-color: rgba(31, 41, 55, 0.5);
+}
+
+.itemContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.itemTop {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.itemTopLeft {
+  flex: 1;
+}
+
+.itemText {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #111827;
+}
+
+:global(.dark) .itemText {
+  color: #f3f4f6;
+}
+
+.itemUserName {
+  font-weight: 500;
+}
+
+.itemDescription {
+  color: #4b5563;
+}
+
+:global(.dark) .itemDescription {
+  color: #9ca3af;
+}
+
+.itemMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.itemTime {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: #6b7280;
+}
+
+:global(.dark) .itemTime {
+  color: #6b7280;
+}
+
+.itemSeparator {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: #9ca3af;
+}
+
+:global(.dark) .itemSeparator {
+  color: #4b5563;
+}
+
+.itemLabel {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: #6b7280;
+}
+
+:global(.dark) .itemLabel {
+  color: #6b7280;
+}
+
+.itemAvatar {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 9999px;
+}

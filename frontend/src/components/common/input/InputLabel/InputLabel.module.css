@@ -1,0 +1,13 @@
+/* Input Label */
+
+.label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.25rem;
+}
+
+:global(.dark) .label {
+  color: #d1d5db;
+}

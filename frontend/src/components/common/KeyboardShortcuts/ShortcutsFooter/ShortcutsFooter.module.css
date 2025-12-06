@@ -1,0 +1,32 @@
+/* ShortcutsFooter */
+.footer {
+  text-align: center;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+:global(.dark) .footer {
+  border-color: #374151;
+}
+
+.footerButton {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #4b5563;
+  transition: color 0.2s;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.footerButton:hover {
+  color: #111827;
+}
+
+:global(.dark) .footerButton {
+  color: #9ca3af;
+}
+
+:global(.dark) .footerButton:hover {
+  color: #e5e7eb;
+}

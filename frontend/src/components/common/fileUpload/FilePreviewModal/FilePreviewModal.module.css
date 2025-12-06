@@ -1,0 +1,31 @@
+/* FilePreviewModal */
+.previewContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f3f4f6;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+:global(.dark) .previewContainer {
+  background-color: #1f2937;
+}
+
+.previewImage {
+  max-width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+  border-radius: 0.25rem;
+}
+
+.previewInfo {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #4b5563;
+}
+
+:global(.dark) .previewInfo {
+  color: #9ca3af;
+}

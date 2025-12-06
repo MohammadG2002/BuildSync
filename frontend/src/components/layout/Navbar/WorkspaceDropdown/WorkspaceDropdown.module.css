@@ -1,0 +1,80 @@
+/* Workspace Dropdown */
+.workspaceDropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 0.5rem;
+  width: 16rem;
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem 0;
+  z-index: 50;
+}
+
+:global(.dark) .workspaceDropdown {
+  background-color: #1f2937;
+  border-color: #374151;
+}
+
+.workspaceDropdownHeader {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+}
+
+:global(.dark) .workspaceDropdownHeader {
+  color: #9ca3af;
+}
+
+.workspaceList {
+  max-height: 16rem;
+  overflow-y: auto;
+}
+
+.workspaceEmptyState {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+:global(.dark) .workspaceEmptyState {
+  color: #9ca3af;
+}
+
+.workspaceDropdownDivider {
+  border-top: 1px solid #e5e7eb;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+}
+
+:global(.dark) .workspaceDropdownDivider {
+  border-color: #374151;
+}
+
+.workspaceCreateButton {
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  color: #2563eb;
+  transition: background-color 0.2s;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+:global(.dark) .workspaceCreateButton {
+  color: #60a5fa;
+}
+
+.workspaceCreateButton:hover {
+  background-color: #f9fafb;
+}
+
+:global(.dark) .workspaceCreateButton:hover {
+  background-color: #374151;
+}
