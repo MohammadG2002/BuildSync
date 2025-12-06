@@ -133,7 +133,9 @@ const TaskDetailsModal = ({
     const fetchActivity = async () => {
       try {
         setLoadingActivity(true);
-        const { getTaskActivity } = await import("../../services/taskService");
+        const { getTaskActivity } = await import(
+          "../../../services/taskService"
+        );
         const wsId = getWorkspaceId();
         const prId = getProjectId();
         const items = await getTaskActivity(wsId, prId, task._id);
