@@ -1,5 +1,5 @@
 import { Search, UserPlus } from "lucide-react";
-import Input from "../../common/input/Input";
+import Input from "../../common/input/Input/Input";
 import ContactCard from "../ContactCard/ContactCard";
 import styles from "./ContactsSidebar.module.css";
 

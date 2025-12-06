@@ -1,11 +1,9 @@
 import { useState, useRef, useEffect } from "react";
-import {
-  TaskCheckbox,
-  TaskMenu,
-  TaskTitle,
-  TaskDescription,
-  TaskProgress,
-} from ".";
+import TaskCheckbox from "./TaskCheckbox/TaskCheckbox";
+import TaskMenu from "./TaskMenu/TaskMenu";
+import TaskTitle from "./TaskTitle/TaskTitle";
+import TaskDescription from "./TaskDescription/TaskDescription";
+import TaskProgress from "./TaskProgress/TaskProgress";
 import styles from "./TaskCard.module.css";
 import { formatDate, getRelativeTime } from "../../../utils/helpers";
 import useWorkspaceTags from "../../../hooks/useWorkspaceTags";

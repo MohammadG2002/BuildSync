@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { WorkspaceMenu, WorkspaceIcon, WorkspaceStats } from "../index";
+import WorkspaceMenu from "../WorkspaceMenu/WorkspaceMenu";
+import WorkspaceIcon from "../WorkspaceIcon/WorkspaceIcon";
+import WorkspaceStats from "../WorkspaceStats/WorkspaceStats";
 import styles from "./WorkspaceCard.module.css";
 
 const WorkspaceCard = ({ workspace, onEdit, onDelete }) => {

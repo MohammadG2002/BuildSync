@@ -1,4 +1,4 @@
-import Button from "../../common/button/Button";
+import Button from "../../common/button/Button/Button";
 import { Plus, Briefcase, Users } from "lucide-react";
 import styles from "./QuickActions.module.css";
 

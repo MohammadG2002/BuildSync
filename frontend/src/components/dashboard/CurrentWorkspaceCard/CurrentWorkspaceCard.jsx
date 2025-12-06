@@ -1,4 +1,4 @@
-import Button from "../../common/button/Button";
+import Button from "../../common/button/Button/Button";
 import { Briefcase, ArrowRight } from "lucide-react";
 import styles from "./CurrentWorkspaceCard.module.css";
 

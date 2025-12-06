@@ -1,4 +1,4 @@
-import Card from "../../common/card/Card";
+import Card from "../../common/card/Card/Card";
 import styles from "./WorkspaceInfoCard.module.css";
 
 const WorkspaceInfoCard = ({ workspaceId, createdDate, memberCount }) => {

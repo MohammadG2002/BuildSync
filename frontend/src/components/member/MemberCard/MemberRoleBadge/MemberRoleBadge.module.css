@@ -1,0 +1,58 @@
+/* MemberRoleBadge */
+.roleBadge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.roleBadgeIcon {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+/* Role Badge Colors */
+.roleOwner {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+:global(.dark) .roleOwner {
+  background-color: #78350f;
+  color: #fef3c7;
+}
+
+.roleAdmin {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+:global(.dark) .roleAdmin {
+  background-color: #1e3a8a;
+  color: #dbeafe;
+}
+
+.roleMember {
+  background-color: #f3e8ff;
+  color: #6b21a8;
+}
+
+:global(.dark) .roleMember {
+  background-color: #581c87;
+  color: #f3e8ff;
+}
+
+.roleViewer {
+  background-color: #e0e7ff;
+  color: #3730a3;
+}
+
+:global(.dark) .roleViewer {
+  background-color: #312e81;
+  color: #e0e7ff;
+}

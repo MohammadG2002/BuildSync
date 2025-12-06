@@ -8,21 +8,19 @@ import {
   AlertCircle,
   Users,
 } from "lucide-react";
-import Button from "../../../components/common/button/Button";
-import Card from "../../../components/common/card/Card";
-import Modal from "../../../components/common/modal/Modal";
-import TaskList from "../../../components/task/TaskList";
-import TaskForm from "../../../components/task/TaskForm";
-import TaskDetailsModal from "../../../components/task/TaskDetailsModal";
-import {
-  TaskStatCard,
-  FilterButtons,
-  GroupBySelector,
-  EmptyTasksState,
-  DeleteTaskModalContent,
-  ArchiveTaskModalContent,
-  AddProjectMemberModal,
-} from "../../../components/projectDetails";
+import Button from "../../../components/common/button/Button/Button";
+import Card from "../../../components/common/card/Card/Card";
+import Modal from "../../../components/common/modal/Modal/Modal";
+import TaskList from "../../../components/task/TaskList/TaskList/TaskList";
+import TaskForm from "../../../components/task/TaskForm/TaskForm";
+import TaskDetailsModal from "../../../components/task/TaskDetailsModal/TaskDetailsModal";
+import TaskStatCard from "../../../components/projectDetails/TaskStatCard/TaskStatCard";
+import FilterButtons from "../../../components/projectDetails/FilterButtons/FilterButtons";
+import GroupBySelector from "../../../components/projectDetails/GroupBySelector/GroupBySelector";
+import EmptyTasksState from "../../../components/projectDetails/EmptyTasksState/EmptyTasksState";
+import DeleteTaskModalContent from "../../../components/projectDetails/DeleteTaskModalContent/DeleteTaskModalContent";
+import ArchiveTaskModalContent from "../../../components/projectDetails/ArchiveTaskModalContent/ArchiveTaskModalContent";
+import AddProjectMemberModal from "../../../components/projectDetails/AddProjectMemberModal/AddProjectMemberModal";
 import { AuthContext } from "../../../context/AuthContext";
 import {
   calculateTaskStats,
@@ -44,8 +42,8 @@ import {
   handleDeleteComment,
   handleReactToComment,
 } from "../../../utils/project";
-import styles from "../../../components/projectDetails/ProjectDetails.module.css";
-import TagManagerOverlay from "../../../components/common/tag/TagManagerOverlay";
+import styles from "./ProjectDetails.module.css";
+import TagManagerOverlay from "../../../components/common/tag/TagManagerOverlay/TagManagerOverlay";
 
 const ProjectDetails = () => {
   const { workspaceId, projectId } = useParams();

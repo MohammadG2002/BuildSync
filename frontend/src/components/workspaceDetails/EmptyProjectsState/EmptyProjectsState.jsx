@@ -1,7 +1,7 @@
 import { FolderKanban, Plus } from "lucide-react";
-import Card from "../../common/card/Card";
-import Button from "../../common/button/Button";
-import styles from "../../../pages/workspaces/WorkspaceDetails.module.css";
+import Card from "../../common/card/Card/Card";
+import Button from "../../common/button/Button/Button";
+import styles from "./EmptyProjectsState.module.css";
 
 const EmptyProjectsState = ({ onCreateProject, canCreate = true }) => {
   return (

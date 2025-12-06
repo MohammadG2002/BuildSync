@@ -1,6 +1,6 @@
 import { Calendar } from "lucide-react";
 import { formatDate } from "../../../utils/helpers";
-import UserAvatar from "../../common/UserAvatar";
+import UserAvatar from "../../common/UserAvatar/UserAvatar/UserAvatar";
 import styles from "./TaskItem.module.css";
 
 const TaskItem = ({ task, onClick }) => {

@@ -1,8 +1,8 @@
 import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Sidebar from "../Sidebar/Sidebar";
-import Navbar from "../Navbar/Navbar";
-import Onboarding from "../../common/Onboarding";
+import Navbar from "../Navbar/Navbar/Navbar";
+import Onboarding from "../../common/Onboarding/Onboarding/Onboarding";
 import { useWorkspace } from "../../../hooks/useWorkspace";
 import styles from "./DashboardLayout.module.css";
 

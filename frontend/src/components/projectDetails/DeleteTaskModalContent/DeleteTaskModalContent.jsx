@@ -1,4 +1,4 @@
-import Button from "../../common/button/Button";
+import Button from "../../common/button/Button/Button";
 import styles from "./DeleteTaskModalContent.module.css";
 
 const DeleteTaskModalContent = ({

@@ -1,5 +1,5 @@
-import Card from "../../common/card/Card";
-import styles from "../../../pages/workspaces/WorkspaceDetails.module.css";
+import Card from "../../common/card/Card/Card";
+import styles from "./WorkspaceStatCard.module.css";
 
 const WorkspaceStatCard = ({ label, value, icon: Icon, color }) => {
   const getColorClass = (color) => {

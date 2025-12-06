@@ -1,0 +1,24 @@
+/* ModalFooter */
+.footer {
+  border-top: 1px solid #e5e7eb;
+  padding: 1rem;
+  background-color: #f9fafb;
+}
+
+:global(.dark) .footer {
+  border-color: #374151;
+  background-color: #111827;
+}
+
+.footerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: #6b7280;
+}
+
+:global(.dark) .footerContent {
+  color: #9ca3af;
+}

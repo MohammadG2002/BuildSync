@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Send, Paperclip, Smile, X } from "lucide-react";
-import Button from "../../common/button/Button";
+import Button from "../../common/button/Button/Button";
 import styles from "./MessageInput.module.css";
 import "emoji-picker-element";
 

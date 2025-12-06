@@ -1,0 +1,44 @@
+/* MemberCard Container */
+.card {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+  padding: 1rem;
+  transition: box-shadow 0.2s;
+  position: relative;
+}
+
+.card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+:global(.dark) .card {
+  background-color: #1f2937;
+  border-color: #374151;
+}
+
+/* Card Top Section */
+.cardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cardLeft {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+.cardRight {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.menuContainer {
+  position: relative;
+}

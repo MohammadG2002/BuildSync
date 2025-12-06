@@ -1,6 +1,6 @@
 import { Archive, Calendar, RotateCcw } from "lucide-react";
-import Button from "../../common/button/Button";
-import Card from "../../common/card/Card";
+import Button from "../../common/button/Button/Button";
+import Card from "../../common/card/Card/Card";
 import { getInitials, generateColor, formatDate } from "../../../utils/helpers";
 import getStatusClass from "../../../utils/archived/getStatusClass";
 import getPriorityClass from "../../../utils/archived/getPriorityClass";

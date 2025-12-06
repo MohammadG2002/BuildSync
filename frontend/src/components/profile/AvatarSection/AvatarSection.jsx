@@ -1,5 +1,5 @@
 import { Camera } from "lucide-react";
-import Button from "../../common/button/Button";
+import Button from "../../common/button/Button/Button";
 import { getInitials, generateColor } from "../../../utils/helpers";
 import styles from "./AvatarSection.module.css";
 

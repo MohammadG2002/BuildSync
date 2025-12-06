@@ -1,5 +1,5 @@
-import Button from "../../common/button/Button";
-import Card from "../../common/card/Card";
+import Button from "../../common/button/Button/Button";
+import Card from "../../common/card/Card/Card";
 import styles from "./WorkspaceNotFoundState.module.css";
 
 const WorkspaceNotFoundState = ({ onBackClick }) => {

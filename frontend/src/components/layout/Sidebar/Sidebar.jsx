@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../../hooks/useAuth";
 import { useWorkspace } from "../../../hooks/useWorkspace";
-import {
-  getMenuItems,
-  SidebarBackdrop,
-  SidebarHeader,
-  SidebarNav,
-  SidebarLogout,
-} from ".";
+import getMenuItems from "../../../utils/layout/menuItems";
+import SidebarBackdrop from "./SidebarBackdrop/SidebarBackdrop";
+import SidebarHeader from "./SidebarHeader/SidebarHeader";
+import SidebarNav from "./SidebarNav/SidebarNav";
+import SidebarLogout from "./SidebarLogout/SidebarLogout";
 import styles from "./Sidebar.module.css";
 
 const Sidebar = ({ isOpen, onClose }) => {

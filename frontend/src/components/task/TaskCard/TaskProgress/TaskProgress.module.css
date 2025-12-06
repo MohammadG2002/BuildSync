@@ -1,0 +1,47 @@
+/* Progress */
+.progressContainer {
+  margin-bottom: 0.75rem;
+}
+
+.progressHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.progressLabel {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+:global(.dark) .progressLabel {
+  color: #9ca3af;
+}
+
+.progressCounts {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+:global(.dark) .progressCounts {
+  color: #9ca3af;
+}
+
+.progressTrack {
+  width: 100%;
+  height: 6px;
+  background-color: #e5e7eb;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+:global(.dark) .progressTrack {
+  background-color: #374151;
+}
+
+.progressBar {
+  height: 100%;
+  background-color: #3b82f6;
+  transition: width 0.2s ease-in-out;
+}

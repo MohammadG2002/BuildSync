@@ -1,0 +1,88 @@
+/* Header */
+.header {
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+:global(.dark) .header {
+  border-bottom-color: #374151;
+}
+
+.headerTitleContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.headerLogo {
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+}
+
+.headerLogoCollapsed {
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+}
+
+.headerTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+:global(.dark) .headerTitle {
+  color: #60a5fa;
+}
+
+.headerButton {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.headerButton:hover {
+  background-color: #f3f4f6;
+}
+
+:global(.dark) .headerButton:hover {
+  background-color: #1f2937;
+}
+
+.headerButtonMobile {
+  display: block;
+}
+
+@media (min-width: 1024px) {
+  .headerButtonMobile {
+    display: none;
+  }
+}
+
+.headerButtonDesktop {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .headerButtonDesktop {
+    display: block;
+  }
+}
+
+.headerIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #4b5563;
+}
+
+:global(.dark) .headerIcon {
+  color: #9ca3af;
+}

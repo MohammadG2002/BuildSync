@@ -1,0 +1,17 @@
+/* CommentsSection */
+.attachmentsList {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.metadataTextMuted {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #6b7280;
+}
+
+:global(.dark) .metadataTextMuted {
+  color: #9ca3af;
+}

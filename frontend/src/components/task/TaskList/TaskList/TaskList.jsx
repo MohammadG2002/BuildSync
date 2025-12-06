@@ -1,4 +1,4 @@
-import { groupTasks, getGroupTitle } from "../index";
+import { groupTasks, getGroupTitle } from "../../../../utils/task/groupTasks";
 import TaskGroup from "../TaskGroup/TaskGroup";
 import styles from "./TaskList.module.css";
 

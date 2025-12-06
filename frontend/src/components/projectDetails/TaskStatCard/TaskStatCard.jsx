@@ -1,4 +1,4 @@
-import Card from "../../common/card/Card";
+import Card from "../../common/card/Card/Card";
 import styles from "./TaskStatCard.module.css";
 
 const TaskStatCard = ({ label, value, icon: Icon, color = "gray" }) => {

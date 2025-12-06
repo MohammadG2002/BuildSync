@@ -1,0 +1,23 @@
+/* Stats */
+.stats {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+:global(.dark) .stats {
+  color: #9ca3af;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.statIcon {
+  width: 1rem;
+  height: 1rem;
+}

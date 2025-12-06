@@ -1,6 +1,6 @@
 import { User, Mail, Save } from "lucide-react";
-import Input from "../../common/input/Input";
-import Button from "../../common/button/Button";
+import Input from "../../common/input/Input/Input";
+import Button from "../../common/button/Button/Button";
 import styles from "./ProfileForm.module.css";
 
 const ProfileForm = ({

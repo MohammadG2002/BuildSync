@@ -1,5 +1,5 @@
 import { Archive } from "lucide-react";
-import Card from "../../common/card/Card";
+import Card from "../../common/card/Card/Card";
 import styles from "./ArchivedEmptyState.module.css";
 
 const ArchivedEmptyState = ({ searchQuery, filterProject }) => {

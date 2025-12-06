@@ -2,21 +2,19 @@ import { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useWorkspace } from "../../hooks/useWorkspace";
-import Button from "../../components/common/button/Button";
-import Modal from "../../components/common/modal/Modal";
-import {
-  WorkspaceNotFoundState,
-  GeneralSettingsForm,
-  WorkspaceInfoCard,
-  NotificationPreferences,
-  PrivacySettings,
-  DangerZone,
-  DeleteWorkspaceModal,
-} from "../../components/settings";
+import Button from "../../components/common/button/Button/Button";
+import Modal from "../../components/common/modal/Modal/Modal";
+import WorkspaceNotFoundState from "../../components/settings/WorkspaceNotFoundState/WorkspaceNotFoundState";
+import GeneralSettingsForm from "../../components/settings/GeneralSettingsForm/GeneralSettingsForm";
+import WorkspaceInfoCard from "../../components/settings/WorkspaceInfoCard/WorkspaceInfoCard";
+import NotificationPreferences from "../../components/settings/NotificationPreferences/NotificationPreferences";
+import PrivacySettings from "../../components/settings/PrivacySettings/PrivacySettings";
+import DangerZone from "../../components/settings/DangerZone/DangerZone";
+import DeleteWorkspaceModal from "../../components/settings/DeleteWorkspaceModal/DeleteWorkspaceModal";
 import handleChange from "../../utils/settings/handleChange";
 import handleSaveChanges from "../../utils/settings/handleSaveChanges";
 import handleDeleteWorkspace from "../../utils/settings/handleDeleteWorkspace";
-import styles from "../../components/settings/Settings.module.css";
+import styles from "./Settings.module.css";
 import * as workspaceService from "../../services/workspaceService";
 import { AuthContext } from "../../context/AuthContext";
 import toast from "react-hot-toast";

@@ -1,0 +1,14 @@
+/* MemberJoinDate */
+.joinDate {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #f3f4f6;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: #6b7280;
+}
+
+:global(.dark) .joinDate {
+  border-color: #374151;
+  color: #9ca3af;
+}

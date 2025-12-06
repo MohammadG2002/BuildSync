@@ -1,7 +1,7 @@
 import { Save } from "lucide-react";
-import Button from "../../common/button/Button";
-import Card from "../../common/card/Card";
-import Input from "../../common/input/Input";
+import Button from "../../common/button/Button/Button";
+import Card from "../../common/card/Card/Card";
+import Input from "../../common/input/Input/Input";
 import styles from "./GeneralSettingsForm.module.css";
 
 const GeneralSettingsForm = ({

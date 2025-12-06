@@ -1,0 +1,48 @@
+/* MemberList Container */
+.listContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* MemberGrid */
+.memberGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .memberGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .memberGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* MemberRoleGroup */
+.roleGroup {
+  margin-bottom: 1.5rem;
+}
+
+.roleGroup:last-child {
+  margin-bottom: 0;
+}
+
+.roleGroupHeader {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+:global(.dark) .roleGroupHeader {
+  color: #9ca3af;
+}

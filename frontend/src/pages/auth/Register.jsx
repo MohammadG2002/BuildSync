@@ -2,15 +2,13 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Mail, Lock, User } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
-import Button from "../../components/common/button/Button";
-import Input from "../../components/common/input/Input";
+import Button from "../../components/common/button/Button/Button";
+import Input from "../../components/common/input/Input/Input";
 import { getPasswordStrength } from "../../utils/validators";
-import {
-  AuthLayout,
-  PasswordInput,
-  FormDivider,
-  VerificationStep,
-} from "../../components/auth";
+import AuthLayout from "../../components/auth/AuthLayout/AuthLayout";
+import PasswordInput from "../../components/auth/PasswordInput/PasswordInput";
+import FormDivider from "../../components/auth/FormDivider/FormDivider";
+import VerificationStep from "../../components/auth/VerificationStep/VerificationStep";
 import handleChange from "../../utils/auth/handleChangeRegister";
 import handleSubmit from "../../utils/auth/handleSubmitRegister";
 import {

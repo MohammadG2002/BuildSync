@@ -1,15 +1,13 @@
 import { useState } from "react";
-import Input from "../../common/input/Input";
+import Input from "../../common/input/Input/Input";
 import TagDropdown from "../TagDropdown/TagDropdown";
 import DependenciesPicker from "../DependenciesPicker/DependenciesPicker";
-import {
-  validateTaskForm,
-  DescriptionField,
-  StatusAndPriorityFields,
-  AssigneeAndDateFields,
-  AttachmentsField,
-  TaskFormActions,
-} from ".";
+import { validateTaskForm } from "../../../utils/task/validateTaskForm";
+import DescriptionField from "./DescriptionField/DescriptionField";
+import StatusAndPriorityFields from "./StatusAndPriorityFields/StatusAndPriorityFields";
+import AssigneeAndDateFields from "./AssigneeAndDateFields/AssigneeAndDateFields";
+import AttachmentsField from "./AttachmentsField/AttachmentsField";
+import TaskFormActions from "./TaskFormActions/TaskFormActions";
 import styles from "./TaskForm.module.css";
 
 const TaskForm = ({ task, onSubmit, onCancel, loading, members = [] }) => {

@@ -1,7 +1,7 @@
 import { MessageSquare, Settings } from "lucide-react";
-import NotificationBell from "../../../notification/NotificationBell";
-import ThemeToggle from "../../../common/themeToggle/ThemeToggle";
-import GlobalSearch from "../../../common/globalSearch/GlobalSearch";
+import NotificationBell from "../../../notification/NotificationBell/NotificationBell";
+import ThemeToggle from "../../../common/themeToggle/ThemeToggle/ThemeToggle";
+import GlobalSearch from "../../../common/globalSearch/GlobalSearch/GlobalSearch";
 import styles from "./NavbarActions.module.css";
 
 const AIIcon = (props) => (

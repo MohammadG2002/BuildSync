@@ -1,9 +1,7 @@
 import { getRelativeTime } from "../../../utils/helpers";
-import {
-  getNotificationIcon,
-  NotificationDeleteButton,
-  NotificationUnreadIndicator,
-} from ".";
+import getNotificationIcon from "../../../utils/notification/getNotificationIcon";
+import NotificationDeleteButton from "./NotificationDeleteButton";
+import NotificationUnreadIndicator from "./NotificationUnreadIndicator";
 import styles from "../NotificationBell/NotificationBell.module.css";
 
 const NotificationItem = ({ notification, onClick, onDelete }) => {

@@ -1,0 +1,76 @@
+/* MemberInfo Container */
+.infoContainer {
+  display: flex;
+  align-items: start;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.infoContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.infoHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.infoName {
+  font-weight: 600;
+  color: #111827;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:global(.dark) .infoName {
+  color: white;
+}
+
+.infoBadge {
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.625rem;
+  line-height: 1rem;
+  font-weight: 500;
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+:global(.dark) .infoBadge {
+  background-color: #1e3a8a;
+  color: #93c5fd;
+}
+
+.infoEmailContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+.infoEmailIcon {
+  width: 0.875rem;
+  height: 0.875rem;
+  color: #9ca3af;
+  flex-shrink: 0;
+}
+
+:global(.dark) .infoEmailIcon {
+  color: #6b7280;
+}
+
+.infoEmail {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #6b7280;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:global(.dark) .infoEmail {
+  color: #9ca3af;
+}

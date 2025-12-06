@@ -1,10 +1,8 @@
 import { useState } from "react";
-import Input from "../../../common/input/Input";
-import {
-  validateWorkspaceForm,
-  WorkspaceDescriptionField,
-  WorkspaceFormActions,
-} from "../index";
+import Input from "../../../common/input/Input/Input";
+import { validateWorkspaceForm } from "../../../../utils/workspace/validateWorkspaceForm";
+import WorkspaceDescriptionField from "../WorkspaceDescriptionField/WorkspaceDescriptionField";
+import WorkspaceFormActions from "../WorkspaceFormActions/WorkspaceFormActions";
 import styles from "./WorkspaceForm.module.css";
 
 const WorkspaceForm = ({ workspace, onSubmit, onCancel, loading }) => {

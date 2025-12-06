@@ -1,12 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useWorkspace } from "../../../../hooks/useWorkspace";
-import {
-  categoriesConfig,
-  filterResults,
-  handleResultClick as handleResultClickUtil,
-  performSearch,
-} from "../index";
+import categoriesConfig from "../../../../utils/common/globalSearch/categoriesConfig";
+import filterResults from "../../../../utils/common/globalSearch/filterResults";
+import handleResultClickUtil from "../../../../utils/common/globalSearch/handleResultClick";
+import performSearch from "../../../../utils/common/globalSearch/performSearch";
 import SearchTriggerButton from "../SearchTriggerButton/SearchTriggerButton";
 import SearchModal from "../SearchModal/SearchModal";
 

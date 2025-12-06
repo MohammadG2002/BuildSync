@@ -11,16 +11,14 @@ import {
 import { useWorkspace } from "../../hooks/useWorkspace";
 import { AuthContext } from "../../context/AuthContext";
 import { getWorkspaceMembers } from "../../services/workspaceService";
-import Button from "../../components/common/button/Button";
-import Card from "../../components/common/card/Card";
-import Modal from "../../components/common/modal/Modal";
-import { ProjectCard } from "../../components/dashboard";
-import ProjectForm from "../../components/project/ProjectForm";
-import {
-  WorkspaceStatCard,
-  EmptyProjectsState,
-  DeleteProjectModalContent,
-} from "../../components/workspaceDetails";
+import Button from "../../components/common/button/Button/Button";
+import Card from "../../components/common/card/Card/Card";
+import Modal from "../../components/common/modal/Modal/Modal";
+import ProjectCard from "../../components/dashboard/ProjectCard/ProjectCard";
+import ProjectForm from "../../components/project/ProjectForm/ProjectForm";
+import WorkspaceStatCard from "../../components/workspaceDetails/WorkspaceStatCard/WorkspaceStatCard";
+import EmptyProjectsState from "../../components/workspaceDetails/EmptyProjectsState/EmptyProjectsState";
+import DeleteProjectModalContent from "../../components/workspaceDetails/DeleteProjectModalContent/DeleteProjectModalContent";
 import fetchProjects from "../../utils/workspace/fetchProjects";
 import handleCreateProject from "../../utils/workspace/handleCreateProject";
 import handleEditProject from "../../utils/workspace/handleEditProject";
@@ -29,7 +27,7 @@ import handleDeleteProjectClick from "../../utils/workspace/handleDeleteProjectC
 import handleDeleteProject from "../../utils/workspace/handleDeleteProject";
 import handleProjectClick from "../../utils/workspace/handleProjectClick";
 import styles from "./WorkspaceDetails.module.css";
-import dashboardStyles from "../../components/dashboard/Dashboard.module.css";
+import dashboardStyles from "../dashboard/Dashboard.module.css";
 
 const WorkspaceDetails = () => {
   const { workspaceId } = useParams();

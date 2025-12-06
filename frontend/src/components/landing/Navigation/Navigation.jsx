@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Button from "../../common/button/Button";
+import Button from "../../common/button/Button/Button";
 import styles from "./Navigation.module.css";
 
 const Navigation = () => {

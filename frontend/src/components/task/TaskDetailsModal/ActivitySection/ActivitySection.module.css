@@ -1,0 +1,65 @@
+/* ActivitySection */
+.activitySection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.activityList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.activityItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.activityContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.activityMessage {
+  color: #111827;
+  font-size: 0.9rem;
+}
+
+:global(.dark) .activityMessage {
+  color: #f3f4f6;
+}
+
+.activityTime {
+  color: #6b7280;
+  font-size: 0.75rem;
+}
+
+:global(.dark) .activityTime {
+  color: #9ca3af;
+}
+
+.metadataTextMuted {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #6b7280;
+}
+
+:global(.dark) .metadataTextMuted {
+  color: #9ca3af;
+}
+
+.userAvatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+}

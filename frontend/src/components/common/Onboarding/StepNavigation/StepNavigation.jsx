@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight, Check } from "lucide-react";
-import Button from "../../button/Button";
+import Button from "../../button/Button/Button";
 import styles from "./StepNavigation.module.css";
 
 const StepNavigation = ({

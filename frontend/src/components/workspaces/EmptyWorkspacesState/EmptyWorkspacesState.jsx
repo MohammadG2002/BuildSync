@@ -1,7 +1,7 @@
 import { Plus, Briefcase } from "lucide-react";
-import Card from "../../common/card/Card";
-import Button from "../../common/button/Button";
-import styles from "../../../pages/workspaces/Workspaces.module.css";
+import Card from "../../common/card/Card/Card";
+import Button from "../../common/button/Button/Button";
+import styles from "./EmptyWorkspacesState.module.css";
 
 const EmptyWorkspacesState = ({ onCreateWorkspace }) => {
   return (

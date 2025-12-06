@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import * as contactService from "../../../services/contactService";
 import * as chatService from "../../../services/chatService";
-import UserAvatar from "../../common/UserAvatar";
+import UserAvatar from "../../common/UserAvatar/UserAvatar/UserAvatar";
 import styles from "./ChatHeader.module.css";
 import { useAuth } from "../../../hooks/useAuth";
 

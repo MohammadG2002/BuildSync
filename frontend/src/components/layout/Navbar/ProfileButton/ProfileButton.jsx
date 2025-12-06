@@ -1,5 +1,5 @@
 import { getInitials, generateColor } from "../../../../utils/helpers";
-import UserAvatar from "../../../common/UserAvatar/UserAvatar";
+import UserAvatar from "../../../common/UserAvatar/UserAvatar/UserAvatar";
 import styles from "./ProfileButton.module.css";
 
 const ProfileButton = ({ user, onClick }) => {

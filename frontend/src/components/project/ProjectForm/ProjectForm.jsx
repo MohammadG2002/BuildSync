@@ -1,12 +1,10 @@
 import { useState } from "react";
-import Input from "../../common/input/Input";
-import {
-  validateForm,
-  DescriptionField,
-  StatusField,
-  DateFields,
-  FormActions,
-} from ".";
+import Input from "../../common/input/Input/Input";
+import { validateForm } from "../../../utils/project/validateForm";
+import DescriptionField from "./DescriptionField/DescriptionField";
+import StatusField from "./StatusField/StatusField";
+import DateFields from "./DateFields/DateFields";
+import FormActions from "./FormActions/FormActions";
 import styles from "./ProjectForm.module.css";
 
 const ProjectForm = ({ project, onSubmit, onCancel, loading }) => {

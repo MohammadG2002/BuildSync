@@ -1,15 +1,13 @@
 import { useState, useRef, useEffect } from "react";
-import {
-  fileUploadConfig,
-  validateFiles,
-  addPreviewUrls,
-  handleDrag as handleDragUtil,
-  handleDrop as handleDropUtil,
-  handleChange as handleChangeUtil,
-  handleFiles as handleFilesUtil,
-  removeFile as removeFileUtil,
-  cleanupPreviews,
-} from "../index";
+import fileUploadConfig from "../../../../utils/common/fileUpload/fileUploadConfig";
+import validateFiles from "../../../../utils/common/fileUpload/validateFiles";
+import addPreviewUrls from "../../../../utils/common/fileUpload/addPreviewUrls";
+import handleDragUtil from "../../../../utils/common/fileUpload/handleDrag";
+import handleDropUtil from "../../../../utils/common/fileUpload/handleDrop";
+import handleChangeUtil from "../../../../utils/common/fileUpload/handleChange";
+import handleFilesUtil from "../../../../utils/common/fileUpload/handleFiles";
+import removeFileUtil from "../../../../utils/common/fileUpload/removeFile";
+import cleanupPreviews from "../../../../utils/common/fileUpload/cleanupPreviews";
 import ErrorMessages from "../ErrorMessages/ErrorMessages";
 import DropZone from "../DropZone/DropZone";
 import FileList from "../FileList/FileList";

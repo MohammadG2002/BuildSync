@@ -1,0 +1,27 @@
+/* MemberMenuButton */
+.menuButton {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.menuButton:hover {
+  background-color: #f3f4f6;
+}
+
+:global(.dark) .menuButton:hover {
+  background-color: #1f2937;
+}
+
+.menuIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #6b7280;
+}
+
+:global(.dark) .menuIcon {
+  color: #9ca3af;
+}

@@ -1,0 +1,188 @@
+/* SubtasksSection */
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.sectionTitle {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+:global(.dark) .sectionTitle {
+  color: #d1d5db;
+}
+
+.addFileButton {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #2563eb;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.addFileButton:hover {
+  text-decoration: underline;
+}
+
+:global(.dark) .addFileButton {
+  color: #60a5fa;
+}
+
+.editButton {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.editButton:hover {
+  text-decoration: underline;
+}
+
+:global(.dark) .editButton {
+  color: #60a5fa;
+}
+
+.metadataTextMuted {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #6b7280;
+}
+
+:global(.dark) .metadataTextMuted {
+  color: #9ca3af;
+}
+
+.subtasksList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.subtaskItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+}
+
+:global(.dark) .subtaskItem {
+  background-color: #374151;
+  border-color: #4b5563;
+}
+
+.subtaskLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.subtaskCheckbox {
+  width: 1rem;
+  height: 1rem;
+}
+
+.subtaskInput {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  outline: none;
+  background-color: white;
+  color: #111827;
+  transition: all 0.2s ease-in-out;
+}
+
+.subtaskInput:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+:global(.dark) .subtaskInput {
+  border-color: #4b5563;
+  background-color: #374151;
+  color: #f9fafb;
+}
+
+:global(.dark) .subtaskInput:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.subtaskText {
+  color: #111827;
+}
+
+:global(.dark) .subtaskText {
+  color: #f3f4f6;
+}
+
+.subtaskTextDone {
+  color: #6b7280;
+  text-decoration: line-through;
+}
+
+:global(.dark) .subtaskTextDone {
+  color: #9ca3af;
+}
+
+.subtaskDeleteButton {
+  padding: 0.25rem 0.5rem;
+  color: #dc2626;
+  border-radius: 0.375rem;
+  background: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.subtaskDeleteButton:hover {
+  background-color: #fef2f2;
+}
+
+:global(.dark) .subtaskDeleteButton:hover {
+  background-color: rgba(127, 29, 29, 0.2);
+}
+
+.subtaskActions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.subtaskEditButton {
+  padding: 0.25rem 0.5rem;
+  color: #374151;
+  border-radius: 0.375rem;
+  background: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.subtaskEditButton:hover {
+  background-color: #f3f4f6;
+}
+
+:global(.dark) .subtaskEditButton {
+  color: #d1d5db;
+}
+
+:global(.dark) .subtaskEditButton:hover {
+  background-color: #4b5563;
+}

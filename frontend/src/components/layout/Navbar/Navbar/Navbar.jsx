@@ -4,12 +4,10 @@ import { useAuth } from "../../../../hooks/useAuth";
 import { useWorkspace } from "../../../../hooks/useWorkspace";
 import { createClickOutsideHandler } from "../../../../utils/layout/handleClickOutside";
 import { getWorkspaceSwitchPath } from "../../../../utils/layout/workspaceSwitcher";
-import {
-  MobileMenuButton,
-  WorkspaceSelector,
-  NavbarActions,
-  ProfileMenu,
-} from "../index";
+import MobileMenuButton from "../MobileMenuButton/MobileMenuButton";
+import WorkspaceSelector from "../WorkspaceSelector/WorkspaceSelector";
+import NavbarActions from "../NavbarActions/NavbarActions";
+import ProfileMenu from "../ProfileMenu/ProfileMenu";
 import styles from "./Navbar.module.css";
 
 const Navbar = ({ onMenuClick }) => {

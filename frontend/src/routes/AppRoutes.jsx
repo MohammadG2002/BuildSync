@@ -2,30 +2,36 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { lazy, Suspense } from "react";
 
 // Layout (not lazy-loaded as it's needed immediately)
-import DashboardLayout from "../components/layout/DashboardLayout";
-import Loader from "../components/common/loader/Loader";
+import DashboardLayout from "../components/layout/DashboardLayout/DashboardLayout";
+import Loader from "../components/common/loader/Loader/Loader";
 
 // Lazy load all page components for code splitting
-const LandingPage = lazy(() => import("../pages/landing"));
+const LandingPage = lazy(() => import("../pages/landing/LandingPage"));
 const Login = lazy(() => import("../pages/auth/Login"));
 const Register = lazy(() => import("../pages/auth/Register"));
 const ForgotPassword = lazy(() => import("../pages/auth/ForgotPassword"));
-const Dashboard = lazy(() => import("../pages/dashboard"));
-const Workspaces = lazy(() => import("../pages/workspaces"));
+const Dashboard = lazy(() => import("../pages/dashboard/Dashboard"));
+const Workspaces = lazy(() => import("../pages/workspaces/Workspaces"));
 const WorkspaceDetails = lazy(() =>
   import("../pages/workspaces/WorkspaceDetails")
 );
-const ProjectDetails = lazy(() => import("../pages/projects"));
-const ProjectGantt = lazy(() => import("../pages/projects/ProjectGantt"));
-const ProjectNetwork = lazy(() => import("../pages/projects/ProjectNetwork"));
-const Members = lazy(() => import("../pages/members"));
-const Settings = lazy(() => import("../pages/settings"));
-const Chat = lazy(() => import("../pages/chat"));
+const ProjectDetails = lazy(() =>
+  import("../pages/projects/ProjectDetails/index")
+);
+const ProjectGantt = lazy(() => import("../pages/projects/ProjectGantt/index"));
+const ProjectNetwork = lazy(() =>
+  import("../pages/projects/ProjectNetwork/index")
+);
+const Members = lazy(() => import("../pages/members/Members"));
+const Settings = lazy(() => import("../pages/settings/Settings"));
+const Chat = lazy(() => import("../pages/chat/Chat"));
 const AIChat = lazy(() => import("../pages/chat/AIChat"));
-const Archived = lazy(() => import("../pages/archived"));
-const Profile = lazy(() => import("../pages/profile"));
-const Notifications = lazy(() => import("../pages/notifications"));
-const NotFound = lazy(() => import("../pages/not-found"));
+const Archived = lazy(() => import("../pages/archived/Archived"));
+const Profile = lazy(() => import("../pages/profile/Profile"));
+const Notifications = lazy(() =>
+  import("../pages/notifications/Notifications")
+);
+const NotFound = lazy(() => import("../pages/not-found/index"));
 
 // Route Guards
 import PrivateRoute from "./PrivateRoute";

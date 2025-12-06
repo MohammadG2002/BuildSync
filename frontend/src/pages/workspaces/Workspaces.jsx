@@ -2,15 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
 import { useWorkspace } from "../../hooks/useWorkspace";
-import Button from "../../components/common/button/Button";
-import Modal from "../../components/common/modal/Modal";
-import { SkeletonList } from "../../components/common/loader/Loader";
-import WorkspaceCard from "../../components/workspace/WorkspaceCard";
-import WorkspaceForm from "../../components/workspace/WorkspaceForm";
-import {
-  EmptyWorkspacesState,
-  DeleteWorkspaceModalContent,
-} from "../../components/workspaces";
+import Button from "../../components/common/button/Button/Button";
+import Modal from "../../components/common/modal/Modal/Modal";
+import SkeletonList from "../../components/common/loader/SkeletonList/SkeletonList";
+import WorkspaceCard from "../../components/workspace/WorkspaceCard/WorkspaceCard/WorkspaceCard";
+import WorkspaceForm from "../../components/workspace/WorkspaceForm/WorkspaceForm/WorkspaceForm";
+import EmptyWorkspacesState from "../../components/workspaces/EmptyWorkspacesState/EmptyWorkspacesState";
+import DeleteWorkspaceModalContent from "../../components/workspaces/DeleteWorkspaceModalContent/DeleteWorkspaceModalContent";
 import handleCreate from "../../utils/workspace/handleCreate";
 import handleEdit from "../../utils/workspace/handleEdit";
 import handleUpdate from "../../utils/workspace/handleUpdate";

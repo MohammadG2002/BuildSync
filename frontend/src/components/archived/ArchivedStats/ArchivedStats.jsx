@@ -1,5 +1,5 @@
 import { Archive } from "lucide-react";
-import Card from "../../common/card/Card";
+import Card from "../../common/card/Card/Card";
 import styles from "./ArchivedStats.module.css";
 
 const ArchivedStats = ({ archivedTasks }) => {

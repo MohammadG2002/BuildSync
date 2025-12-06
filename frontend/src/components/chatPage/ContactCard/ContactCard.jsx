@@ -1,5 +1,5 @@
 import { getRelativeTime } from "../../../utils/helpers";
-import UserAvatar from "../../common/UserAvatar";
+import UserAvatar from "../../common/UserAvatar/UserAvatar/UserAvatar";
 import styles from "./ContactCard.module.css";
 
 const ContactCard = ({ contact, isSelected, onSelect }) => {

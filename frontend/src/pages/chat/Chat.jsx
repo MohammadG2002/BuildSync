@@ -1,15 +1,13 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import Card from "../../components/common/card/Card";
-import Button from "../../components/common/button/Button";
-import Modal from "../../components/common/modal/Modal";
-import Input from "../../components/common/input/Input";
-import {
-  ContactsSidebar,
-  ChatArea,
-  ChatEmptyState,
-} from "../../components/chatPage";
+import Card from "../../components/common/card/Card/Card";
+import Button from "../../components/common/button/Button/Button";
+import Modal from "../../components/common/modal/Modal/Modal";
+import Input from "../../components/common/input/Input/Input";
+import ContactsSidebar from "../../components/chatPage/ContactsSidebar/ContactsSidebar";
+import ChatArea from "../../components/chatPage/ChatArea/ChatArea";
+import ChatEmptyState from "../../components/chatPage/ChatEmptyState/ChatEmptyState";
 import handleSendMessage from "../../utils/chat/handleSendMessage";
 import styles from "./Chat.module.css";
 import { useContacts } from "../../hooks/chat/useContacts";

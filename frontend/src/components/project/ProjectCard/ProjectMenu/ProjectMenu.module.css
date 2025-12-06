@@ -1,0 +1,99 @@
+/* Menu */
+.menu {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.menuButton {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.menuButton:hover {
+  background-color: #f3f4f6;
+}
+
+:global(.dark) .menuButton:hover {
+  background-color: #1f2937;
+}
+
+.menuIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #4b5563;
+}
+
+:global(.dark) .menuIcon {
+  color: #9ca3af;
+}
+
+.menuDropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  width: 12rem;
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem 0;
+  z-index: 10;
+}
+
+:global(.dark) .menuDropdown {
+  background-color: #1f2937;
+  border-color: #374151;
+}
+
+.menuItem {
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #374151;
+}
+
+:global(.dark) .menuItem {
+  color: #d1d5db;
+}
+
+.menuItem:hover {
+  background-color: #f9fafb;
+}
+
+:global(.dark) .menuItem:hover {
+  background-color: #374151;
+}
+
+.menuItemDelete {
+  color: #dc2626;
+}
+
+:global(.dark) .menuItemDelete {
+  color: #f87171;
+}
+
+.menuItemDelete:hover {
+  background-color: #fef2f2;
+}
+
+:global(.dark) .menuItemDelete:hover {
+  background-color: rgba(220, 38, 38, 0.2);
+}
+
+.menuItemIcon {
+  width: 1rem;
+  height: 1rem;
+}

@@ -1,7 +1,7 @@
 import { getRelativeTime } from "../../../utils/helpers";
-import UserAvatar from "../../common/UserAvatar";
+import UserAvatar from "../../common/UserAvatar/UserAvatar/UserAvatar";
 import styles from "./MessageBubble.module.css";
-import { buildAbsoluteUrl } from "../../../utils/buildAbsoluteUrl";
+import { buildAbsoluteUrl } from "../../../utils/helpers/buildAbsoluteUrl";
 
 const MessageBubble = ({ message, isOwn }) => {
   return (

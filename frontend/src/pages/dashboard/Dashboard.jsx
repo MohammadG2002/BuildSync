@@ -2,25 +2,21 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useWorkspace } from "../../hooks/useWorkspace";
 import { useAuth } from "../../hooks/useAuth";
-import Card from "../../components/common/card/Card";
-import Button from "../../components/common/button/Button";
-import {
-  SkeletonStats,
-  SkeletonList,
-} from "../../components/common/loader/Loader";
+import Card from "../../components/common/card/Card/Card";
+import Button from "../../components/common/button/Button/Button";
+import SkeletonStats from "../../components/common/loader/SkeletonStats/SkeletonStats";
+import SkeletonList from "../../components/common/loader/SkeletonList/SkeletonList";
 import { ArrowRight, Plus } from "lucide-react";
-import {
-  StatCard,
-  ProjectCard,
-  TaskItem,
-  DeadlineItem,
-  QuickActions,
-  CurrentWorkspaceCard,
-  StatusTrendChart,
-  ProjectStatusChart,
-} from "../../components/dashboard";
+import StatCard from "../../components/dashboard/StatCard/StatCard";
+import ProjectCard from "../../components/dashboard/ProjectCard/ProjectCard";
+import TaskItem from "../../components/dashboard/TaskItem/TaskItem";
+import DeadlineItem from "../../components/dashboard/DeadlineItem/DeadlineItem";
+import QuickActions from "../../components/dashboard/QuickActions/QuickActions";
+import CurrentWorkspaceCard from "../../components/dashboard/CurrentWorkspaceCard/CurrentWorkspaceCard";
+import StatusTrendChart from "../../components/dashboard/StatusTrendChart/StatusTrendChart";
+import ProjectStatusChart from "../../components/dashboard/ProjectStatusChart/ProjectStatusChart";
 import fetchDashboardData from "../../utils/dashboard/fetchDashboardData";
-import styles from "../../components/dashboard/Dashboard.module.css";
+import styles from "./Dashboard.module.css";
 
 const Dashboard = () => {
   const { user } = useAuth();

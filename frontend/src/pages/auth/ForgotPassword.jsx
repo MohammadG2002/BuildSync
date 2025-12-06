@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Mail, ArrowLeft, Key, Lock } from "lucide-react";
 import toast from "react-hot-toast";
-import Button from "../../components/common/button/Button";
-import Input from "../../components/common/input/Input";
+import Button from "../../components/common/button/Button/Button";
+import Input from "../../components/common/input/Input/Input";
 import { forgotPassword, resetPassword } from "../../services/authService";
 import styles from "./Auth.module.css";
 

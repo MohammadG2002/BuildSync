@@ -1,0 +1,138 @@
+/* DescriptionSection */
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.sectionTitle {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+:global(.dark) .sectionTitle {
+  color: #d1d5db;
+}
+
+.editButton {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.editButton:hover {
+  text-decoration: underline;
+}
+
+:global(.dark) .editButton {
+  color: #60a5fa;
+}
+
+.editIcon {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.descriptionTextarea {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  min-height: 100px;
+  outline: none;
+  resize: none;
+  background-color: white;
+  color: #111827;
+  transition: all 0.2s ease-in-out;
+}
+
+.descriptionTextarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+:global(.dark) .descriptionTextarea {
+  border-color: #4b5563;
+  background-color: #374151;
+  color: #f9fafb;
+}
+
+:global(.dark) .descriptionTextarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.descriptionActions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.saveButton {
+  padding: 0.375rem 0.75rem;
+  background-color: #2563eb;
+  color: white;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  border: none;
+  cursor: pointer;
+}
+
+.saveButton:hover {
+  background-color: #1d4ed8;
+}
+
+.cancelButton {
+  padding: 0.375rem 0.75rem;
+  border: 1px solid #d1d5db;
+  color: #374151;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  background: none;
+  cursor: pointer;
+}
+
+.cancelButton:hover {
+  background-color: #f9fafb;
+}
+
+:global(.dark) .cancelButton {
+  border-color: #4b5563;
+  color: #d1d5db;
+}
+
+:global(.dark) .cancelButton:hover {
+  background-color: #374151;
+}
+
+.description {
+  color: #4b5563;
+  white-space: pre-wrap;
+}
+
+:global(.dark) .description {
+  color: #9ca3af;
+}
+
+.actionIcon {
+  width: 1rem;
+  height: 1rem;
+}

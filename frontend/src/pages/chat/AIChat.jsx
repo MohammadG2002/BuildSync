@@ -1,5 +1,5 @@
 import React from "react";
-import Card from "../../components/common/card/Card";
+import Card from "../../components/common/card/Card/Card";
 import ChatPanel from "../../components/ai/ChatPanel/ChatPanel";
 import styles from "./Chat.module.css";
 

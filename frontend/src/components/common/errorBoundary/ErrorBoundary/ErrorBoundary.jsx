@@ -1,6 +1,8 @@
 import { Component } from "react";
 import ErrorFallback from "../ErrorFallback/ErrorFallback";
-import { logErrorToService, resetErrorBoundary, getErrorState } from "../index";
+import logErrorToService from "../../../../utils/common/errorBoundary/logErrorToService";
+import resetErrorBoundary from "../../../../utils/common/errorBoundary/resetErrorBoundary";
+import getErrorState from "../../../../utils/common/errorBoundary/getErrorState";
 
 class ErrorBoundary extends Component {
   constructor(props) {

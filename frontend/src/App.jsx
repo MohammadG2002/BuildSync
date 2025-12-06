@@ -6,7 +6,7 @@ import { ThemeProvider } from "./context/ThemeContext";
 import RealtimeProvider from "./context/RealtimeProvider";
 import { Toaster } from "react-hot-toast";
 import AppRoutes from "./routes/AppRoutes";
-import ErrorBoundary from "./components/common/ErrorBoundary";
+import ErrorBoundary from "./components/common/errorBoundary/ErrorBoundary/ErrorBoundary";
 import FloatingAIChat from "./components/ai/FloatingAIChat/FloatingAIChat";
 
 function App() {

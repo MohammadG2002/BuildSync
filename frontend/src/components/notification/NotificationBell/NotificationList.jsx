@@ -1,4 +1,4 @@
-import NotificationItem from "../NotificationItem";
+import NotificationItem from "../NotificationItem/NotificationItem";
 import styles from "./NotificationBell.module.css";
 
 const NotificationList = ({ notifications, onNotificationClick, onDelete }) => {

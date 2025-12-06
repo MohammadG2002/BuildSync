@@ -1,5 +1,5 @@
 import * as chatService from "../../services/chatService";
-import { buildAbsoluteUrl } from "../buildAbsoluteUrl";
+import { buildAbsoluteUrl } from "../helpers/buildAbsoluteUrl";
 
 /**
  * Fetch messages for the current workspace

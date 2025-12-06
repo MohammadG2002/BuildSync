@@ -1,5 +1,5 @@
 import MemberGrid from "./MemberGrid";
-import styles from "../MemberCard/MemberCard.module.css";
+import styles from "./MemberList.module.css";
 
 const MemberRoleGroup = ({
   role,

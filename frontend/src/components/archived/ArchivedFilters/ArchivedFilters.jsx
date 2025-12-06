@@ -1,5 +1,5 @@
 import { Search } from "lucide-react";
-import Input from "../../common/input/Input";
+import Input from "../../common/input/Input/Input";
 import styles from "./ArchivedFilters.module.css";
 
 const ArchivedFilters = ({

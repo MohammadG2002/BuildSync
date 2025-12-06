@@ -9,12 +9,12 @@ import {
 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 import { useWorkspace } from "../../hooks/useWorkspace";
-import Button from "../../components/common/button/Button";
-import Card from "../../components/common/card/Card";
-import Modal from "../../components/common/modal/Modal";
-import Input from "../../components/common/input/Input";
-import { SkeletonList } from "../../components/common/loader/Loader";
-import MemberList from "../../components/member/MemberList";
+import Button from "../../components/common/button/Button/Button";
+import Card from "../../components/common/card/Card/Card";
+import Modal from "../../components/common/modal/Modal/Modal";
+import Input from "../../components/common/input/Input/Input";
+import SkeletonList from "../../components/common/loader/SkeletonList/SkeletonList";
+import MemberList from "../../components/member/MemberList/MemberList";
 import { USER_ROLES } from "../../utils/constants";
 import fetchMembers from "../../utils/member/fetchMembers";
 import fetchContacts from "../../utils/chat/fetchContacts";

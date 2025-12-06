@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import Button from "../../common/button/Button";
+import Button from "../../common/button/Button/Button";
 import styles from "./HeroSection.module.css";
 
 const HeroSection = () => {

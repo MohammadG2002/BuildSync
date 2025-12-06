@@ -1,6 +1,6 @@
 import { CheckCircle, Plus } from "lucide-react";
-import Card from "../../common/card/Card";
-import Button from "../../common/button/Button";
+import Card from "../../common/card/Card/Card";
+import Button from "../../common/button/Button/Button";
 import styles from "./EmptyTasksState.module.css";
 
 const EmptyTasksState = ({ filterStatus, onCreateTask }) => {

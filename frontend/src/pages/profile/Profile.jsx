@@ -2,17 +2,15 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
-import Card from "../../components/common/card/Card";
-import Button from "../../components/common/button/Button";
+import Card from "../../components/common/card/Card/Card";
+import Button from "../../components/common/button/Button/Button";
 import { getPasswordStrength } from "../../utils/validators";
-import {
-  AvatarSection,
-  ProfileTabs,
-  ProfileForm,
-  PasswordForm,
-  AccountInfo,
-  PreferencesSection,
-} from "../../components/profile";
+import AvatarSection from "../../components/profile/AvatarSection/AvatarSection";
+import ProfileTabs from "../../components/profile/ProfileTabs/ProfileTabs";
+import ProfileForm from "../../components/profile/ProfileForm/ProfileForm";
+import PasswordForm from "../../components/profile/PasswordForm/PasswordForm";
+import AccountInfo from "../../components/profile/AccountInfo/AccountInfo";
+import PreferencesSection from "../../components/profile/PreferencesSection/PreferencesSection";
 import handleProfileChange from "../../utils/profile/handleProfileChange";
 import handlePasswordChange from "../../utils/profile/handlePasswordChange";
 import handleTogglePassword from "../../utils/profile/handleTogglePassword";
@@ -20,7 +18,7 @@ import handleUpdateProfile from "../../utils/profile/handleUpdateProfile";
 import handleChangePassword from "../../utils/profile/handleChangePassword";
 import handleAvatarUpload from "../../utils/profile/handleAvatarUpload";
 import handleRemoveAvatar from "../../utils/profile/handleRemoveAvatar";
-import styles from "../../components/profile/Profile.module.css";
+import styles from "./Profile.module.css";
 
 const Profile = () => {
   const { user, updateUser } = useAuth();

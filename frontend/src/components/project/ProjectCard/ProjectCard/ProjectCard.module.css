@@ -1,0 +1,21 @@
+/* ProjectCard CSS Module */
+
+.card {
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+  padding: 1.5rem;
+  transition: box-shadow 0.2s;
+  cursor: pointer;
+  position: relative;
+}
+
+:global(.dark) .card {
+  background-color: #1f2937;
+  border-color: #374151;
+}
+
+.card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}

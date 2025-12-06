@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useNotifications } from "../../../hooks/useNotifications";
-import { NotificationButton, NotificationDropdown } from ".";
+import NotificationButton from "./NotificationButton";
+import NotificationDropdown from "./NotificationDropdown";
 import styles from "./NotificationBell.module.css";
 import InviteRequestModal from "../InviteRequestModal/InviteRequestModal";
 

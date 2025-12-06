@@ -1,0 +1,67 @@
+/* AttachmentsField */
+
+.attachmentsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.attachmentsLabel {
+  display: block;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+:global(.dark) .attachmentsLabel {
+  color: #d1d5db;
+}
+
+.attachmentsButton {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.attachmentsButton:hover {
+  background-color: #f9fafb;
+}
+
+.attachmentsButton:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+:global(.dark) .attachmentsButton {
+  background-color: #374151;
+  border-color: #4b5563;
+  color: #f9fafb;
+}
+
+:global(.dark) .attachmentsButton:hover {
+  background-color: #4b5563;
+}
+
+:global(.dark) .attachmentsButton:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.attachmentsIcon {
+  width: 1rem;
+  height: 1rem;
+}

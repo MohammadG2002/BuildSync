@@ -1,5 +1,7 @@
-import { groupMembersByRole, MemberGrid, MemberRoleGroup } from ".";
-import styles from "../MemberCard/MemberCard.module.css";
+import groupMembersByRole from "../../../utils/member/groupMembersByRole";
+import MemberGrid from "./MemberGrid";
+import MemberRoleGroup from "./MemberRoleGroup";
+import styles from "./MemberList.module.css";
 
 const MemberList = ({
   members,

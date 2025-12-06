@@ -1,5 +1,5 @@
-import MemberCard from "../MemberCard";
-import styles from "../MemberCard/MemberCard.module.css";
+import MemberCard from "../MemberCard/MemberCard/MemberCard";
+import styles from "./MemberList.module.css";
 
 const MemberGrid = ({
   members,

@@ -1,4 +1,4 @@
-import Button from "../../common/button/Button";
+import Button from "../../common/button/Button/Button";
 import styles from "./ArchiveTaskModalContent.module.css";
 
 const ArchiveTaskModalContent = ({

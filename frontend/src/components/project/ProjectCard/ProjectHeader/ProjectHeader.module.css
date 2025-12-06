@@ -1,0 +1,122 @@
+/* Header */
+.header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.icon {
+  width: 3rem;
+  height: 3rem;
+  background-color: #dbeafe;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+:global(.dark) .icon {
+  background-color: rgba(59, 130, 246, 0.3);
+}
+
+.iconSvg {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #2563eb;
+}
+
+:global(.dark) .iconSvg {
+  color: #60a5fa;
+}
+
+.headerContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.titleRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 2rem;
+}
+
+:global(.dark) .title {
+  color: #f3f4f6;
+}
+
+.description {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-bottom: 0.75rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+:global(.dark) .description {
+  color: #9ca3af;
+}
+
+.statusBadge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  text-transform: capitalize;
+}
+
+.statusActive {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+:global(.dark) .statusActive {
+  background-color: rgba(34, 197, 94, 0.2);
+  color: #86efac;
+}
+
+.statusPlanning {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+:global(.dark) .statusPlanning {
+  background-color: rgba(245, 158, 11, 0.2);
+  color: #fcd34d;
+}
+
+.statusCompleted {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+:global(.dark) .statusCompleted {
+  background-color: rgba(59, 130, 246, 0.2);
+  color: #93c5fd;
+}
+
+.statusOnHold {
+  background-color: #f3f4f6;
+  color: #4b5563;
+}
+
+:global(.dark) .statusOnHold {
+  background-color: #374151;
+  color: #9ca3af;
+}
