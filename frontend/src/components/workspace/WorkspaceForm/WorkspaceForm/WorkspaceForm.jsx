@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Input from "../../../common/input/Input/Input";
-import { validateWorkspaceForm } from "../../../../utils/workspace/validateWorkspaceForm";
-import WorkspaceDescriptionField from "../WorkspaceDescriptionField/WorkspaceDescriptionField";
-import WorkspaceFormActions from "../WorkspaceFormActions/WorkspaceFormActions";
+import { validateForm } from "../../../../utils/workspace/validateForm";
+import DescriptionField from "../../../common/form/DescriptionField/DescriptionField";
+import FormActions from "../../../common/form/FormActions/FormActions";
 import styles from "./WorkspaceForm.module.css";
 
 const WorkspaceForm = ({ workspace, onSubmit, onCancel, loading }) => {
@@ -45,15 +45,18 @@ const WorkspaceForm = ({ workspace, onSubmit, onCancel, loading }) => {
         autoFocus
       />
 
-      <WorkspaceDescriptionField
+      <DescriptionField
         value={formData.description}
         onChange={handleChange}
+        rows={3}
+        placeholder="What is this workspace for?"
       />
 
-      <WorkspaceFormActions
+      <FormActions
         onCancel={onCancel}
         loading={loading}
         isEdit={!!workspace}
+        entityName="Workspace"
       />
     </form>
   );

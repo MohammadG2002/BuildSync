@@ -3,9 +3,9 @@ import { Paperclip } from "lucide-react";
 import styles from "./CommentsSection.module.css";
 import CommentInputBar from "../commentSectionModule/components/CommentInputBar";
 import CommentList from "../commentSectionModule/components/CommentList";
-import handleFileSelect from "../commentSectionModule/utils/handleFileSelect";
-import handleClearQueued from "../commentSectionModule/utils/handleClearQueued";
-import handleUnifiedSend from "../commentSectionModule/utils/handleUnifiedSend";
+import handleFileSelect from "../../../../utils/task/comments/handleFileSelect";
+import handleClearQueued from "../../../../utils/task/comments/handleClearQueued";
+import handleUnifiedSend from "../../../../utils/task/comments/handleUnifiedSend";
 
 // CommentsSection (Test-like behavior): queued attachments + auto-send comment + combined feed
 const CommentsSection = ({

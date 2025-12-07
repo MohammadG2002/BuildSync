@@ -1,13 +1,19 @@
 import styles from "./DescriptionField.module.css";
 
-const DescriptionField = ({ value, onChange }) => {
+const DescriptionField = ({
+  value,
+  onChange,
+  rows = 4,
+  placeholder = "Add more details...",
+  label = "Description (Optional)",
+}) => {
   return (
     <div>
-      <label className={styles.descriptionLabel}>Description (Optional)</label>
+      <label className={styles.descriptionLabel}>{label}</label>
       <textarea
         name="description"
-        rows="4"
-        placeholder="Add more details about this task..."
+        rows={rows}
+        placeholder={placeholder}
         value={value}
         onChange={onChange}
         className={styles.descriptionTextarea}

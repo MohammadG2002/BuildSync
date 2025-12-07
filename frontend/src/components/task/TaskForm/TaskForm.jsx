@@ -3,11 +3,11 @@ import Input from "../../common/input/Input/Input";
 import TagDropdown from "../TagDropdown/TagDropdown";
 import DependenciesPicker from "../DependenciesPicker/DependenciesPicker";
 import { validateTaskForm } from "../../../utils/task/validateTaskForm";
-import DescriptionField from "./DescriptionField/DescriptionField";
+import DescriptionField from "../../common/form/DescriptionField/DescriptionField";
 import StatusAndPriorityFields from "./StatusAndPriorityFields/StatusAndPriorityFields";
 import AssigneeAndDateFields from "./AssigneeAndDateFields/AssigneeAndDateFields";
 import AttachmentsField from "./AttachmentsField/AttachmentsField";
-import TaskFormActions from "./TaskFormActions/TaskFormActions";
+import FormActions from "../../common/form/FormActions/FormActions";
 import styles from "./TaskForm.module.css";
 
 const TaskForm = ({ task, onSubmit, onCancel, loading, members = [] }) => {
@@ -195,7 +195,11 @@ const TaskForm = ({ task, onSubmit, onCancel, loading, members = [] }) => {
         autoFocus
       />
 
-      <DescriptionField value={formData.description} onChange={handleChange} />
+      <DescriptionField
+        value={formData.description}
+        onChange={handleChange}
+        placeholder="Add more details about this task..."
+      />
 
       <StatusAndPriorityFields
         status={formData.status}
@@ -274,7 +278,12 @@ const TaskForm = ({ task, onSubmit, onCancel, loading, members = [] }) => {
         onFilesSelected={setFiles}
       />
 
-      <TaskFormActions onCancel={onCancel} loading={loading} isEdit={!!task} />
+      <FormActions
+        onCancel={onCancel}
+        loading={loading}
+        isEdit={!!task}
+        entityName="Task"
+      />
     </form>
   );
 };

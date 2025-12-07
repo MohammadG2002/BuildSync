@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Input from "../../common/input/Input/Input";
 import { validateForm } from "../../../utils/project/validateForm";
-import DescriptionField from "./DescriptionField/DescriptionField";
+import DescriptionField from "../../common/form/DescriptionField/DescriptionField";
 import StatusField from "./StatusField/StatusField";
 import DateFields from "./DateFields/DateFields";
-import FormActions from "./FormActions/FormActions";
+import FormActions from "../../common/form/FormActions/FormActions";
 import styles from "./ProjectForm.module.css";
 
 const ProjectForm = ({ project, onSubmit, onCancel, loading }) => {
@@ -92,7 +92,12 @@ const ProjectForm = ({ project, onSubmit, onCancel, loading }) => {
         autoFocus
       />
 
-      <DescriptionField value={formData.description} onChange={handleChange} />
+      <DescriptionField
+        value={formData.description}
+        onChange={handleChange}
+        rows={3}
+        placeholder="What is this project about?"
+      />
 
       <StatusField value={formData.status} onChange={handleChange} />
 
@@ -103,7 +108,12 @@ const ProjectForm = ({ project, onSubmit, onCancel, loading }) => {
         dueDateError={errors.dueDate}
       />
 
-      <FormActions onCancel={onCancel} loading={loading} isEdit={!!project} />
+      <FormActions
+        onCancel={onCancel}
+        loading={loading}
+        isEdit={!!project}
+        entityName="Project"
+      />
     </form>
   );
 };
