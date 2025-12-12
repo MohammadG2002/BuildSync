@@ -41,14 +41,28 @@ const server = createServer(app);
 // loading images from a different origin (e.g., Vite dev server on :5173).
 // Keep helmet defaults, but we will override CORP specifically for the uploads route below.
 app.use(helmet());
-app.use(
-  cors({
-    origin:
-      process.env.CORS_ORIGIN?.split(",").map((origin) => origin.trim()) ||
-      "http://localhost:5173",
-    credentials: true,
-  })
-);
+
+// CORS configuration
+const corsOptions = {
+  origin: function (origin, callback) {
+    const allowedOrigins = process.env.CORS_ORIGIN?.split(",").map((o) => o.trim()) || ["http://localhost:5173"];
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      console.log(`CORS blocked origin: ${origin}. Allowed: ${allowedOrigins.join(", ")}`);
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); // Enable pre-flight for all routes
 
 // Body parsing middleware
 app.use(express.json({ limit: "10mb" }));
