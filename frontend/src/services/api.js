@@ -1,8 +1,10 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const API_URL =
-  import.meta.env.VITE_API_URL || "https://build-sync-k77u.vercel.app/";
+// Prefer environment-provided API URL; avoid hardcoded fallback
+const RAW_API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+// Normalize: strip trailing slash to prevent double slashes in requests
+const API_URL = RAW_API_URL.replace(/\/$/, "");
 
 // Create axios instance
 const api = axios.create({
@@ -10,6 +12,8 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  timeout: 30000,
+  // withCredentials: true, // enable if using cookie-based auth
 });
 
 // Request interceptor - Add auth token to requests

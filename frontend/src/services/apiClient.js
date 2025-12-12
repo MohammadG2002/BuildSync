@@ -11,7 +11,8 @@ import { RequestExecutor, FileUploader } from "./apiClientModule";
  */
 class APIClient {
   constructor() {
-    this.baseURL = API_CONFIG.BASE_URL;
+    // Normalize: strip trailing slash to avoid double slashes when endpoints start with '/'
+    this.baseURL = (API_CONFIG.BASE_URL || "").replace(/\/$/, "");
     this.timeout = API_CONFIG.TIMEOUT;
   }
 
