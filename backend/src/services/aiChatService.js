@@ -4,7 +4,10 @@ import OpenAI from "openai";
 // Load env (safe to call; dotenv is already used in server boot)
 dotenv.config();
 
-const client = new OpenAI({ apiKey: process.env.AI_API_KEY });
+// Initialize OpenAI client only if API key is provided
+const client = process.env.AI_API_KEY
+  ? new OpenAI({ apiKey: process.env.AI_API_KEY })
+  : null;
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -17,6 +20,11 @@ function sleep(ms) {
 export async function chatReply(messages, options = {}) {
   if (!Array.isArray(messages) || messages.length === 0) {
     throw new Error("messages must be a non-empty array");
+  }
+
+  // If no API key configured, return a friendly message
+  if (!client) {
+    return "AI chat is currently unavailable. Please configure OPENAI_API_KEY environment variable.";
   }
 
   // Developer mock mode: return a canned response without calling the provider.
