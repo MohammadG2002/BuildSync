@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Input from "../../../common/input/Input/Input";
-import { validateForm } from "../../../../utils/workspace/validateForm";
+import { validateWorkspaceForm as validateForm } from "../../../../utils/workspace/validateWorkspaceForm";
 import DescriptionField from "../../../common/form/DescriptionField/DescriptionField";
 import FormActions from "../../../common/form/FormActions/FormActions";
 import styles from "./WorkspaceForm.module.css";

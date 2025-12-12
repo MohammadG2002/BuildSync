@@ -9,7 +9,7 @@ import {
 import { useContext } from "react";
 import { WorkspaceContext } from "../../../../context/WorkspaceContext";
 import toast from "react-hot-toast";
-import styles from "./tagManagerOverlay.module.css";
+import styles from "./TagManagerOverlay.module.css";
 
 const hexOk = (hex) => /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(hex || "");
 
