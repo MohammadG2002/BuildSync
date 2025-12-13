@@ -510,6 +510,10 @@
   background: #f3f4f6;
 }
 
+:global(.dark) .contactItem:hover {
+  background: #374151;
+}
+
 .contactItemDisabled {
   color: #9ca3af;
   cursor: not-allowed;

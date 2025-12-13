@@ -7,8 +7,12 @@ import { toast } from "react-hot-toast";
 const ContactRequestModal = ({ notification, isOpen, onClose, onHandled }) => {
   const [loading, setLoading] = useState(false);
 
-  const senderName = notification?.sender?.name || notification?.senderName || "Someone";
-  const senderId = notification?.sender?._id || notification?.sender?.id || notification?.senderId;
+  const senderName =
+    notification?.sender?.name || notification?.senderName || "Someone";
+  const senderId =
+    notification?.sender?._id ||
+    notification?.sender?.id ||
+    notification?.senderId;
 
   const handleAccept = async () => {
     if (!senderId) {

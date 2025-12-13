@@ -39,8 +39,12 @@ const server = createServer(app);
 // Security middleware
 // Helmet by default sets Cross-Origin-Resource-Policy: same-origin, which blocks
 // loading images from a different origin (e.g., Vite dev server on :5173).
-// Keep helmet defaults, but we will override CORP specifically for the uploads route below.
-app.use(helmet());
+// Configure helmet to allow cross-origin resources for uploads
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+  })
+);
 
 // CORS configuration
 const corsOptions = {

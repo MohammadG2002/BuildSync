@@ -16,7 +16,7 @@ const handleInviteMember = async (
   setInviteErrors,
   setSubmitting
 ) => {
-  e.preventDefault();
+  if (e) e.preventDefault();
 
   const errors = validateInvite(inviteData, members);
   if (Object.keys(errors).length > 0) {

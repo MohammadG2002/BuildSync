@@ -19,7 +19,8 @@ const NotificationBell = () => {
   } = useNotifications();
   const [showNotifications, setShowNotifications] = useState(false);
   const [inviteNotification, setInviteNotification] = useState(null);
-  const [contactRequestNotification, setContactRequestNotification] = useState(null);
+  const [contactRequestNotification, setContactRequestNotification] =
+    useState(null);
   const notificationRef = useRef(null);
 
   useEffect(() => {
@@ -93,7 +94,9 @@ const NotificationBell = () => {
         onClose={() => setContactRequestNotification(null)}
         onHandled={() => {
           // After accept/decline, remove the notification
-          deleteNotification(contactRequestNotification?.id || contactRequestNotification?._id);
+          deleteNotification(
+            contactRequestNotification?.id || contactRequestNotification?._id
+          );
         }}
       />
     </div>
