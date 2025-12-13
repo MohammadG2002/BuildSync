@@ -1,42 +1,62 @@
 /**
  * Upload Configuration
  * Multer storage and file filter configuration for file uploads
+ * Uses Cloudinary for production (persistent storage) or local disk for development
  */
 
 import multer from "multer";
 import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
+import cloudinary from "../../config/cloudinary.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Ensure uploads directory exists
+// Check if Cloudinary is configured
+const useCloudinary = !!(
+  process.env.CLOUDINARY_URL ||
+  (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY)
+);
+
+// Ensure uploads directory exists (for local storage fallback)
 const uploadsDir = path.join(__dirname, "../../../uploads");
 const avatarsDir = path.join(uploadsDir, "avatars");
 const attachmentsDir = path.join(uploadsDir, "attachments");
 
-[uploadsDir, avatarsDir, attachmentsDir].forEach((dir) => {
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-});
+if (!useCloudinary) {
+  [uploadsDir, avatarsDir, attachmentsDir].forEach((dir) => {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+  });
+}
 
-// Configure storage
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadType = req.path.includes("avatar") ? "avatars" : "attachments";
-    const dest = uploadType === "avatars" ? avatarsDir : attachmentsDir;
-    cb(null, dest);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(
-      null,
-      file.fieldname + "-" + uniqueSuffix + path.extname(file.originalname)
-    );
-  },
-});
+// Configure storage based on environment
+let storage;
+
+if (useCloudinary) {
+  // Use memory storage for Cloudinary (we'll upload manually in controllers)
+  storage = multer.memoryStorage();
+} else {
+  // Use disk storage for local development
+  storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      const uploadType = req.path.includes("avatar")
+        ? "avatars"
+        : "attachments";
+      const dest = uploadType === "avatars" ? avatarsDir : attachmentsDir;
+      cb(null, dest);
+    },
+    filename: (req, file, cb) => {
+      const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+      cb(
+        null,
+        file.fieldname + "-" + uniqueSuffix + path.extname(file.originalname)
+      );
+    },
+  });
+}
 
 // File filter
 const fileFilter = (req, file, cb) => {
@@ -80,4 +100,4 @@ export const upload = multer({
   fileFilter,
 });
 
-export { uploadsDir };
+export { uploadsDir, useCloudinary, cloudinary };

@@ -6,10 +6,10 @@
  */
 
 import multer from "multer";
-import { upload } from "./uploadConfig.js";
+import { upload, useCloudinary, cloudinary } from "./uploadConfig.js";
 
 export const uploadAvatar = (req, res) => {
-  upload.single("avatar")(req, res, (err) => {
+  upload.single("avatar")(req, res, async (err) => {
     if (err instanceof multer.MulterError) {
       return res.status(400).json({
         success: false,
@@ -29,22 +29,52 @@ export const uploadAvatar = (req, res) => {
       });
     }
 
-    // Build absolute URL so the frontend opens from the backend origin
-    const relativePath = `/uploads/avatars/${req.file.filename}`;
-    const origin = `${req.protocol}://${req.get("host")}`;
-    const fileUrl = `${origin}${relativePath}`;
+    try {
+      let fileUrl, filename;
 
-    res.json({
-      success: true,
-      message: "Avatar uploaded successfully",
-      data: {
-        filename: req.file.filename,
-        url: fileUrl,
-        size: req.file.size,
-        mimetype: req.file.mimetype,
-        // Provide relative path as well for compatibility if needed
-        relativeUrl: relativePath,
-      },
-    });
+      if (useCloudinary) {
+        // Upload to Cloudinary using buffer from memory storage
+        const result = await new Promise((resolve, reject) => {
+          const uploadStream = cloudinary.uploader.upload_stream(
+            {
+              folder: "buildsync/avatars",
+              resource_type: "image",
+              transformation: [{ width: 400, height: 400, crop: "limit" }],
+            },
+            (error, result) => {
+              if (error) reject(error);
+              else resolve(result);
+            }
+          );
+          uploadStream.end(req.file.buffer);
+        });
+
+        fileUrl = result.secure_url;
+        filename = result.public_id;
+      } else {
+        // Local storage - build absolute URL
+        const relativePath = `/uploads/avatars/${req.file.filename}`;
+        const origin = `${req.protocol}://${req.get("host")}`;
+        fileUrl = `${origin}${relativePath}`;
+        filename = req.file.filename;
+      }
+
+      res.json({
+        success: true,
+        message: "Avatar uploaded successfully",
+        data: {
+          filename,
+          url: fileUrl,
+          size: req.file.size,
+          mimetype: req.file.mimetype,
+        },
+      });
+    } catch (error) {
+      console.error("Avatar upload error:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to upload avatar",
+      });
+    }
   });
 };
