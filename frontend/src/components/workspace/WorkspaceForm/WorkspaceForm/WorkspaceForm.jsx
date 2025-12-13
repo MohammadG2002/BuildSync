@@ -23,7 +23,7 @@ const WorkspaceForm = ({ workspace, onSubmit, onCancel, loading }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const newErrors = validateWorkspaceForm(formData);
+    const newErrors = validateForm(formData);
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
