@@ -59,7 +59,13 @@ export const verifyEmail = asyncHandler(async (req, res) => {
   user.emailVerificationExpires = undefined;
   await user.save();
 
+  // Include user status so frontend can decide whether to show "Continue" vs "Create Account"
+  const userInfo = {
+    isActive: user.isActive,
+    name: user.name,
+  };
+
   sendSuccess(res, 200, "Email verified successfully", {
-    data: { verified: true },
+    data: { verified: true, user: userInfo },
   });
 });

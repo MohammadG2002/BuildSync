@@ -9,6 +9,7 @@ const ProfileForm = ({
   loading,
   onChange,
   onSubmit,
+  editable = true,
 }) => {
   return (
     <form onSubmit={onSubmit} className={styles.form}>
@@ -19,6 +20,8 @@ const ProfileForm = ({
         placeholder="John Doe"
         value={profileData.name}
         onChange={onChange}
+        readOnly={!editable}
+        disabled={!editable}
         error={profileErrors.name}
         icon={User}
       />
@@ -30,6 +33,7 @@ const ProfileForm = ({
         placeholder="you@example.com"
         value={profileData.email}
         onChange={onChange}
+        readOnly={!editable}
         error={profileErrors.email}
         icon={Mail}
       />
@@ -41,6 +45,8 @@ const ProfileForm = ({
         placeholder="+1 (555) 000-0000"
         value={profileData.phone}
         onChange={onChange}
+        readOnly={!editable}
+        disabled={!editable}
       />
 
       <div>
@@ -52,19 +58,23 @@ const ProfileForm = ({
           value={profileData.bio}
           onChange={onChange}
           className={styles.bioTextarea}
+          readOnly={!editable}
+          disabled={!editable}
         />
       </div>
 
       <div className={styles.formActions}>
-        <Button
-          type="submit"
-          variant="primary"
-          loading={loading}
-          className={styles.formSaveButton}
-        >
-          <Save className={styles.formSaveIcon} />
-          Save Changes
-        </Button>
+        {editable && (
+          <Button
+            type="submit"
+            variant="primary"
+            loading={loading}
+            className={styles.formSaveButton}
+          >
+            <Save className={styles.formSaveIcon} />
+            Save Changes
+          </Button>
+        )}
       </div>
     </form>
   );

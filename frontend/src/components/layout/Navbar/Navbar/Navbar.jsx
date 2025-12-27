@@ -87,7 +87,9 @@ const Navbar = ({ onMenuClick }) => {
           showMenu={showProfileMenu}
           onToggleMenu={() => setShowProfileMenu(!showProfileMenu)}
           onProfileClick={() => {
-            navigate("/app/profile");
+            const id = user?._id || user?.id;
+            if (id) navigate(`/app/profile/${id}`);
+            else navigate("/app/profile");
             setShowProfileMenu(false);
           }}
           onSettingsClick={() => {

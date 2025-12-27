@@ -23,6 +23,7 @@ import realtimeRoutes from "./routes/realtime.routes.js";
 import uploadRoutes from "./routes/upload.routes.js";
 import tagRoutes from "./routes/tag.routes.js";
 import aiChatRoutes from "./routes/ai.chat.routes.js";
+import userRoutes from "./routes/user.routes.js";
 
 // Import middleware
 import { errorHandler, notFound, rateLimiter } from "./middleware/index.js";
@@ -112,6 +113,7 @@ app.use("/api/realtime", realtimeRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/tags", tagRoutes);
 app.use("/api/ai", aiChatRoutes);
+app.use("/api/users", userRoutes);
 
 // Serve uploaded files
 // Allow cross-origin embedding of uploaded assets (images, etc.) so the frontend

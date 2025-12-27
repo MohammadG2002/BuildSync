@@ -40,12 +40,25 @@ const ProjectNetwork = () => {
     (tasks || []).forEach((t) => {
       const id = (t._id || t.id || "").toString();
       if (!id) return;
+      // parse dates similarly to Gantt
+      const toDate = (s) => {
+        if (!s) return null;
+        const d = new Date(s);
+        if (isNaN(d.getTime())) return null;
+        return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+      };
+      const start = toDate(t.startDate);
+      const due = toDate(t.dueDate);
       items.set(id, {
         id,
         title: `${t.sequence ? `#${t.sequence} ` : ""}${t.title || "Untitled"}`,
         deps: (t.dependencies || []).map((d) =>
           (typeof d === "string" ? d : d?._id || d?.id || d)?.toString()
         ),
+        start,
+        due,
+        priority: t.priority,
+        status: t.status,
       });
     });
 
@@ -242,12 +255,22 @@ const ProjectNetwork = () => {
             {/* Nodes */}
             {Array.from(graph.items.values()).map((n) => {
               const p = graph.positions.get(n.id);
+              const startStr = n.start
+                ? n.start.toISOString().split("T")[0]
+                : "-";
+              const dueStr = n.due ? n.due.toISOString().split("T")[0] : "-";
+              const titleText = `${
+                n.title
+              }\nStart: ${startStr}\nDue: ${dueStr}\nPriority: ${
+                n.priority || "N/A"
+              }\nStatus: ${n.status || "N/A"}`;
               return (
                 <a
                   key={n.id}
                   href={`/app/workspaces/${workspaceId}/projects/${projectId}?task=${n.id}`}
                 >
                   <g>
+                    <title>{titleText}</title>
                     <rect
                       x={p.x}
                       y={p.y}

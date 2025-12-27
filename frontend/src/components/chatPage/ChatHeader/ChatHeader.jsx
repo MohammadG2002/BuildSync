@@ -1,12 +1,4 @@
-import {
-  Phone,
-  Video,
-  MoreVertical,
-  Eye,
-  Ban,
-  CheckCheck,
-  Undo2,
-} from "lucide-react";
+import { MoreVertical, Eye, Ban, CheckCheck, Undo2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -71,15 +63,44 @@ const ChatHeader = ({ selectedContact, onContactStatusChange }) => {
     }
   };
 
-  const handleViewProfile = () => {
-    navigate("/app/profile");
+  const resolveId = (val) => {
+    if (!val) return null;
+    if (typeof val === "string") return val;
+    if (typeof val === "number") return String(val);
+    if (val._id) return String(val._id);
+    if (val.id) return String(val.id);
+    try {
+      const s = val.toString();
+      if (s && s !== "[object Object]") return s;
+    } catch (e) {
+      // ignore
+    }
+    return null;
+  };
+
+  const handleViewProfile = (contactOrId) => {
+    // Accept either an id or a contact object and navigate to the proper profile route
+    const id =
+      resolveId(contactOrId) ||
+      resolveId(contactOrId?.id) ||
+      resolveId(contactOrId?._id);
+    if (id) {
+      navigate(`/app/profile/${id}`);
+    } else {
+      navigate("/app/profile");
+    }
     setOpen(false);
   };
 
   return (
     <div className={styles.chatHeader}>
       <div className={styles.chatHeaderContent}>
-        <div className={styles.chatHeaderLeft}>
+        <div
+          className={styles.chatHeaderLeft}
+          // clicking the avatar or name opens the user's profile
+          onClick={() => handleViewProfile(selectedContact)}
+          style={{ cursor: "pointer" }}
+        >
           <UserAvatar
             name={selectedContact.name}
             avatar={selectedContact.avatar}
@@ -93,12 +114,7 @@ const ChatHeader = ({ selectedContact, onContactStatusChange }) => {
           </div>
         </div>
         <div className={styles.menuContainer} ref={menuRef}>
-          <button className={styles.iconButton}>
-            <Phone className={styles.iconButtonIcon} />
-          </button>
-          <button className={styles.iconButton}>
-            <Video className={styles.iconButtonIcon} />
-          </button>
+          {/* Removed phone/video placeholders */}
           <button
             className={styles.iconButton}
             onClick={() => setOpen((v) => !v)}
@@ -107,7 +123,10 @@ const ChatHeader = ({ selectedContact, onContactStatusChange }) => {
           </button>
           {open && (
             <div className={styles.menuDropdown}>
-              <button className={styles.menuItem} onClick={handleViewProfile}>
+              <button
+                className={styles.menuItem}
+                onClick={() => handleViewProfile(selectedContact)}
+              >
                 <Eye className={styles.menuItemIcon} />
                 <span>View profile</span>
               </button>

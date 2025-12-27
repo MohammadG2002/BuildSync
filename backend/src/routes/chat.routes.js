@@ -227,14 +227,19 @@ router.post("/", authenticate, async (req, res) => {
     });
 
     // Send comprehensive context to n8n
-    const response = await fetch(
-      "https://buildsync2.app.n8n.cloud/webhook/8b085178-cf54-4bfe-812d-0e0d562ce3ac/chat",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      }
-    );
+    const n8nUrl =
+      process.env.N8N_WEBHOOK_URL ||
+      "https://buildsync5.app.n8n.cloud/webhook/8b085178-cf54-4bfe-812d-0e0d562ce3ac/chat";
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+
+    const response = await fetch(n8nUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      signal: controller.signal,
+    }).finally(() => clearTimeout(timeout));
     console.log("[API/chat] n8n status:", response.status);
     let data = {};
     try {

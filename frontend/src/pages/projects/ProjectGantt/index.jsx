@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getTasks } from "../../../services/taskService";
 
@@ -7,7 +7,13 @@ const ProjectGantt = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [zoom, setZoom] = useState(24); // pixels per day
+  // zoom = pixels per day; we'll auto-calc to fill available width with min/max constraints
+  const [zoom, setZoom] = useState(24);
+  const timelineRef = useRef(null);
+  const MIN_ZOOM = 8; // min px per day
+  const MAX_ZOOM = 64; // max px per day
+  const ROW_HEIGHT = 28;
+  const VISIBLE_DAYS = 60; // fit up to 60 days into the viewport, then allow scrolling
 
   useEffect(() => {
     let cancelled = false;
@@ -46,7 +52,7 @@ const ProjectGantt = () => {
       }`;
       const start = toDate(t.startDate);
       const due = toDate(t.dueDate);
-      return { id, title, start, due };
+      return { id, title, start, due, priority: t.priority, status: t.status };
     });
     // Sort ascending by start date, then due date
     items = items.sort((a, b) => {
@@ -92,6 +98,32 @@ const ProjectGantt = () => {
     return Math.max(0, diff);
   };
 
+  // Auto-calc zoom to fill available timeline width with min/max constraints
+  useEffect(() => {
+    const calc = () => {
+      try {
+        const container = timelineRef.current;
+        if (!container || !parsed.dayCount) return;
+        // subtract 24px padding to avoid touching edges
+        const available = Math.max(120, container.clientWidth - 24);
+        // compute zoom to fit up to VISIBLE_DAYS into available width; if project longer, timeline becomes scrollable
+        const divisor = Math.max(1, Math.min(parsed.dayCount, VISIBLE_DAYS));
+        const auto = Math.floor(available / divisor);
+        const clamped = Math.max(
+          MIN_ZOOM,
+          Math.min(MAX_ZOOM, auto || MIN_ZOOM)
+        );
+        setZoom(clamped);
+      } catch (e) {
+        // ignore
+      }
+    };
+
+    calc();
+    window.addEventListener("resize", calc);
+    return () => window.removeEventListener("resize", calc);
+  }, [parsed.dayCount]);
+
   return (
     <div style={{ padding: 16 }}>
       <div style={{ marginBottom: 12 }}>
@@ -118,7 +150,7 @@ const ProjectGantt = () => {
         }}
       >
         <h1 style={{ margin: 0 }}>Gantt Chart</h1>
-        <div style={{ display: "flex", gap: 8 }}>
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
           <button
             style={{
               padding: "6px 12px",
@@ -182,34 +214,15 @@ const ProjectGantt = () => {
           >
             Download CSV
           </button>
-          <Link to={`/app/workspaces/${workspaceId}/projects/${projectId}`}>
-            Back to Project
-          </Link>
+          {/* Removed duplicate Back link (there is already a Back button above) */}
         </div>
       </div>
       {loading && <p style={{ color: "#6b7280" }}>Loading…</p>}
       {error && <p style={{ color: "#b91c1c" }}>{error}</p>}
       {!loading && !error && (
         <div style={{ marginTop: 12 }}>
-          {/* Controls */}
-          <div
-            style={{
-              display: "flex",
-              gap: 8,
-              alignItems: "center",
-              marginBottom: 8,
-            }}
-          >
-            <label style={{ fontSize: 12, color: "#6b7280" }}>Zoom</label>
-            <input
-              type="range"
-              min={8}
-              max={48}
-              step={1}
-              value={zoom}
-              onChange={(e) => setZoom(parseInt(e.target.value, 10))}
-            />
-          </div>
+          {/* Controls removed: zoom is auto-calculated to fill timeline (min/max enforced) */}
+          <div style={{ height: 8 }} />
 
           <div
             style={{
@@ -241,6 +254,7 @@ const ProjectGantt = () => {
             </div>
             {/* Right: timeline */}
             <div
+              ref={timelineRef}
               style={{
                 overflowX: "auto",
                 border: "1px solid #e5e7eb",
@@ -254,14 +268,41 @@ const ProjectGantt = () => {
                     position: "sticky",
                     top: 0,
                     background: "#fff",
-                    zIndex: 1,
+                    zIndex: 2,
                     borderBottom: "1px solid #e5e7eb",
                   }}
                 >
+                  {/* Month row: show month label on first day of month */}
+                  <div
+                    style={{
+                      display: "flex",
+                      borderBottom: "1px solid #f3f4f6",
+                    }}
+                  >
+                    {headerDays.map((d, idx) => (
+                      <div
+                        key={`month-${idx}`}
+                        style={{
+                          width: zoom,
+                          textAlign: "center",
+                          fontSize: 11,
+                          color: "#374151",
+                          padding: 2,
+                          borderRight: "1px solid #f3f4f6",
+                        }}
+                      >
+                        {d.getDate() === 1 || idx === 0
+                          ? d.toLocaleString(undefined, { month: "short" })
+                          : ""}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Day row */}
                   <div style={{ display: "flex" }}>
                     {headerDays.map((d, idx) => (
                       <div
-                        key={idx}
+                        key={`day-${idx}`}
                         style={{
                           width: zoom,
                           textAlign: "center",
@@ -282,12 +323,36 @@ const ProjectGantt = () => {
                 <svg
                   id="gantt-svg"
                   width={Math.max(0, parsed.dayCount * zoom)}
-                  height={Math.max(100, parsed.items.length * 28)}
+                  height={Math.max(
+                    ROW_HEIGHT,
+                    parsed.items.length * ROW_HEIGHT
+                  )}
                 >
-                  {/* Grid lines */}
+                  {/* Background */}
+                  <rect
+                    x={0}
+                    y={0}
+                    width={Math.max(0, parsed.dayCount * zoom)}
+                    height={Math.max(120, parsed.items.length * 28)}
+                    fill="#ffffff"
+                  />
+
+                  {/* Alternating row backgrounds for readability */}
+                  {parsed.items.map((_, rowIdx) => (
+                    <rect
+                      key={`row-bg-${rowIdx}`}
+                      x={0}
+                      y={rowIdx * ROW_HEIGHT}
+                      width={Math.max(0, parsed.dayCount * zoom)}
+                      height={ROW_HEIGHT}
+                      fill={rowIdx % 2 === 0 ? "#ffffff" : "#fbfbfd"}
+                    />
+                  ))}
+
+                  {/* Vertical grid lines */}
                   {headerDays.map((_, idx) => (
                     <line
-                      key={idx}
+                      key={`grid-${idx}`}
                       x1={idx * zoom}
                       y1={0}
                       x2={idx * zoom}
@@ -296,30 +361,49 @@ const ProjectGantt = () => {
                       strokeWidth={1}
                     />
                   ))}
+
                   {/* Task bars */}
                   {parsed.items.map((i, rowIdx) => {
                     if (!i.start || !i.due) return null;
                     const x = dayIndex(i.start) * zoom;
                     const width = Math.max(
                       zoom,
-                      (dayIndex(i.due) - dayIndex(i.start) + 1) * zoom
+                      (dayIndex(i.due) - dayIndex(i.start)) * zoom
                     );
-                    const y = rowIdx * 28 + 6;
+                    const y = rowIdx * ROW_HEIGHT + 6;
                     return (
                       <a
                         key={i.id}
                         href={`/app/workspaces/${workspaceId}/projects/${projectId}?task=${i.id}`}
+                        style={{ textDecoration: "none" }}
                       >
+                        <title>{`${i.title}\nStart: ${
+                          i.start.toISOString().split("T")[0]
+                        }\nDue: ${
+                          i.due.toISOString().split("T")[0]
+                        }\nPriority: ${i.priority || "N/A"}\nStatus: ${
+                          i.status || "N/A"
+                        }`}</title>
                         <rect
-                          x={x}
+                          x={x + 2}
                           y={y}
-                          rx={4}
-                          ry={4}
-                          width={width}
+                          rx={6}
+                          ry={6}
+                          width={Math.max(8, width - 4)}
                           height={16}
-                          fill="#3b82f6"
-                          opacity={0.85}
+                          fill="#2563eb"
+                          opacity={0.95}
                         />
+                        {/* Label inside bar (clamped by SVG) */}
+                        <text
+                          x={x + 8}
+                          y={y + 12}
+                          fontSize={11}
+                          fill="#ffffff"
+                          style={{ pointerEvents: "none" }}
+                        >
+                          {i.title}
+                        </text>
                       </a>
                     );
                   })}

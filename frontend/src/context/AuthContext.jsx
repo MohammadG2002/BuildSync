@@ -35,7 +35,9 @@ export const AuthProvider = ({ children }) => {
       toast.success(result.message);
       navigate("/app/dashboard");
     } catch (error) {
-      toast.error(error.message || "Login failed");
+      const msg =
+        error?.response?.data?.message || error?.message || "Login failed";
+      toast.error(msg);
       throw error;
     }
   };
@@ -48,7 +50,11 @@ export const AuthProvider = ({ children }) => {
       toast.success(result.message);
       navigate("/app/dashboard");
     } catch (error) {
-      toast.error(error.message || "Registration failed");
+      const msg =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Registration failed";
+      toast.error(msg);
       throw error;
     }
   };

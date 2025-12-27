@@ -116,6 +116,8 @@ const AppRoutes = () => {
           <Route path="chat/ai" element={<AIChat />} />
           <Route path="chat/:chatId" element={<Chat />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="profile/:userId" element={<Profile />} />
+          <Route path="profile/:id" element={<Profile />} />
           <Route path="notifications" element={<Notifications />} />
         </Route>
 

@@ -21,7 +21,13 @@ const ProjectCard = ({ project, onClick, onSettings }) => {
     typeof project.totalExcludingBlocked === "number"
       ? project.totalExcludingBlocked
       : undefined;
-  const showProgress = totalExcl === undefined ? true : totalExcl > 0;
+
+  // Determine whether to show progress:
+  // - If we know total excluding blocked, show only when > 0
+  // - If unknown, show only when `project.progress` is a finite number
+  const hasNumericProgress = Number.isFinite(Number(project.progress));
+  const showProgress =
+    totalExcl === undefined ? hasNumericProgress : totalExcl > 0;
 
   return (
     <div className={styles.projectCard} onClick={onClick}>
@@ -81,13 +87,21 @@ const ProjectCard = ({ project, onClick, onSettings }) => {
           <div className={styles.progressHeader}>
             <span className={styles.progressLabel}>Progress</span>
             <span className={styles.progressValue}>
-              {Number(project.progress || 0)}%
+              {hasNumericProgress
+                ? `${Math.round(Number(project.progress))}%`
+                : "0%"}
             </span>
           </div>
           <div className={styles.progressBar}>
             <div
               className={styles.progressFill}
-              style={{ width: `${Number(project.progress || 0)}%` }}
+              style={{
+                width: `${
+                  hasNumericProgress
+                    ? Math.max(0, Math.min(100, Number(project.progress)))
+                    : 0
+                }%`,
+              }}
             ></div>
           </div>
           {typeof project.completedTasksCount === "number" &&

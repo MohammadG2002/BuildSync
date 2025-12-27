@@ -70,11 +70,12 @@ export const registerUser = async (userData) => {
     }
   }
 
-  // Create user
+  // Create user (ensure active)
   const user = await User.create({
     name,
     email: email.toLowerCase(),
     password,
+    isActive: true,
   });
 
   // Generate token

@@ -17,10 +17,6 @@ const ProfileDropdown = ({
         <User className={styles.profileMenuIcon} />
         <span>Profile</span>
       </button>
-      <button onClick={onSettingsClick} className={styles.profileMenuItem}>
-        <Settings className={styles.profileMenuIcon} />
-        <span>Settings</span>
-      </button>
       <div className={styles.profileMenuDivider}></div>
       <button onClick={onLogout} className={styles.logoutButton}>
         <LogOut className={styles.logoutIcon} />

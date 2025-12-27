@@ -19,11 +19,12 @@ import {
 import styles from "./Auth.module.css";
 
 const Register = () => {
-  const { register } = useAuth();
+  const { register, login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1); // 1: form, 2: verification
+  const [accountExists, setAccountExists] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -145,7 +146,8 @@ const Register = () => {
               { ...formData, verificationCode: code },
               setErrors,
               setStep,
-              setLoading
+              setLoading,
+              setAccountExists
             );
           }}
           onResend={() => handleResendCode(formData.email)}
@@ -158,7 +160,14 @@ const Register = () => {
       {step === 3 && (
         <form
           onSubmit={(e) =>
-            handleSubmit(e, formData, setErrors, register, setLoading)
+            handleSubmit(
+              e,
+              formData,
+              setErrors,
+              accountExists ? login : register,
+              setLoading,
+              accountExists ? "login" : "register"
+            )
           }
           className={styles.authForm}
         >
@@ -172,7 +181,7 @@ const Register = () => {
             loading={loading}
             className={styles.fullWidthButton}
           >
-            Create Account
+            {accountExists ? "Continue to Dashboard" : "Create Account"}
           </Button>
         </form>
       )}

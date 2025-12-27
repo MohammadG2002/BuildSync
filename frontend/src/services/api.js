@@ -40,10 +40,20 @@ api.interceptors.response.use(
       // Handle specific error status codes
       switch (error.response.status) {
         case 401:
-          // Unauthorized - clear token and redirect to login
+          // Unauthorized - clear token. For failed login attempts we should
+          // let the caller handle the error (so the UI can show a toast)
           localStorage.removeItem("token");
-          window.location.href = "/login";
-          toast.error("Session expired. Please login again.");
+          // If this request was not the login endpoint, redirect to login
+          // and show session-expired message. For the login endpoint, do
+          // nothing here and allow the caller to handle the error message.
+          if (
+            error.config &&
+            error.config.url &&
+            !error.config.url.includes("/auth/login")
+          ) {
+            window.location.href = "/login";
+            toast.error("Session expired. Please login again.");
+          }
           break;
         case 403:
           toast.error("You do not have permission to perform this action.");

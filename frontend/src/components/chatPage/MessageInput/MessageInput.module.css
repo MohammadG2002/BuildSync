@@ -13,7 +13,7 @@
 .inputForm {
   display: flex;
   gap: 0.75rem;
-  align-items: flex-end;
+  align-items: center;
 }
 
 .inputWrapper {
@@ -23,13 +23,15 @@
 
 .input {
   width: 100%;
-  padding: 0.5rem 1rem;
+  padding: 0.65rem 1rem;
   border: 1px solid #d1d5db;
   border-radius: 0.5rem;
   outline: none;
   transition: all 0.2s ease-in-out;
   background-color: white;
   color: #111827;
+  box-sizing: border-box;
+  line-height: 1.25;
   resize: none;
   min-height: 2.75rem;
   max-height: 8rem;

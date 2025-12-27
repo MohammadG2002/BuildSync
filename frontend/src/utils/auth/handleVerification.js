@@ -45,7 +45,8 @@ export const handleVerifyCode = async (
   formData,
   setErrors,
   setStep,
-  setLoading
+  setLoading,
+  setAccountExists // optional setter to indicate an existing active account
 ) => {
   try {
     setLoading(true);
@@ -56,7 +57,21 @@ export const handleVerifyCode = async (
       return;
     }
 
-    await verifyEmailCode(formData.email, formData.verificationCode);
+    const response = await verifyEmailCode(
+      formData.email,
+      formData.verificationCode
+    );
+    const userInfo = response?.data?.data?.user;
+    if (userInfo && setAccountExists) {
+      // Consider account existing if it's active and has a non-Pending name
+      const exists = !!(
+        userInfo.isActive &&
+        userInfo.name &&
+        userInfo.name !== "Pending"
+      );
+      setAccountExists(exists);
+    }
+
     toast.success("Email verified successfully");
     setStep(3); // Move to complete registration
   } catch (error) {

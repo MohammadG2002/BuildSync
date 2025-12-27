@@ -18,7 +18,9 @@ export const loginUser = async (credentials) => {
   // Validate required fields
   const validation = validateRequiredFields(credentials, ["email", "password"]);
   if (!validation.isValid) {
-    throw new Error(validation.errors.join(", "));
+    const err = new Error(validation.errors.join(", "));
+    err.statusCode = 400;
+    throw err;
   }
 
   // Find user with password field
@@ -27,18 +29,24 @@ export const loginUser = async (credentials) => {
   );
 
   if (!user) {
-    throw new Error("Invalid email or password");
+    const err = new Error("Invalid email or password");
+    err.statusCode = 401;
+    throw err;
   }
 
   // Check if user is active
   if (!user.isActive) {
-    throw new Error("Account is inactive. Please contact support.");
+    const err = new Error("Account is inactive. Please contact support.");
+    err.statusCode = 403;
+    throw err;
   }
 
   // Verify password
   const isPasswordValid = await user.comparePassword(password);
   if (!isPasswordValid) {
-    throw new Error("Invalid email or password");
+    const err = new Error("Invalid email or password");
+    err.statusCode = 401;
+    throw err;
   }
 
   // Update last login
