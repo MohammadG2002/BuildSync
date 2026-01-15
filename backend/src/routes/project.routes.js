@@ -11,6 +11,7 @@ import {
 import {
   authenticate,
   projectValidation,
+  updateProjectValidation,
   validate,
   mongoIdValidation,
 } from "../middleware/index.js";
@@ -29,7 +30,12 @@ router
 router
   .route("/:id")
   .get(mongoIdValidation("id"), validate, getProject)
-  .put(mongoIdValidation("id"), projectValidation, validate, updateProject)
+  .put(
+    mongoIdValidation("id"),
+    updateProjectValidation,
+    validate,
+    updateProject
+  )
   .delete(mongoIdValidation("id"), validate, deleteProject);
 
 // Member management routes

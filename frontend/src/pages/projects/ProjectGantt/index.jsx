@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useTheme } from "../../../hooks/useTheme";
 import { getTasks } from "../../../services/taskService";
 
 const ProjectGantt = () => {
@@ -10,6 +11,7 @@ const ProjectGantt = () => {
   // zoom = pixels per day; we'll auto-calc to fill available width with min/max constraints
   const [zoom, setZoom] = useState(24);
   const timelineRef = useRef(null);
+  const { isDark } = useTheme();
   const MIN_ZOOM = 8; // min px per day
   const MAX_ZOOM = 64; // max px per day
   const ROW_HEIGHT = 28;
@@ -132,9 +134,9 @@ const ProjectGantt = () => {
           style={{
             padding: "6px 16px",
             borderRadius: 6,
-            border: "1px solid #e5e7eb",
-            background: "#f3f4f6",
-            color: "#1d4ed8",
+            border: `1px solid ${isDark ? "#374151" : "#e5e7eb"}`,
+            background: isDark ? "#111827" : "#f3f4f6",
+            color: isDark ? "#60a5fa" : "#1d4ed8",
             textDecoration: "none",
             fontWeight: 500,
           }}
@@ -155,8 +157,9 @@ const ProjectGantt = () => {
             style={{
               padding: "6px 12px",
               borderRadius: 6,
-              border: "1px solid #e5e7eb",
-              background: "#f3f4f6",
+              border: `1px solid ${isDark ? "#374151" : "#e5e7eb"}`,
+              background: isDark ? "#111827" : "#f3f4f6",
+              color: isDark ? "#d1d5db" : "inherit",
               cursor: "pointer",
             }}
             onClick={() => {
@@ -185,8 +188,9 @@ const ProjectGantt = () => {
             style={{
               padding: "6px 12px",
               borderRadius: 6,
-              border: "1px solid #e5e7eb",
-              background: "#f3f4f6",
+              border: `1px solid ${isDark ? "#374151" : "#e5e7eb"}`,
+              background: isDark ? "#111827" : "#f3f4f6",
+              color: isDark ? "#d1d5db" : "inherit",
               cursor: "pointer",
             }}
             onClick={() => {
@@ -267,16 +271,18 @@ const ProjectGantt = () => {
                   style={{
                     position: "sticky",
                     top: 0,
-                    background: "#fff",
+                    background: isDark ? "#0b1220" : "#fff",
                     zIndex: 2,
-                    borderBottom: "1px solid #e5e7eb",
+                    borderBottom: `1px solid ${isDark ? "#374151" : "#e5e7eb"}`,
                   }}
                 >
                   {/* Month row: show month label on first day of month */}
                   <div
                     style={{
                       display: "flex",
-                      borderBottom: "1px solid #f3f4f6",
+                      borderBottom: `1px solid ${
+                        isDark ? "#24303a" : "#f3f4f6"
+                      }`,
                     }}
                   >
                     {headerDays.map((d, idx) => (
@@ -286,9 +292,11 @@ const ProjectGantt = () => {
                           width: zoom,
                           textAlign: "center",
                           fontSize: 11,
-                          color: "#374151",
+                          color: isDark ? "#e5e7eb" : "#374151",
                           padding: 2,
-                          borderRight: "1px solid #f3f4f6",
+                          borderRight: `1px solid ${
+                            isDark ? "#24303a" : "#f3f4f6"
+                          }`,
                         }}
                       >
                         {d.getDate() === 1 || idx === 0
@@ -307,9 +315,11 @@ const ProjectGantt = () => {
                           width: zoom,
                           textAlign: "center",
                           fontSize: 10,
-                          color: "#6b7280",
+                          color: isDark ? "#9ca3af" : "#6b7280",
                           padding: 2,
-                          borderRight: "1px solid #f3f4f6",
+                          borderRight: `1px solid ${
+                            isDark ? "#24303a" : "#f3f4f6"
+                          }`,
                         }}
                       >
                         {d.getMonth() + 1}/{d.getDate()}
@@ -334,7 +344,7 @@ const ProjectGantt = () => {
                     y={0}
                     width={Math.max(0, parsed.dayCount * zoom)}
                     height={Math.max(120, parsed.items.length * 28)}
-                    fill="#ffffff"
+                    fill={isDark ? "#071025" : "#ffffff"}
                   />
 
                   {/* Alternating row backgrounds for readability */}
@@ -345,7 +355,15 @@ const ProjectGantt = () => {
                       y={rowIdx * ROW_HEIGHT}
                       width={Math.max(0, parsed.dayCount * zoom)}
                       height={ROW_HEIGHT}
-                      fill={rowIdx % 2 === 0 ? "#ffffff" : "#fbfbfd"}
+                      fill={
+                        isDark
+                          ? rowIdx % 2 === 0
+                            ? "#071025"
+                            : "#07162a"
+                          : rowIdx % 2 === 0
+                          ? "#ffffff"
+                          : "#fbfbfd"
+                      }
                     />
                   ))}
 
@@ -357,7 +375,7 @@ const ProjectGantt = () => {
                       y1={0}
                       x2={idx * zoom}
                       y2={parsed.items.length * 28}
-                      stroke="#f3f4f6"
+                      stroke={isDark ? "#24303a" : "#f3f4f6"}
                       strokeWidth={1}
                     />
                   ))}

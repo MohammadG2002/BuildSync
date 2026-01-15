@@ -1,6 +1,7 @@
 import { Calendar, MoreVertical, Settings as SettingsIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { getInitials, generateColor, formatDate } from "../../../utils/helpers";
+import UserAvatar from "../../common/UserAvatar/UserAvatar/UserAvatar";
 import styles from "./ProjectCard.module.css";
 
 const ProjectCard = ({ project, onClick, onSettings }) => {
@@ -130,15 +131,18 @@ const ProjectCard = ({ project, onClick, onSettings }) => {
             const title = u.name || u.username || u.email || "Member";
             const key = u.id || u._id || member.id || member._id || index;
 
+            const avatarUrl =
+              u.avatar || u.avatarUrl || u.photo || u.picture || member?.avatar;
+
             return (
-              <div
+              <UserAvatar
                 key={key}
+                name={initials}
+                avatar={avatarUrl}
                 className={styles.memberAvatar}
-                style={{ backgroundColor: generateColor(colorSeed) }}
                 title={title}
-              >
-                {initials}
-              </div>
+                style={{ backgroundColor: generateColor(colorSeed) }}
+              />
             );
           })}
         </div>

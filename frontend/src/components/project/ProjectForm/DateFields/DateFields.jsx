@@ -23,6 +23,10 @@ const DateFields = ({ startDate, dueDate, onChange, dueDateError }) => {
 
   // Close calendars when clicking outside
   useEffect(() => {
+    // Use 'click' instead of 'mousedown' so clicks inside the calendar
+    // (which is rendered into a portal) can complete before the
+    // document-level handler hides the popover. Using 'mousedown' can
+    // remove the calendar before the calendar's click handlers run.
     const handler = (e) => {
       if (
         showStartCal &&
@@ -35,8 +39,8 @@ const DateFields = ({ startDate, dueDate, onChange, dueDateError }) => {
         setShowDueCal(false);
       }
     };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
+    document.addEventListener("click", handler);
+    return () => document.removeEventListener("click", handler);
   }, [showStartCal, showDueCal]);
 
   const handleSelect = (name) => (iso) => {

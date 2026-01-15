@@ -96,6 +96,7 @@
 
 :global(.dark) .day {
   color: #f3f4f6;
+  background: transparent;
 }
 
 .day:hover {
@@ -162,11 +163,30 @@
 .timeBtn:hover {
   background: #eef2ff;
 }
+.timeBtn:focus {
+  outline: 2px solid rgba(59, 130, 246, 0.12);
+}
+
+:global(.dark) .timeBtn {
+  background: #1f2937;
+  border-color: #374151;
+  color: #d1d5db;
+}
+
+:global(.dark) .timeBtn:hover {
+  background: #374151;
+}
 .timeInput {
   padding: 0.25rem 0.4rem;
   border-radius: 6px;
   border: 1px solid #e5e7eb;
   background: #ffffff;
+}
+
+:global(.dark) .timeInput {
+  background: #111827;
+  border-color: #374151;
+  color: #e5e7eb;
 }
 .timeApply {
   padding: 0.25rem 0.5rem;
@@ -176,6 +196,11 @@
   border: 1px solid #1d4ed8;
   border-radius: 6px;
   cursor: pointer;
+}
+
+:global(.dark) .timeApply {
+  background: #2563eb;
+  border-color: #1d4ed8;
 }
 
 .hoursGrid {
@@ -211,6 +236,22 @@
   transform: translateY(-4px);
   background: #e6f0ff;
   box-shadow: 0 4px 14px rgba(37, 99, 235, 0.08);
+}
+
+:global(.dark) .hoursGrid {
+  background: transparent;
+  border-color: rgba(37, 99, 235, 0.04);
+  box-shadow: none;
+}
+
+:global(.dark) .hourCell {
+  background: #0b1220;
+  border-color: #24303a;
+  color: #e5e7eb;
+}
+
+:global(.dark) .hourCell:hover {
+  background: #0f1724;
 }
 
 .hourCell:focus {

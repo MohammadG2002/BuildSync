@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useTheme } from "../../../hooks/useTheme";
 import { getTasks } from "../../../services/taskService";
 
 const ProjectNetwork = () => {
@@ -7,6 +8,7 @@ const ProjectNetwork = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const { isDark } = useTheme();
   const [nodeW] = useState(160);
   const [nodeH] = useState(56);
   const [hGap] = useState(80);
@@ -131,8 +133,8 @@ const ProjectNetwork = () => {
             padding: "6px 16px",
             borderRadius: 6,
             border: "1px solid #e5e7eb",
-            background: "#f3f4f6",
-            color: "#1d4ed8",
+            background: isDark ? "#111827" : "#f3f4f6",
+            color: isDark ? "#60a5fa" : "#1d4ed8",
             textDecoration: "none",
             fontWeight: 500,
           }}
@@ -153,8 +155,9 @@ const ProjectNetwork = () => {
             style={{
               padding: "6px 12px",
               borderRadius: 6,
-              border: "1px solid #e5e7eb",
-              background: "#f3f4f6",
+              border: `1px solid ${isDark ? "#374151" : "#e5e7eb"}`,
+              background: isDark ? "#111827" : "#f3f4f6",
+              color: isDark ? "#d1d5db" : "inherit",
               cursor: "pointer",
             }}
             onClick={() => {
@@ -183,8 +186,9 @@ const ProjectNetwork = () => {
             style={{
               padding: "6px 12px",
               borderRadius: 6,
-              border: "1px solid #e5e7eb",
-              background: "#f3f4f6",
+              border: `1px solid ${isDark ? "#374151" : "#e5e7eb"}`,
+              background: isDark ? "#111827" : "#f3f4f6",
+              color: isDark ? "#d1d5db" : "inherit",
               cursor: "pointer",
             }}
             onClick={() => {
@@ -208,9 +212,7 @@ const ProjectNetwork = () => {
           >
             Download CSV
           </button>
-          <Link to={`/app/workspaces/${workspaceId}/projects/${projectId}`}>
-            Back to Project
-          </Link>
+          {/* Removed duplicate Back to Project link (top-left already has Back) */}
         </div>
       </div>
       {loading && <p style={{ color: "#6b7280" }}>Loading…</p>}
@@ -278,14 +280,14 @@ const ProjectNetwork = () => {
                       ry={8}
                       width={nodeW}
                       height={nodeH}
-                      fill="#ffffff"
-                      stroke="#e5e7eb"
+                      fill={isDark ? "#0b1220" : "#ffffff"}
+                      stroke={isDark ? "#374151" : "#e5e7eb"}
                     />
                     <text
                       x={p.x + 12}
                       y={p.y + 22}
                       fontSize={12}
-                      fill="#111827"
+                      fill={isDark ? "#e5e7eb" : "#111827"}
                     >
                       {n.title}
                     </text>
@@ -293,7 +295,7 @@ const ProjectNetwork = () => {
                       x={p.x + 12}
                       y={p.y + 40}
                       fontSize={10}
-                      fill="#6b7280"
+                      fill={isDark ? "#9ca3af" : "#6b7280"}
                     >
                       {graph.items.get(n.id)?.deps?.length || 0} deps
                     </text>

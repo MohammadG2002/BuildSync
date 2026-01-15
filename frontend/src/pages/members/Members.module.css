@@ -463,6 +463,19 @@
 .tab:hover {
   background: #e5e7eb;
 }
+.tab:focus {
+  outline: 2px solid rgba(59, 130, 246, 0.12);
+}
+
+:global(.dark) .tab {
+  background: #111827;
+  border-color: #374151;
+  color: #d1d5db;
+}
+
+:global(.dark) .tab:hover {
+  background: #1f2937;
+}
 
 .activeTab {
   padding: 0.5rem 1rem;

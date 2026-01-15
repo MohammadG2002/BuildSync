@@ -1,5 +1,4 @@
 import { getRelativeTime } from "../../../utils/helpers";
-import UserAvatar from "../../common/UserAvatar/UserAvatar/UserAvatar";
 import styles from "./MessageBubble.module.css";
 import { buildAbsoluteUrl } from "../../../utils/helpers/buildAbsoluteUrl";
 
@@ -10,13 +9,7 @@ const MessageBubble = ({ message, isOwn }) => {
         isOwn ? styles.messageWrapperSent : ""
       }`}
     >
-      {!isOwn && (
-        <UserAvatar
-          name={message.senderName}
-          avatar={message.senderAvatar}
-          className={styles.messageAvatar}
-        />
-      )}
+      {/* Avatars removed from message list for compact 1:1 chat */}
       <div className={styles.messageContent}>
         <div
           className={`${styles.messageBubble} ${
