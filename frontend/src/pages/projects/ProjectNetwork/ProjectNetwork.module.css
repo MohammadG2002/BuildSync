@@ -1,0 +1,131 @@
+.container {
+  padding: 16px;
+}
+
+.backLinkContainer {
+  margin-bottom: 12px;
+}
+
+.backLink {
+  padding: 6px 16px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  background: #f3f4f6;
+  color: #1d4ed8;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.backLink:hover {
+  background: #e5e7eb;
+}
+
+.dark .backLink {
+  border-color: #374151;
+  background: #111827;
+  color: #60a5fa;
+}
+
+.dark .backLink:hover {
+  background: #1f2937;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  margin: 0;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 8px;
+}
+
+.button {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  background: #f3f4f6;
+  color: inherit;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.button:hover {
+  background: #e5e7eb;
+}
+
+.dark .button {
+  border-color: #374151;
+  background: #111827;
+  color: #d1d5db;
+}
+
+.dark .button:hover {
+  background: #1f2937;
+}
+
+.loading,
+.error {
+  color: #6b7280;
+}
+
+.error {
+  color: #b91c1c;
+}
+
+.svgContainer {
+  margin-top: 12px;
+  overflow: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.dark .svgContainer {
+  border-color: #374151;
+}
+
+svg {
+  display: block;
+}
+
+svg rect {
+  fill: #ffffff;
+  stroke: #e5e7eb;
+}
+
+.dark svg rect {
+  fill: #0b1220;
+  stroke: #374151;
+}
+
+svg text {
+  fill: #111827;
+}
+
+.dark svg text {
+  fill: #e5e7eb;
+}
+
+svg tspan {
+  fill: #6b7280;
+}
+
+.dark svg tspan {
+  fill: #9ca3af;
+}
+
+svg path {
+  stroke: #9ca3af;
+}
+
+svg polygon {
+  fill: #9ca3af;
+}

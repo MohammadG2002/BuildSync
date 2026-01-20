@@ -20,6 +20,8 @@ const DateFields = ({ startDate, dueDate, onChange, dueDateError }) => {
   });
   const startRef = useRef(null);
   const dueRef = useRef(null);
+  const startCalRef = useRef(null);
+  const dueCalRef = useRef(null);
 
   // Close calendars when clicking outside
   useEffect(() => {
@@ -31,11 +33,19 @@ const DateFields = ({ startDate, dueDate, onChange, dueDateError }) => {
       if (
         showStartCal &&
         startRef.current &&
-        !startRef.current.contains(e.target)
+        !startRef.current.contains(e.target) &&
+        startCalRef.current &&
+        !startCalRef.current.contains(e.target)
       ) {
         setShowStartCal(false);
       }
-      if (showDueCal && dueRef.current && !dueRef.current.contains(e.target)) {
+      if (
+        showDueCal &&
+        dueRef.current &&
+        !dueRef.current.contains(e.target) &&
+        dueCalRef.current &&
+        !dueCalRef.current.contains(e.target)
+      ) {
         setShowDueCal(false);
       }
     };
@@ -123,6 +133,7 @@ const DateFields = ({ startDate, dueDate, onChange, dueDateError }) => {
         {showStartCal &&
           createPortal(
             <div
+              ref={startCalRef}
               style={{
                 position: "fixed",
                 zIndex: 1000,
@@ -135,7 +146,7 @@ const DateFields = ({ startDate, dueDate, onChange, dueDateError }) => {
                 onSelect={handleSelect("startDate")}
               />
             </div>,
-            document.body
+            document.body,
           )}
       </div>
 
@@ -165,6 +176,7 @@ const DateFields = ({ startDate, dueDate, onChange, dueDateError }) => {
         {showDueCal &&
           createPortal(
             <div
+              ref={dueCalRef}
               style={{
                 position: "fixed",
                 zIndex: 1000,
@@ -174,7 +186,7 @@ const DateFields = ({ startDate, dueDate, onChange, dueDateError }) => {
             >
               <Calendar value={dueDate} onSelect={handleSelect("dueDate")} />
             </div>,
-            document.body
+            document.body,
           )}
       </div>
     </div>

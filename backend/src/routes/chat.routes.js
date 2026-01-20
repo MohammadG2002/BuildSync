@@ -97,7 +97,7 @@ router.post("/", authenticate, async (req, res) => {
     // Build workspace context with user roles
     const workspaceContext = workspaces.map((ws) => {
       const memberInfo = ws.members.find(
-        (m) => m.user.toString() === userId.toString()
+        (m) => m.user.toString() === userId.toString(),
       );
       return {
         id: ws._id,
@@ -121,14 +121,14 @@ router.post("/", authenticate, async (req, res) => {
     })
       .populate("workspace", "name")
       .select(
-        "_id name description workspace status priority startDate dueDate color tags members taskCounter createdAt"
+        "_id name description workspace status priority startDate dueDate color tags members taskCounter createdAt",
       )
       .lean();
 
     // Build project context with user roles
     const projectContext = projects.map((proj) => {
       const memberInfo = proj.members.find(
-        (m) => m.user.toString() === userId.toString()
+        (m) => m.user.toString() === userId.toString(),
       );
       return {
         id: proj._id,
@@ -161,7 +161,7 @@ router.post("/", authenticate, async (req, res) => {
       .populate("project", "name")
       .populate("workspace", "name")
       .select(
-        "_id title description project workspace assignedTo createdBy status priority startDate dueDate tags dependencies estimatedHours actualHours sequence subtasks createdAt"
+        "_id title description project workspace assignedTo createdBy status priority startDate dueDate tags dependencies estimatedHours actualHours sequence subtasks createdAt",
       )
       .lean();
 
@@ -229,7 +229,7 @@ router.post("/", authenticate, async (req, res) => {
     // Send comprehensive context to n8n
     const n8nUrl =
       process.env.N8N_WEBHOOK_URL ||
-      "https://buildsync5.app.n8n.cloud/webhook/8b085178-cf54-4bfe-812d-0e0d562ce3ac/chat";
+      "https://buildsync6.app.n8n.cloud/webhook/8b085178-cf54-4bfe-812d-0e0d562ce3ac/chat";
 
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 15000);
@@ -296,13 +296,13 @@ router
     mongoIdValidation("workspaceId"),
     mongoIdValidation("messageId"),
     validate,
-    updateMessage
+    updateMessage,
   )
   .delete(
     mongoIdValidation("workspaceId"),
     mongoIdValidation("messageId"),
     validate,
-    deleteMessage
+    deleteMessage,
   );
 
 router
@@ -311,7 +311,7 @@ router
     mongoIdValidation("workspaceId"),
     mongoIdValidation("messageId"),
     validate,
-    markAsRead
+    markAsRead,
   );
 
 // Direct messages within a workspace
@@ -321,13 +321,13 @@ router
     mongoIdValidation("workspaceId"),
     mongoIdValidation("userId"),
     validate,
-    getDirectMessages
+    getDirectMessages,
   )
   .post(
     mongoIdValidation("workspaceId"),
     mongoIdValidation("userId"),
     validate,
-    sendDirectMessage
+    sendDirectMessage,
   );
 
 // Global direct messages (not tied to a workspace)
@@ -341,7 +341,7 @@ router.put(
   "/dm/:userId/read",
   mongoIdValidation("userId"),
   validate,
-  markDirectRead
+  markDirectRead,
 );
 
 export default router;

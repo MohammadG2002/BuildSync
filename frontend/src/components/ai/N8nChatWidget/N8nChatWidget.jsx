@@ -8,7 +8,7 @@ export default function N8nChatWidget() {
       import Chatbot from "https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js";
       
       Chatbot.createWidget({
-        webhookUrl: 'https://buildsync5.app.n8n.cloud/webhook/8b085178-cf54-4bfe-812d-0e0d562ce3ac/chat',
+        webhookUrl: 'https://buildsync6.app.n8n.cloud/webhook/8b085178-cf54-4bfe-812d-0e0d562ce3ac/chat',
         initialMessages: ['Hi! I\'m BuildSync Assistance. How can I help you today?'],
         i18n: {
           en: {

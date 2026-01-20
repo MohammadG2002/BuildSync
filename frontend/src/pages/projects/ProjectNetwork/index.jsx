@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useTheme } from "../../../hooks/useTheme";
 import { getTasks } from "../../../services/taskService";
+import styles from "./ProjectNetwork.module.css";
 
 const ProjectNetwork = () => {
   const { workspaceId, projectId } = useParams();
@@ -9,7 +10,7 @@ const ProjectNetwork = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const { isDark } = useTheme();
-  const [nodeW] = useState(160);
+  const [nodeW] = useState(200);
   const [nodeH] = useState(56);
   const [hGap] = useState(80);
   const [vGap] = useState(32);
@@ -55,7 +56,7 @@ const ProjectNetwork = () => {
         id,
         title: `${t.sequence ? `#${t.sequence} ` : ""}${t.title || "Untitled"}`,
         deps: (t.dependencies || []).map((d) =>
-          (typeof d === "string" ? d : d?._id || d?.id || d)?.toString()
+          (typeof d === "string" ? d : d?._id || d?.id || d)?.toString(),
         ),
         start,
         due,
@@ -78,7 +79,7 @@ const ProjectNetwork = () => {
         d =
           1 +
           Math.max(
-            ...n.deps.filter((x) => items.has(x)).map((x) => dfsDepth(x))
+            ...n.deps.filter((x) => items.has(x)).map((x) => dfsDepth(x)),
           );
       }
       visiting.delete(id);
@@ -118,48 +119,27 @@ const ProjectNetwork = () => {
     const width = (levels.length || 1) * (nodeW + hGap) + 40;
     const height = Math.max(
       200,
-      Math.max(...levels.map((ids) => (ids.length || 1) * (nodeH + vGap))) + 40
+      Math.max(...levels.map((ids) => (ids.length || 1) * (nodeH + vGap))) + 40,
     );
 
     return { items, positions, edges, width, height, levels };
   }, [tasks, nodeW, nodeH, hGap, vGap]);
 
   return (
-    <div style={{ padding: 16 }}>
-      <div style={{ marginBottom: 12 }}>
+    <div className={`${styles.container} ${isDark ? styles.dark : ""}`}>
+      <div className={styles.backLinkContainer}>
         <Link
           to={`/app/workspaces/${workspaceId}/projects/${projectId}`}
-          style={{
-            padding: "6px 16px",
-            borderRadius: 6,
-            border: "1px solid #e5e7eb",
-            background: isDark ? "#111827" : "#f3f4f6",
-            color: isDark ? "#60a5fa" : "#1d4ed8",
-            textDecoration: "none",
-            fontWeight: 500,
-          }}
+          className={styles.backLink}
         >
           ← Back
         </Link>
       </div>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <h1 style={{ margin: 0 }}>Network Diagram</h1>
-        <div style={{ display: "flex", gap: 8 }}>
+      <div className={styles.header}>
+        <h1 className={styles.title}>Network Diagram</h1>
+        <div className={styles.buttonGroup}>
           <button
-            style={{
-              padding: "6px 12px",
-              borderRadius: 6,
-              border: `1px solid ${isDark ? "#374151" : "#e5e7eb"}`,
-              background: isDark ? "#111827" : "#f3f4f6",
-              color: isDark ? "#d1d5db" : "inherit",
-              cursor: "pointer",
-            }}
+            className={styles.button}
             onClick={() => {
               const svg = document.getElementById("network-svg");
               if (!svg) return;
@@ -183,14 +163,7 @@ const ProjectNetwork = () => {
             Download SVG
           </button>
           <button
-            style={{
-              padding: "6px 12px",
-              borderRadius: 6,
-              border: `1px solid ${isDark ? "#374151" : "#e5e7eb"}`,
-              background: isDark ? "#111827" : "#f3f4f6",
-              color: isDark ? "#d1d5db" : "inherit",
-              cursor: "pointer",
-            }}
+            className={styles.button}
             onClick={() => {
               // Download as CSV
               const csv = ["Task,Dependencies"];
@@ -215,17 +188,10 @@ const ProjectNetwork = () => {
           {/* Removed duplicate Back to Project link (top-left already has Back) */}
         </div>
       </div>
-      {loading && <p style={{ color: "#6b7280" }}>Loading…</p>}
-      {error && <p style={{ color: "#b91c1c" }}>{error}</p>}
+      {loading && <p className={styles.loading}>Loading…</p>}
+      {error && <p className={styles.error}>{error}</p>}
       {!loading && !error && (
-        <div
-          style={{
-            marginTop: 12,
-            overflow: "auto",
-            border: "1px solid #e5e7eb",
-            borderRadius: 8,
-          }}
-        >
+        <div className={styles.svgContainer}>
           <svg id="network-svg" width={graph.width} height={graph.height}>
             {/* Edges */}
             {graph.edges.map((e, idx) => {
@@ -280,23 +246,11 @@ const ProjectNetwork = () => {
                       ry={8}
                       width={nodeW}
                       height={nodeH}
-                      fill={isDark ? "#0b1220" : "#ffffff"}
-                      stroke={isDark ? "#374151" : "#e5e7eb"}
                     />
-                    <text
-                      x={p.x + 12}
-                      y={p.y + 22}
-                      fontSize={12}
-                      fill={isDark ? "#e5e7eb" : "#111827"}
-                    >
+                    <text x={p.x + 12} y={p.y + 22} fontSize={12}>
                       {n.title}
                     </text>
-                    <text
-                      x={p.x + 12}
-                      y={p.y + 40}
-                      fontSize={10}
-                      fill={isDark ? "#9ca3af" : "#6b7280"}
-                    >
+                    <text x={p.x + 12} y={p.y + 40} fontSize={10}>
                       {graph.items.get(n.id)?.deps?.length || 0} deps
                     </text>
                   </g>
