@@ -15,6 +15,7 @@ const SidebarHeader = ({ collapsed, onCollapse, onClose }) => {
           className={styles.headerLogoCollapsed}
           onClick={() => navigate("/app/dashboard")}
           style={{ cursor: "pointer" }}
+          loading="lazy"
         />
       ) : (
         <div
@@ -26,6 +27,7 @@ const SidebarHeader = ({ collapsed, onCollapse, onClose }) => {
             src={assets.Logo}
             alt="BuildSync"
             className={styles.headerLogo}
+            loading="lazy"
           />
           <h1 className={styles.headerTitle}>
             {import.meta.env.VITE_APP_NAME || "BuildSync"}

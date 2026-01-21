@@ -45,6 +45,7 @@ const MessageBubble = ({ message, isOwn }) => {
                       style={{ padding: 0 }}
                     >
                       <img
+                        loading="lazy"
                         src={url}
                         alt={name}
                         style={{

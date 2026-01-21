@@ -28,6 +28,7 @@ const ActivityItem = ({ activity, config }) => {
           </div>
           {/* User Avatar */}
           <img
+            loading="lazy"
             src={activity.user.avatar}
             alt={activity.user.name}
             className={styles.itemAvatar}

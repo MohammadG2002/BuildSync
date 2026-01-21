@@ -1,5 +1,6 @@
 import React from "react";
 import { Paperclip } from "lucide-react";
+import LazyImage from "../../../../common/LazyImage/LazyImage";
 import styles from "../../TaskDetailsModal.module.css";
 import { buildAbsoluteUrl } from "../../../../../utils/helpers/buildAbsoluteUrl";
 import formatFileSize from "../../../../../utils/helpers/formatFileSize";
@@ -23,7 +24,7 @@ const CommentAttachmentItem = ({ attachment }) => {
       title={name}
     >
       {isImage ? (
-        <img
+        <LazyImage
           src={href}
           alt={name}
           style={{

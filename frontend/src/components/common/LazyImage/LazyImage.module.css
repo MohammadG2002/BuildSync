@@ -1,0 +1,59 @@
+.lazyImageWrapper {
+  position: relative;
+  overflow: hidden;
+  background-color: #f3f4f6;
+}
+
+:global(.dark) .lazyImageWrapper {
+  background-color: #1f2937;
+}
+
+.placeholder {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+:global(.dark) .placeholder {
+  background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.lazyImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.lazyImage.loaded {
+  opacity: 1;
+}
+
+.errorPlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 2rem;
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+:global(.dark) .errorPlaceholder {
+  background-color: #7f1d1d;
+  color: #fca5a5;
+}

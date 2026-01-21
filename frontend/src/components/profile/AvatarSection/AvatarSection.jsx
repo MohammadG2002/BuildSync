@@ -1,5 +1,6 @@
 import { Camera } from "lucide-react";
 import Button from "../../common/button/Button/Button";
+import LazyImage from "../../common/LazyImage/LazyImage";
 import { getInitials, generateColor } from "../../../utils/helpers";
 import styles from "./AvatarSection.module.css";
 
@@ -15,7 +16,7 @@ const AvatarSection = ({
     <div className={styles.avatarContainer}>
       <div className={styles.avatarWrapper}>
         {avatarUrl ? (
-          <img
+          <LazyImage
             src={avatarUrl}
             alt={`${userName || "User"} avatar`}
             className={styles.avatarImage}

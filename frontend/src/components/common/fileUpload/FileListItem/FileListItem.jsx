@@ -1,4 +1,5 @@
 import { X, Eye } from "lucide-react";
+import LazyImage from "../../LazyImage/LazyImage";
 import getFileIcon from "../../../../utils/common/fileUpload/getFileIcon";
 import formatFileSize from "../../../../utils/helpers/formatFileSize";
 import styles from "./FileListItem.module.css";
@@ -12,7 +13,7 @@ const FileListItem = ({ file, index, onRemove, onPreview }) => {
       {/* Thumbnail/Icon */}
       <div className={styles.fileItemThumbnail}>
         {isImage && file.preview ? (
-          <img
+          <LazyImage
             src={file.preview}
             alt={file.name}
             className={styles.fileItemThumbnailImage}

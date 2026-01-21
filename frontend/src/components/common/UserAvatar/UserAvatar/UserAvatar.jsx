@@ -1,9 +1,10 @@
 import { getInitials, generateColor } from "../../../../utils/helpers";
+import LazyImage from "../../LazyImage/LazyImage";
 
 const UserAvatar = ({ name = "User", avatar, className, title, style }) => {
   if (avatar) {
     return (
-      <img
+      <LazyImage
         src={avatar}
         alt={`${name} avatar`}
         className={className}

@@ -16,6 +16,7 @@ const AuthLayout = ({ children, title, subtitle }) => {
               src={assets.Logo}
               alt="BuildSync Logo"
               className={styles.logo}
+              loading="lazy"
             />
             {import.meta.env.VITE_APP_NAME || "BuildSync"}
           </h1>
