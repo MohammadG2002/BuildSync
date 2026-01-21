@@ -79,6 +79,16 @@ const fileFilter = (req, file, cb) => {
       "text/",
       "application/zip",
       "application/x-zip-compressed",
+      // CAD / engineering files
+      "application/acad", // sometimes used for DWG
+      "application/dwg",
+      "application/vnd.dwg",
+      "application/dxf",
+      "model/stl", // 3D STL files
+      "application/step", // STEP files
+      "application/x-step",
+      "application/stp",
+      "application/x-stp",
     ];
 
     const isAllowed = allowedTypes.some((type) => file.mimetype.includes(type));
