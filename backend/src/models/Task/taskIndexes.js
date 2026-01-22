@@ -1,5 +1,5 @@
-/**
- * Task Model Indexes
+/*
+ Task Model Indexes
  */
 
 export const setupTaskIndexes = (schema) => {

@@ -1,30 +1,26 @@
-import { useEffect, useState, useContext, useCallback, useMemo } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import {
-  Plus,
-  ArrowLeft,
-  CheckCircle,
-  Clock,
-  AlertCircle,
-  Users,
-} from "lucide-react";
-import Button from "../../../components/common/button/Button/Button";
 import Card from "../../../components/common/card/Card/Card";
 import Modal from "../../../components/common/modal/Modal/Modal";
 import TaskList from "../../../components/task/TaskList/TaskList/TaskList";
 import TaskForm from "../../../components/task/TaskForm/TaskForm";
 import TaskDetailsModal from "../../../components/task/TaskDetailsModal/TaskDetailsModal";
-import TaskStatCard from "../../../components/projectDetails/TaskStatCard/TaskStatCard";
-import FilterButtons from "../../../components/projectDetails/FilterButtons/FilterButtons";
-import GroupBySelector from "../../../components/projectDetails/GroupBySelector/GroupBySelector";
 import EmptyTasksState from "../../../components/projectDetails/EmptyTasksState/EmptyTasksState";
 import DeleteTaskModalContent from "../../../components/projectDetails/DeleteTaskModalContent/DeleteTaskModalContent";
 import ArchiveTaskModalContent from "../../../components/projectDetails/ArchiveTaskModalContent/ArchiveTaskModalContent";
 import AddProjectMemberModal from "../../../components/projectDetails/AddProjectMemberModal/AddProjectMemberModal";
+import TagManagerOverlay from "../../../components/common/tag/TagManagerOverlay/TagManagerOverlay";
+import ProjectHeader from "../../../components/projectDetails/ProjectHeader/ProjectHeader";
+import TaskStatsGrid from "../../../components/projectDetails/TaskStatsGrid/TaskStatsGrid";
+import {
+  useProjectData,
+  useTaskFiltering,
+  useProjectPermissions,
+  useProjectModals,
+  useAssigneeOptions,
+} from "../../../hooks/project";
 import { AuthContext } from "../../../context/AuthContext";
 import {
-  calculateTaskStats,
-  fetchProjectAndTasks,
   handleCreateTask,
   handleEditTask,
   handleUpdateTask,
@@ -43,7 +39,6 @@ import {
   handleReactToComment,
 } from "../../../utils/project";
 import styles from "./ProjectDetails.module.css";
-import TagManagerOverlay from "../../../components/common/tag/TagManagerOverlay/TagManagerOverlay";
 
 const ProjectDetails = () => {
   const { workspaceId, projectId } = useParams();
@@ -51,54 +46,59 @@ const ProjectDetails = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [project, setProject] = useState(null);
-  const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [filterStatus, setFilterStatus] = useState("all");
-  const [viewMode, setViewMode] = useState("list"); // 'list' or 'board'
-  const [groupBy, setGroupBy] = useState("none"); // 'none', 'status', 'priority'
+  // Data hooks
+  const { project, tasks, setTasks, members, loading, refreshAll } =
+    useProjectData(workspaceId, projectId);
 
-  const [showCreateModal, setShowCreateModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [showArchiveModal, setShowArchiveModal] = useState(false);
-  const [showDetailsModal, setShowDetailsModal] = useState(false);
-  const [showAddMemberModal, setShowAddMemberModal] = useState(false);
+  // UI state
+  const [filterStatus, setFilterStatus] = useState("all");
+  const [groupBy, setGroupBy] = useState("none");
   const [selectedTask, setSelectedTask] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
-  const [members, setMembers] = useState([]);
-  const [showTagManager, setShowTagManager] = useState(false);
+  // Modal states
+  const {
+    showCreateModal,
+    setShowCreateModal,
+    showEditModal,
+    setShowEditModal,
+    showDeleteModal,
+    setShowDeleteModal,
+    showArchiveModal,
+    setShowArchiveModal,
+    showDetailsModal,
+    setShowDetailsModal,
+    showAddMemberModal,
+    setShowAddMemberModal,
+    showTagManager,
+    setShowTagManager,
+  } = useProjectModals();
 
-  const refreshAll = useCallback(
-    () =>
-      fetchProjectAndTasks(
-        workspaceId,
-        projectId,
-        setProject,
-        setTasks,
-        setMembers,
-        setLoading
-      ),
-    [workspaceId, projectId]
+  // Task filtering
+  const { filteredTasks, taskStats } = useTaskFiltering(tasks, filterStatus);
+
+  // Permissions
+  const { canManageMembers, isViewer, canModerateComments } =
+    useProjectPermissions(user, project, members, user?._id || user?.id);
+
+  // Assignee options
+  const { projectAssigneeOptions, getEditAssigneeOptions } = useAssigneeOptions(
+    project,
+    members,
+    user?._id || user?.id,
   );
 
-  useEffect(() => {
-    refreshAll();
-  }, [projectId, refreshAll]);
-
-  // Open Tag Manager when requested globally
+  // Handle tag manager global event
   useEffect(() => {
     const open = () => setShowTagManager(true);
     window.addEventListener("tags:openManager", open);
     return () => window.removeEventListener("tags:openManager", open);
   }, []);
 
-  // If navigated with ?task=ID, auto-open the Task Details once tasks are loaded
+  // Handle URL-based task opening
   useEffect(() => {
     const targetId = searchParams.get("task");
-    if (!targetId) return;
-    if (loading) return; // wait until tasks/project loaded
+    if (!targetId || loading) return;
 
     const t = (tasks || []).find((x) => (x?._id || x?.id || "") === targetId);
     if (t) {
@@ -107,181 +107,39 @@ const ProjectDetails = () => {
         workspaceId,
         projectId,
         setSelectedTask,
-        setShowDetailsModal
+        setShowDetailsModal,
       );
-      // Optionally clear the param to avoid reopen on state changes
       const next = new URLSearchParams(searchParams);
       next.delete("task");
       setSearchParams(next, { replace: true });
     }
   }, [searchParams, loading, tasks, workspaceId, projectId]);
 
-  const filteredTasks =
-    filterStatus === "all"
-      ? tasks
-      : tasks.filter((task) => task.status === filterStatus);
-
-  const taskStats = calculateTaskStats(tasks);
   const currentUserId = user?._id || user?.id;
-  const projectOwnerId = project?.owner?._id || project?.owner;
-  const currentProjectMember = (project?.members || []).find(
-    (m) => (m?.user?._id || m?.user || m?.id || m?._id) === currentUserId
-  );
-  const canManageMembers =
-    !!currentUserId &&
-    (currentUserId === projectOwnerId ||
-      currentProjectMember?.role === "admin");
-
-  // Determine workspace role for current user (used to enforce viewer read-only UI)
-  const currentWorkspaceRole = useMemo(() => {
-    const found = (members || []).find((m) => m.id === currentUserId);
-    return found?.role || null; // owner isn't in members payload; treat as null (not viewer)
-  }, [members, currentUserId]);
-  const isViewer = currentWorkspaceRole === "viewer";
-
-  // Users with workspace owner/admin should be able to moderate comments,
-  // even if they don't have project admin/owner.
-  const canModerateComments =
-    currentWorkspaceRole === "owner" ||
-    currentWorkspaceRole === "admin" ||
-    canManageMembers;
-
-  // Assignee options: only project members by default
-  const projectMemberIds = useMemo(
-    () =>
-      new Set(
-        (project?.members || []).map(
-          (m) => m?.user?._id || m?.user || m?.id || m?._id
-        )
-      ),
-    [project]
-  );
-
-  const workspaceMembersById = useMemo(() => {
-    const map = new Map();
-    (members || []).forEach((m) => {
-      if (m?.id) map.set(m.id, m);
-    });
-    return map;
-  }, [members]);
-
-  const projectAssigneeOptions = useMemo(() => {
-    return Array.from(projectMemberIds)
-      .map((id) => workspaceMembersById.get(id))
-      .filter(Boolean);
-  }, [projectMemberIds, workspaceMembersById]);
-
-  const editAssigneeOptions = useMemo(() => {
-    if (!selectedTask) return projectAssigneeOptions;
-    const map = new Map(projectAssigneeOptions.map((m) => [m.id, m]));
-    const assigned = Array.isArray(selectedTask?.assignedTo)
-      ? selectedTask.assignedTo
-      : [];
-    assigned.forEach((a) => {
-      const id = a?._id || a?.id || a;
-      if (!id) return;
-      if (!map.has(id)) {
-        map.set(id, {
-          id,
-          name: a?.name || "Unknown User",
-          email: a?.email || "",
-        });
-      }
-    });
-    return Array.from(map.values());
-  }, [projectAssigneeOptions, selectedTask]);
 
   return (
     <div className={styles.container}>
       {/* Header */}
-      <div className={styles.header}>
-        <div className={styles.headerLeft}>
-          <Button
-            variant="ghost"
-            onClick={() => navigate(`/app/workspaces/${workspaceId}`)}
-            className={styles.backButton}
-          >
-            <ArrowLeft className={styles.backIcon} />
-          </Button>
-          <div className={styles.headerContent}>
-            <h1 className={styles.title}>{project?.name || "Loading..."}</h1>
-            <p className={styles.subtitle}>
-              {project?.description || "Project details"}
-            </p>
-          </div>
-        </div>
-        <div className={styles.headerButtons}>
-          <Button
-            variant="outline"
-            onClick={() =>
-              navigate(
-                `/app/workspaces/${workspaceId}/projects/${projectId}/gantt`
-              )
-            }
-            className={styles.createTaskButton}
-          >
-            Gantt Chart
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() =>
-              navigate(
-                `/app/workspaces/${workspaceId}/projects/${projectId}/network`
-              )
-            }
-            className={styles.createTaskButton}
-          >
-            Network Diagram
-          </Button>
-          <Button
-            variant="secondary"
-            onClick={() => setShowAddMemberModal(true)}
-            className={styles.addMemberButton}
-          >
-            <Users className={styles.addMemberIcon} />
-            Members
-          </Button>
-          <Button
-            variant="primary"
-            onClick={() => setShowCreateModal(true)}
-            className={styles.createTaskButton}
-            disabled={isViewer}
-            title={isViewer ? "Viewers cannot create tasks" : undefined}
-          >
-            <Plus className={styles.createTaskIcon} />
-            New Task
-          </Button>
-        </div>
-      </div>
+      <ProjectHeader
+        project={project}
+        onBackClick={() => navigate(`/app/workspaces/${workspaceId}`)}
+        onGanttClick={() =>
+          navigate(`/app/workspaces/${workspaceId}/projects/${projectId}/gantt`)
+        }
+        onNetworkClick={() =>
+          navigate(
+            `/app/workspaces/${workspaceId}/projects/${projectId}/network`,
+          )
+        }
+        onAddMemberClick={() => setShowAddMemberModal(true)}
+        onCreateTaskClick={() => setShowCreateModal(true)}
+        isViewer={isViewer}
+      />
 
       {/* Task Stats */}
-      <div className={styles.statsGrid}>
-        <TaskStatCard
-          label="Total"
-          value={taskStats.total}
-          icon={CheckCircle}
-          color="gray"
-        />
-        <TaskStatCard
-          label="In Progress"
-          value={taskStats.inProgress}
-          icon={Clock}
-          color="blue"
-        />
-        <TaskStatCard
-          label="In Review"
-          value={taskStats.inReview}
-          icon={AlertCircle}
-          color="yellow"
-        />
-        <TaskStatCard
-          label="Done"
-          value={taskStats.done}
-          icon={CheckCircle}
-          color="green"
-        />
-      </div>
+      <TaskStatsGrid taskStats={taskStats} />
 
+      {/* Task List or Empty State */}
       {loading ? (
         <Card className={styles.loadingCard}>
           <div className={styles.loadingCardInner}></div>
@@ -305,7 +163,7 @@ const ProjectDetails = () => {
               workspaceId,
               projectId,
               tasks,
-              setTasks
+              setTasks,
             )
           }
           onTaskClick={(task) =>
@@ -314,7 +172,7 @@ const ProjectDetails = () => {
               workspaceId,
               projectId,
               setSelectedTask,
-              setShowDetailsModal
+              setShowDetailsModal,
             )
           }
           groupBy={groupBy}
@@ -342,7 +200,7 @@ const ProjectDetails = () => {
               tasks,
               setTasks,
               setShowCreateModal,
-              setSubmitting
+              setSubmitting,
             )
           }
           onCancel={() => setShowCreateModal(false)}
@@ -372,7 +230,7 @@ const ProjectDetails = () => {
               setTasks,
               setShowEditModal,
               setSelectedTask,
-              setSubmitting
+              setSubmitting,
             )
           }
           onCancel={() => {
@@ -380,7 +238,7 @@ const ProjectDetails = () => {
             setSelectedTask(null);
           }}
           loading={submitting}
-          members={editAssigneeOptions}
+          members={getEditAssigneeOptions(selectedTask)}
         />
       </Modal>
 
@@ -409,7 +267,7 @@ const ProjectDetails = () => {
               setTasks,
               setShowDeleteModal,
               setSelectedTask,
-              setSubmitting
+              setSubmitting,
             )
           }
           loading={submitting}
@@ -441,7 +299,7 @@ const ProjectDetails = () => {
               setTasks,
               setShowArchiveModal,
               setSelectedTask,
-              setSubmitting
+              setSubmitting,
             )
           }
           loading={submitting}
@@ -463,7 +321,7 @@ const ProjectDetails = () => {
               projectId,
               tasks,
               setTasks,
-              setSelectedTask
+              setSelectedTask,
             )
           }
           onAddComment={(taskId, commentContent, attachmentFiles) =>
@@ -475,7 +333,7 @@ const ProjectDetails = () => {
               tasks,
               setTasks,
               setSelectedTask,
-              attachmentFiles
+              attachmentFiles,
             )
           }
           onUpdateComment={(taskId, commentId, content) =>
@@ -487,7 +345,7 @@ const ProjectDetails = () => {
               content,
               tasks,
               setTasks,
-              setSelectedTask
+              setSelectedTask,
             )
           }
           onDeleteComment={(taskId, commentId) =>
@@ -498,7 +356,7 @@ const ProjectDetails = () => {
               commentId,
               tasks,
               setTasks,
-              setSelectedTask
+              setSelectedTask,
             )
           }
           onReactComment={(taskId, commentId, action) =>
@@ -510,7 +368,7 @@ const ProjectDetails = () => {
               action,
               tasks,
               setTasks,
-              setSelectedTask
+              setSelectedTask,
             )
           }
           onDeleteAttachment={(taskId, attachmentId, section) =>
@@ -522,7 +380,7 @@ const ProjectDetails = () => {
               tasks,
               setTasks,
               setSelectedTask,
-              section
+              section,
             )
           }
           onAddAttachment={(file, section) =>
@@ -534,7 +392,7 @@ const ProjectDetails = () => {
               tasks,
               setTasks,
               setSelectedTask,
-              section
+              section,
             )
           }
           readOnly={isViewer}
