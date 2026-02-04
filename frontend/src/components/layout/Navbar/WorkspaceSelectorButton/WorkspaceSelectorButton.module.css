@@ -9,11 +9,13 @@
   background: none;
   border: none;
   cursor: pointer;
+  max-width: 600px;
 }
 
 @media (min-width: 640px) {
   .workspaceButton {
     padding: 0.5rem 1rem;
+    max-width: 400px;
   }
 }
 
