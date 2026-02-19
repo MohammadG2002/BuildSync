@@ -9,7 +9,7 @@ const Navigation = () => {
         <div className={styles.navContent}>
           <div className={styles.navBrand}>
             <h1 className={styles.navTitle}>
-              {import.meta.env.VITE_APP_NAME || "ProjectHub"}
+              {import.meta.env.VITE_APP_NAME || "BuildSync"}
             </h1>
           </div>
           <div className={styles.navActions}>

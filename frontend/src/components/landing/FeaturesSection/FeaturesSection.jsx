@@ -1,5 +1,5 @@
-import FeatureCard from "../FeatureCard/FeatureCard";
-import featuresData from "../../../utils/landing/featuresData";
+import FeatureCard from "./FeatureCard/FeatureCard";
+import featuresData from "./featuresData";
 import styles from "./FeaturesSection.module.css";
 
 const FeaturesSection = () => {
@@ -19,7 +19,6 @@ const FeaturesSection = () => {
           {featuresData.map((feature, index) => (
             <FeatureCard
               key={index}
-              icon={feature.icon}
               title={feature.title}
               description={feature.description}
             />

@@ -1,11 +1,8 @@
 import styles from "./FeatureCard.module.css";
 
-const FeatureCard = ({ icon: Icon, title, description }) => {
+const FeatureCard = ({ icon: title, description }) => {
   return (
     <div className={styles.featureCard}>
-      <div className={styles.featureIcon}>
-        <Icon className={styles.featureIconInner} />
-      </div>
       <h3 className={styles.featureTitle}>{title}</h3>
       <p className={styles.featureDescription}>{description}</p>
     </div>
