@@ -1,6 +1,11 @@
 /* Verification Step */
 .verificationContainer {
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  min-width: 25rem;
+  max-width: 25rem;
 }
 
 .verificationHeader {
@@ -22,18 +27,10 @@
   margin-bottom: 0.5rem;
 }
 
-:global(.dark) .verificationTitle {
-  color: #f9fafb;
-}
-
 .verificationText {
   font-size: 0.875rem;
   color: #6b7280;
   margin-bottom: 0.25rem;
-}
-
-:global(.dark) .verificationText {
-  color: #9ca3af;
 }
 
 .verificationEmail {
@@ -49,11 +46,8 @@
   gap: 1.25rem;
 }
 
-.codeInput :global(input) {
-  text-align: center;
-  font-size: 1.5rem;
-  letter-spacing: 0.5rem;
-  font-weight: 600;
+.codeInput {
+  width: 100%;
 }
 
 .timerText {
@@ -61,10 +55,6 @@
   font-size: 0.875rem;
   color: #6b7280;
   margin: -0.5rem 0 1rem;
-}
-
-:global(.dark) .timerText {
-  color: #9ca3af;
 }
 
 .resendButton {
@@ -98,12 +88,4 @@
 
 .backButton:hover {
   color: #111827;
-}
-
-:global(.dark) .backButton {
-  color: #9ca3af;
-}
-
-:global(.dark) .backButton:hover {
-  color: #f9fafb;
 }

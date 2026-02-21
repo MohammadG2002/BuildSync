@@ -2,78 +2,62 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { lazy, Suspense } from "react";
 
 // Layout (not lazy-loaded as it's needed immediately)
+import AuthLayout from "../components/auth/AuthLayout/AuthLayout";
 import DashboardLayout from "../components/layout/DashboardLayout/DashboardLayout";
 import Loader from "../components/common/loader/Loader/Loader";
+
+// Route Guards
+import PrivateRoute from "./PrivateRoute";
+import PublicRoute from "./PublicRoute";
 
 // Lazy load all page components for code splitting
 const LandingPage = lazy(() => import("../pages/landing/LandingPage"));
 const Login = lazy(() => import("../pages/auth/Login"));
 const Register = lazy(() => import("../pages/auth/Register"));
 const ForgotPassword = lazy(() => import("../pages/auth/ForgotPassword"));
-const Dashboard = lazy(() => import("../pages/dashboard/Dashboard"));
+const Dashboard = lazy(() => import("../pages/app/dashboard/Dashboard"));
 const Workspaces = lazy(() => import("../pages/app/workspaces/Workspaces"));
 const WorkspaceDetails = lazy(
   () => import("../pages/app/workspaces/WorkspaceDetails"),
 );
 const ProjectDetails = lazy(
-  () => import("../pages/projects/ProjectDetails/index"),
+  () => import("../pages/app/projects/ProjectDetails/index"),
 );
-const ProjectGantt = lazy(() => import("../pages/projects/ProjectGantt/index"));
+const ProjectGantt = lazy(
+  () => import("../pages/app/projects/ProjectGantt/index"),
+);
 const ProjectNetwork = lazy(
-  () => import("../pages/projects/ProjectNetwork/index"),
+  () => import("../pages/app/projects/ProjectNetwork/index"),
 );
-const Members = lazy(() => import("../pages/members/Members"));
-const Settings = lazy(() => import("../pages/settings/Settings"));
+const Members = lazy(() => import("../pages/app/members/Members"));
+const Settings = lazy(() => import("../pages/app/settings/Settings"));
 const Chat = lazy(() => import("../pages/app/chat/Chat"));
 const AIChat = lazy(() => import("../pages/app/chat/AIChat"));
 const Archived = lazy(() => import("../pages/app/archived/Archived"));
-const Profile = lazy(() => import("../pages/profile/Profile"));
+const Profile = lazy(() => import("../pages/app/profile/Profile"));
 const Notifications = lazy(
   () => import("../pages/app/notifications/Notifications"),
 );
 const NotFound = lazy(() => import("../pages/app/not-found/index"));
-
-// Route Guards
-import PrivateRoute from "./PrivateRoute";
-import PublicRoute from "./PublicRoute";
 
 const AppRoutes = () => {
   return (
     <Suspense fallback={<Loader />}>
       <Routes>
         {/* Public Routes */}
+        <Route path="/" element={<LandingPage />} />
         <Route
-          path="/"
+          path="/auth"
           element={
             <PublicRoute>
-              <LandingPage />
+              <AuthLayout />
             </PublicRoute>
           }
-        />
-        <Route
-          path="/login"
-          element={
-            <PublicRoute>
-              <Login />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <PublicRoute>
-              <Register />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/forgot-password"
-          element={
-            <PublicRoute>
-              <ForgotPassword />
-            </PublicRoute>
-          }
-        />
+        >
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
+        </Route>
 
         {/* Protected Routes with Layout */}
         <Route

@@ -12,7 +12,7 @@ const DashboardLayout = () => {
 
   useEffect(() => {
     fetchWorkspaces();
-  }, []);
+  });
 
   return (
     <div className={styles.layout}>
@@ -30,9 +30,6 @@ const DashboardLayout = () => {
         </main>
       </div>
 
-      {/* Keyboard Shortcuts Helper removed */}
-
-      {/* Onboarding Tour */}
       <Onboarding />
     </div>
   );

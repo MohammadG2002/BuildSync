@@ -1,14 +1,5 @@
 import Button from "../Button";
 
-/**
- * ButtonGroup - Container for grouped buttons
- * Usage:
- * <ButtonGroup>
- *   <Button>First</Button>
- *   <Button>Second</Button>
- *   <Button>Third</Button>
- * </ButtonGroup>
- */
 const ButtonGroup = ({
   children,
   className = "",

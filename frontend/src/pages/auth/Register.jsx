@@ -5,9 +5,7 @@ import { useAuth } from "../../hooks/useAuth";
 import Button from "../../components/common/button/Button/Button";
 import Input from "../../components/common/input/Input/Input";
 import { getPasswordStrength } from "../../utils/validators";
-import AuthLayout from "../../components/auth/AuthLayout/AuthLayout";
 import PasswordInput from "../../components/auth/PasswordInput/PasswordInput";
-import FormDivider from "../../components/auth/FormDivider/FormDivider";
 import VerificationStep from "../../components/auth/VerificationStep/VerificationStep";
 import handleChange from "../../utils/auth/handleChangeRegister";
 import handleSubmit from "../../utils/auth/handleSubmitRegister";
@@ -23,7 +21,7 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [step, setStep] = useState(1); // 1: form, 2: verification
+  const [step, setStep] = useState(1);
   const [accountExists, setAccountExists] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -33,22 +31,13 @@ const Register = () => {
     verificationCode: "",
   });
   const [errors, setErrors] = useState({});
-  const [resendTimer, setResendTimer] = useState(0);
 
   const passwordStrength = formData.password
     ? getPasswordStrength(formData.password)
     : null;
 
   return (
-    <AuthLayout
-      subtitle={
-        step === 1
-          ? "Create your account"
-          : step === 2
-          ? "Verify your email"
-          : "Complete registration"
-      }
-    >
+    <>
       {step === 1 && (
         <form
           onSubmit={(e) => {
@@ -57,6 +46,7 @@ const Register = () => {
           }}
           className={styles.authForm}
         >
+          <h1 className={styles.title}>Get started absolutely free</h1>
           <Input
             label="Full Name"
             type="text"
@@ -131,9 +121,16 @@ const Register = () => {
             size="lg"
             loading={loading}
             className={styles.fullWidthButton}
+            width="100%"
           >
             Continue
           </Button>
+          <p className={styles.footer}>
+            Already have an account?{" "}
+            <Link to="/auth/login" className={styles.link}>
+              Sign in
+            </Link>
+          </p>
         </form>
       )}
 
@@ -147,7 +144,7 @@ const Register = () => {
               setErrors,
               setStep,
               setLoading,
-              setAccountExists
+              setAccountExists,
             );
           }}
           onResend={() => handleResendCode(formData.email)}
@@ -166,7 +163,7 @@ const Register = () => {
               setErrors,
               accountExists ? login : register,
               setLoading,
-              accountExists ? "login" : "register"
+              accountExists ? "login" : "register",
             )
           }
           className={styles.authForm}
@@ -185,19 +182,7 @@ const Register = () => {
           </Button>
         </form>
       )}
-
-      {step === 1 && (
-        <>
-          <FormDivider />
-          <p className={styles.footer}>
-            Already have an account?{" "}
-            <Link to="/login" className={styles.link}>
-              Sign in
-            </Link>
-          </p>
-        </>
-      )}
-    </AuthLayout>
+    </>
   );
 };
 

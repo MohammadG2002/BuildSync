@@ -1,7 +1,12 @@
 :root {
+  /* Colors */
   --color-primary: #2563eb;
   --color-white: #fff;
+  --color-black: #111111;
+
+  /* Filters */
   --hover-brightness: 130%;
 
+  /* Borders */
   --border-secondary: 1px solid #80808080;
 }

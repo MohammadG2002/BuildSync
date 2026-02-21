@@ -137,7 +137,7 @@ const ForgotPassword = () => {
             </form>
 
             <div className={styles.linkWrapper}>
-              <Link to="/login" className={styles.backLink}>
+              <Link to="/auth/login" className={styles.backLink}>
                 <ArrowLeft className={styles.backIcon} />
                 Back to login
               </Link>
@@ -247,7 +247,7 @@ const ForgotPassword = () => {
             </div>
 
             <div className={styles.linkWrapper}>
-              <Link to="/login" className={styles.backLink}>
+              <Link to="/auth/login" className={styles.backLink}>
                 <ArrowLeft className={styles.backIcon} />
                 Back to login
               </Link>
@@ -276,7 +276,7 @@ const ForgotPassword = () => {
             </p>
             <div className={styles.successActions}>
               <Button
-                onClick={() => navigate("/login")}
+                onClick={() => navigate("/auth/login")}
                 variant="primary"
                 className={styles.fullWidthButton}
               >

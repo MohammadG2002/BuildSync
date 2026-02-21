@@ -1,25 +1,23 @@
-/* AuthLayout CSS Module */
-
 .container {
   min-height: 100vh;
+  height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   background: linear-gradient(135deg, #f0f9ff 0%, #dbeafe 100%);
-  padding: 3rem 1rem;
 }
 
-.wrapper {
-  width: 100%;
-  max-width: 28rem;
-}
-
-.header {
+.leftContainer {
   text-align: center;
-  margin-bottom: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100%;
+  width: 25rem;
+  max-width: 25rem;
+  padding: 4rem 1rem;
+  gap: 0.75rem;
+  flex-shrink: 0;
 }
 
 .title {
@@ -29,50 +27,39 @@
   margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  line-height: 1;
+  gap: 0.25rem;
   margin-right: 1rem;
 }
 
 .logo {
-  width: 4rem;
-  height: 4rem;
+  width: 3rem;
+  height: 3rem;
 }
 
 .subtitle {
-  color: #4b5563;
-}
-
-/* Dark mode styles */
-.container.dark .subtitle {
-  color: #9ca3af;
+  font-size: 1.5rem;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--color-black);
+  text-overflow: clip;
 }
 
 .formContainer {
   background-color: white;
-  border-radius: 0.5rem;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   padding: 2rem;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.container.dark .formContainer {
-  background-color: #1f2937;
-}
-
-.formTitle {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-.container.dark .formTitle {
-  color: #f9fafb;
-}
-
-.footer {
-  text-align: center;
-  margin-top: 1.5rem;
+.formContainer > form {
+  min-width: 25rem;
+  max-width: 25rem;
 }
 
 .backLink {
@@ -84,14 +71,6 @@
 
 .backLink:hover {
   color: #1f2937;
-}
-
-.container.dark .backLink {
-  color: #9ca3af;
-}
-
-.container.dark .backLink:hover {
-  color: #f9fafb;
 }
 
 /* Responsive adjustments */
