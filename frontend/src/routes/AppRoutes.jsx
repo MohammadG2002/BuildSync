@@ -4,7 +4,6 @@ import { lazy, Suspense } from "react";
 // Layout (not lazy-loaded as it's needed immediately)
 import AuthLayout from "../components/auth/AuthLayout/AuthLayout";
 import DashboardLayout from "../components/layout/DashboardLayout/DashboardLayout";
-import Loader from "../components/common/loader/Loader/Loader";
 
 // Route Guards
 import PrivateRoute from "./PrivateRoute";
@@ -42,7 +41,7 @@ const NotFound = lazy(() => import("../pages/app/not-found/index"));
 
 const AppRoutes = () => {
   return (
-    <Suspense fallback={<Loader />}>
+    <Suspense fallback={<h1>Loading...</h1>}>
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<LandingPage />} />

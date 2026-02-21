@@ -1,186 +1,86 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Mail, Lock, User } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
-import Button from "../../components/common/button/Button/Button";
-import Input from "../../components/common/input/Input/Input";
 import { getPasswordStrength } from "../../utils/validators";
-import PasswordInput from "../../components/auth/PasswordInput/PasswordInput";
-import VerificationStep from "../../components/auth/VerificationStep/VerificationStep";
-import handleChange from "../../utils/auth/handleChangeRegister";
-import handleSubmit from "../../utils/auth/handleSubmitRegister";
 import {
   handleSendCode,
   handleVerifyCode,
   handleResendCode,
 } from "../../utils/auth/handleVerification";
-import styles from "./Auth.module.css";
+import handleSubmit from "../../utils/auth/handleSubmitRegister";
+import VerificationStep from "../../components/auth/VerificationStep/VerificationStep";
+import RegisterForm from "../../components/auth/RegisterForm/RegisterForm";
+
+const INITIAL_FORM = {
+  name: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+  verificationCode: "",
+};
 
 const Register = () => {
   const { register, login } = useAuth();
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);
   const [accountExists, setAccountExists] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    verificationCode: "",
-  });
+  const [formData, setFormData] = useState(INITIAL_FORM);
   const [errors, setErrors] = useState({});
 
   const passwordStrength = formData.password
     ? getPasswordStrength(formData.password)
     : null;
 
+  const handleVerify = (code) => {
+    const updatedForm = { ...formData, verificationCode: code };
+    setFormData(updatedForm);
+    handleVerifyCode(
+      updatedForm,
+      setErrors,
+      setStep,
+      setLoading,
+      setAccountExists,
+    );
+  };
+
+  const handleFinalSubmit = (e) => {
+    handleSubmit(
+      e,
+      formData,
+      setErrors,
+      accountExists ? login : register,
+      setLoading,
+      accountExists ? "login" : "register",
+    );
+  };
+
   return (
     <>
       {step === 1 && (
-        <form
+        <RegisterForm
+          formData={formData}
+          setFormData={setFormData}
+          errors={errors}
+          setErrors={setErrors}
+          passwordStrength={passwordStrength}
+          loading={loading}
           onSubmit={(e) => {
             e.preventDefault();
             handleSendCode(formData, setErrors, setStep, setLoading);
           }}
-          className={styles.authForm}
-        >
-          <h1 className={styles.title}>Get started absolutely free</h1>
-          <Input
-            label="Full Name"
-            type="text"
-            name="name"
-            placeholder="John Doe"
-            value={formData.name}
-            onChange={(e) => handleChange(e, setFormData, errors, setErrors)}
-            error={errors.name}
-            icon={User}
-            autoComplete="name"
-          />
-
-          <Input
-            label="Email"
-            type="email"
-            name="email"
-            placeholder="you@example.com"
-            value={formData.email}
-            onChange={(e) => handleChange(e, setFormData, errors, setErrors)}
-            error={errors.email}
-            icon={Mail}
-            autoComplete="email"
-          />
-
-          <PasswordInput
-            label="Password"
-            name="password"
-            placeholder="Create a strong password"
-            value={formData.password}
-            onChange={(e) => handleChange(e, setFormData, errors, setErrors)}
-            error={errors.password}
-            icon={Lock}
-            autoComplete="new-password"
-            showPassword={showPassword}
-            onTogglePassword={() => setShowPassword(!showPassword)}
-            showStrength={true}
-            passwordStrength={passwordStrength}
-          />
-
-          <PasswordInput
-            label="Confirm Password"
-            name="confirmPassword"
-            placeholder="Confirm your password"
-            value={formData.confirmPassword}
-            onChange={(e) => handleChange(e, setFormData, errors, setErrors)}
-            error={errors.confirmPassword}
-            icon={Lock}
-            autoComplete="new-password"
-            showPassword={showConfirmPassword}
-            onTogglePassword={() =>
-              setShowConfirmPassword(!showConfirmPassword)
-            }
-          />
-
-          <div className={styles.termsRow}>
-            <input type="checkbox" required className={styles.termsCheckbox} />
-            <label className={styles.termsText}>
-              I agree to the{" "}
-              <a href="#" className={styles.link}>
-                Terms of Service
-              </a>{" "}
-              and{" "}
-              <a href="#" className={styles.link}>
-                Privacy Policy
-              </a>
-            </label>
-          </div>
-
-          <Button
-            type="submit"
-            variant="primary"
-            size="lg"
-            loading={loading}
-            className={styles.fullWidthButton}
-            width="100%"
-          >
-            Continue
-          </Button>
-          <p className={styles.footer}>
-            Already have an account?{" "}
-            <Link to="/auth/login" className={styles.link}>
-              Sign in
-            </Link>
-          </p>
-        </form>
+          onBack={() => setStep(1)}
+        />
       )}
 
       {step === 2 && (
         <VerificationStep
           email={formData.email}
-          onVerify={(code) => {
-            setFormData({ ...formData, verificationCode: code });
-            handleVerifyCode(
-              { ...formData, verificationCode: code },
-              setErrors,
-              setStep,
-              setLoading,
-              setAccountExists,
-            );
-          }}
+          onVerify={handleVerify}
           onResend={() => handleResendCode(formData.email)}
           onBack={() => setStep(1)}
           loading={loading}
           error={errors.verificationCode}
+          onFinalSubmit={handleFinalSubmit}
         />
-      )}
-
-      {step === 3 && (
-        <form
-          onSubmit={(e) =>
-            handleSubmit(
-              e,
-              formData,
-              setErrors,
-              accountExists ? login : register,
-              setLoading,
-              accountExists ? "login" : "register",
-            )
-          }
-          className={styles.authForm}
-        >
-          <div className={styles.successMessage}>
-            <p>Email verified! Click below to complete your registration.</p>
-          </div>
-          <Button
-            type="submit"
-            variant="primary"
-            size="lg"
-            loading={loading}
-            className={styles.fullWidthButton}
-          >
-            {accountExists ? "Continue to Dashboard" : "Create Account"}
-          </Button>
-        </form>
       )}
     </>
   );
