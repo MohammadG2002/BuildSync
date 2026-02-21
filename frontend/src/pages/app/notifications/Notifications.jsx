@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Bell, Filter, Check, Trash2, ArrowLeft } from "lucide-react";
-import { useNotifications } from "../../hooks/useNotifications";
-import Card from "../../components/common/card/Card/Card";
-import Button from "../../components/common/button/Button/Button";
-import NotificationItem from "../../components/notification/NotificationItem/NotificationItem";
-import groupByDate from "../../utils/notification/groupByDate";
-import { notificationTypes } from "../../utils/notification/notificationTypes";
-import handleNotificationClick from "../../utils/notification/handleNotificationClick";
+import { useNotifications } from "../../../hooks/useNotifications";
+import Card from "../../../components/common/card/Card/Card";
+import Button from "../../../components/common/button/Button/Button";
+import NotificationItem from "../../../components/notification/NotificationItem/NotificationItem";
+import groupByDate from "../../../utils/notification/groupByDate";
+import { notificationTypes } from "../../../utils/notification/notificationTypes";
+import handleNotificationClick from "../../../utils/notification/handleNotificationClick";
 import styles from "./Notifications.module.css";
 
 const Notifications = () => {

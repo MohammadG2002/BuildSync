@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import Button from "../../common/button/Button/Button";
 import styles from "./HeroSection.module.css";
+import Button from "../../common/button/Button/Button";
 
 const HeroSection = () => {
   return (
-    <section className={styles.hero}>
+    <section className={styles.hero} id="hero">
       <h1 className={styles.heroTitle}>
         Manage Projects with
         <span className={styles.heroHighlight}> Ease</span>
@@ -16,14 +16,13 @@ const HeroSection = () => {
       </p>
       <div className={styles.heroActions}>
         <Link to="/register">
-          <Button variant="primary" size="lg">
-            Start for Free!
-            <ArrowRight className={styles.arrowIcon} />
+          <Button variant="primary">
+            Get Started <ArrowRight className={styles.arrowIcon} />
           </Button>
         </Link>
-        <Button variant="outline" size="lg">
-          Watch Demo
-        </Button>
+        <a href="/#demo">
+          <Button variant="secondary">Watch Demo</Button>
+        </a>
       </div>
     </section>
   );

@@ -45,6 +45,28 @@
   height: 1.25rem;
 }
 
+.registerButton,
+.demoButton {
+  display: flex;
+  padding: 0.7rem 1rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  width: fit-content;
+  font-weight: 600;
+}
+
+.demoButton {
+  background-color: var(--color-white);
+  border: 1px solid rgba(128, 128, 128, 0.527);
+}
+
+.registerButton {
+  background-color: var(--color-primary);
+  color: white;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .hero {

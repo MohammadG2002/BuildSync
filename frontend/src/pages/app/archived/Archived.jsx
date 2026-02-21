@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
-import { useWorkspace } from "../../hooks/useWorkspace";
-import ArchivedStats from "../../components/archived/ArchivedStats/ArchivedStats";
-import ArchivedFilters from "../../components/archived/ArchivedFilters/ArchivedFilters";
-import ArchivedTaskGroup from "../../components/archived/ArchivedTaskGroup/ArchivedTaskGroup";
-import ArchivedLoadingState from "../../components/archived/ArchivedLoadingState/ArchivedLoadingState";
-import ArchivedEmptyState from "../../components/archived/ArchivedEmptyState/ArchivedEmptyState";
-import RestoreTaskModal from "../../components/archived/RestoreTaskModal/RestoreTaskModal";
-import filterArchivedTasks from "../../utils/archived/filterArchivedTasks";
-import groupTasksByProject from "../../utils/archived/groupTasksByProject";
-import fetchData from "../../utils/archived/fetchData";
-import handleRestoreClick from "../../utils/archived/handleRestoreClick";
-import handleRestoreTask from "../../utils/archived/handleRestoreTask";
+import { useWorkspace } from "../../../hooks/useWorkspace";
+import ArchivedStats from "../../../components/archived/ArchivedStats/ArchivedStats";
+import ArchivedFilters from "../../../components/archived/ArchivedFilters/ArchivedFilters";
+import ArchivedTaskGroup from "../../../components/archived/ArchivedTaskGroup/ArchivedTaskGroup";
+import ArchivedLoadingState from "../../../components/archived/ArchivedLoadingState/ArchivedLoadingState";
+import ArchivedEmptyState from "../../../components/archived/ArchivedEmptyState/ArchivedEmptyState";
+import RestoreTaskModal from "../../../components/archived/RestoreTaskModal/RestoreTaskModal";
+import filterArchivedTasks from "../../../utils/archived/filterArchivedTasks";
+import groupTasksByProject from "../../../utils/archived/groupTasksByProject";
+import fetchData from "../../../utils/archived/fetchData";
+import handleRestoreClick from "../../../utils/archived/handleRestoreClick";
+import handleRestoreTask from "../../../utils/archived/handleRestoreTask";
 import styles from "./Archived.module.css";
 
 const Archived = () => {
@@ -33,7 +33,7 @@ const Archived = () => {
   const filteredTasks = filterArchivedTasks(
     archivedTasks,
     searchQuery,
-    filterProject
+    filterProject,
   );
   const groupedTasks = groupTasksByProject(filteredTasks);
 
@@ -101,7 +101,7 @@ const Archived = () => {
             setArchivedTasks,
             setShowRestoreModal,
             setSelectedTask,
-            setRestoring
+            setRestoring,
           )
         }
         restoring={restoring}

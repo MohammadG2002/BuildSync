@@ -11,27 +11,27 @@ const Login = lazy(() => import("../pages/auth/Login"));
 const Register = lazy(() => import("../pages/auth/Register"));
 const ForgotPassword = lazy(() => import("../pages/auth/ForgotPassword"));
 const Dashboard = lazy(() => import("../pages/dashboard/Dashboard"));
-const Workspaces = lazy(() => import("../pages/workspaces/Workspaces"));
-const WorkspaceDetails = lazy(() =>
-  import("../pages/workspaces/WorkspaceDetails")
+const Workspaces = lazy(() => import("../pages/app/workspaces/Workspaces"));
+const WorkspaceDetails = lazy(
+  () => import("../pages/app/workspaces/WorkspaceDetails"),
 );
-const ProjectDetails = lazy(() =>
-  import("../pages/projects/ProjectDetails/index")
+const ProjectDetails = lazy(
+  () => import("../pages/projects/ProjectDetails/index"),
 );
 const ProjectGantt = lazy(() => import("../pages/projects/ProjectGantt/index"));
-const ProjectNetwork = lazy(() =>
-  import("../pages/projects/ProjectNetwork/index")
+const ProjectNetwork = lazy(
+  () => import("../pages/projects/ProjectNetwork/index"),
 );
 const Members = lazy(() => import("../pages/members/Members"));
 const Settings = lazy(() => import("../pages/settings/Settings"));
-const Chat = lazy(() => import("../pages/chat/Chat"));
-const AIChat = lazy(() => import("../pages/chat/AIChat"));
-const Archived = lazy(() => import("../pages/archived/Archived"));
+const Chat = lazy(() => import("../pages/app/chat/Chat"));
+const AIChat = lazy(() => import("../pages/app/chat/AIChat"));
+const Archived = lazy(() => import("../pages/app/archived/Archived"));
 const Profile = lazy(() => import("../pages/profile/Profile"));
-const Notifications = lazy(() =>
-  import("../pages/notifications/Notifications")
+const Notifications = lazy(
+  () => import("../pages/app/notifications/Notifications"),
 );
-const NotFound = lazy(() => import("../pages/not-found/index"));
+const NotFound = lazy(() => import("../pages/app/not-found/index"));
 
 // Route Guards
 import PrivateRoute from "./PrivateRoute";

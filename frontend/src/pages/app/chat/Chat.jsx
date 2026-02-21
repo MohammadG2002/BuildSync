@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
-import Card from "../../components/common/card/Card/Card";
-import Button from "../../components/common/button/Button/Button";
-import Modal from "../../components/common/modal/Modal/Modal";
-import Input from "../../components/common/input/Input/Input";
-import ContactsSidebar from "../../components/chatPage/ContactsSidebar/ContactsSidebar";
-import ChatArea from "../../components/chatPage/ChatArea/ChatArea";
-import ChatEmptyState from "../../components/chatPage/ChatEmptyState/ChatEmptyState";
-import handleSendMessage from "../../utils/chat/handleSendMessage";
+import { useAuth } from "../../../hooks/useAuth";
+import Card from "../../../components/common/card/Card/Card";
+import Button from "../../../components/common/button/Button/Button";
+import Modal from "../../../components/common/modal/Modal/Modal";
+import Input from "../../../components/common/input/Input/Input";
+import ContactsSidebar from "../../../components/chatPage/ContactsSidebar/ContactsSidebar";
+import ChatArea from "../../../components/chatPage/ChatArea/ChatArea";
+import ChatEmptyState from "../../../components/chatPage/ChatEmptyState/ChatEmptyState";
+import handleSendMessage from "../../../utils/chat/handleSendMessage";
 import styles from "./Chat.module.css";
-import { useContacts } from "../../hooks/chat/useContacts";
-import { useMessages } from "../../hooks/chat/useMessages";
-import { useSelectedContact } from "../../hooks/chat/useSelectedContact";
-import { useInviteModal } from "../../hooks/chat/useInviteModal";
+import { useContacts } from "../../../hooks/chat/useContacts";
+import { useMessages } from "../../../hooks/chat/useMessages";
+import { useSelectedContact } from "../../../hooks/chat/useSelectedContact";
+import { useInviteModal } from "../../../hooks/chat/useInviteModal";
 
 const Chat = () => {
   const { user } = useAuth();
@@ -37,7 +37,7 @@ const Chat = () => {
   // Messages hook
   const { messages, setMessages, messagesEndRef } = useMessages(
     selectedContact,
-    user
+    user,
   );
 
   // Message input
@@ -86,7 +86,7 @@ const Chat = () => {
                   messages,
                   setMessages,
                   setMessage,
-                  attachments || []
+                  attachments || [],
                 )
               }
               messagesEndRef={messagesEndRef}
@@ -94,16 +94,16 @@ const Chat = () => {
                 setSelectedContact((prev) =>
                   prev && prev.id === selectedContact.id
                     ? { ...prev, status, blockedBy }
-                    : prev
+                    : prev,
                 );
                 setContacts((prev) =>
                   Array.isArray(prev)
                     ? prev.map((c) =>
                         c.id === selectedContact.id
                           ? { ...c, status, blockedBy }
-                          : c
+                          : c,
                       )
-                    : prev
+                    : prev,
                 );
               }}
             />
